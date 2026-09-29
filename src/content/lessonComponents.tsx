@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import { CoordinatesLesson } from '../lessons/CoordinatesLesson'
 import { LineGraphsLesson } from '../lessons/LineGraphsLesson'
+import { NaturalNumbersLesson } from '../lessons/NaturalNumbersLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -9,4 +10,5 @@ import { LineGraphsLesson } from '../lessons/LineGraphsLesson'
 export const lessonComponents: Record<string, ComponentType> = {
   coordinates: CoordinatesLesson,
   'line-graphs': LineGraphsLesson,
+  'natural-numbers': NaturalNumbersLesson,
 }
