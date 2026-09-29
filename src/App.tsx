@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, ChevronDown, CircleHelp, Compass, Menu, Moon, Sparkles, Target, X } from 'lucide-react'
+import { ArrowLeft, ChevronDown, CircleHelp, Compass, Menu, MessageCircle, Moon, Sparkles, Target, X } from 'lucide-react'
 import { MathExpression } from './components/MathExpression'
 import { UnitCard } from './components/UnitCard'
 import { ComingSoon } from './components/ComingSoon'
@@ -26,7 +26,7 @@ function App() {
       <section className="units-section container" id="units"><div className="section-heading"><div><span className="section-kicker">مساحة التعلّم</span><h2>رحلتك في الرياضيات</h2><p>سيظهر محتوى المنهج هنا منظماً في وحدات ودروس تفاعلية.</p></div><span className="registry-count">{unitCount} وحدات · {lessonCount} دروس</span></div>{curriculumRegistry.length ? <div className="unit-grid">{curriculumRegistry.map(unit => <UnitCard key={unit.id} unit={unit} />)}</div> : <ComingSoon />}</section>
       <section className="about-section container" id="about"><div className="about-panel"><div className="about-decoration"><MathExpression>x + 5 = 12</MathExpression><MathExpression>25 ÷ 5 = 5</MathExpression><MathExpression>a + b = b + a</MathExpression></div><div><span className="section-kicker">نبني الأساس أولاً</span><h2>تجربة تعلّم، لا مجرد صفحات.</h2><p>هذه هي الصفحة الأولى من منصة رياضياتي. صُممت البنية لتستقبل دروس المنهج الأصلية لاحقاً، وتحولها إلى تجارب متدرجة تجمع بين الشرح والتفكير والتطبيق.</p><a className="outline-button" href="#units">تعرّف على المساحة <ArrowLeft size={17} /></a></div></div></section>
     </main>
-    <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
+    <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><p className="attribution"><MessageCircle size={14} aria-hidden="true" /><span>المهندس سومر شاهين: </span><a href="https://wa.me/963930215022" target="_blank" rel="noreferrer" aria-label="التواصل مع المهندس سومر شاهين عبر واتساب">0930215022</a></p><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
   </div>
 }
 export default App
