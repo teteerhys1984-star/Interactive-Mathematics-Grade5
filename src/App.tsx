@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ChevronDown, CircleHelp, Compass, Menu, Moon, Sparkles, Target, X } from 'lucide-react'
+import { ArrowLeft, ChevronDown, CircleHelp, Compass, LockKeyhole, Menu, Moon, Sparkles, Target, X } from 'lucide-react'
 import { MathExpression } from './components/MathExpression'
 import { UnitCard } from './components/UnitCard'
 import { ComingSoon } from './components/ComingSoon'
@@ -35,7 +35,7 @@ function App() {
       <nav className={menuOpen ? 'main-nav is-open' : 'main-nav'} aria-label="التنقل الرئيسي">
         <a className="active" href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#units" onClick={() => setMenuOpen(false)}>الوحدات</a><a href="#about" onClick={() => setMenuOpen(false)}>عن المنصة</a>
       </nav>
-      <InstructorAttribution className="header-attribution" /><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button><button className="menu-button" aria-label={menuOpen ? 'إغلاق القائمة' : 'فتح القائمة'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
+      <InstructorAttribution className="header-attribution" /><a className="teacher-access-link" href="#teacher/coordinates"><LockKeyhole size={15} /> مساحة المدرس</a><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button><button className="menu-button" aria-label={menuOpen ? 'إغلاق القائمة' : 'فتح القائمة'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
     </header>
     <main id="top">
       <section className="hero container">
