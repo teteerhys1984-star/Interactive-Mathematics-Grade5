@@ -118,6 +118,7 @@
 /* — misc text — */
 .figure-note { font-size:.82rem; color:#8a6b3f; background:#fbf1e2; border-radius:9px; padding:9px 12px; }
 .result-line { font-weight:800; color:var(--l5-deep); background:var(--l5-soft2); border-radius:9px; padding:10px 14px; display:inline-block; }
+.source-quote { font-style:italic; color:#4a5a74; border-right:3px solid var(--l5-accent); background:#fffaf2; border-radius:8px; padding:9px 13px; margin:10px 0 4px; }
 .mini-lead,.step-lead { color:var(--l5-deep); font-weight:700; margin:14px 0 4px; }
 .plan-note { display:flex; flex-direction:column; gap:4px; background:var(--l5-soft2); border-radius:10px; padding:11px 14px; margin:10px 0; font-size:.85rem; color:#3f536b; }
 

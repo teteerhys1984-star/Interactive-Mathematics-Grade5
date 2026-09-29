@@ -1,7 +1,7 @@
 import type { TeacherEntry } from './types'
 import {
   additionChecks, applicationProblems, australiaCheck, computeResult, drillItems, fmt,
-  invoiceExample, itemSolution, laptopExample, refineryExample, subtractionChecks,
+  invoiceExample, itemSolution, laptopExample, laptopPrintedAnswer, refineryExample, subtractionChecks,
   subtractionExample, threeAddendsExample, warmupItems, fillPuzzles, digitAt,
   type CalcItem,
 } from '../lessons/additionSubtractionData'
@@ -112,11 +112,16 @@ export const lessonFiveTeacherEntries: TeacherEntry[] = [
   },
   {
     id: 't5-p21-laptop', title: 'مثال: مقدار الزيادة في سعر الحاسب المحمول',
-    prompt: laptopExample.context!,
-    answer: `${itemSolution(laptopExample)} — مقدار الزيادة ${fmt(computeResult(laptopExample.operands, laptopExample.operator))} ل.س.`,
+    prompt: `${laptopExample.context!} (المطبوع في الكتاب: المعطيان 120,580 و118,365، والعملية 120,580 − 118,365، وجملة الخلاصة تذكر ${fmt(laptopPrintedAnswer)} ل.س.)`,
+    answer: `المطبوع في جملة خلاصة الكتاب: ${fmt(laptopPrintedAnswer)} ل.س. والناتج الصحيح الموافق لمعطيات الكتاب ولعمله العمودي: 120,580 − 118,365 = ${fmt(computeResult(laptopExample.operands, laptopExample.operator))} ل.س (تحقّق: 118,365 + 2,215 = 120,580).`,
     source: { type: 'textbook', page: 21 },
-    reasoning: [subColumnSteps, 'الآحاد: 0−5 لا يكفي، نستلف: 10−5=5. العشرات: 7−6=1. المئات: 5−3=2. الألوف: 0−8 نستلف: 10−8=2. عشرات الألوف: 1−1=0. مئات الألوف: 1−1=0.', '120,580 − 118,365 = 2,215 ل.س.'],
-    note: 'ناتج الأعمدة رقماً رقماً هو 2,215 (نتحقّق: 118,365 + 2,215 = 120,580). إن ظهر في نسخة الكتاب المطبوعة رقم مختلف بخانة الآحاد فهو خطأ طباعي؛ اعتمد 2,215 لأنه ما يعطيه العمل العمودي والتحقق بالجمع.',
+    reasoning: [
+      subColumnSteps,
+      'الآحاد: 0−5 لا يكفي، نستلف: 10−5=5. العشرات: 7−6=1. المئات: 5−3=2. الألوف: 0−8 نستلف: 10−8=2. عشرات الألوف: 1−1=0. مئات الألوف: 1−1=0.',
+      'العمل العمودي في الكتاب نفسه يعطي 0 0 2 2 1 5، أي 2,215 ل.س.',
+      'نتحقّق بالجمع العكسي: 118,365 + 2,215 = 120,580، وهو يطابق سعر اليوم المطبوع تماماً؛ إذن 2,215 هو الناتج الصحيح.',
+    ],
+    note: 'تنبيه للمقارنة الموثّقة: تذكر جملة الخلاصة في الكتاب الرقم 2,216، بينما تعطي المعطيات المطبوعة (120,580 و118,365) وعملُ الكتاب العمودي نفسه الرقم 2,215، ويؤكّده التحقق بالجمع. الفرق مقداره 1 في خانة الآحاد فقط، وهو تعارض داخلي في الصفحة بين جملة الخلاصة وبقية عناصر المثال. اعرض الرقمين للطالب: احتفظ بنصّ الكتاب (2,216) مع توضيح أن القيمة الصحيحة الموافقة للمعطيات هي 2,215، ووظّفها لترسيخ عادة التحقق من الطرح بالجمع.',
   },
   {
     id: 't5-p21-sub-example', title: 'مثال: طرح ضمن الملايين',

@@ -79,6 +79,13 @@ export const laptopExample: CalcItem = {
   id: 'ex-laptop', label: 'سعر الحاسب المحمول', operands: [120580, 118365], operator: '-',
   context: 'سعر حاسب محمول اليوم 120,580 ليرة سورية، وكان سعره الشهر الماضي 118,365 ليرة سورية. ما مقدار الزيادة في سعره؟',
 }
+/**
+ * Source note (page 21): the printed data are 120,580 and 118,365, and the book's own column work
+ * shows 0 0 2 2 1 5 = 2,215. But the book's CONCLUDING SENTENCE prints 2,216. The value that matches
+ * the printed data and the book's own column is 2,215 (verify: 118,365 + 2,215 = 120,580). We keep the
+ * printed 2,216 visible and explain the one-unit difference; we never alter the source silently.
+ */
+export const laptopPrintedAnswer = 2216
 export const subtractionExample: CalcItem = {
   id: 'ex-sub', label: 'طرح ضمن الملايين', operands: [3221991, 2154231], operator: '-',
   context: 'ما ناتج: 3,221,991 − 2,154,231 ؟',

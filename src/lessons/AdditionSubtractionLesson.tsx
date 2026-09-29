@@ -8,7 +8,7 @@ import { BidiText } from '../components/BidiText'
 import type { LessonStep } from '../components/lesson/types'
 import {
   additionChecks, applicationProblems, australiaCheck, computeResult,
-  digitAt, drillItems, fillPuzzles, fmt, invoiceExample, itemExpression, laptopExample,
+  digitAt, drillItems, fillPuzzles, fmt, invoiceExample, itemExpression, laptopExample, laptopPrintedAnswer,
   refineryExample, subtractionChecks, subtractionExample, threeAddendsExample, warmupItems,
   type CalcItem, type FillPuzzle,
 } from './additionSubtractionData'
@@ -371,7 +371,14 @@ function SubtractionExamplesStep() {
         <p>سعر حاسب محمول اليوم <MathExpression>{fmt(120580)}</MathExpression> ليرة سورية، وكان سعره الشهر الماضي <MathExpression>{fmt(118365)}</MathExpression> ليرة سورية. ما مقدار الزيادة في سعره؟</p>
         <p>مقدار الزيادة هو <MathExpression>{fmt(120580)} − {fmt(118365)}</MathExpression>؛ العدد الأكبر <BidiText>(المطروح منه) في الأعلى، والأصغر (المطروح) تحته</BidiText>.</p>
         <ColumnOperation item={laptopExample} interactive />
-        <p className="result-line">مقدار الزيادة في سعر الحاسب المحمول <MathExpression>{fmt(computeResult(laptopExample.operands, laptopExample.operator))}</MathExpression> ليرة سوريّة.</p>
+        <p className="source-quote">نصّ الكتاب في الخلاصة: «مقدار الزيادة في سعر الحاسب المحمول <MathExpression>{fmt(laptopPrintedAnswer)}</MathExpression> ليرة سوريّة».</p>
+        <div className="common-mistakes">
+          <AlertTriangle size={16} />
+          <span>
+            <strong>لننتبه ونتحقّق:</strong> العمل بالأعمدة أعلاه يعطي <MathExpression>{fmt(computeResult(laptopExample.operands, laptopExample.operator))}</MathExpression>، ونتأكّد بالجمع العكسي:
+            {' '}<MathExpression>{fmt(118365)} + {fmt(2215)} = {fmt(120580)}</MathExpression> ✓. إذن القيمة الموافقة لمعطيات الكتاب هي <MathExpression>{fmt(computeResult(laptopExample.operands, laptopExample.operator))}</MathExpression> ليرة، وتختلف عن الرقم المطبوع في جملة الخلاصة بمقدار <MathExpression>1</MathExpression> فقط. هذا يعلّمنا أن نتحقّق دائماً من الطرح بالجمع.
+          </span>
+        </div>
       </SourceCard>
       <SourceCard label="الكتاب · ص 21 · مثال">
         <h3>طرح ضمن الملايين</h3>
