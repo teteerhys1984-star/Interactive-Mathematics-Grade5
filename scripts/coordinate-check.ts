@@ -1,4 +1,5 @@
 import { assertCoordinateConvention, pointOnHorizontalAxis, pointOnVerticalAxis, toSvgPoint } from '../src/components/lesson/coordinates'
+import { finalAssessment, lessonOneTeacherEntries } from '../src/teacher/lesson1'
 
 assertCoordinateConvention()
 const origin = { x: 48, y: 304 }
@@ -15,4 +16,5 @@ for (const [point, expected] of checks) {
 }
 if (!pointOnHorizontalAxis({ x: 5, y: 0 })) throw new Error('(5,0) must be on horizontal X axis')
 if (!pointOnVerticalAxis({ x: 0, y: 4 })) throw new Error('(0,4) must be on vertical Y axis')
+for (const question of finalAssessment) if (!lessonOneTeacherEntries.some(entry => entry.id === question.id)) throw new Error(`Missing teacher solution for ${question.id}`)
 console.log('Coordinate convention checks passed: first value is horizontal X; second value is vertical Y.')

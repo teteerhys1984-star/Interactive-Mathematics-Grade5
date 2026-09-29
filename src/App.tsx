@@ -6,17 +6,24 @@ import { ComingSoon } from './components/ComingSoon'
 import { InstructorAttribution } from './components/InstructorAttribution'
 import { curriculumRegistry } from './content/registry'
 import { CoordinatesLesson } from './lessons/CoordinatesLesson'
+import { TeacherArea } from './teacher/TeacherArea'
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [lessonOpen, setLessonOpen] = useState(() => window.location.hash === '#lesson/coordinates')
+  const [teacherOpen, setTeacherOpen] = useState(() => window.location.hash === '#teacher/coordinates')
   useEffect(() => {
-    const onHashChange = () => setLessonOpen(window.location.hash === '#lesson/coordinates')
+    const onHashChange = () => { setLessonOpen(window.location.hash === '#lesson/coordinates'); setTeacherOpen(window.location.hash === '#teacher/coordinates') }
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
   const unitCount = curriculumRegistry.length
   const lessonCount = curriculumRegistry.reduce((total, unit) => total + unit.lessons.length, 0)
+  if (teacherOpen) return <div className="app-shell lesson-page teacher-page">
+    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#teacher/coordinates">منطقة المدرس</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
+    <main><TeacherArea /></main>
+    <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
+  </div>
   if (lessonOpen) return <div className="app-shell lesson-page">
     <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#lesson/coordinates">الدرس الأول</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button></div></header>
     <main><CoordinatesLesson /></main>
