@@ -38,7 +38,7 @@ async function main() {
   if (!screen.getByText('شبكة الإحداثيات')) fail('Lesson 1 title missing from Home')
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 2) fail(`Expected 2 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 3) fail(`Expected 3 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   console.log('✅ Home lists both Lesson 1 and Lesson 2 as available')
 
   // ---- Lesson 1 still works end-to-end ----

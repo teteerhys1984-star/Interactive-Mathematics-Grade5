@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { lessonOneRequiredSolutionIds, lessonOneTeacherEntries } from '../src/teacher/lesson1'
 import { lessonTwoRequiredSolutionIds, lessonTwoTeacherEntries, finalAssessment2 } from '../src/teacher/lesson2'
+import { lessonThreeRequiredSolutionIds, lessonThreeTeacherEntries, finalAssessment3 } from '../src/teacher/lesson3'
 import { curriculumRegistry } from '../src/content/registry'
 import { lessonComponents } from '../src/content/lessonComponents'
 
@@ -40,4 +41,14 @@ for (const entry of lessonTwoTeacherEntries) {
 for (const page of [7, 8, 9]) if (!lessonTwoTeacherEntries.some(entry => entry.source.type === 'textbook' && entry.source.page === page)) throw new Error(`No page ${page} source entry in Lesson 2`)
 for (const question of finalAssessment2) if (!lessonTwoTeacherEntries.some(entry => entry.id === question.id)) throw new Error(`Missing Lesson 2 final-test solution for ${question.id}`)
 
-console.log('Content and RTL/LTR boundary checks passed (Lesson 1 + Lesson 2).')
+// Lesson 3 — textbook pages 10–14 and a platform-authored final assessment.
+if (!registryLessons.some(lesson => lesson.id === 'natural-numbers' && lesson.availability === 'available')) throw new Error('Lesson 3 (natural-numbers) must be registered and available')
+for (const id of lessonThreeRequiredSolutionIds) if (!lessonThreeTeacherEntries.some(entry => entry.id === id)) throw new Error(`Missing Lesson 3 solution: ${id}`)
+for (const entry of lessonThreeTeacherEntries) {
+  if (entry.source.type === 'textbook' && ![10, 11, 12, 13, 14].includes(entry.source.page)) throw new Error(`Invalid Lesson 3 textbook page for ${entry.id}`)
+  if (entry.source.type === 'platform' && 'page' in entry.source) throw new Error(`Lesson 3 platform activity has fake page metadata: ${entry.id}`)
+}
+for (const page of [10, 11, 12, 13, 14]) if (!lessonThreeTeacherEntries.some(entry => entry.source.type === 'textbook' && entry.source.page === page)) throw new Error(`No Lesson 3 source entry for page ${page}`)
+for (const question of finalAssessment3) if (!lessonThreeTeacherEntries.some(entry => entry.id === question.id && entry.source.type === 'platform')) throw new Error(`Missing Lesson 3 final-test solution for ${question.id}`)
+
+console.log('Content and RTL/LTR boundary checks passed (Lessons 1–3).')

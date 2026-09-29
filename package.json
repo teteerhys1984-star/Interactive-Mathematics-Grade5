@@ -11,6 +11,7 @@
     "coordinate-check": "tsx scripts/coordinate-check.ts",
     "content-check": "tsx scripts/content-check.ts",
     "line-graphs-check": "tsx scripts/line-graphs-check.ts",
+    "lesson-3-check": "tsx scripts/lesson-3-check.ts",
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx"
   },
   "dependencies": {
