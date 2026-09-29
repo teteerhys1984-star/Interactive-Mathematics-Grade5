@@ -12,6 +12,7 @@
     "content-check": "tsx scripts/content-check.ts",
     "line-graphs-check": "tsx scripts/line-graphs-check.ts",
     "lesson-3-check": "tsx scripts/lesson-3-check.ts",
+    "lesson-4-check": "tsx scripts/lesson-4-check.ts",
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx"
   },
   "dependencies": {
