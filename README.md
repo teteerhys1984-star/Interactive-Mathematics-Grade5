@@ -1,1 +1,40 @@
-# Interactive-Mathematics-Grade5
+# رياضياتي — Interactive Mathematics Grade 5
+
+منصة تأسيسية تفاعلية للرياضيات للصف الخامس، عربية أولاً وباتجاه RTL. هذه المرحلة تبني تجربة المنصة فقط؛ لا تحتوي على دروس أو أسماء وحدات من المنهج قبل توريد المادة الأصلية المعتمدة.
+
+## التقنية
+
+- React + TypeScript + Vite
+- CSS مخصص بتصميم responsive (من دون إطار UI ثقيل)
+- GitHub Actions وGitHub Pages للنشر الثابت
+- `MathExpression` يعزل الترميز الرياضي في سياق LTR مع `unicode-bidi: isolate`
+
+## التشغيل المحلي
+
+```bash
+npm install
+npm run dev
+```
+
+للتحقق من الأنواع وبناء الإنتاج:
+
+```bash
+npm run typecheck
+npm run build
+npm run preview
+```
+
+## GitHub Pages
+
+يستخدم Vite قاعدة النشر `/Interactive-Mathematics-Grade5/`. عند الدفع إلى `main` أو تشغيل workflow يدوياً، يقوم `.github/workflows/deploy.yml` بالتثبيت والتحقق والبناء ثم يرفع `dist` كـ Pages artifact وينشره عبر `actions/deploy-pages`.
+
+لا يعتمد المشروع على مسارات خادم أو قاعدة بيانات. الصفحة الحالية تستخدم روابط داخلية بسيطة، لذلك تبقى متوافقة مع الاستضافة الثابتة.
+
+## إضافة الدروس لاحقاً
+
+- عرّف الوحدات والدروس في `src/content/registry.ts` باستخدام `UnitMeta` و`LessonMeta`.
+- ضع المادة التعليمية الأصلية في ملفات محتوى مستقلة، ولا تستبدلها بملخصات.
+- أنشئ تجربة الدرس من مكونات مشتركة (الغلاف، المخطط، الخطوات، الأنشطة والتقييم) بدلاً من صفحة مخصصة ضخمة.
+- استخدم `MathExpression` لكل معادلة أو كسر أو تسلسل رقمي داخل واجهة عربية.
+
+البنية الحالية تترك مساحة واضحة لإضافة `CourseHome` و`LessonShell` و`LessonOutline` ومكونات الأنشطة ومجال المعلم المحمي لاحقاً، من دون اختلاق محتوى منهجي الآن.
