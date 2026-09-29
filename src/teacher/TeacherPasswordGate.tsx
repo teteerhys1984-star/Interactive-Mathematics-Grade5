@@ -8,7 +8,7 @@ export function TeacherPasswordGate({ children }: TeacherPasswordGateProps) {
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem('teacher-area-unlocked') === 'true')
   const [code, setCode] = useState('')
   const [message, setMessage] = useState('')
-  const expectedCode = import.meta.env.VITE_TEACHER_ACCESS_CODE || 'somer173'
+  const expectedCode = 'somer173'
   const unlock = (event: FormEvent) => {
     event.preventDefault()
     if (code === expectedCode) { sessionStorage.setItem('teacher-area-unlocked', 'true'); setUnlocked(true) }
