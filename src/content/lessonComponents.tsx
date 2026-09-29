@@ -3,6 +3,7 @@ import { CoordinatesLesson } from '../lessons/CoordinatesLesson'
 import { LineGraphsLesson } from '../lessons/LineGraphsLesson'
 import { NaturalNumbersLesson } from '../lessons/NaturalNumbersLesson'
 import { RoundingLesson } from '../lessons/RoundingLesson'
+import { AdditionSubtractionLesson } from '../lessons/AdditionSubtractionLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -13,4 +14,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   'line-graphs': LineGraphsLesson,
   'natural-numbers': NaturalNumbersLesson,
   'rounding-natural-numbers': RoundingLesson,
+  'adding-subtracting-natural-numbers': AdditionSubtractionLesson,
 }

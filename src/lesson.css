@@ -13,3 +13,116 @@
 .lesson-four .support-tip { border-right-color:var(--lesson-warm); background:#fff7ed; }
 .lesson-four .gentle-feedback.good,.lesson-four .test-result { border-color:var(--lesson-accent); background:#e6f7f4; }
 .lesson-four input:focus { outline:3px solid #f2c28e; border-color:var(--lesson-accent); }
+
+/* ===================== Lesson 5 — جمع الأعداد الطبيعيّة وطرحها ===================== */
+.lesson-five { --l5-accent:#e08a2b; --l5-deep:#23386b; --l5-add:#2f9e73; --l5-sub:#d9663f; --l5-soft:#fff6ea; --l5-soft2:#eef2fb; }
+.lesson-five .lesson-main h1,.lesson-five .lesson-main h2 { color:var(--l5-deep); }
+.lesson-five .source-card { border-top:4px solid var(--l5-accent); background:linear-gradient(135deg,#fffaf1,#fff); }
+.lesson-five .source-label { background:var(--l5-accent); color:#fff; }
+.lesson-five .interaction-card { border-color:#f0dcc0; background:linear-gradient(145deg,#fff8ee,#fff); }
+.lesson-five .definition-box { background:linear-gradient(135deg,#f7ede0,#fdf6ec); color:var(--l5-deep); border:1px solid #ecd8bd; border-radius:14px; text-align:right; padding:16px 20px; }
+.lesson-five .definition-box strong { color:var(--l5-accent); font-size:1.02rem; }
+.lesson-five .definition-box p { color:#4a5a74; }
+.lesson-five .step-banner { background:var(--l5-deep); color:#fff; border-radius:10px; padding:9px 15px; }
+.lesson-five .primary-button { background:var(--l5-deep); box-shadow:0 8px 18px #23386b26; }
+.lesson-five .reveal-button { border-color:#e6c79c; color:var(--l5-accent); background:#fffaf2; }
+.lesson-five .lesson-navigation button:not(:disabled) { border-color:var(--l5-accent); color:var(--l5-deep); }
+.lesson-five .support-tip { background:var(--l5-soft); color:#96601f; border-right:4px solid var(--l5-accent); }
+.lesson-five .gentle-feedback.good { color:var(--l5-add); }
+.lesson-five .lesson-hero-icon { background:var(--l5-soft); color:var(--l5-accent); }
+.lesson-five .lesson-goals { background:var(--l5-soft2); color:var(--l5-deep); }
+.lesson-five .lesson-goals strong { color:var(--l5-accent); }
+.lesson-five input:focus { outline:3px solid #f4cf9a; border-color:var(--l5-accent); }
+.lesson-five .choice-list button.selected-choice { border-color:var(--l5-accent); background:var(--l5-soft); color:var(--l5-deep); }
+.lesson-five .recap-step { background:linear-gradient(150deg,#23386b,#2f4a86); }
+.lesson-five .recap-step .math-expression { color:#ffd39a; }
+.lesson-five .recap-icon { color:#ffcf95; }
+.lesson-five .test-result { background:var(--l5-soft); color:#8a5a20; border:1px solid #ecd3ad; }
+
+/* — column operation motif — */
+.column-op { margin:14px 0; }
+.col-op-grid { width:max-content; max-width:100%; margin:8px auto; background:#fff; border:1px solid #ecd8bd; border-radius:14px; padding:14px 18px; box-shadow:0 10px 26px #23386b12; font-variant-numeric:tabular-nums; }
+.col-op-row { display:flex; align-items:center; justify-content:flex-end; }
+.col-op-sign { width:26px; text-align:center; font-size:1.3rem; font-weight:800; color:var(--l5-sub); }
+.col-cell { width:34px; height:42px; display:grid; place-items:center; font-size:1.4rem; font-weight:700; color:#20364f; font-family:'DM Mono','Cairo',monospace; border-radius:8px; transition:background .18s,color .18s; }
+.col-mark { height:22px; font-size:.85rem; font-weight:800; }
+.col-mark.is-carry { color:var(--l5-add); }
+.col-mark.is-borrow { color:var(--l5-sub); }
+.col-cell.is-current { background:#fdeccf; color:var(--l5-deep); box-shadow:inset 0 0 0 2px var(--l5-accent); }
+.col-op-rule { height:3px; background:var(--l5-deep); border-radius:3px; margin:4px 0 4px 0; }
+.col-result .col-cell { color:var(--l5-deep); font-weight:800; }
+.col-op-controls { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:6px; }
+.col-op-controls .reveal-button { margin:0; }
+.col-op-reset { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); background:#fff; color:#6c8093; border-radius:9px; padding:8px 12px; font-size:.78rem; }
+.col-op-answer { margin:0; }
+.col-op-check { display:flex; align-items:center; gap:7px; justify-content:center; color:#6f8298; font-size:.8rem; margin:6px 0 0; }
+
+/* — self check — */
+.self-check { background:#fff; border:1px solid #ecd8bd; border-radius:14px; padding:16px 18px; margin-bottom:14px; box-shadow:0 8px 20px #23386b0e; }
+.self-check-prompt { margin:0 0 6px; color:#3a4d64; font-weight:600; }
+.self-check .answer-row { margin:8px 0; justify-content:flex-start; }
+.self-check .answer-row input { width:150px; }
+
+/* — calc grids (warm-up & drill) — */
+.calc-panel { margin:6px 0 4px; }
+.calc-progress { display:inline-flex; align-items:center; gap:6px; font-size:.82rem; color:var(--l5-deep); background:var(--l5-soft2); border-radius:9px; padding:7px 12px; }
+.calc-progress strong { color:var(--l5-accent); }
+.calc-grid { display:grid; gap:12px; margin-top:14px; }
+.warmup-grid { grid-template-columns:repeat(3,1fr); }
+.drill-grid { grid-template-columns:repeat(3,1fr); }
+.calc-item { display:flex; flex-direction:column; gap:8px; background:#fff; border:1px solid #eadfce; border-radius:12px; padding:12px 14px; position:relative; }
+.calc-item.is-ok { border-color:#a9dcc7; background:#f3fbf7; }
+.calc-item.is-off { border-color:#f0c3ad; background:#fff6f1; }
+.calc-label { font-weight:800; color:var(--l5-accent); font-size:.9rem; }
+.calc-expr { font-size:1rem; color:#22384f; font-family:'DM Mono','Cairo',monospace; }
+.calc-input { width:100%; border:1px solid #cdb998; border-radius:8px; padding:8px 10px; direction:ltr; text-align:left; font:inherit; }
+.calc-tick { color:var(--l5-add); position:absolute; top:12px; left:12px; }
+.calc-x { color:var(--l5-sub); position:absolute; top:10px; left:12px; font-weight:800; }
+.drill-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.drill-tabs { display:inline-flex; gap:6px; background:#f4ecdf; border-radius:11px; padding:4px; }
+.drill-tabs button { border:0; background:transparent; color:#7a6a52; border-radius:8px; padding:7px 15px; font-weight:700; font-size:.82rem; }
+.drill-tabs button.is-active { background:#fff; color:var(--l5-deep); box-shadow:0 3px 8px #23386b18; }
+.drill-head { display:flex; align-items:center; justify-content:space-between; }
+.op-chip { font-size:.66rem; font-weight:800; padding:3px 9px; border-radius:20px; }
+.op-chip.add { background:#e5f6ee; color:var(--l5-add); }
+.op-chip.sub { background:#fdece3; color:var(--l5-sub); }
+.drill-item.op-add { border-top:3px solid #bfe6d5; }
+.drill-item.op-sub { border-top:3px solid #f4c8b3; }
+.drill-answer { display:flex; align-items:center; gap:8px; }
+.drill-reveal { align-self:flex-start; border:1px solid #e6c79c; background:#fffaf2; color:var(--l5-accent); border-radius:8px; padding:6px 11px; font-size:.75rem; font-weight:700; }
+
+/* — fill puzzle — */
+.fill-puzzle { margin-top:6px; }
+.fill-grid { padding:16px 20px; }
+.fill-box { width:34px; height:42px; border:2px dashed var(--l5-accent); border-radius:8px; text-align:center; font-size:1.3rem; font-weight:800; color:var(--l5-deep); background:#fffaf2; font-family:'DM Mono',monospace; padding:0; }
+.fill-box.is-ok { border-style:solid; border-color:var(--l5-add); background:#f1fbf6; }
+.fill-box.is-off { border-color:var(--l5-sub); background:#fff5f0; }
+.fill-fixed { color:#20364f; }
+
+/* — concept flow — */
+.concept-flow { display:flex; flex-direction:column; gap:2px; margin:6px 0 4px; }
+.concept-row { display:grid; grid-template-columns:130px 1fr; gap:12px; padding:11px 6px; border-bottom:1px dashed #ecdcc4; }
+.concept-row:last-child { border-bottom:0; }
+.concept-q { font-weight:800; color:var(--l5-accent); font-size:.9rem; }
+.concept-a { color:#3f536b; line-height:1.9; }
+.lesson-five .common-mistakes { display:flex; gap:9px; align-items:flex-start; background:#fdf0ea; color:#a5502f; border:1px solid #f4d7c8; border-radius:10px; padding:11px 14px; margin-top:14px; font-size:.82rem; line-height:1.8; }
+
+/* — vocabulary chips — */
+.vocab-chips { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+.vocab-chip { display:flex; flex-direction:column; gap:2px; border-radius:12px; padding:11px 16px; font-weight:800; color:#fff; min-width:120px; }
+.vocab-chip small { font-weight:600; font-size:.68rem; opacity:.92; }
+.vocab-chip.minuend { background:linear-gradient(135deg,#2f4a86,#23386b); }
+.vocab-chip.subtrahend { background:linear-gradient(135deg,#d9663f,#c1542f); }
+.vocab-chip.diff { background:linear-gradient(135deg,#2f9e73,#26805e); }
+
+/* — misc text — */
+.figure-note { font-size:.82rem; color:#8a6b3f; background:#fbf1e2; border-radius:9px; padding:9px 12px; }
+.result-line { font-weight:800; color:var(--l5-deep); background:var(--l5-soft2); border-radius:9px; padding:10px 14px; display:inline-block; }
+.mini-lead,.step-lead { color:var(--l5-deep); font-weight:700; margin:14px 0 4px; }
+.plan-note { display:flex; flex-direction:column; gap:4px; background:var(--l5-soft2); border-radius:10px; padding:11px 14px; margin:10px 0; font-size:.85rem; color:#3f536b; }
+
+@media(max-width:760px){
+  .warmup-grid,.drill-grid { grid-template-columns:1fr 1fr; }
+  .concept-row { grid-template-columns:1fr; gap:3px; }
+  .col-cell,.fill-box { width:29px; height:38px; font-size:1.2rem; }
+}

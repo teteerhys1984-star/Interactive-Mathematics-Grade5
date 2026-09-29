@@ -37,9 +37,10 @@ async function main() {
   // ---- Home: both lessons listed and available ----
   if (!screen.getByText('شبكة الإحداثيات')) fail('Lesson 1 title missing from Home')
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
+  if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 3) fail(`Expected 3 "ابدأ" lesson links on Home, found ${startLinks.length}`)
-  console.log('✅ Home lists both Lesson 1 and Lesson 2 as available')
+  if (startLinks.length !== 5) fail(`Expected 5 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  console.log('✅ Home lists Lessons 1–5 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -129,6 +130,25 @@ async function main() {
   if (!screen.getByText(/نتيجتك:/)) fail('Final test result did not render after submit')
   console.log('✅ Step 10 (الاختبار الختامي): new final test submits and shows a score')
 
+  // ---- Lesson 5: open, walk every step, exercise interactions ----
+  goTo('#lesson/adding-subtracting-natural-numbers')
+  if (!screen.getByRole('heading', { name: 'جمع الأعداد الطبيعيّة وطرحها' })) fail('Lesson 5 page did not open')
+  // Step 1 intro: textbook areas present, isolated LTR math for the millions figure.
+  if (!screen.getByText(/توجد في الكتاب خريطة توضيحية/)) fail('Lesson 5 intro figure note missing')
+  // Step 2 warm-up: a book activity input works.
+  fireEvent.click(screen.getByRole('button', { name: 'التالي' }))
+  const warmA = screen.getByLabelText('warmup-w-a')
+  fireEvent.change(warmA, { target: { value: '300' } })
+  if (!screen.getByText(/أجبت بشكل صحيح عن/)) fail('Lesson 5 warm-up grid missing progress')
+  // Click through the remaining steps to the final test.
+  let l5Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
+  let guard = 0
+  while (!l5Next.disabled && guard < 40) { fireEvent.click(l5Next); l5Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; guard++ }
+  if (!screen.getByText(/اختبار ختامي جديد/)) fail('Lesson 5 final test step did not render')
+  fireEvent.click(screen.getByText('عرض النتيجة'))
+  if (!screen.getByText(/نتيجتك:/)) fail('Lesson 5 final test did not produce a score')
+  console.log(`✅ Lesson 5 (جمع الأعداد الطبيعيّة وطرحها): all steps navigate and the new final test scores (${guard + 2} steps walked)`)
+
   // ---- Teacher Area: gate + both lessons + page metadata ----
   goTo('#teacher')
   if (!screen.getByText('دخول Teacher Area')) fail('Teacher password gate did not render')
@@ -147,6 +167,11 @@ async function main() {
   if (!screen.getAllByText(/المصدر: الكتاب — ص 9/).length) fail('Lesson 2 teacher guide missing page 9 source metadata')
   if (!screen.getAllByText('نشاط تفاعلي إضافي').length) fail('Lesson 2 teacher guide missing platform-activity labels')
   console.log('✅ Teacher Area: Lesson 2 guide shows real textbook page numbers (7/8/9) and platform labels')
+
+  fireEvent.click(screen.getByRole('button', { name: 'جمع الأعداد الطبيعيّة وطرحها' }))
+  if (!screen.getByText('دليل درس: جمع الأعداد الطبيعيّة وطرحها')) fail('Teacher tab did not switch to Lesson 5 guide')
+  for (const page of [19, 20, 21, 22]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 5 teacher guide missing page ${page} source metadata`)
+  console.log('✅ Teacher Area: Lesson 5 guide shows real textbook page numbers (19/20/21/22)')
 
   console.log('\nAll browser-interaction smoke checks passed.')
   process.exit(0)
