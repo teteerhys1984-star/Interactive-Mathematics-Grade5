@@ -1,4 +1,11 @@
 import type { UnitMeta } from '../types'
 
-/** Content is intentionally empty until authoritative curriculum material is supplied. */
-export const curriculumRegistry: UnitMeta[] = []
+export const curriculumRegistry: UnitMeta[] = [
+  {
+    id: 'unit-1',
+    title: 'الوحدة الأولى',
+    description: 'شبكة الإحداثيات',
+    accent: 'blue',
+    lessons: [{ id: 'coordinates', title: 'شبكة الإحداثيات', description: 'التعرّف إلى شبكة الإحداثيات وقراءة مواقع النقاط.', availability: 'available' }],
+  },
+]
