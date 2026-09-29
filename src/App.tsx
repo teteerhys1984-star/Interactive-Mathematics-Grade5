@@ -1,41 +1,60 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ChevronDown, CircleHelp, Compass, LockKeyhole, Menu, Moon, Sparkles, Target, X } from 'lucide-react'
 import { MathExpression } from './components/MathExpression'
 import { UnitCard } from './components/UnitCard'
 import { ComingSoon } from './components/ComingSoon'
 import { InstructorAttribution } from './components/InstructorAttribution'
 import { curriculumRegistry } from './content/registry'
-import { CoordinatesLesson } from './lessons/CoordinatesLesson'
+import { lessonComponents } from './content/lessonComponents'
 import { TeacherArea } from './teacher/TeacherArea'
+
+const LESSON_HASH = /^#lesson\/([\w-]+)$/
+const TEACHER_HASH = /^#teacher(?:\/([\w-]+))?$/
+
+function readRoute() {
+  const hash = window.location.hash
+  const lessonMatch = hash.match(LESSON_HASH)
+  const teacherMatch = hash.match(TEACHER_HASH)
+  return {
+    lessonId: lessonMatch && lessonComponents[lessonMatch[1]] ? lessonMatch[1] : null,
+    teacherOpen: Boolean(teacherMatch),
+    teacherLessonId: teacherMatch?.[1] ?? null,
+  }
+}
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [lessonOpen, setLessonOpen] = useState(() => window.location.hash === '#lesson/coordinates')
-  const [teacherOpen, setTeacherOpen] = useState(() => window.location.hash === '#teacher/coordinates')
+  const [route, setRoute] = useState(readRoute)
   useEffect(() => {
-    const onHashChange = () => { setLessonOpen(window.location.hash === '#lesson/coordinates'); setTeacherOpen(window.location.hash === '#teacher/coordinates') }
+    const onHashChange = () => setRoute(readRoute())
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+  const allLessons = useMemo(() => curriculumRegistry.flatMap(unit => unit.lessons), [])
   const unitCount = curriculumRegistry.length
-  const lessonCount = curriculumRegistry.reduce((total, unit) => total + unit.lessons.length, 0)
-  if (teacherOpen) return <div className="app-shell lesson-page teacher-page">
-    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#teacher/coordinates">منطقة المدرس</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
-    <main><TeacherArea /></main>
+  const lessonCount = allLessons.length
+  const activeLesson = route.lessonId ? allLessons.find(lesson => lesson.id === route.lessonId) : undefined
+  const ActiveLessonComponent = route.lessonId ? lessonComponents[route.lessonId] : undefined
+
+  if (route.teacherOpen) return <div className="app-shell lesson-page teacher-page">
+    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#teacher">منطقة المدرس</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
+    <main><TeacherArea initialLessonId={route.teacherLessonId} /></main>
     <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
   </div>
-  if (lessonOpen) return <div className="app-shell lesson-page">
-    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#lesson/coordinates">الدرس الأول</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button></div></header>
-    <main><CoordinatesLesson /></main>
+
+  if (activeLesson && ActiveLessonComponent) return <div className="app-shell lesson-page">
+    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href={`#lesson/${activeLesson.id}`}>{activeLesson.title}</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button></div></header>
+    <main><ActiveLessonComponent /></main>
     <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
   </div>
+
   return <div className="app-shell">
     <header className="topbar">
       <a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a>
       <nav className={menuOpen ? 'main-nav is-open' : 'main-nav'} aria-label="التنقل الرئيسي">
         <a className="active" href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#units" onClick={() => setMenuOpen(false)}>الوحدات</a><a href="#about" onClick={() => setMenuOpen(false)}>عن المنصة</a>
       </nav>
-      <InstructorAttribution className="header-attribution" /><a className="teacher-access-link" href="#teacher/coordinates"><LockKeyhole size={15} /> مساحة المدرس</a><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button><button className="menu-button" aria-label={menuOpen ? 'إغلاق القائمة' : 'فتح القائمة'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
+      <InstructorAttribution className="header-attribution" /><a className="teacher-access-link" href="#teacher"><LockKeyhole size={15} /> مساحة المدرس</a><div className="header-actions"><button className="round-button" aria-label="المساعدة"><CircleHelp size={19} /></button><button className="round-button" aria-label="تبديل المظهر"><Moon size={18} /></button><button className="menu-button" aria-label={menuOpen ? 'إغلاق القائمة' : 'فتح القائمة'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
     </header>
     <main id="top">
       <section className="hero container">
