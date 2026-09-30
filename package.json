@@ -15,6 +15,7 @@
     "lesson-4-check": "tsx scripts/lesson-4-check.ts",
     "lesson-5-check": "tsx scripts/lesson-5-check.ts",
     "lesson-6-check": "tsx scripts/lesson-6-check.ts",
+    "lesson-7-check": "tsx scripts/lesson-7-check.ts",
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx"
   },
   "dependencies": {
