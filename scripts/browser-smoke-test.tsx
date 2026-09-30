@@ -48,8 +48,8 @@ async function main() {
   if (!screen.getByRole('heading', { name: 'شبكة الإحداثيات' })) fail('Lesson 1 page did not open')
   const lessonBreadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
   if (!within(lessonBreadcrumbs).getByText('الوحدة الأولى') || !within(lessonBreadcrumbs).getByText('انطلاقة الدرس')) fail('Premium lesson breadcrumbs are incomplete')
-  const lessonProgress = screen.getByRole('progressbar', { name: 'تقدّمك في الدرس' })
-  if (lessonProgress.getAttribute('aria-valuenow') !== '1' || lessonProgress.getAttribute('aria-valuemax') !== '9') fail('Premium lesson progress indicator has incorrect values')
+  const lessonProgress = screen.getByRole('progressbar', { name: 'موقعك في الدرس' })
+  if (lessonProgress.getAttribute('aria-valuenow') !== '1' || lessonProgress.getAttribute('aria-valuemax') !== '9') fail('Premium lesson position indicator has incorrect values')
   const outlineTrigger = screen.getByRole('button', { name: /مسار الدرس.*انطلاقة الدرس/ })
   fireEvent.click(outlineTrigger)
   const outlineDialog = screen.getByRole('dialog', { name: 'خطوات التعلّم' })
@@ -257,6 +257,76 @@ async function main() {
   fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 7 final test did not produce a score')
   console.log(`✅ Lesson 7 (متوازي الأضلاع): ${expectedPhases.length + 1} sequential steps, outline + previous/next, lab, construction player, blanks, vertex activity and final test all pass`)
+
+  // ---- PR3 regression across Lessons 1–7: position vs completion + accessible outline dialog ----
+  // Two things are guarded here for every lesson:
+  //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
+  //   2. the mobile outline bottom sheet behaves like a real modal (focus in, trap, Escape, focus back).
+  const lessonRoutes: Array<[string, string]> = [
+    ['coordinates', 'شبكة الإحداثيات'],
+    ['line-graphs', 'التمثيلات البيانية بالخطوط'],
+    ['natural-numbers', 'الأعداد الطبيعية'],
+    ['rounding-natural-numbers', 'تقريب الأعداد الطبيعية'],
+    ['adding-subtracting-natural-numbers', 'جمع الأعداد الطبيعيّة وطرحها'],
+    ['angle-measurement', 'قياس الزوايا'],
+    ['parallelogram', 'متوازي الأضلاع'],
+  ]
+  const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
+  const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
+
+  for (const [lessonId, lessonTitle] of lessonRoutes) {
+    goTo(`#lesson/${lessonId}`)
+    if (!screen.getByRole('heading', { name: lessonTitle, level: 1 })) fail(`${lessonTitle}: lesson page did not open`)
+
+    // --- 1) a freshly opened lesson has a position but zero completed steps ---
+    const bar = screen.getByRole('progressbar', { name: 'موقعك في الدرس' })
+    const total = Number(bar.getAttribute('aria-valuemax'))
+    if (!Number.isFinite(total) || total < 2) fail(`${lessonTitle}: lesson position bar is missing its step count`)
+    if (bar.getAttribute('aria-valuenow') !== '1') fail(`${lessonTitle}: a freshly opened lesson must start at position 1`)
+    if (bar.getAttribute('aria-valuetext') !== `الخطوة 1 من ${total}`) fail(`${lessonTitle}: position bar must announce «الخطوة 1 من ${total}»`)
+    if (completedBadges('desktop') !== 0) fail(`${lessonTitle}: nothing may be «مكتملة» before the learner visits anything`)
+    if (!screen.getByText(/لم تُنهِ أي خطوة بعد/)) fail(`${lessonTitle}: the progress card must say no step is finished yet`)
+
+    // --- 2) the outline sheet is a real dialog: focus, trap, Escape, focus restore ---
+    const trigger = screen.getByRole('button', { name: /^مسار الدرس/ })
+    fireEvent.click(trigger)
+    const sheet = screen.getByRole('dialog', { name: 'خطوات التعلّم' })
+    if (sheet.getAttribute('aria-modal') !== 'true') fail(`${lessonTitle}: the outline sheet must stay aria-modal`)
+    const closeButton = within(sheet).getByRole('button', { name: 'إغلاق مخطط الدرس' })
+    if (document.activeElement !== closeButton) fail(`${lessonTitle}: opening the outline sheet must move focus to its close button`)
+    if (completedBadges('mobile') !== 0) fail(`${lessonTitle}: the sheet timeline must not pre-mark any step as «مكتملة»`)
+    const trapped = focusablesIn(sheet)
+    if (trapped.length < 2) fail(`${lessonTitle}: the outline sheet should expose focusable steps`)
+    fireEvent.keyDown(document.activeElement!, { key: 'Tab', shiftKey: true })
+    if (document.activeElement !== trapped[trapped.length - 1]) fail(`${lessonTitle}: Shift+Tab on the first item must wrap to the last item inside the sheet`)
+    fireEvent.keyDown(document.activeElement!, { key: 'Tab' })
+    if (document.activeElement !== trapped[0]) fail(`${lessonTitle}: Tab on the last item must wrap back to the first item inside the sheet`)
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    if (screen.queryByRole('dialog', { name: 'خطوات التعلّم' })) fail(`${lessonTitle}: Escape must close the outline sheet`)
+    if (document.activeElement !== trigger) fail(`${lessonTitle}: closing with Escape must return focus to the trigger`)
+
+    // --- 3) jumping to the last step moves the position without completing the skipped steps ---
+    fireEvent.click(trigger)
+    const reopened = screen.getByRole('dialog', { name: 'خطوات التعلّم' })
+    const stepButtons = Array.from(reopened.querySelectorAll('.lesson-outline-list.is-mobile button')) as HTMLElement[]
+    if (stepButtons.length !== total) fail(`${lessonTitle}: the sheet timeline should list all ${total} steps, found ${stepButtons.length}`)
+    fireEvent.click(stepButtons[total - 1])
+    if (screen.queryByRole('dialog', { name: 'خطوات التعلّم' })) fail(`${lessonTitle}: picking a step must close the sheet`)
+    if (document.activeElement !== trigger) fail(`${lessonTitle}: picking a step must return focus to the trigger`)
+    const jumped = screen.getByRole('progressbar', { name: 'موقعك في الدرس' })
+    if (jumped.getAttribute('aria-valuenow') !== String(total)) fail(`${lessonTitle}: the position must follow the jump to step ${total}`)
+    if (completedBadges('desktop') !== 1) fail(`${lessonTitle}: only the visited first step may be «مكتملة» after jumping ahead, found ${completedBadges('desktop')}`)
+    if (!screen.getByText(new RegExp(`أنهيت 1 من ${total} خطوة`))) fail(`${lessonTitle}: the progress card must report exactly one finished step after the jump`)
+    // the same honest state is mirrored inside the bottom sheet
+    fireEvent.click(trigger)
+    if (completedBadges('mobile') !== 1) fail(`${lessonTitle}: the sheet timeline must mirror the single completed step, found ${completedBadges('mobile')}`)
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+
+    // --- 4) stepping back one by one marks the steps that were really visited ---
+    fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
+    if (completedBadges('desktop') !== 2) fail(`${lessonTitle}: going back must keep the two visited steps marked as «مكتملة»`)
+  }
+  console.log(`✅ PR3 regression on Lessons 1–7: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
 
   // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')
