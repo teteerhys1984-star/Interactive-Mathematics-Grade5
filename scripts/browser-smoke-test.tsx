@@ -46,6 +46,17 @@ async function main() {
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
   if (!screen.getByRole('heading', { name: 'شبكة الإحداثيات' })) fail('Lesson 1 page did not open')
+  const lessonBreadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
+  if (!within(lessonBreadcrumbs).getByText('الوحدة الأولى') || !within(lessonBreadcrumbs).getByText('انطلاقة الدرس')) fail('Premium lesson breadcrumbs are incomplete')
+  const lessonProgress = screen.getByRole('progressbar', { name: 'تقدّمك في الدرس' })
+  if (lessonProgress.getAttribute('aria-valuenow') !== '1' || lessonProgress.getAttribute('aria-valuemax') !== '9') fail('Premium lesson progress indicator has incorrect values')
+  const outlineTrigger = screen.getByRole('button', { name: /مسار الدرس.*انطلاقة الدرس/ })
+  fireEvent.click(outlineTrigger)
+  const outlineDialog = screen.getByRole('dialog', { name: 'خطوات التعلّم' })
+  if (!within(outlineDialog).getByText('الخطوة 1')) fail('Mobile lesson outline does not include the step timeline')
+  fireEvent.click(within(outlineDialog).getByRole('button', { name: /انطلاقة الدرس/ }))
+  if (screen.queryByRole('dialog', { name: 'خطوات التعلّم' })) fail('Mobile lesson outline did not close after selecting a step')
+  console.log('✅ Premium lesson chrome: breadcrumbs, accessible progress, desktop timeline and mobile bottom sheet work')
   let nextBtn = screen.getByRole('button', { name: /التالي/ })
   for (let i = 0; i < 8; i++) { fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ }) }
   if (!screen.getByText('اختبار ختامي')) fail('Lesson 1 final test step did not render')
