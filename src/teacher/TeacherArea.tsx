@@ -6,6 +6,7 @@ import { lessonTwoTeacherEntries } from './lesson2'
 import { lessonThreeTeacherEntries } from './lesson3'
 import { lessonFourTeacherEntries } from './lesson4'
 import { lessonFiveTeacherEntries } from './lesson5'
+import { lessonSixTeacherEntries } from './lesson6'
 
 /** Shared registry: future lessons add one TeacherLessonData object, not a new page architecture. */
 const teacherLessons: TeacherLessonData[] = [
@@ -14,6 +15,7 @@ const teacherLessons: TeacherLessonData[] = [
   { lessonId: 'natural-numbers', lessonTitle: 'الأعداد الطبيعية', entries: lessonThreeTeacherEntries },
   { lessonId: 'rounding-natural-numbers', lessonTitle: 'تقريب الأعداد الطبيعية', entries: lessonFourTeacherEntries },
   { lessonId: 'adding-subtracting-natural-numbers', lessonTitle: 'جمع الأعداد الطبيعيّة وطرحها', entries: lessonFiveTeacherEntries },
+  { lessonId: 'angle-measurement', lessonTitle: 'قياس الزوايا', entries: lessonSixTeacherEntries },
 ]
 
 export function TeacherArea({ initialLessonId }: { initialLessonId?: string | null }) {
