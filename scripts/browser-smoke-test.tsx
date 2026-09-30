@@ -39,8 +39,8 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 5) fail(`Expected 5 "ابدأ" lesson links on Home, found ${startLinks.length}`)
-  console.log('✅ Home lists Lessons 1–5 as available')
+  if (startLinks.length !== 6) fail(`Expected 6 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  console.log('✅ Home lists Lessons 1–6 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -149,7 +149,31 @@ async function main() {
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 5 final test did not produce a score')
   console.log(`✅ Lesson 5 (جمع الأعداد الطبيعيّة وطرحها): all steps navigate and the new final test scores (${guard + 2} steps walked)`)
 
-  // ---- Teacher Area: gate + both lessons + page metadata ----
+  // ---- Lesson 6: angles, protractor interaction, all steps, and final test ----
+  goTo('#lesson/angle-measurement')
+  if (!screen.getByRole('heading', { name: 'قياس الزوايا' })) fail('Lesson 6 page did not open')
+  if (!screen.getByText(/بطليموس/)) fail('Lesson 6 textbook introduction missing')
+  fireEvent.click(screen.getByRole('button', { name: 'التالي' }))
+  if (!screen.getByText(/نصف المستقيم هو جزء من المستقيم/)) fail('Lesson 6 ray/angle concept missing')
+  fireEvent.click(screen.getByRole('button', { name: 'التالي' }))
+  fireEvent.click(screen.getByText('X داخل الزاوية'))
+  if (!screen.getByText(/X داخل الفتحة/)) fail('Lesson 6 inside-angle interaction missing')
+  fireEvent.click(screen.getByRole('button', { name: 'التالي' }))
+  if (!screen.getByText('حرّك الشعاع ثم اقرأ القياس')) fail('Interactive protractor missing')
+  fireEvent.click(screen.getByRole('button', { name: /تكبير الرسم/ }))
+  if (!screen.getByRole('button', { name: /تصغير/ })) fail('Lesson 6 protractor zoom toggle missing')
+  fireEvent.click(screen.getByRole('button', { name: 'التالي' }))
+  if (!screen.getAllByText(/35°/).length) fail('Lesson 6 35-degree worked example missing')
+  // Walk the remaining sequential steps to the final test.
+  let l6Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
+  let l6Guard = 0
+  while (!l6Next.disabled && l6Guard < 20) { fireEvent.click(l6Next); l6Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; l6Guard++ }
+  if (!screen.getByText(/اختبار جديد/)) fail('Lesson 6 final test step did not render')
+  fireEvent.click(screen.getByRole('button', { name: 'عرض النتيجة' }))
+  if (!screen.getByText(/نتيجتك:/)) fail('Lesson 6 final test did not produce a score')
+  console.log(`✅ Lesson 6 (قياس الزوايا): protractor interaction, zoom, sequential navigation, and final test passed (${l6Guard + 5} steps walked)`)
+
+  // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')
   if (!screen.getByText('دخول Teacher Area')) fail('Teacher password gate did not render')
   fireEvent.change(screen.getByLabelText('كلمة مرور المدرس'), { target: { value: 'wrong' } })
@@ -172,6 +196,12 @@ async function main() {
   if (!screen.getByText('دليل درس: جمع الأعداد الطبيعيّة وطرحها')) fail('Teacher tab did not switch to Lesson 5 guide')
   for (const page of [19, 20, 21, 22]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 5 teacher guide missing page ${page} source metadata`)
   console.log('✅ Teacher Area: Lesson 5 guide shows real textbook page numbers (19/20/21/22)')
+
+  fireEvent.click(screen.getByRole('button', { name: 'قياس الزوايا' }))
+  if (!screen.getByText('دليل درس: قياس الزوايا')) fail('Teacher tab did not switch to Lesson 6 guide')
+  for (const page of [23, 24, 25, 26, 27, 28, 29, 30]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 6 teacher guide missing page ${page} source metadata`)
+  if (screen.getAllByText('نشاط تفاعلي إضافي').length < 8) fail('Lesson 6 teacher guide missing final platform labels')
+  console.log('✅ Teacher Area: Lesson 6 guide shows real textbook page numbers (23–30) and detailed platform solutions')
 
   console.log('\nAll browser-interaction smoke checks passed.')
   process.exit(0)
