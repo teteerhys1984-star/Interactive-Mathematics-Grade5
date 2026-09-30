@@ -18,6 +18,10 @@ import { dirname, join } from 'node:path'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const styles = readFileSync(join(root, 'src/styles.css'), 'utf8')
 const html = readFileSync(join(root, 'index.html'), 'utf8')
+const lessonCss = readFileSync(join(root, 'src/lesson.css'), 'utf8')
+const experienceCss = readFileSync(join(root, 'src/lesson-experience.css'), 'utf8')
+const lessonShell = readFileSync(join(root, 'src/components/lesson/LessonShell.tsx'), 'utf8')
+const lessonOutline = readFileSync(join(root, 'src/components/lesson/LessonOutline.tsx'), 'utf8')
 
 function fail(message: string): never {
   console.error(`❌ ${message}`)
@@ -116,4 +120,57 @@ for (const rule of legacyMustContain) {
   if (!legacy.includes(rule)) fail(`legacy lesson-chrome rule was modified or removed: ${rule.slice(0, 60)}…`)
 }
 
-console.log('Design-system checks passed: 36 tokens present · legacy tokens frozen · 19 AA contrast pairs · 13px text floor · fonts preconnected · lesson chrome untouched.')
+// ---- 8) mobile lesson header (legacy nav in lesson.css) --------------------
+// The lesson pages override the global drawer with a static inline nav. It used to render at
+// .66rem (~10.5px) with 5px padding, which is neither readable nor tappable.
+const mobileBlockMatch = lessonCss.match(/@media\(max-width:760px\)\{(?:[^{}]|\{[^{}]*\})*\}/g)
+const lessonMobileBlock = mobileBlockMatch?.find(block => block.includes('.lesson-page .main-nav'))
+if (!lessonMobileBlock) fail('lesson.css is missing the max-width:760px block that styles the lesson mobile header')
+for (const match of lessonMobileBlock.matchAll(/font-size:\s*([\d.]+)(rem|px)/g)) {
+  const px = match[2] === 'px' ? parseFloat(match[1]) : parseFloat(match[1]) * 16
+  if (px < 13) fail(`mobile lesson header font-size ${match[0]} is ${px.toFixed(2)}px — below the 13px readability floor`)
+}
+const mobileNavLink = lessonMobileBlock.match(/\.lesson-page \.main-nav a\{([^}]*)\}/)
+if (!mobileNavLink) fail('lesson.css no longer styles .lesson-page .main-nav a on mobile')
+const navLinkRule = mobileNavLink[1]
+const navMinHeight = navLinkRule.match(/min-height:\s*(\d+)px/)
+if (!navMinHeight || parseInt(navMinHeight[1], 10) < 44) fail('mobile lesson header links must declare min-height >= 44px (touch target)')
+if (!navLinkRule.includes('text-overflow:ellipsis') || !navLinkRule.includes('overflow:hidden')) fail('mobile lesson header links must clamp long lesson titles (overflow:hidden + text-overflow:ellipsis)')
+if (!lessonMobileBlock.includes('.lesson-page .main-nav a.active')) fail('mobile lesson header must keep a width rule for the active (lesson title) link')
+if (!lessonMobileBlock.includes('flex-direction:row')) fail('mobile lesson header must keep the inline Previous/Home row layout')
+
+// ---- 9) mobile lesson chrome touch targets ---------------------------------
+const touchTargets: Array<[string, RegExp]> = [
+  ['.lesson-outline-close', /\.lesson-outline-close \{([^}]*)\}/],
+  ['.lesson-outline-trigger', /\.lesson-outline-trigger \{([^}]*)\}/],
+  ['.lesson-outline-list.is-mobile button', /\.lesson-outline-list\.is-mobile button \{([^}]*)\}/],
+  ['.lesson-shell .lesson-nav-button', /\.lesson-shell \.lesson-nav-button \{([^}]*)\}/],
+]
+for (const [name, pattern] of touchTargets) {
+  const rule = experienceCss.match(pattern)
+  if (!rule) fail(`lesson-experience.css is missing the ${name} rule`)
+  const height = rule[1].match(/min-height:\s*(\d+)px/) ?? rule[1].match(/height:\s*(\d+)px/)
+  if (!height || parseInt(height[1], 10) < 44) fail(`${name} must be at least 44px tall for touch (found ${height?.[1] ?? 'none'})`)
+}
+
+// ---- 10) lesson outline dialog accessibility --------------------------------
+const dialogRequirements: Array<[string, string]> = [
+  ['role="dialog"', 'the mobile outline sheet must stay a role="dialog"'],
+  ['aria-modal="true"', 'the mobile outline sheet must stay aria-modal="true"'],
+  ["event.key === 'Escape'", 'the outline sheet must close on Escape'],
+  ["event.key !== 'Tab'", 'the outline sheet must trap Tab / Shift+Tab'],
+  ['event.shiftKey', 'the outline focus trap must handle Shift+Tab'],
+  ['closeRef.current?.focus()', 'opening the outline sheet must move focus to the close button'],
+  ['triggerRef.current?.focus()', 'closing the outline sheet must return focus to the trigger'],
+]
+for (const [needle, message] of dialogRequirements) {
+  if (!lessonOutline.includes(needle)) fail(`LessonOutline: ${message}`)
+}
+
+// ---- 11) position and completion stay separate ------------------------------
+if (!lessonShell.includes('visitedSteps')) fail('LessonShell must track visited steps instead of inferring completion from the current position')
+if (!lessonShell.includes('aria-label="موقعك في الدرس"')) fail('the lesson progress bar must be labelled as the learner position, not as completion')
+if (!lessonOutline.includes('visitedSteps?.has(index)')) fail('LessonOutline must derive «مكتملة» from visited steps, not from index < activeStep')
+if (/index\s*<\s*activeStep/.test(lessonOutline)) fail('LessonOutline still marks every earlier step complete (index < activeStep)')
+
+console.log('Design-system checks passed: 36 tokens present · legacy tokens frozen · 19 AA contrast pairs · 13px text floor · fonts preconnected · lesson chrome untouched · mobile lesson header readable (>=13px) and tappable (>=44px) · outline dialog focus-trapped · position separated from completion.')
