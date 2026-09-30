@@ -39,8 +39,9 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 6) fail(`Expected 6 "ابدأ" lesson links on Home, found ${startLinks.length}`)
-  console.log('✅ Home lists Lessons 1–6 as available')
+  if (startLinks.length !== 7) fail(`Expected 7 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
+  console.log('✅ Home lists Lessons 1–7 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -173,6 +174,79 @@ async function main() {
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 6 final test did not produce a score')
   console.log(`✅ Lesson 6 (قياس الزوايا): protractor interaction, zoom, sequential navigation, and final test passed (${l6Guard + 5} steps walked)`)
 
+
+  // ---- Lesson 7: parallelograms — every step, figures, zoom, activities, final test ----
+  goTo('#lesson/parallelogram')
+  if (!screen.getByRole('heading', { name: 'متوازي الأضلاع' })) fail('Lesson 7 page did not open')
+  if (!screen.getAllByText(/نرى في حياتنا اليوميّة متوازيات الأضلاع/).length) fail('Lesson 7 textbook introduction (ص 31) missing')
+  // Step 1: the five انطلاقة نشطة figures are rebuilt as real SVG, and the sorter reacts.
+  const l7Figures = document.querySelectorAll('svg.l7-geo')
+  if (l7Figures.length < 5) fail(`Lesson 7 step 1 should rebuild the five textbook figures, found ${l7Figures.length}`)
+  fireEvent.click(screen.getAllByRole('button', { name: /تكبير الرسم/ })[0])
+  if (!screen.getAllByRole('button', { name: /تصغير الرسم/ }).length) fail('Lesson 7 figure zoom toggle does not work')
+  // Every textbook task exposes a step-by-step explanation in the Student Area.
+  const revealButtons = screen.getAllByRole('button', { name: /اكشف الحل خطوة بخطوة/ })
+  if (revealButtons.length < 8) fail(`Lesson 7 step 1 should expose a reveal per textbook item, found ${revealButtons.length}`)
+  fireEvent.click(revealButtons[2])
+  if (!screen.getAllByText(/الإجابة:/).length) fail('Revealing a Lesson 7 textbook task did not show the worked answer')
+  const sorter = screen.getAllByRole('button', { name: 'ليس متوازي أضلاع' })
+  fireEvent.click(sorter[1])
+  if (!screen.getAllByText(/لا يوجد فيه أي ضلعين متوازيين/).length) fail('Lesson 7 shape sorter feedback missing')
+  console.log('✅ Lesson 7 step 1 (انطلاقة الدرس): five rebuilt figures, zoom, per-item explanations and the sorter all work')
+
+  // Walk every sequential step, checking the key content of each phase on the way.
+  const l7Next = () => screen.getByRole('button', { name: /التالي/ }) as HTMLButtonElement
+  const expectedPhases: Array<[string, RegExp]> = [
+    ['ما متوازي الأضلاع؟', /هو شكل رباعي فيه كلّ ضلعين متقابلين متوازيان/],
+    ['قطر متوازي الأضلاع', /هو قطعة مستقيمة تصل بين رأسين غير متتاليين/],
+    ['تحقّق: تمييز الأشكال', /علّل لماذا الشكل \(1\) ليس متوازي الأضلاع|أي العبارات خاطئة/],
+    ['خاصة الأضلاع', /كل ضلعين متقابلين في متوازي الأضلاع متساويا الطول/],
+    ['خاصة الزوايا', /كل زاويتين متقابلتين في متوازي الأضلاع متساويتا القياس/],
+    ['تحقّق: تطبيق الخاصتين', /اكتب قياس كل من الزاويتين/],
+    ['رسم متوازي الأضلاع', /شاهد الرسم يتكوّن خطوة خطوة/],
+    ['تحقّق: ارسم ABCD', /ماذا نسمّي/],
+    ['تدرّب ① و②', /املأ فراغات تدرّب/],
+    ['تدرّب ③', /أين نضع الرأس D/],
+    ['تدرّب ④', /ارسم متوازي الأضلاع/],
+    ['تدرّب ⑤', /متوازيا الأضلاع فيهما/],
+    ['الخلاصة', /خلاصة الدرس السابع/],
+    ['الاختبار النهائي', /اختبار ختامي جديد من إعداد المنصة/],
+  ]
+  for (const [phase, pattern] of expectedPhases) {
+    fireEvent.click(l7Next())
+    if (!screen.getAllByText(pattern).length) fail(`Lesson 7 step "${phase}" did not render its expected content`)
+    if (phase === 'خاصة الزوايا') {
+      const slider = document.getElementById('lab-angle')!
+      fireEvent.change(slider, { target: { value: '120' } })
+      if (!screen.getAllByText(/120/).length) fail('Lesson 7 properties lab slider did not update the readout')
+    }
+    if (phase === 'رسم متوازي الأضلاع') {
+      fireEvent.click(screen.getByRole('button', { name: 'الخطوة 5' }))
+      if (!screen.getAllByText(/نصل بين النقطتين W و X/).length) fail('Lesson 7 construction player step 5 missing')
+    }
+    if (phase === 'تدرّب ① و②') {
+      fireEvent.change(screen.getByLabelText('blank-a'), { target: { value: 'XY' } })
+      fireEvent.click(screen.getByRole('button', { name: /تحقّق من الفراغات/ }))
+      if (!screen.getAllByText(/✔ صحيح/).length) fail('Lesson 7 fill-in-the-blanks validation failed')
+    }
+    if (phase === 'تدرّب ③') {
+      fireEvent.click(screen.getByRole('button', { name: 'الموضع 1' }))
+      if (!screen.getAllByText(/ممتاز: هنا يكون/).length) fail('Lesson 7 fourth-vertex activity feedback missing')
+    }
+  }
+  if (!l7Next().disabled) fail('Lesson 7 did not end on the final step')
+  // Sequential navigation backwards + outline jump.
+  fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
+  if (!screen.getAllByText(/خلاصة الدرس السابع/).length) fail('Lesson 7 "السابق" did not go back one step')
+  fireEvent.click(screen.getByRole('button', { name: /انطلاقة الدرس/ }))
+  if (!screen.getAllByText(/نرى في حياتنا اليوميّة/).length) fail('Lesson 7 outline jump did not work')
+  if (!screen.getByText('الخطوة 1 من 15')) fail('Lesson 7 progress indicator missing or wrong')
+  // Final test scores.
+  for (const [phase] of expectedPhases) { void phase; fireEvent.click(l7Next()) }
+  fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
+  if (!screen.getByText(/نتيجتك:/)) fail('Lesson 7 final test did not produce a score')
+  console.log(`✅ Lesson 7 (متوازي الأضلاع): ${expectedPhases.length + 1} sequential steps, outline + previous/next, lab, construction player, blanks, vertex activity and final test all pass`)
+
   // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')
   if (!screen.getByText('دخول Teacher Area')) fail('Teacher password gate did not render')
@@ -202,6 +276,12 @@ async function main() {
   for (const page of [23, 24, 25, 26, 27, 28, 29, 30]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 6 teacher guide missing page ${page} source metadata`)
   if (screen.getAllByText('نشاط تفاعلي إضافي').length < 8) fail('Lesson 6 teacher guide missing final platform labels')
   console.log('✅ Teacher Area: Lesson 6 guide shows real textbook page numbers (23–30) and detailed platform solutions')
+
+  fireEvent.click(screen.getByRole('button', { name: 'متوازي الأضلاع' }))
+  if (!screen.getByText('دليل درس: متوازي الأضلاع')) fail('Teacher tab did not switch to Lesson 7 guide')
+  for (const page of [31, 32, 33, 34, 35]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 7 teacher guide missing page ${page} source metadata`)
+  if (screen.getAllByText('نشاط تفاعلي إضافي').length < 10) fail('Lesson 7 teacher guide missing the ten new final-test solutions')
+  console.log('✅ Teacher Area: Lesson 7 guide shows real textbook page numbers (31–35) and ten platform final-test solutions')
 
   console.log('\nAll browser-interaction smoke checks passed.')
   process.exit(0)

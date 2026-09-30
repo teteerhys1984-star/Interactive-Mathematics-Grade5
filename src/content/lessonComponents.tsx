@@ -5,6 +5,7 @@ import { NaturalNumbersLesson } from '../lessons/NaturalNumbersLesson'
 import { RoundingLesson } from '../lessons/RoundingLesson'
 import { AdditionSubtractionLesson } from '../lessons/AdditionSubtractionLesson'
 import { AnglesLesson } from '../lessons/AnglesLesson'
+import { ParallelogramLesson } from '../lessons/ParallelogramLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -17,4 +18,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   'rounding-natural-numbers': RoundingLesson,
   'adding-subtracting-natural-numbers': AdditionSubtractionLesson,
   'angle-measurement': AnglesLesson,
+  parallelogram: ParallelogramLesson,
 }

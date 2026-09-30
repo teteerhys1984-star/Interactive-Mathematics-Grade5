@@ -12,7 +12,8 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'natural-numbers', title: 'الأعداد الطبيعية', description: 'قراءة الأعداد الطبيعية وكتابتها وتحليلها إلى قيم منازل.', availability: 'available' },
       { id: 'rounding-natural-numbers', title: 'تقريب الأعداد الطبيعية', description: 'تعلّم تقريب الأعداد الطبيعية إلى أقرب مئة وألف ومليون.', availability: 'available' },
       { id: 'adding-subtracting-natural-numbers', title: 'جمع الأعداد الطبيعيّة وطرحها', description: 'الجمع والطرح ضمن الملايين بالأعمدة، مع الحمل والاستلاف والتطبيقات الواقعية.', availability: 'available' },
-      { id: 'angle-measurement', title: 'قياس الزوايا', description: 'تسمية الزوايا وقياسها بالمنقلة ورسمها وتصنيفها في مواقف تفاعلية.', availability: 'available' }
+      { id: 'angle-measurement', title: 'قياس الزوايا', description: 'تسمية الزوايا وقياسها بالمنقلة ورسمها وتصنيفها في مواقف تفاعلية.', availability: 'available' },
+      { id: 'parallelogram', title: 'متوازي الأضلاع', description: 'تعريف متوازي الأضلاع وقطراه، خاصتا الأضلاع والزوايا، ورسمه بالمسطرة والمنقلة.', availability: 'available' }
     ],
   },
 ]
