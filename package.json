@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
     "content-check": "tsx scripts/content-check.ts",
+    "design-check": "tsx scripts/design-check.ts",
     "line-graphs-check": "tsx scripts/line-graphs-check.ts",
     "lesson-3-check": "tsx scripts/lesson-3-check.ts",
     "lesson-4-check": "tsx scripts/lesson-4-check.ts",
