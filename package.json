@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run test-area-check && tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
@@ -17,7 +17,8 @@
     "lesson-5-check": "tsx scripts/lesson-5-check.ts",
     "lesson-6-check": "tsx scripts/lesson-6-check.ts",
     "lesson-7-check": "tsx scripts/lesson-7-check.ts",
-    "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx"
+    "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx",
+    "test-area-check": "tsx scripts/test-area-check.ts && tsx scripts/test-area-ui-check.tsx"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

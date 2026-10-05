@@ -6,6 +6,7 @@
  * `npx tsx scripts/browser-smoke-test.tsx`. jsdom/@testing-library are dev-only, not committed.
  */
 import { JSDOM } from 'jsdom'
+import { createServer } from 'vite'
 
 function fail(message: string): never {
   console.error(`❌ ${message}`)
@@ -27,12 +28,25 @@ async function main() {
   const React = await import('react')
   const { act } = React
   const { render, screen, fireEvent, within } = await import('@testing-library/react')
-  const { default: App } = await import('../src/App')
+  const vite = await createServer({ configFile: 'vite.config.ts', server: { middlewareMode: true }, appType: 'custom' })
+  const { default: App } = await vite.ssrLoadModule('/src/App.tsx')
 
   const goTo = (hash: string) => { act(() => { window.location.hash = hash; window.dispatchEvent(new window.Event('hashchange')) }) }
 
   render(<App />)
   console.log('✅ App mounted at Home (#top)')
+
+  // ---- Course Home navigation integrates the registry-backed Test Area without replacing lessons ----
+  const testAreaNavLink = screen.getByRole('link', { name: 'الاختبارات' })
+  if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
+  goTo('#tests')
+  if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
+  if (!screen.getByText('7 اختبارات متاحة')) fail('Test Area did not show the seven eligible lesson tests')
+  if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
+  if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
+  goTo('#top')
+  if (!screen.getByText('شبكة الإحداثيات')) fail('Returning from Test Area did not restore Course Home')
+  console.log('✅ Course Home Test Area entry opens the registry-backed catalog and returns to the normal lesson home')
 
   // ---- Home: both lessons listed and available ----
   if (!screen.getByText('شبكة الإحداثيات')) fail('Lesson 1 title missing from Home')
@@ -141,6 +155,36 @@ async function main() {
   fireEvent.click(submit)
   if (!screen.getByText(/نتيجتك:/)) fail('Final test result did not render after submit')
   console.log('✅ Step 10 (الاختبار الختامي): new final test submits and shows a score')
+
+  // ---- Lesson 3: legacy final test still renders its questions and scores a correct response ----
+  goTo('#lesson/natural-numbers')
+  if (!screen.getByRole('heading', { name: 'الأعداد الطبيعية' })) fail('Lesson 3 route did not open')
+  let l3Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
+  let l3Guard = 0
+  while (!l3Next.disabled && l3Guard < 30) { fireEvent.click(l3Next); l3Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; l3Guard++ }
+  if (!screen.getByText(/اختبار ختامي جديد/)) fail('Lesson 3 existing final test did not render')
+  if (document.querySelectorAll('.final-test .test-question').length !== 7) fail('Lesson 3 existing final-test question count changed')
+  const l3CorrectInput = screen.getByText(/ما قيمة الرقم 7 في العدد 5,728,041/).closest('label')?.querySelector('input')
+  if (!l3CorrectInput) fail('Lesson 3 final-test numeric response is missing')
+  fireEvent.change(l3CorrectInput, { target: { value: '700000' } })
+  fireEvent.click(screen.getByText('عرض النتيجة'))
+  if (!screen.getByText(/نتيجتك: 1 \/ 7/)) fail('Lesson 3 existing final-test scoring did not preserve a correct answer')
+  console.log('✅ Lesson 3 existing final test renders seven questions and scores a correct answer')
+
+  // ---- Lesson 4: legacy final test still renders its questions and scores a correct response ----
+  goTo('#lesson/rounding-natural-numbers')
+  if (!screen.getByRole('heading', { name: 'تقريب الأعداد الطبيعية', level: 1 })) fail('Lesson 4 route did not open')
+  let l4Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
+  let l4Guard = 0
+  while (!l4Next.disabled && l4Guard < 20) { fireEvent.click(l4Next); l4Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; l4Guard++ }
+  if (!screen.getByText(/اختبار شامل جديد/)) fail('Lesson 4 existing final test did not render')
+  if (document.querySelectorAll('.final-test .test-question').length !== 5) fail('Lesson 4 existing final-test question count changed')
+  const l4CorrectInput = screen.getByText(/قرّب 4,682,137 إلى أقرب مليون/).closest('label')?.querySelector('input')
+  if (!l4CorrectInput) fail('Lesson 4 final-test numeric response is missing')
+  fireEvent.change(l4CorrectInput, { target: { value: '5,000,000' } })
+  fireEvent.click(screen.getByText('عرض النتيجة'))
+  if (!screen.getByText(/نتيجتك: 1 \/ 5/)) fail('Lesson 4 existing final-test scoring did not preserve a correct answer')
+  console.log('✅ Lesson 4 existing final test renders five questions and scores a correct answer')
 
   // ---- Lesson 5: open, walk every step, exercise interactions ----
   goTo('#lesson/adding-subtracting-natural-numbers')
@@ -364,7 +408,8 @@ async function main() {
   if (screen.getAllByText('نشاط تفاعلي إضافي').length < 10) fail('Lesson 7 teacher guide missing the ten new final-test solutions')
   console.log('✅ Teacher Area: Lesson 7 guide shows real textbook page numbers (31–35) and ten platform final-test solutions')
 
-  console.log('\nAll browser-interaction smoke checks passed.')
+  console.log('\nAll jsdom interaction smoke checks passed.')
+  await vite.close()
   process.exit(0)
 }
 
