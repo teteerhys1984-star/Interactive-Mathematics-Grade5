@@ -41,7 +41,8 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('7 اختبارات متاحة')) fail('Test Area did not show the seven eligible lesson tests')
+  if (!screen.getByText('8 اختبارات متاحة')) fail('Test Area did not show the eight eligible lesson tests')
+  if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
   goTo('#top')
@@ -53,9 +54,10 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 7) fail(`Expected 7 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 8) fail(`Expected 8 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
-  console.log('✅ Home lists Lessons 1–7 as available')
+  if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
+  console.log('✅ Home lists Lessons 1–8 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -302,7 +304,72 @@ async function main() {
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 7 final test did not produce a score')
   console.log(`✅ Lesson 7 (متوازي الأضلاع): ${expectedPhases.length + 1} sequential steps, outline + previous/next, lab, construction player, blanks, vertex activity and final test all pass`)
 
-  // ---- PR3 regression across Lessons 1–7: position vs completion + accessible outline dialog ----
+  // ---- Lesson 8: the rhombus — every step, figures, activities, final test ----
+  goTo('#lesson/rhombus')
+  if (!screen.getByRole('heading', { name: 'المعيّن' })) fail('Lesson 8 page did not open')
+  if (!screen.queryAllByText(/تعريف المعيّن/).length) fail('Lesson 8 launch step (ص 36) did not render the «سنتعلّم» goals card')
+  if (!screen.queryAllByText(/عيون الشبكة|شبكة معدنية/).length) fail('Lesson 8 launch step did not render the textbook photo reconstruction')
+  // Lesson 8 activities have their own «التالي/التالية» controls, so the shell's next button is
+  // selected by its stable class instead of by an ambiguous accessible name.
+  const l8Next = () => document.querySelector('.lesson-navigation .lesson-nav-button.is-next') as HTMLButtonElement
+  const l8Phases: Array<[string, RegExp]> = [
+    ['انطلاقة نشطة', /أيّ الأشكال السابقة تمثّل متوازي الأضلاع؟/],
+    ['ما المعيّن؟', /تساوى طولا ضلعين متجاورين/],
+    ['تحقّق: معيّن أم لا؟', /علّل لماذا كلّ شكل من الأشكال الآتية يمثّل معيّناً/],
+    ['خواصّ المعيّن', /أضلاعه الأربعة متساوية في الطول/],
+    ['تحقّق: تطبيق الخواصّ', /اكتب طول كلٍّ من/],
+    ['رسم المعيّن', /نستعمل المنقلة لإنشاء زاوية/],
+    ['تحقّق: ارسم XYZW', /ارسم معيّناً طول ضلعه/],
+    ['تدرّب ①', /اكتب لكلّ شكل هندسي جميع الأسماء التي تناسبه/],
+    ['تدرّب ②', /عيّن الرأس الرابع/],
+    ['تدرّب ③', /احسب طول كلٍّ من/],
+    ['أخطاء وتحقّق', /صحيحة أم خاطئة؟/],
+    ['الخلاصة', /خلاصة الدرس الثامن/],
+    ['الاختبار النهائي', /اختبار ختامي جديد من إعداد المنصّة/],
+  ]
+  for (const [phase, pattern] of l8Phases) {
+    fireEvent.click(l8Next())
+    if (!screen.getAllByText(pattern).length) fail(`Lesson 8 step "${phase}" did not render its expected content`)
+    if (phase === 'ما المعيّن؟') {
+      const sliders = document.querySelectorAll('.l8-lab-controls input[type="range"]')
+      if (!sliders.length) fail('Lesson 8 rhombus lab sliders are missing')
+      fireEvent.change(sliders[0] as Element, { target: { value: '3' } })
+      if (!screen.getAllByText(/الشكل معيّن/).length) fail('Lesson 8 rhombus lab verdict did not update to «معيّن»')
+    }
+    if (phase === 'تحقّق: تطبيق الخواصّ') {
+      const blanks = document.querySelectorAll('.l8-blanks input')
+      if (blanks.length !== 5) fail(`Lesson 8 fill-in activity should expose five blanks, found ${blanks.length}`)
+      fireEvent.change(blanks[0] as Element, { target: { value: '5' } })
+      // scoped to the activity: lesson outline steps are also buttons whose names start with «تحقّق»
+      const blanksPanel = (blanks[0] as HTMLElement).closest('.l8-panel') as HTMLElement
+      fireEvent.click(within(blanksPanel).getByRole('button', { name: /تحقّق/ }))
+      if (!within(blanksPanel).queryAllByText(/صحيح:/).length) fail('Lesson 8 fill-in validation did not report a score')
+    }
+    if (phase === 'رسم المعيّن') {
+      fireEvent.click(screen.getByRole('button', { name: '5' }))
+      if (!screen.getAllByText(/نغلق الشكل ونتحقّق أنّ/).length) fail('Lesson 8 construction player step 5 missing')
+      if (!screen.getAllByText(/نصل بين النقطتين/).length) fail('Lesson 8 did not render the printed step 5 wording')
+    }
+    if (phase === 'انطلاقة نشطة') {
+      const startFigures = document.querySelectorAll('.lesson-content svg.l7-geo')
+      if (startFigures.length < 4) fail(`Lesson 8 «انطلاقة نشطة» must rebuild the four textbook figures, found ${startFigures.length}`)
+      if (!screen.getAllByRole('button', { name: /تكبير الرسم|تصغير الرسم/ }).length) fail('Lesson 8 figures expose no zoom control')
+    }
+    if (phase === 'تدرّب ①') {
+      const namingFigures = document.querySelectorAll('.lesson-content svg.l7-geo')
+      if (namingFigures.length < 6) fail(`Lesson 8 «تدرّب ①» must rebuild the six textbook shapes, found ${namingFigures.length}`)
+    }
+    if (phase === 'تدرّب ②') {
+      fireEvent.click(screen.getByRole('button', { name: 'الاحتمال 1' }))
+      if (!screen.getAllByText(/اختيار صحيح/).length) fail('Lesson 8 fourth-vertex activity feedback missing')
+    }
+  }
+  if (!l8Next().disabled) fail('Lesson 8 did not end on the final step')
+  fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
+  if (!screen.getByText(/نتيجتك:/)) fail('Lesson 8 final test did not produce a score')
+  console.log(`✅ Lesson 8 (المعيّن): ${l8Phases.length + 1} sequential steps, rhombus lab, detector, construction player, blanks, vertex activity and final test all pass`)
+
+  // ---- PR3 regression across Lessons 1–8: position vs completion + accessible outline dialog ----
   // Two things are guarded here for every lesson:
   //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
   //   2. the mobile outline bottom sheet behaves like a real modal (focus in, trap, Escape, focus back).
@@ -314,6 +381,7 @@ async function main() {
     ['adding-subtracting-natural-numbers', 'جمع الأعداد الطبيعيّة وطرحها'],
     ['angle-measurement', 'قياس الزوايا'],
     ['parallelogram', 'متوازي الأضلاع'],
+    ['rhombus', 'المعيّن'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
@@ -370,7 +438,7 @@ async function main() {
     fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
     if (completedBadges('desktop') !== 2) fail(`${lessonTitle}: going back must keep the two visited steps marked as «مكتملة»`)
   }
-  console.log(`✅ PR3 regression on Lessons 1–7: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
+  console.log(`✅ PR3 regression on Lessons 1–8: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
 
   // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')
@@ -407,6 +475,12 @@ async function main() {
   for (const page of [31, 32, 33, 34, 35]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 7 teacher guide missing page ${page} source metadata`)
   if (screen.getAllByText('نشاط تفاعلي إضافي').length < 10) fail('Lesson 7 teacher guide missing the ten new final-test solutions')
   console.log('✅ Teacher Area: Lesson 7 guide shows real textbook page numbers (31–35) and ten platform final-test solutions')
+
+  fireEvent.click(screen.getByRole('button', { name: 'المعيّن' }))
+  if (!screen.getByText('دليل درس: المعيّن')) fail('Teacher tab did not switch to Lesson 8 guide')
+  for (const page of [36, 37, 38, 39]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 8 teacher guide missing page ${page} source metadata`)
+  if (screen.getAllByText('نشاط تفاعلي إضافي').length < 10) fail('Lesson 8 teacher guide missing the ten new final-test solutions')
+  console.log('✅ Teacher Area: Lesson 8 guide shows real textbook page numbers (36–39) and ten platform final-test solutions')
 
   console.log('\nAll jsdom interaction smoke checks passed.')
   await vite.close()
