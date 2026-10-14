@@ -7,6 +7,7 @@ import { AdditionSubtractionLesson } from '../lessons/AdditionSubtractionLesson'
 import { AnglesLesson } from '../lessons/AnglesLesson'
 import { ParallelogramLesson } from '../lessons/ParallelogramLesson'
 import { RhombusLesson } from '../lessons/RhombusLesson'
+import { ComparingNaturalNumbersLesson } from '../lessons/ComparingNaturalNumbersLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -21,4 +22,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   'angle-measurement': AnglesLesson,
   parallelogram: ParallelogramLesson,
   rhombus: RhombusLesson,
+  'compare-order-natural-numbers': ComparingNaturalNumbersLesson,
 }

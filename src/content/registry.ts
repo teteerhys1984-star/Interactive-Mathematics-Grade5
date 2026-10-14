@@ -21,4 +21,15 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'rhombus', title: 'المعيّن', description: 'تعريف المعيّن وخواصّه الثلاث ورسمه بالمسطرة والمنقلة، مع تمييزه عن متوازي الأضلاع والمستطيل.', availability: 'available' }
     ],
   },
+  {
+    id: 'unit-2',
+    title: 'الوحدة الثانية',
+    description: 'مقارنة الأعداد الطبيعية وترتيبها حتى الملايين',
+    accent: 'mint',
+    // The unit remains in progress: only its first available lesson is registered so far.
+    status: 'in-progress',
+    lessons: [
+      { id: 'compare-order-natural-numbers', title: 'مقارنة الأعداد الطبيعية وترتيبها', description: 'مقارنة الأعداد الطبيعية حتى الملايين وترتيبها تصاعدياً وتنازلياً.', availability: 'available' },
+    ],
+  },
 ]

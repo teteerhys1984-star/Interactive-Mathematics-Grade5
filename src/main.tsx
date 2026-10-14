@@ -8,5 +8,6 @@ import './lesson-seven.css'
 import './lesson-eight.css'
 import './teacher.css'
 import './lesson-experience.css'
+import './lesson-nine.css'
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>)

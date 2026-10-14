@@ -12,6 +12,7 @@ import { lessonFiveTeacherEntries } from '../src/teacher/lesson5'
 import { lessonSixTeacherEntries } from '../src/teacher/lesson6'
 import { lessonSevenTeacherEntries } from '../src/teacher/lesson7'
 import { lessonEightTeacherEntries } from '../src/teacher/lesson8'
+import { lessonNineTeacherEntries } from '../src/teacher/lesson9'
 import {
   DIFFICULTIES,
   QUESTION_TYPES,
@@ -39,6 +40,7 @@ const EXPECTED_PRODUCTION_TESTS = [
   'lesson-angle-measurement-test',
   'lesson-parallelogram-test',
   'lesson-rhombus-test',
+  'lesson-compare-order-natural-numbers-test',
 ] as const
 const EXPECTED_UNIT_TESTS = ['unit-unit-1-test'] as const
 const UNIT_ONE_LESSON_IDS = [
@@ -62,6 +64,7 @@ const AUDITED_SOURCE_PAGE_RANGES: Readonly<Record<string, readonly [number, numb
   'angle-measurement': [23, 30],
   parallelogram: [31, 35],
   rhombus: [36, 39],
+  'compare-order-natural-numbers': [44, 47],
 }
 const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   coordinates: lessonOneTeacherEntries.map((entry) => entry.prompt),
@@ -72,6 +75,9 @@ const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   'angle-measurement': lessonSixTeacherEntries.map((entry) => entry.prompt),
   parallelogram: lessonSevenTeacherEntries.map((entry) => entry.prompt),
   rhombus: lessonEightTeacherEntries.map((entry) => entry.prompt),
+  'compare-order-natural-numbers': lessonNineTeacherEntries
+    .filter((entry) => entry.source.type === 'textbook')
+    .map((entry) => entry.prompt),
 }
 
 
@@ -487,13 +493,18 @@ async function main(): Promise<void> {
   assert.equal(productionAudit.eligibleDefinitionCount, expectedDefinitionCount)
   assert.deepEqual([...productionAudit.eligibleTestIds].sort(), [...EXPECTED_PRODUCTION_TESTS, ...EXPECTED_UNIT_TESTS].sort())
   assert.ok(!productionAudit.issues.some((entry) => entry.code === 'LESSON_TEST_MISSING' || entry.code === 'UNIT_TEST_MISSING'))
-  assert.equal(curriculumRegistry.length, 1)
+  assert.equal(curriculumRegistry.length, 2)
   assert.equal(curriculumRegistry[0].id, 'unit-1')
-  // Unit 1 completion is authored metadata, and it is only legitimate while every lesson of the
-  // unit is shipped, available, and backed by its own eligible lesson test.
+  // Unit 1's original eight-lesson boundary and completion contract remain unchanged.
   assert.equal(curriculumRegistry[0].status, 'complete', 'Unit 1 is explicitly complete in the curriculum metadata.')
   assert.deepEqual(curriculumRegistry[0].lessons.map((lesson) => lesson.id), [...UNIT_ONE_LESSON_IDS])
   assert.ok(curriculumRegistry[0].lessons.every((lesson) => lesson.availability === 'available'))
+  const unitTwo = curriculumRegistry[1]
+  assert.equal(unitTwo.id, 'unit-2')
+  assert.equal(unitTwo.status, 'in-progress')
+  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers'])
+  assert.equal(unitTwo.lessons[0].availability, 'available')
+  assert.ok(!loadedRegistry.testRegistry.unitTests.some((test) => test.type === 'unit' && test.unitId === 'unit-2'), 'Unit 2 stays in progress and has no unit test.')
   for (const lessonId of UNIT_ONE_LESSON_IDS) {
     assert.ok(
       loadedRegistry.testRegistry.lessonTests.some((test) => test.type === 'lesson' && test.lessonId === lessonId),
@@ -664,7 +675,7 @@ async function main(): Promise<void> {
   // The unit test must disappear for learners the moment Unit 1 stops being explicitly complete.
   for (const status of ['unknown', 'in-progress'] as const) {
     const gatedRegistry = loadedRegistry.createTestRegistry(
-      [{ ...curriculumRegistry[0], status }],
+      curriculumRegistry.map((unit) => unit.id === 'unit-1' ? { ...unit, status } : unit),
       loadedRegistry.discoveredTestDefinitions,
       { coverageMode: 'strict' },
     )
