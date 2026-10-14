@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run test-area-check && tsc --noEmit && vite build",
+    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
@@ -19,6 +19,9 @@
     "lesson-7-check": "tsx scripts/lesson-7-check.ts",
     "lesson-8-check": "tsx scripts/lesson-8-check.ts",
     "unit-1-check": "tsx scripts/unit-1-check.ts",
+    "unit-exercises-check": "tsx scripts/unit-exercises-check.ts",
+    "unit-exercises-coverage": "tsx scripts/unit-exercises-check.ts --write-coverage",
+    "unit-exercises-ui-check": "tsx scripts/unit-exercises-ui-check.tsx",
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx",
     "test-area-check": "tsx scripts/test-area-check.ts && tsx scripts/test-area-ui-check.tsx"
   },
