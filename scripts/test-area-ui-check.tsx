@@ -186,6 +186,7 @@ async function main() {
     interface RegistryModule {
       createTestRegistry(units: readonly UnitMeta[], definitions: readonly unknown[], options: { coverageMode: 'strict' | 'infrastructure-only' }): TestRegistrySnapshot
       testRegistry: TestRegistrySnapshot
+      discoveredTestDefinitions: readonly unknown[]
     }
     const registryModule = await vite.ssrLoadModule('/src/tests/registry.ts') as RegistryModule
     const registry = registryModule.createTestRegistry([fixtureUnit], fixtureDefinitions, { coverageMode: 'strict' })
@@ -227,38 +228,50 @@ async function main() {
     assert.equal(screen.queryByRole('progressbar', { name: 'موضعك في الاختبار' }), null)
     console.log('✅ Dynamic lesson/unit/comprehensive listings and safe not-found runner route pass.')
 
-    // Production discovery is strict and covers exactly the seven available lesson tests.
-    // Unit 1 remains unknown; no Unit Test or Comprehensive Test is inferred or rendered.
+    // Production discovery is strict and covers the eight available lesson tests plus the Unit 1
+    // test, which is eligible only because unit-1 is explicitly marked complete in curriculum data.
     const productionRegistry = registryModule.testRegistry
     assert.equal(productionRegistry.report.coverageMode, 'strict')
     assert.equal(productionRegistry.report.valid, true, JSON.stringify(productionRegistry.issues, null, 2))
-    assert.equal(productionRegistry.lessonTests.length, 7)
-    assert.equal(productionRegistry.unitTests.length, 0)
+    assert.equal(productionRegistry.lessonTests.length, 8)
+    assert.equal(productionRegistry.unitTests.length, 1)
     assert.equal(productionRegistry.comprehensiveTests.length, 0)
-    assert.equal(productionRegistry.discoveredDefinitionCount, 7)
-    assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-1')?.status, 'unknown')
-    assert.equal(productionRegistry.getTestById('unit-unit-1-test'), undefined)
+    assert.equal(productionRegistry.discoveredDefinitionCount, 9)
+    assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-1')?.status, 'complete')
+    assert.ok(productionRegistry.getTestById('unit-unit-1-test'))
+    assert.equal(productionRegistry.getTestById('unit-unit-1-test')?.questions.length, 60)
     assert.equal(productionRegistry.getTestById('comprehensive-unit-1-test'), undefined)
+
+    // Gate check in the UI registry itself: an incomplete unit hides its test again.
+    const gatedRegistry = registryModule.createTestRegistry(
+      curriculumRegistry.map((unit) => (unit.id === 'unit-1' ? { ...unit, status: 'in-progress' as const } : unit)),
+      registryModule.discoveredTestDefinitions,
+      { coverageMode: 'strict' },
+    )
+    assert.equal(gatedRegistry.unitTests.length, 0)
+    assert.equal(gatedRegistry.getTestById('unit-unit-1-test'), undefined)
 
     view.unmount()
     navigate('#tests')
     view = render(React.createElement(App, { testRegistry: productionRegistry, curriculum: curriculumRegistry }))
     assert.ok(screen.getByRole('heading', { name: 'منطقة الاختبارات' }))
-    assert.ok(screen.getByText('7 اختبارات متاحة'))
-    assert.equal(screen.getAllByText('لا توجد اختبارات مؤهلة حالياً').length, 2)
+    assert.ok(screen.getByText('8 اختبارات متاحة'), 'The lessons category must advertise the eight eligible lesson tests.')
+    assert.ok(screen.getByText('اختبار واحد متاح'), 'The units category must advertise the eligible Unit 1 test.')
+    assert.equal(screen.getAllByText('لا توجد اختبارات مؤهلة حالياً').length, 1)
 
     navigate('#tests/lessons')
     assert.ok(screen.getByRole('heading', { name: 'اختبارات الدروس' }))
-    assert.equal(screen.getAllByText('20 سؤالاً').length, 7)
+    assert.equal(screen.getAllByText('20 سؤالاً').length, 8)
     for (const test of productionRegistry.lessonTests) {
       assert.ok(screen.getByRole('heading', { name: test.title }), `Production lesson test was not listed: ${test.id}`)
     }
-    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 7)
+    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 8)
 
     navigate('#tests/units')
     assert.ok(screen.getByRole('heading', { name: 'اختبارات الوحدات' }))
-    assert.ok(screen.getByRole('heading', { name: 'لا توجد اختبارات وحدات مؤهلة حالياً' }))
-    assert.equal(screen.queryByRole('link', { name: /ابدأ الاختبار/ }), null)
+    assert.ok(screen.getByRole('heading', { name: 'اختبار الوحدة الأولى' }))
+    assert.ok(screen.getByText('60 سؤالاً'))
+    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 1)
     navigate('#tests/comprehensive')
     assert.ok(screen.getByRole('heading', { name: 'الاختبارات الشاملة' }))
     assert.ok(screen.getByRole('heading', { name: 'لا توجد اختبارات شاملة مؤهلة حالياً' }))
@@ -290,8 +303,19 @@ async function main() {
     navigate('#tests/run/unregistered-production-test')
     assert.ok(screen.getByRole('heading', { name: 'الاختبار غير موجود أو غير مؤهل' }))
     assert.equal(screen.queryByRole('progressbar', { name: 'موضعك في الاختبار' }), null)
-    console.log('✅ Strict production Registry lists all seven real lesson tests; Unit 1 stays unknown, with no Unit or Comprehensive Test.')
-    console.log('✅ Fresh Solutions are gated, all seven test IDs open the generic 20-question Runner directly, and an invalid ID is safe.')
+    // The real Unit 1 test opens through the same generic runner with all 60 questions.
+    navigate('#tests/run/unit-unit-1-test')
+    assert.ok(screen.getByRole('heading', { name: 'اختبار الوحدة الأولى' }))
+    const unitProgress = screen.getByRole('progressbar', { name: 'موضعك في الاختبار' })
+    assert.equal(unitProgress.getAttribute('aria-valuemax'), '60')
+    assert.equal(unitProgress.getAttribute('aria-valuenow'), '1')
+    assert.equal(screen.queryByRole('heading', { name: 'نتيجة الاختبار' }), null)
+    navigate('#tests/solutions/unit-unit-1-test/1')
+    assert.ok(screen.getByRole('heading', { name: 'الحلول غير متاحة قبل التسليم' }))
+    assert.equal(screen.queryByRole('heading', { name: 'الإجابة النهائية' }), null)
+
+    console.log('✅ Strict production Registry lists all eight real lesson tests and the Unit 1 test; no Comprehensive Test is inferred.')
+    console.log('✅ Fresh Solutions are gated, every test ID opens the generic Runner directly (20 or 60 questions), and an invalid ID is safe.')
 
     // Exercise an actual discovered production definition through the generic runner.
     const productionLesson = productionRegistry.getTestById('lesson-coordinates-test')

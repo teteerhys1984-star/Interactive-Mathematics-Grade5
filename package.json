@@ -17,6 +17,8 @@
     "lesson-5-check": "tsx scripts/lesson-5-check.ts",
     "lesson-6-check": "tsx scripts/lesson-6-check.ts",
     "lesson-7-check": "tsx scripts/lesson-7-check.ts",
+    "lesson-8-check": "tsx scripts/lesson-8-check.ts",
+    "unit-1-check": "tsx scripts/unit-1-check.ts",
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx",
     "test-area-check": "tsx scripts/test-area-check.ts && tsx scripts/test-area-ui-check.tsx"
   },

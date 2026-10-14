@@ -6,8 +6,10 @@ export const curriculumRegistry: UnitMeta[] = [
     title: 'الوحدة الأولى',
     description: 'شبكة الإحداثيات والتمثيلات البيانية والأعداد الطبيعية',
     accent: 'blue',
-    // Repository curriculum metadata does not currently prove that this unit is complete.
-    status: 'unknown',
+    // Unit 1 is explicitly complete: all eight textbook lessons (صفحات 3–39) are shipped,
+    // available, and each one has its own validated lesson test. This flag is authored data,
+    // never inferred at runtime from whatever happens to be registered.
+    status: 'complete',
     lessons: [
       { id: 'coordinates', title: 'شبكة الإحداثيات', description: 'التعرّف إلى شبكة الإحداثيات وقراءة مواقع النقاط.', availability: 'available' },
       { id: 'line-graphs', title: 'التمثيلات البيانية بالخطوط', description: 'قراءة التمثيل البياني بالخطوط وتفسير تغيّر البيانات مع مرور الزمن.', availability: 'available' },
@@ -15,7 +17,8 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'rounding-natural-numbers', title: 'تقريب الأعداد الطبيعية', description: 'تعلّم تقريب الأعداد الطبيعية إلى أقرب مئة وألف ومليون.', availability: 'available' },
       { id: 'adding-subtracting-natural-numbers', title: 'جمع الأعداد الطبيعيّة وطرحها', description: 'الجمع والطرح ضمن الملايين بالأعمدة، مع الحمل والاستلاف والتطبيقات الواقعية.', availability: 'available' },
       { id: 'angle-measurement', title: 'قياس الزوايا', description: 'تسمية الزوايا وقياسها بالمنقلة ورسمها وتصنيفها في مواقف تفاعلية.', availability: 'available' },
-      { id: 'parallelogram', title: 'متوازي الأضلاع', description: 'تعريف متوازي الأضلاع وقطراه، خاصتا الأضلاع والزوايا، ورسمه بالمسطرة والمنقلة.', availability: 'available' }
+      { id: 'parallelogram', title: 'متوازي الأضلاع', description: 'تعريف متوازي الأضلاع وقطراه، خاصتا الأضلاع والزوايا، ورسمه بالمسطرة والمنقلة.', availability: 'available' },
+      { id: 'rhombus', title: 'المعيّن', description: 'تعريف المعيّن وخواصّه الثلاث ورسمه بالمسطرة والمنقلة، مع تمييزه عن متوازي الأضلاع والمستطيل.', availability: 'available' }
     ],
   },
 ]

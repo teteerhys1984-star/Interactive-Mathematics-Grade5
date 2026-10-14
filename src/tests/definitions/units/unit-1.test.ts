@@ -1,0 +1,1371 @@
+import { math, rich, text, textOnly } from '../../lessonTestBuilder'
+import { defineUnitTest, unitQuestion, type UnitQuestionDraft } from '../../unitTestBuilder'
+import type { QuestionDefinition } from '../../types'
+
+/**
+ * Unit 1 test — الوحدة الأولى (الدروس 1–8، صفحات 3–39).
+ *
+ * Sixty brand-new questions written for this test only. Coverage blueprint (primary lesson):
+ *   شبكة الإحداثيات 6 · التمثيلات البيانية 6 · الأعداد الطبيعية 8 · التقريب 8 ·
+ *   الجمع والطرح 8 · قياس الزوايا 8 · متوازي الأضلاع 8 · المعيّن 8
+ * Five of them are deliberately cross-lesson (synthesis) items, so they appear in the coverage
+ * matrix of two lessons at once. Difficulty: 16 basic · 22 medium · 14 advanced · 8 thinking.
+ * The test becomes visible to learners only while unit-1 is explicitly marked complete.
+ */
+
+const testId = 'unit-unit-1-test'
+const qid = (number: number) => `${testId}-q${String(number).padStart(2, '0')}`
+const q = (number: number, lessonIds: readonly string[], draft: UnitQuestionDraft) =>
+  unitQuestion(testId, lessonIds, qid(number), draft)
+const option = (id: string, ...runs: Parameters<typeof rich>) => ({ id, label: rich(...runs) })
+const optionText = (id: string, value: string) => ({ id, label: textOnly(value) })
+
+const COORDINATES = 'coordinates'
+const LINE_GRAPHS = 'line-graphs'
+const NATURAL = 'natural-numbers'
+const ROUNDING = 'rounding-natural-numbers'
+const ADD_SUB = 'adding-subtracting-natural-numbers'
+const ANGLES = 'angle-measurement'
+const PARALLELOGRAM = 'parallelogram'
+const RHOMBUS = 'rhombus'
+
+const CM_UNITS = ['cm', 'سم', 'centimeter', 'centimeters', 'سنتيمتر', 'سنتيمترات']
+const DEGREE_UNITS = ['°', 'degree', 'degrees', 'درجة', 'درجات']
+const UNIT_UNITS = ['وحدة', 'وحدات', 'unit', 'units']
+
+const questions: QuestionDefinition[] = [
+  /* ------------------------------------------------- الدرس 1: شبكة الإحداثيات */
+  q(1, [COORDINATES], {
+    type: 'single-choice', difficulty: 'basic',
+    prompt: rich(text('تقع نقطة على تقاطع العمود '), math('4'), text(' مع الصف '), math('7'), text('. أيّ زوج مرتّب يمثّلها؟')),
+    concepts: ['ordered-pair-order'], skills: ['write-ordered-pair'], sourceConcepts: ['coordinates-ordered-pair'],
+    coverage: { commonErrors: ['swap-ordered-pair'] },
+    options: [option('q01-a', math('(4,7)')), option('q01-b', math('(7,4)')), option('q01-c', math('(4+7)')), option('q01-d', math('(0,4)'))],
+    answer: 'q01-a',
+    solution: {
+      idea: rich(text('الزوج المرتّب يكتب موقع العمود أوّلاً ثمّ موقع الصف.')),
+      rule: rich(text('الزوج المرتّب '), math('(x, y)'), text(': '), math('x'), text(' للعمود الأفقي و'), math('y'), text(' للصف الشاقولي.')),
+      steps: [rich(text('العمود '), math('4'), text(' يُكتب في المركّبة الأولى.')), rich(text('الصف '), math('7'), text(' يُكتب في المركّبة الثانية.'))],
+      finalAnswer: rich(math('(4,7)')),
+      commonError: rich(text('كتابة '), math('(7,4)'), text(' بعكس ترتيب المركّبتين.')),
+    },
+    originalityNote: 'يصوغ الموقع بلغة «عمود وصف» بدل إعطاء الزوج جاهزاً، ويضع مشتّتاً بصيغة جمع لا زوج مرتّب.',
+  }),
+  q(2, [COORDINATES], {
+    type: 'true-false', difficulty: 'basic',
+    prompt: rich(text('الزوجان '), math('(3,8)'), text(' و'), math('(8,3)'), text(' يمثّلان الموقع نفسه على الشبكة.')),
+    concepts: ['ordered-pair-order'], skills: ['compare-two-points'], sourceConcepts: ['coordinates-ordered-pair'],
+    coverage: { commonErrors: ['swap-ordered-pair'] },
+    answer: false,
+    solution: {
+      idea: rich(text('ترتيب المركّبتين جزء من المعنى، لا مجرّد شكل كتابة.')),
+      steps: [
+        rich(math('(3,8)'), text(': العمود '), math('3'), text(' والصف '), math('8'), text('.')),
+        rich(math('(8,3)'), text(': العمود '), math('8'), text(' والصف '), math('3'), text(' — موقع مختلف تماماً.')),
+      ],
+      finalAnswer: rich(text('خطأ.')),
+    },
+    originalityNote: 'عبارة صواب/خطأ تقيس حسّاسية الترتيب في الزوج المرتّب من دون سياق قصصي أو تحليل خطأ طالب.',
+  }),
+  q(3, [COORDINATES], {
+    type: 'single-choice', difficulty: 'medium',
+    prompt: rich(text('نقطة موقعها '), math('(5,2)'), text('. تحرّكت '), math('3'), text(' وحدات نحو اليمين ثمّ '), math('4'), text(' وحدات نحو الأعلى. ما موقعها الجديد؟')),
+    concepts: ['grid-position-reading'], skills: ['move-on-grid'], sourceConcepts: ['coordinates-ordered-pair'],
+    options: [option('q03-a', math('(8,6)')), option('q03-b', math('(2,6)')), option('q03-c', math('(9,5)')), option('q03-d', math('(6,8)'))],
+    answer: 'q03-a',
+    solution: {
+      idea: rich(text('الحركة الأفقية تغيّر المركّبة الأولى، والحركة الشاقولية تغيّر الثانية.')),
+      steps: [
+        rich(text('نحو اليمين: '), math('5 + 3 = 8'), text('.')),
+        rich(text('نحو الأعلى: '), math('2 + 4 = 6'), text('.')),
+      ],
+      finalAnswer: rich(math('(8,6)')),
+      commonError: rich(text('جمع العددين في المركّبة الخاطئة فينتج '), math('(9,5)'), text('.')),
+    },
+    originalityNote: 'يحوّل قراءة الزوج المرتّب إلى تتبّع حركة بخطوتين في اتجاهين مختلفين.',
+  }),
+  q(4, [COORDINATES], {
+    type: 'matching', difficulty: 'medium',
+    prompt: rich(text('طابق كلّ زوج مرتّب مع الوصف الذي ينطبق عليه.')),
+    concepts: ['grid-position-reading'], skills: ['describe-axis-points'], sourceConcepts: ['coordinates-ordered-pair'],
+    left: [option('q04-l1', math('(0,0)')), option('q04-l2', math('(6,0)')), option('q04-l3', math('(0,6)'))],
+    right: [
+      optionText('q04-r1', 'تقع على المحور الشاقولي'),
+      optionText('q04-r2', 'نقطة الأصل، تقاطع المحورين'),
+      optionText('q04-r3', 'تقع على المحور الأفقي'),
+    ],
+    answer: [
+      { leftId: 'q04-l1', rightId: 'q04-r2' },
+      { leftId: 'q04-l2', rightId: 'q04-r3' },
+      { leftId: 'q04-l3', rightId: 'q04-r1' },
+    ],
+    solution: {
+      idea: rich(text('وجود الصفر في إحدى المركّبتين يحدّد المحور الذي تقع عليه النقطة.')),
+      steps: [
+        rich(math('(0,0)'), text(' هي نقطة الأصل.')),
+        rich(text('المركّبة الثانية صفر ⇐ النقطة على المحور الأفقي.')),
+        rich(text('المركّبة الأولى صفر ⇐ النقطة على المحور الشاقولي.')),
+      ],
+      finalAnswer: rich(text('الأصل، ثمّ المحور الأفقي، ثمّ المحور الشاقولي.')),
+    },
+    originalityNote: 'يربط موضع الصفر داخل الزوج المرتّب بالمحور المقابل له، وهو تمييز لم يُطلب بهذه الصيغة في اختبار الدرس.',
+  }),
+  q(5, [COORDINATES], {
+    type: 'numeric', difficulty: 'advanced',
+    prompt: rich(text('مستطيل رؤوسه '), math('(1,2)'), text(' و'), math('(7,2)'), text(' و'), math('(7,5)'), text(' و'), math('(1,5)'), text('. ما محيطه بالوحدات؟')),
+    concepts: ['grid-distance'], skills: ['compute-grid-perimeter'], sourceConcepts: ['coordinates-ordered-pair'],
+    coverage: { applications: ['real-life-measurement'] },
+    answer: { expected: '18', format: 'integer', unitPolicy: { kind: 'optional', acceptedUnits: UNIT_UNITS } },
+    solution: {
+      idea: rich(text('أطوال الأضلاع الأفقية والشاقولية تُقرأ من فروق المركّبات.')),
+      steps: [
+        rich(text('الطول الأفقي: '), math('7 − 1 = 6'), text(' وحدات.')),
+        rich(text('الطول الشاقولي: '), math('5 − 2 = 3'), text(' وحدات.')),
+        rich(text('المحيط: '), math('2 × (6 + 3) = 18'), text(' وحدة.')),
+      ],
+      finalAnswer: rich(math('18'), text(' وحدة.')),
+      commonError: rich(text('جمع المركّبات الأربع بدل حساب الفروق.')),
+    },
+    originalityNote: 'يجمع قراءة الإحداثيات مع حساب محيط شكل مرسوم على الشبكة، وهو ربط لا يرد في اختبار الدرس الأوّل.',
+  }),
+  q(6, [COORDINATES, LINE_GRAPHS], {
+    type: 'single-choice', difficulty: 'thinking',
+    prompt: rich(text('في تمثيل بياني بالخطوط، المحور الأفقي للزمن والمحور الشاقولي للقراءة. سُجّلت القراءة '), math('7'), text(' عند الزمن '), math('3'), text('. أيّ زوج مرتّب يحدّد هذه النقطة؟')),
+    concepts: ['ordered-pair-order', 'line-graph-axes'], skills: ['link-reading-to-point'],
+    sourceConcepts: ['coordinates-ordered-pair', 'line-graph-reading'],
+    coverage: { thinking: ['cross-lesson-synthesis'] },
+    options: [option('q06-a', math('(3,7)')), option('q06-b', math('(7,3)')), option('q06-c', math('(3,3)')), option('q06-d', math('(7,7)'))],
+    answer: 'q06-a',
+    solution: {
+      idea: rich(text('قاعدة الزوج المرتّب نفسها تُستعمل في التمثيل البياني: الأفقي أوّلاً.')),
+      steps: [
+        rich(text('المحور الأفقي للزمن، والزمن '), math('3'), text(' ⇐ المركّبة الأولى '), math('3'), text('.')),
+        rich(text('المحور الشاقولي للقراءة، والقراءة '), math('7'), text(' ⇐ المركّبة الثانية '), math('7'), text('.')),
+      ],
+      finalAnswer: rich(math('(3,7)')),
+      commonError: rich(text('البدء بالقراءة لأنها «العدد المهمّ» فينتج '), math('(7,3)'), text('.')),
+    },
+    originalityNote: 'سؤال تركيبي يصل درس الإحداثيات بدرس التمثيل البياني عبر موضع نقطة تسجيل واحدة.',
+  }),
+
+  /* ------------------------------------------------- الدرس 2: التمثيلات البيانية بالخطوط */
+  q(7, [LINE_GRAPHS], {
+    type: 'true-false', difficulty: 'basic',
+    prompt: rich(text('يخصَّص المحور الأفقي عادةً للزمن في التمثيل البياني بالخطوط.')),
+    concepts: ['line-graph-axes'], skills: ['state-axis-convention'], sourceConcepts: ['line-graph-reading'],
+    answer: true,
+    solution: {
+      idea: rich(text('الاصطلاح المتّبع في الدرس يضع الزمن أفقياً والبيانات شاقولياً.')),
+      steps: [
+        rich(text('الزمن يتقدّم من اليسار إلى اليمين على المحور الأفقي.')),
+        rich(text('القيم المقيسة تُقرأ على المحور الشاقولي.')),
+      ],
+      finalAnswer: rich(text('صحيح.')),
+    },
+    originalityNote: 'يختبر الاصطلاح نفسه في صيغة صواب/خطأ قصيرة بدل مقارنة أربعة توزيعات للمحورين.',
+  }),
+  q(8, [LINE_GRAPHS], {
+    type: 'single-choice', difficulty: 'basic',
+    prompt: rich(text('ماذا يعني أن يكون المقطع الواصل بين تسجيلين متتاليين أفقياً؟')),
+    concepts: ['segment-direction'], skills: ['interpret-flat-segment'], sourceConcepts: ['line-graph-reading'],
+    options: [
+      optionText('q08-a', 'أن القراءتين متساويتان'),
+      optionText('q08-b', 'أن القراءة ارتفعت قليلاً'),
+      optionText('q08-c', 'أن القراءة انخفضت قليلاً'),
+      optionText('q08-d', 'أن الزمن توقّف'),
+    ],
+    answer: 'q08-a',
+    solution: {
+      idea: rich(text('ميل المقطع يترجم تغيّر القيمة بين تسجيلين.')),
+      steps: [
+        rich(text('الصعود يعني زيادة والهبوط يعني نقصاناً.')),
+        rich(text('غياب الميل يعني أن القيمة لم تتغيّر.')),
+      ],
+      finalAnswer: rich(text('القراءتان متساويتان.')),
+    },
+    originalityNote: 'يركّز على معنى المقطع الأفقي وحده ويضع «توقّف الزمن» مشتّتاً منطقياً جديداً.',
+  }),
+  q(9, [LINE_GRAPHS], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('سجّل تمثيل خطي القراءات '), math('5'), text(' ثمّ '), math('9'), text(' ثمّ '), math('6'), text(' ثمّ '), math('10'), text(' عند أربعة أزمنة متتالية. ما الفرق بين أكبر قراءة وأصغر قراءة؟')),
+    concepts: ['reading-values'], skills: ['compute-range'], sourceConcepts: ['line-graph-reading'],
+    coverage: { applications: ['school-and-market-data'] },
+    answer: { expected: '5', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('نحدّد القيمتين القصوى والدنيا ثمّ نطرح.')),
+      steps: [
+        rich(text('أكبر قراءة '), math('10'), text('، وأصغر قراءة '), math('5'), text('.')),
+        rich(math('10 − 5 = 5'), text('.')),
+      ],
+      finalAnswer: rich(math('5')),
+      commonError: rich(text('طرح القراءة الأخيرة من الأولى بدل القصوى من الدنيا.')),
+    },
+    originalityNote: 'يطلب المدى من سجلّ رباعي جديد بدل مقارنة قراءتين متتاليتين أو عدّ المقاطع الهابطة.',
+  }),
+  q(10, [LINE_GRAPHS], {
+    type: 'multi-select', difficulty: 'medium',
+    prompt: rich(text('سجلّ قراءاته عند الأزمنة '), math('1,2,3,4'), text(' هي '), math('4, 4, 7, 2'), text('. اختر كلّ وصف صحيح لمسار الخط.')),
+    concepts: ['segment-direction', 'reading-values'], skills: ['describe-graph-path'], sourceConcepts: ['line-graph-reading'],
+    options: [
+      optionText('q10-a', 'المقطع بين الزمنين 1 و2 أفقي'),
+      optionText('q10-b', 'أكبر صعود يحدث بين الزمنين 2 و3'),
+      optionText('q10-c', 'القراءات تتزايد باستمرار'),
+      optionText('q10-d', 'المقطع بين الزمنين 3 و4 هو أشدّ هبوط في السجلّ'),
+    ],
+    answer: ['q10-a', 'q10-b', 'q10-d'],
+    solution: {
+      idea: rich(text('نحسب التغيّر في كلّ مقطع على حدة.')),
+      steps: [
+        rich(math('4 → 4'), text(': لا تغيّر ⇐ مقطع أفقي.')),
+        rich(math('4 → 7'), text(': صعود بمقدار '), math('3'), text('.')),
+        rich(math('7 → 2'), text(': هبوط بمقدار '), math('5'), text('، وهو الأشدّ.')),
+      ],
+      finalAnswer: rich(text('الأوصاف: الأوّل والثاني والرابع.')),
+      commonError: rich(text('اختيار «تتزايد باستمرار» بسبب وجود صعود واحد كبير.')),
+    },
+    originalityNote: 'يوازن بين ثلاثة أوصاف صحيحة ووصف عامّ خاطئ ضمن سجلّ يبدأ بقراءتين متساويتين.',
+  }),
+  q(11, [LINE_GRAPHS], {
+    type: 'numeric', difficulty: 'advanced',
+    prompt: rich(text('ارتفعت القراءة في تمثيل خطي من '), math('12'), text(' إلى '), math('20'), text(' بين زمنين متتاليين، ثمّ انخفضت '), math('5'), text(' وحدات في المقطع التالي. ما القراءة الأخيرة؟')),
+    concepts: ['reading-values', 'segment-direction'], skills: ['track-successive-changes'], sourceConcepts: ['line-graph-reading'],
+    answer: { expected: '15', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('نتابع القيمة خطوة بخطوة بدل حساب الفروق مجتمعة.')),
+      steps: [
+        rich(text('بعد الصعود: القراءة '), math('20'), text('.')),
+        rich(text('بعد الهبوط: '), math('20 − 5 = 15'), text('.')),
+      ],
+      finalAnswer: rich(math('15')),
+      commonError: rich(text('طرح '), math('5'), text(' من القراءة الأولى '), math('12'), text(' بدل القراءة الحالية.')),
+    },
+    originalityNote: 'يعطي التغيّرات بدل القيم ويطلب القيمة النهائية، وهو اتجاه عكسي لقراءة الجدول المعتادة.',
+  }),
+  q(12, [LINE_GRAPHS], {
+    type: 'matching', difficulty: 'thinking',
+    prompt: rich(text('طابق كلّ وصف لمسار الخط مع السجلّ الذي يطابقه.')),
+    concepts: ['segment-direction'], skills: ['match-path-to-record'], sourceConcepts: ['line-graph-reading'],
+    coverage: { thinking: ['invariant-reasoning'] },
+    left: [
+      optionText('q12-l1', 'يصعد ثمّ يبقى ثابتاً'),
+      optionText('q12-l2', 'يهبط ثمّ يصعد'),
+      optionText('q12-l3', 'يصعد في كلّ مقطع'),
+    ],
+    right: [option('q12-r1', math('8, 4, 9')), option('q12-r2', math('2, 5, 7')), option('q12-r3', math('3, 6, 6'))],
+    answer: [
+      { leftId: 'q12-l1', rightId: 'q12-r3' },
+      { leftId: 'q12-l2', rightId: 'q12-r1' },
+      { leftId: 'q12-l3', rightId: 'q12-r2' },
+    ],
+    solution: {
+      idea: rich(text('شكل المسار يُقرأ من إشارة التغيّر في كلّ مقطع.')),
+      steps: [
+        rich(math('3, 6, 6'), text(': صعود ثمّ ثبات.')),
+        rich(math('8, 4, 9'), text(': هبوط ثمّ صعود.')),
+        rich(math('2, 5, 7'), text(': صعود في المقطعين.')),
+      ],
+      finalAnswer: rich(text('ثابت بعد صعود، ثمّ هبوط فصعود، ثمّ صعود مستمرّ.')),
+    },
+    originalityNote: 'يطابق أوصافاً لفظية لمسارات بثلاثة سجلّات عددية مصمّمة لهذا السؤال، بدل وصف سجلّ واحد.',
+  }),
+
+  /* ------------------------------------------------- الدرس 3: الأعداد الطبيعية */
+  q(13, [NATURAL], {
+    type: 'single-choice', difficulty: 'basic',
+    prompt: rich(text('في العدد '), math('3,604,218'), text('، ما قيمة الرقم '), math('6'), text('؟')),
+    concepts: ['place-value'], skills: ['name-digit-value'], sourceConcepts: ['place-value-millions'],
+    options: [optionText('q13-a', 'ستّمئة ألف'), optionText('q13-b', 'ستّة آلاف'), optionText('q13-c', 'ستّون ألفاً'), optionText('q13-d', 'ستّة ملايين')],
+    answer: 'q13-a',
+    solution: {
+      idea: rich(text('قيمة الرقم = الرقم × قيمة منزلته.')),
+      steps: [
+        rich(text('نقرأ المنازل من اليمين: آحاد، عشرات، مئات، آلاف، عشرات آلاف، مئات آلاف.')),
+        rich(text('الرقم '), math('6'), text(' في منزلة مئات الآلاف ⇐ قيمته '), math('600,000'), text('.')),
+      ],
+      finalAnswer: rich(text('ستّمئة ألف.')),
+      commonError: rich(text('قراءة المنزلة من اليسار فتُعطى القيمة ستّة ملايين.')),
+    },
+    originalityNote: 'يطلب قيمة الرقم بالصيغة اللفظية في عدد سباعي جديد، لا اسم المنزلة ولا عدد الأصفار.',
+  }),
+  q(14, [NATURAL], {
+    type: 'true-false', difficulty: 'basic',
+    prompt: rich(text('العدد '), math('5,020,007'), text(' يُقرأ: خمسة ملايين وعشرون ألفاً وسبعة.')),
+    concepts: ['number-groups'], skills: ['read-number-in-words'], sourceConcepts: ['place-value-millions'],
+    answer: true,
+    solution: {
+      idea: rich(text('نقرأ العدد مجموعةً مجموعة: الملايين ثمّ الآلاف ثمّ الوحدات.')),
+      steps: [
+        rich(text('مجموعة الملايين: '), math('5'), text(' ⇐ خمسة ملايين.')),
+        rich(text('مجموعة الآلاف: '), math('020'), text(' ⇐ عشرون ألفاً.')),
+        rich(text('مجموعة الوحدات: '), math('007'), text(' ⇐ سبعة.')),
+      ],
+      finalAnswer: rich(text('صحيح.')),
+    },
+    originalityNote: 'يتحقّق من قراءة عدد فيه مجموعة أصفار داخلية، في صيغة حكم على قراءة كاملة لا اختيار من بدائل.',
+  }),
+  q(15, [NATURAL], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('ما العدد الذي يساوي '), math('7,000,000 + 300,000 + 40 + 9'), text('؟')),
+    concepts: ['standard-and-expanded-form'], skills: ['write-from-expanded-form'], sourceConcepts: ['place-value-millions'],
+    answer: { expected: '7300049', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('كل حدّ يملأ منزلته، والمنازل الغائبة تأخذ صفراً.')),
+      steps: [
+        rich(text('الملايين '), math('7'), text('، مئات الآلاف '), math('3'), text('.')),
+        rich(text('عشرات الآلاف والآلاف والمئات غائبة ⇐ أصفار.')),
+        rich(text('العشرات '), math('4'), text(' والآحاد '), math('9'), text('.')),
+      ],
+      finalAnswer: rich(math('7,300,049')),
+      commonError: rich(text('كتابة '), math('73,049'), text(' بحذف الأصفار الوسطى.')),
+    },
+    originalityNote: 'ينتقل من الصيغة المفكّكة إلى الصيغة القياسية مع ثلاث منازل غائبة متتالية، وهو اتجاه معاكس لأسئلة التفكيك.',
+  }),
+  q(16, [NATURAL], {
+    type: 'matching', difficulty: 'medium',
+    prompt: rich(text('طابق كلّ عدد مع وصف مجموعاته الصحيح.')),
+    concepts: ['number-groups'], skills: ['match-number-to-description'], sourceConcepts: ['place-value-millions'],
+    left: [option('q16-l1', math('408,000')), option('q16-l2', math('4,080,000')), option('q16-l3', math('48,000'))],
+    right: [
+      optionText('q16-r1', 'أربعة ملايين وثمانون ألفاً'),
+      optionText('q16-r2', 'ثمانية وأربعون ألفاً'),
+      optionText('q16-r3', 'أربعمئة وثمانية آلاف'),
+    ],
+    answer: [
+      { leftId: 'q16-l1', rightId: 'q16-r3' },
+      { leftId: 'q16-l2', rightId: 'q16-r1' },
+      { leftId: 'q16-l3', rightId: 'q16-r2' },
+    ],
+    solution: {
+      idea: rich(text('عدد الخانات يحدّد المجموعة التي يبدأ منها العدد.')),
+      steps: [
+        rich(math('408,000'), text(': ستّ خانات ⇐ أربعمئة وثمانية آلاف.')),
+        rich(math('4,080,000'), text(': سبع خانات ⇐ أربعة ملايين وثمانون ألفاً.')),
+        rich(math('48,000'), text(': خمس خانات ⇐ ثمانية وأربعون ألفاً.')),
+      ],
+      finalAnswer: rich(text('المطابقة بحسب عدد الخانات والمجموعات.')),
+    },
+    originalityNote: 'يستعمل ثلاثة أعداد متشابهة الأرقام مختلفة الخانات لكشف الخلط بين الآلاف والملايين.',
+  }),
+  q(17, [NATURAL], {
+    type: 'ordering', difficulty: 'medium',
+    prompt: rich(text('رتّب الأعداد الآتية من الأصغر إلى الأكبر.')),
+    concepts: ['comparing-numbers'], skills: ['order-numbers'], sourceConcepts: ['place-value-millions'],
+    items: [option('q17-a', math('2,980,400')), option('q17-b', math('2,908,400')), option('q17-c', math('3,090,000')), option('q17-d', math('298,400'))],
+    answer: ['q17-d', 'q17-b', 'q17-a', 'q17-c'],
+    solution: {
+      idea: rich(text('نقارن أوّلاً بعدد الخانات ثمّ بأوّل منزلة مختلفة من اليسار.')),
+      steps: [
+        rich(math('298,400'), text(' ذو ستّ خانات، فهو الأصغر.')),
+        rich(text('بين '), math('2,908,400'), text(' و'), math('2,980,400'), text(' تختلف منزلة عشرات الآلاف: '), math('0 < 8'), text('.')),
+        rich(math('3,090,000'), text(' يبدأ بـ'), math('3'), text(' في الملايين فهو الأكبر.')),
+      ],
+      finalAnswer: rich(math('298,400 < 2,908,400 < 2,980,400 < 3,090,000')),
+    },
+    originalityNote: 'يرتّب أربعة أعداد صُمّمت ليختلف بعضها في منزلة واحدة فقط وبعضها في عدد الخانات.',
+  }),
+  q(18, [NATURAL], {
+    type: 'multi-select', difficulty: 'advanced',
+    prompt: rich(text('في العدد '), math('4,080,500'), text('، اختر كلّ عبارة صحيحة.')),
+    concepts: ['place-value', 'number-groups'], skills: ['analyse-zeros'], sourceConcepts: ['place-value-millions'],
+    options: [
+      optionText('q18-a', 'رقم الملايين هو 4'),
+      optionText('q18-b', 'قيمة الرقم 8 هي ثمانون ألفاً'),
+      optionText('q18-c', 'قيمة الرقم 5 هي خمسمئة'),
+      optionText('q18-d', 'العدد يحوي أربعة أصفار'),
+      optionText('q18-e', 'مجموعة الوحدات فيه خالية من أي رقم غير صفري'),
+    ],
+    answer: ['q18-a', 'q18-b', 'q18-c', 'q18-d'],
+    solution: {
+      idea: rich(text('نحلّل العدد منزلةً منزلة قبل الحكم على أيّ عبارة.')),
+      steps: [
+        rich(text('المنازل: '), math('4'), text(' ملايين، '), math('0'), text(' مئات آلاف، '), math('8'), text(' عشرات آلاف، '), math('0'), text(' آلاف، '), math('5'), text(' مئات، '), math('0'), text(' عشرات، '), math('0'), text(' آحاد.')),
+        rich(text('الأصفار أربعة، وقيمة '), math('8'), text(' هي '), math('80,000'), text('، وقيمة '), math('5'), text(' هي '), math('500'), text('.')),
+        rich(text('مجموعة الوحدات هي '), math('500'), text('، وفيها الرقم غير الصفري '), math('5'), text('، فالعبارة الأخيرة خاطئة.')),
+      ],
+      finalAnswer: rich(text('العبارات الأربع الأولى صحيحة.')),
+    },
+    originalityNote: 'يجمع قيمة منزلة وعدّ أصفار وحكماً على مجموعة الوحدات في عدد واحد، مع مشتّت دقيق عن المجموعة الخالية.',
+  }),
+  q(19, [NATURAL], {
+    type: 'error-analysis', difficulty: 'advanced',
+    prompt: rich(text('كتب طالب العبارة اللفظية «ستّة ملايين وسبعة آلاف وخمسون» بالأرقام. اختر التشخيص والتصحيح.')),
+    concepts: ['standard-and-expanded-form'], skills: ['diagnose-word-form'], sourceConcepts: ['place-value-millions'],
+    coverage: { commonErrors: ['drop-empty-groups'] },
+    studentWork: rich(text('ستّة ملايين وسبعة آلاف وخمسون '), math('= 6,750')),
+    diagnoses: [
+      optionText('q19-d1', 'لم يحجز المنازل الخالية بالأصفار، فجمع الأرقام في خانات متجاورة'),
+      optionText('q19-d2', 'الخطأ في قراءة كلمة «ملايين» فقط، أمّا الكتابة فصحيحة'),
+    ],
+    corrections: [option('q19-c1', math('6,007,050')), option('q19-c2', math('6,700,500'))],
+    answer: { diagnosisId: 'q19-d1', correctionId: 'q19-c1' },
+    solution: {
+      idea: rich(text('كلّ مجموعة بعد الملايين تُكتب في ثلاث خانات، والمنازل الغائبة تُملأ بالأصفار.')),
+      steps: [
+        rich(text('ستّة ملايين ⇐ '), math('6'), text(' في مجموعة الملايين.')),
+        rich(text('سبعة آلاف ⇐ مجموعة الآلاف '), math('007'), text('.')),
+        rich(text('خمسون ⇐ مجموعة الوحدات '), math('050'), text('.')),
+      ],
+      finalAnswer: rich(math('6,007,050')),
+      commonError: rich(text('كتابة الأرقام متلاصقة من دون حجز المنازل الخالية.')),
+    },
+    originalityNote: 'يحلّل خطأ انتقال من اللفظ إلى الرقم في عدد فيه مجموعتان ناقصتان، لا خطأ في اختيار منزلة واحدة.',
+  }),
+  q(20, [NATURAL], {
+    type: 'single-choice', difficulty: 'thinking',
+    prompt: rich(text('العددان '), math('5,274,000'), text(' و'), math('5,274,900'), text(' متساويان في كلّ المنازل ما عدا منزلة واحدة. أيّ تفسير يحدّد الأكبر تحديداً صحيحاً؟')),
+    concepts: ['comparing-numbers'], skills: ['compare-by-first-differing-digit'], sourceConcepts: ['place-value-millions'],
+    coverage: { thinking: ['reverse-reasoning'] },
+    options: [
+      optionText('q20-a', 'الأكبر هو الثاني لأنّ أوّل منزلة مختلفة من اليسار هي المئات، وفيها 9 أكبر من 0'),
+      optionText('q20-b', 'الأكبر هو الأوّل لأنّ عدد أصفاره أكثر'),
+      optionText('q20-c', 'العددان متساويان لأنّ مجموعتي الملايين والآلاف متطابقتان'),
+      optionText('q20-d', 'لا يمكن المقارنة قبل تقريب العددين'),
+    ],
+    answer: 'q20-a',
+    solution: {
+      idea: rich(text('المقارنة تبدأ من اليسار وتتوقّف عند أوّل منزلة مختلفة.')),
+      steps: [
+        rich(text('مجموعتا الملايين والآلاف متطابقتان، فلا تحسمان المقارنة.')),
+        rich(text('أوّل اختلاف في منزلة المئات: '), math('9 > 0'), text('.')),
+        rich(text('إذن '), math('5,274,900 > 5,274,000'), text('.')),
+      ],
+      finalAnswer: rich(text('الثاني أكبر، والسبب أوّل منزلة مختلفة من اليسار.')),
+      commonError: rich(text('الحكم بعدد الأصفار أو باللجوء إلى التقريب.')),
+    },
+    originalityNote: 'يطلب التفسير لا النتيجة، ويضع مشتّتاً يستعمل التقريب في غير موضعه لربط الدرسين الثالث والرابع ذهنياً.',
+  }),
+
+  /* ------------------------------------------------- الدرس 4: تقريب الأعداد الطبيعية */
+  q(21, [ROUNDING], {
+    type: 'single-choice', difficulty: 'basic',
+    prompt: rich(text('عند التقريب إلى أقرب ألف، أيّ رقم هو رقم القرار الذي ننظر إليه؟')),
+    concepts: ['rounding-decision-digit'], skills: ['identify-decision-digit'], sourceConcepts: ['rounding-rule'],
+    options: [optionText('q21-a', 'رقم المئات'), optionText('q21-b', 'رقم العشرات'), optionText('q21-c', 'رقم الآلاف نفسه'), optionText('q21-d', 'رقم الآحاد')],
+    answer: 'q21-a',
+    solution: {
+      idea: rich(text('رقم القرار هو الرقم الذي يلي منزلة التقريب مباشرةً على يمينها.')),
+      steps: [
+        rich(text('منزلة التقريب هي الآلاف.')),
+        rich(text('الرقم الذي على يمينها مباشرةً هو رقم المئات.')),
+      ],
+      finalAnswer: rich(text('رقم المئات.')),
+      commonError: rich(text('النظر إلى رقم المنزلة نفسها بدل الرقم الذي يليها.')),
+    },
+    originalityNote: 'يسأل عن موقع رقم القرار بالاسم في منزلة الآلاف تحديداً، من دون عدد معيّن ولا مطابقة جدولية.',
+  }),
+  q(22, [ROUNDING], {
+    type: 'numeric', difficulty: 'basic',
+    prompt: rich(text('قرّب العدد '), math('7,463'), text(' إلى أقرب مئة.')),
+    concepts: ['rounding-to-place'], skills: ['round-to-hundred'], sourceConcepts: ['rounding-rule'],
+    answer: { expected: '7500', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('ننظر إلى رقم العشرات لنقرّر رفع المئات أو إبقاءها.')),
+      steps: [
+        rich(text('رقم العشرات '), math('6'), text('، وهو '), math('≥ 5'), text(' ⇐ نرفع المئات.')),
+        rich(math('74'), text(' مئة تصير '), math('75'), text(' مئة ⇐ '), math('7,500'), text('.')),
+      ],
+      finalAnswer: rich(math('7,500')),
+      commonError: rich(text('كتابة '), math('7,400'), text(' بالنظر إلى رقم الآحاد.')),
+    },
+    originalityNote: 'تقريب مباشر إلى أقرب مئة بعدد رباعي جديد، والناتج يتطلّب رفع المئات لا إبقاءها.',
+  }),
+  q(23, [ROUNDING], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('قرّب العدد '), math('2,849,000'), text(' إلى أقرب مئة ألف.')),
+    concepts: ['rounding-to-place'], skills: ['round-to-hundred-thousand'], sourceConcepts: ['rounding-rule'],
+    answer: { expected: '2800000', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('منزلة التقريب مئات الآلاف، ورقم القرار هو رقم عشرات الآلاف.')),
+      steps: [
+        rich(text('مئات الآلاف '), math('8'), text('، ورقم القرار (عشرات الآلاف) '), math('4'), text('.')),
+        rich(math('4 < 5'), text(' ⇐ تبقى مئات الآلاف كما هي وتصبح بقية المنازل أصفاراً.')),
+      ],
+      finalAnswer: rich(math('2,800,000')),
+      commonError: rich(text('رفع المئات إلى '), math('2,900,000'), text(' بالنظر إلى الرقم '), math('9'), text(' البعيد عن منزلة القرار.')),
+    },
+    originalityNote: 'يضع رقماً كبيراً مضلّلاً بعيداً عن منزلة القرار ليختبر الالتزام بالرقم المجاور وحده.',
+  }),
+  q(24, [ROUNDING], {
+    type: 'true-false', difficulty: 'medium',
+    prompt: rich(text('تقريب العدد '), math('6,500'), text(' إلى أقرب ألف يعطي '), math('7,000'), text('.')),
+    concepts: ['rounding-decision-digit'], skills: ['apply-five-rule'], sourceConcepts: ['rounding-rule'],
+    answer: true,
+    solution: {
+      idea: rich(text('القاعدة: إذا كان رقم القرار '), math('5'), text(' أو أكبر نرفع منزلة التقريب.')),
+      steps: [
+        rich(text('رقم القرار هو رقم المئات '), math('5'), text('.')),
+        rich(text('إذن نرفع الآلاف من '), math('6'), text(' إلى '), math('7'), text('.')),
+      ],
+      finalAnswer: rich(text('صحيح.')),
+    },
+    originalityNote: 'يختبر الحالة الحدّية التي يكون فيها رقم القرار خمسة بالضبط، في صيغة حكم على نتيجة جاهزة.',
+  }),
+  q(25, [ROUNDING], {
+    type: 'matching', difficulty: 'medium',
+    prompt: rich(text('العدد '), math('48,372'), text('. طابق كلّ منزلة تقريب مع ناتجها.')),
+    concepts: ['rounding-to-place'], skills: ['match-place-to-result'], sourceConcepts: ['rounding-rule'],
+    left: [optionText('q25-l1', 'إلى أقرب عشرة'), optionText('q25-l2', 'إلى أقرب مئة'), optionText('q25-l3', 'إلى أقرب ألف')],
+    right: [option('q25-r1', math('48,000')), option('q25-r2', math('48,370')), option('q25-r3', math('48,400'))],
+    answer: [
+      { leftId: 'q25-l1', rightId: 'q25-r2' },
+      { leftId: 'q25-l2', rightId: 'q25-r3' },
+      { leftId: 'q25-l3', rightId: 'q25-r1' },
+    ],
+    solution: {
+      idea: rich(text('لكلّ منزلة تقريب رقم قرار مختلف من العدد نفسه.')),
+      steps: [
+        rich(text('أقرب عشرة: رقم القرار '), math('2'), text(' ⇐ '), math('48,370'), text('.')),
+        rich(text('أقرب مئة: رقم القرار '), math('7'), text(' ⇐ '), math('48,400'), text('.')),
+        rich(text('أقرب ألف: رقم القرار '), math('3'), text(' ⇐ '), math('48,000'), text('.')),
+      ],
+      finalAnswer: rich(math('48,370'), text('، '), math('48,400'), text('، '), math('48,000'), text('.')),
+    },
+    originalityNote: 'يقرّب العدد نفسه إلى ثلاث منازل مختلفة في سؤال واحد لإبراز تغيّر رقم القرار.',
+  }),
+  q(26, [ROUNDING], {
+    type: 'multi-select', difficulty: 'advanced',
+    prompt: rich(text('اختر كلّ عدد يعطي '), math('5,000'), text(' عند تقريبه إلى أقرب ألف.')),
+    concepts: ['rounding-range'], skills: ['select-numbers-with-same-rounding'], sourceConcepts: ['rounding-rule'],
+    options: [option('q26-a', math('4,500')), option('q26-b', math('5,499')), option('q26-c', math('4,499')), option('q26-d', math('5,501')), option('q26-e', math('4,999'))],
+    answer: ['q26-a', 'q26-b', 'q26-e'],
+    solution: {
+      idea: rich(text('الأعداد التي تُقرَّب إلى '), math('5,000'), text(' تقع بين '), math('4,500'), text(' و'), math('5,499'), text('.')),
+      steps: [
+        rich(math('4,500'), text(' و'), math('4,999'), text(': رقم القرار '), math('≥ 5'), text(' ⇐ ترتفع إلى '), math('5,000'), text('.')),
+        rich(math('5,499'), text(': رقم القرار '), math('4'), text(' ⇐ تبقى '), math('5,000'), text('.')),
+        rich(math('4,499'), text(' تُقرَّب إلى '), math('4,000'), text('، و'), math('5,501'), text(' تُقرَّب إلى '), math('6,000'), text('.')),
+      ],
+      finalAnswer: rich(text('الأعداد: '), math('4,500'), text(' و'), math('5,499'), text(' و'), math('4,999'), text('.')),
+    },
+    originalityNote: 'يبني مجال الأعداد التي تشترك في ناتج تقريب واحد، بأعداد حدّية من الجهتين صُمّمت لهذا السؤال.',
+  }),
+  q(27, [ROUNDING], {
+    type: 'error-analysis', difficulty: 'advanced',
+    prompt: rich(text('قرّب طالب العدد '), math('7,352,800'), text(' إلى أقرب مئة ألف. اختر التشخيص والتصحيح.')),
+    concepts: ['rounding-decision-digit'], skills: ['diagnose-wrong-decision-digit'], sourceConcepts: ['rounding-rule'],
+    coverage: { commonErrors: ['wrong-decision-digit'] },
+    studentWork: rich(math('7,352,800'), text(' ⇐ '), math('7,000,000'), text(' لأنّ رقم مئات الآلاف '), math('3'), text(' أصغر من '), math('5')),
+    diagnoses: [
+      optionText('q27-d1', 'نظر إلى رقم منزلة التقريب نفسها بدل الرقم الذي على يمينها'),
+      optionText('q27-d2', 'استعمل رقم القرار الصحيح لكنه أخطأ في كتابة الأصفار'),
+    ],
+    corrections: [option('q27-c1', math('7,400,000')), option('q27-c2', math('7,300,000'))],
+    answer: { diagnosisId: 'q27-d1', correctionId: 'q27-c1' },
+    solution: {
+      idea: rich(text('رقم القرار يقع دائماً على يمين منزلة التقريب مباشرةً.')),
+      steps: [
+        rich(text('منزلة التقريب: مئات الآلاف وقيمتها '), math('3'), text('؛ ورقم القرار هو عشرات الآلاف '), math('5'), text('.')),
+        rich(math('5 ≥ 5'), text(' ⇐ نرفع مئات الآلاف من '), math('3'), text(' إلى '), math('4'), text('.')),
+        rich(text('الناتج '), math('7,400,000'), text('.')),
+      ],
+      finalAnswer: rich(text('التشخيص: رقم قرار خاطئ؛ والتصحيح: '), math('7,400,000'), text('.')),
+      commonError: rich(text('الخلط بين منزلة التقريب ومنزلة القرار.')),
+    },
+    originalityNote: 'يعالج خطأ اختيار رقم القرار في التقريب إلى أقرب مئة ألف بعدد سباعي جديد ونتيجة خاطئة مختلفة.',
+  }),
+  q(28, [ROUNDING, NATURAL], {
+    type: 'single-choice', difficulty: 'thinking',
+    prompt: rich(text('عدد طبيعي قُرِّب إلى أقرب ألف فكان الناتج '), math('36,000'), text('. ما أكبر عدد طبيعي يمكن أن يكون قبل التقريب؟')),
+    concepts: ['rounding-range', 'place-value'], skills: ['find-largest-original-number'],
+    sourceConcepts: ['rounding-rule', 'place-value-millions'],
+    coverage: { thinking: ['reverse-reasoning', 'cross-lesson-synthesis'] },
+    options: [option('q28-a', math('36,499')), option('q28-b', math('36,500')), option('q28-c', math('36,999')), option('q28-d', math('35,999'))],
+    answer: 'q28-a',
+    solution: {
+      idea: rich(text('نبحث عن حدود المجال الذي يُقرَّب إلى '), math('36,000'), text('.')),
+      steps: [
+        rich(text('الأعداد التي تُقرَّب إلى '), math('36,000'), text(' تبدأ من '), math('35,500'), text(' وتنتهي عند '), math('36,499'), text('.')),
+        rich(math('36,500'), text(' يُقرَّب إلى '), math('37,000'), text('، فلا يصلح.')),
+      ],
+      finalAnswer: rich(math('36,499')),
+      commonError: rich(text('اختيار '), math('36,999'), text(' ظنّاً أن كلّ عدد يبدأ بـ'), math('36'), text(' يُقرَّب إلى '), math('36,000'), text('.')),
+    },
+    originalityNote: 'سؤال عكسي يبحث عن الحدّ الأعلى لمجال التقريب، ويستعمل القيمة المنزلية لتبرير الحدّ.',
+  }),
+
+  /* ------------------------------------------------- الدرس 5: جمع الأعداد الطبيعية وطرحها */
+  q(29, [ADD_SUB], {
+    type: 'numeric', difficulty: 'basic',
+    prompt: rich(text('احسب ناتج الجمع '), math('45,308 + 27,694'), text('.')),
+    concepts: ['column-addition'], skills: ['add-with-carrying'], sourceConcepts: ['column-add-subtract'],
+    answer: { expected: '73002', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('نجمع عموداً عموداً من اليمين وننقل الحمل.')),
+      steps: [
+        rich(math('8 + 4 = 12'), text(' ⇐ نكتب '), math('2'), text(' وننقل '), math('1'), text('.')),
+        rich(text('نتابع الأعمدة مع الحمل حتى عشرات الآلاف.')),
+        rich(text('الناتج '), math('73,002'), text('.')),
+      ],
+      finalAnswer: rich(math('73,002')),
+      commonError: rich(text('إهمال الحمل في عمود المئات فينقص الناتج '), math('100'), text('.')),
+    },
+    originalityNote: 'جمع عمودي بعددين جديدين ينتج عنهما صفران متتاليان في الوسط، ما يبرز أثر الحمل.',
+  }),
+  q(30, [ADD_SUB], {
+    type: 'numeric', difficulty: 'basic',
+    prompt: rich(text('في مكتبة مدرسة '), math('80,000'), text(' كتاب، أُعير منها '), math('46,275'), text(' كتاباً. كم كتاباً بقي على الرفوف؟')),
+    concepts: ['column-subtraction'], skills: ['subtract-with-borrowing'], sourceConcepts: ['column-add-subtract'],
+    coverage: { applications: ['school-and-market-data'] },
+    answer: { expected: '33725', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('الباقي يُحسب بالطرح، والأصفار المتتالية تفرض استلافاً متسلسلاً.')),
+      steps: [
+        rich(text('نستلف من عشرات الآلاف عبر الأصفار حتى الآحاد.')),
+        rich(math('80,000 − 46,275 = 33,725'), text('.')),
+        rich(text('التحقّق: '), math('33,725 + 46,275 = 80,000'), text('.')),
+      ],
+      finalAnswer: rich(math('33,725'), text(' كتاباً.')),
+      commonError: rich(text('طرح الرقم الأصغر من الأكبر في كلّ عمود من دون استلاف.')),
+    },
+    originalityNote: 'مسألة مكتبة مدرسية يُطرح فيها من عدد كلّ منازله أصفار، لاختبار الاستلاف المتسلسل في سياق واقعي.',
+  }),
+  q(31, [ADD_SUB], {
+    type: 'single-choice', difficulty: 'medium',
+    prompt: rich(text('أيّ معادلة تصلح للتحقّق من صحّة العملية '), math('62,415 − 28,930 = 33,485'), text('؟')),
+    concepts: ['inverse-check'], skills: ['choose-inverse-check'], sourceConcepts: ['column-add-subtract'],
+    options: [
+      option('q31-a', math('33,485 + 28,930 = 62,415')),
+      option('q31-b', math('62,415 + 28,930 = 33,485')),
+      option('q31-c', math('33,485 − 28,930 = 62,415')),
+      option('q31-d', math('62,415 + 33,485 = 28,930')),
+    ],
+    answer: 'q31-a',
+    solution: {
+      idea: rich(text('الجمع عملية عكسية للطرح: الفرق + المطروح = المطروح منه.')),
+      steps: [
+        rich(text('الفرق '), math('33,485'), text(' والمطروح '), math('28,930'), text('.')),
+        rich(math('33,485 + 28,930 = 62,415'), text(' وهو المطروح منه ⇐ العملية صحيحة.')),
+      ],
+      finalAnswer: rich(math('33,485 + 28,930 = 62,415')),
+    },
+    originalityNote: 'يختار معادلة التحقّق الصحيحة من بين ثلاث معادلات معكوسة الترتيب، بأعداد مستحدثة لهذا الاختبار.',
+  }),
+  q(32, [ADD_SUB], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('أوجد العدد المجهول: '), math('□ + 36,480 = 91,205'), text('.')),
+    concepts: ['missing-addend'], skills: ['find-missing-addend'], sourceConcepts: ['column-add-subtract'],
+    answer: { expected: '54725', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('الحدّ المجهول في الجمع يُوجد بالطرح.')),
+      steps: [
+        rich(math('91,205 − 36,480 = 54,725'), text('.')),
+        rich(text('التحقّق: '), math('54,725 + 36,480 = 91,205'), text('.')),
+      ],
+      finalAnswer: rich(math('54,725')),
+      commonError: rich(text('جمع العددين المعطيين بدل طرحهما.')),
+    },
+    originalityNote: 'معادلة بحدّ مجهول تتطلّب طرحاً فيه استلاف، مع خطوة تحقّق صريحة بالجمع.',
+  }),
+  q(33, [ADD_SUB], {
+    type: 'error-analysis', difficulty: 'medium',
+    prompt: rich(text('راجع عملية الطرح الآتية التي كتبها متعلّم، ثمّ اختر التشخيص والتصحيح.')),
+    concepts: ['column-subtraction'], skills: ['diagnose-missing-borrow'], sourceConcepts: ['column-add-subtract'],
+    coverage: { commonErrors: ['ignore-borrow'] },
+    studentWork: rich(math('70,412 − 35,268 = 45,256')),
+    diagnoses: [
+      optionText('q33-d1', 'طرح في كلّ عمود الرقم الأصغر من الأكبر بدل الاستلاف من المنزلة التالية'),
+      optionText('q33-d2', 'أخطأ في ترتيب العددين فقط، والطريقة صحيحة'),
+    ],
+    corrections: [option('q33-c1', math('35,144')), option('q33-c2', math('45,144'))],
+    answer: { diagnosisId: 'q33-d1', correctionId: 'q33-c1' },
+    solution: {
+      idea: rich(text('عند كون رقم المطروح أكبر نستلف من المنزلة التالية، ولا نعكس الطرح.')),
+      steps: [
+        rich(text('في عمود الآحاد '), math('2 < 8'), text(' ⇐ نستلف.')),
+        rich(text('بإتمام الاستلاف في كلّ الأعمدة: '), math('70,412 − 35,268 = 35,144'), text('.')),
+        rich(text('التحقّق: '), math('35,144 + 35,268 = 70,412'), text('.')),
+      ],
+      finalAnswer: rich(math('35,144')),
+      commonError: rich(text('قلب الطرح داخل العمود للحصول على رقم موجب.')),
+    },
+    originalityNote: 'يشخّص قلب الطرح داخل الأعمدة بأعداد جديدة، ويقدّم ناتجاً خاطئاً قريباً من الصحيح ليختبر التحقّق لا التخمين.',
+  }),
+  q(34, [ADD_SUB], {
+    type: 'numeric', difficulty: 'advanced',
+    prompt: rich(text('في مستودع '), math('128,400'), text(' علبة، أُضيفت '), math('76,950'), text(' علبة ثمّ أُخرجت '), math('39,275'), text(' علبة. كم علبة بقيت؟')),
+    concepts: ['column-addition', 'column-subtraction'], skills: ['solve-two-step-problem'], sourceConcepts: ['column-add-subtract'],
+    coverage: { applications: ['school-and-market-data'] },
+    answer: { expected: '166075', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('نرتّب العمليتين بحسب تسلسل الأحداث: إضافة ثمّ إخراج.')),
+      steps: [
+        rich(math('128,400 + 76,950 = 205,350'), text('.')),
+        rich(math('205,350 − 39,275 = 166,075'), text('.')),
+      ],
+      finalAnswer: rich(math('166,075'), text(' علبة.')),
+      commonError: rich(text('طرح العددين الأخيرين أوّلاً فيختلّ ترتيب الأحداث.')),
+    },
+    originalityNote: 'مسألة مخزون بخطوتين بأعداد ستّية جديدة، ويختبر ترتيب العمليتين قبل الحساب.',
+  }),
+  q(35, [ADD_SUB], {
+    type: 'multi-select', difficulty: 'advanced',
+    prompt: rich(text('إذا كان '), math('47,250 + 38,675 = 85,925'), text('، فاختر كلّ معادلة صحيحة يمكن استعمالها للتحقّق.')),
+    concepts: ['inverse-check'], skills: ['select-valid-checks'], sourceConcepts: ['column-add-subtract'],
+    options: [
+      option('q35-a', math('85,925 − 38,675 = 47,250')),
+      option('q35-b', math('85,925 − 47,250 = 38,675')),
+      option('q35-c', math('38,675 + 47,250 = 85,925')),
+      option('q35-d', math('85,925 + 47,250 = 38,675')),
+    ],
+    answer: ['q35-a', 'q35-b', 'q35-c'],
+    solution: {
+      idea: rich(text('للتحقّق من الجمع نستعمل الطرح العكسي أو إبدال الحدّين.')),
+      steps: [
+        rich(text('طرح أحد الحدّين من المجموع يعيد الحدّ الآخر.')),
+        rich(text('تبديل ترتيب الحدّين لا يغيّر المجموع.')),
+        rich(text('أمّا جمع المجموع مع أحد الحدّين فيعطي عدداً أكبر، فهو تحقّق خاطئ.')),
+      ],
+      finalAnswer: rich(text('المعادلات الثلاث الأولى.')),
+    },
+    originalityNote: 'يميّز ثلاث صيغ تحقّق صحيحة من صيغة رابعة تجمع المجموع مع أحد حدّيه، بأعداد جديدة.',
+  }),
+  q(36, [ADD_SUB, ROUNDING], {
+    type: 'numeric', difficulty: 'thinking',
+    prompt: rich(text('احسب '), math('58,740 + 24,615'), text(' ثمّ قرّب الناتج إلى أقرب ألف.')),
+    concepts: ['column-addition', 'rounding-to-place'], skills: ['round-a-computed-sum'],
+    sourceConcepts: ['column-add-subtract', 'rounding-rule'],
+    coverage: { thinking: ['cross-lesson-synthesis'] },
+    answer: { expected: '83000', format: 'integer', unitPolicy: { kind: 'none' } },
+    solution: {
+      idea: rich(text('نحسب أوّلاً بدقّة ثمّ نقرّب الناتج، لا العكس.')),
+      steps: [
+        rich(math('58,740 + 24,615 = 83,355'), text('.')),
+        rich(text('رقم القرار للتقريب إلى أقرب ألف هو رقم المئات '), math('3'), text('، وهو '), math('< 5'), text('.')),
+        rich(text('إذن الناتج المقرَّب '), math('83,000'), text('.')),
+      ],
+      finalAnswer: rich(math('83,000')),
+      commonError: rich(text('تقريب كلّ حدّ قبل الجمع فينتج '), math('84,000'), text(' ويختلف عن تقريب الناتج.')),
+    },
+    originalityNote: 'سؤال تركيبي يوصل الجمع بالتقريب ويكشف الفرق بين تقريب الحدود وتقريب الناتج.',
+  }),
+
+  /* ------------------------------------------------- الدرس 6: قياس الزوايا */
+  q(37, [ANGLES], {
+    type: 'numeric', difficulty: 'basic',
+    prompt: rich(text('زاوية قائمة قُسمت إلى زاويتين متجاورتين، قياس إحداهما '), math('25°'), text('. ما قياس الأخرى؟')),
+    concepts: ['angle-addition'], skills: ['split-right-angle'], sourceConcepts: ['angle-measure-and-types'],
+    answer: { expected: '65', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: DEGREE_UNITS } },
+    solution: {
+      idea: rich(text('الزاويتان المتجاورتان تكمّلان الزاوية الكبرى.')),
+      steps: [
+        rich(text('قياس الزاوية القائمة '), math('90°'), text('.')),
+        rich(math('90° − 25° = 65°'), text('.')),
+      ],
+      finalAnswer: rich(math('65°')),
+      commonError: rich(text('الطرح من '), math('180°'), text(' كما في الزاوية المستقيمة.')),
+    },
+    originalityNote: 'يجزّئ زاوية قائمة لا مستقيمة، ليختبر التمييز بين القياسين عند تطبيق الجمع والطرح على الزوايا.',
+  }),
+  q(38, [ANGLES], {
+    type: 'ordering', difficulty: 'basic',
+    prompt: rich(text('رتّب الزوايا الآتية من الأصغر قياساً إلى الأكبر.')),
+    concepts: ['angle-types'], skills: ['order-angles-by-size'], sourceConcepts: ['angle-measure-and-types'],
+    items: [option('q38-a', math('125°')), option('q38-b', math('35°')), option('q38-c', math('180°')), option('q38-d', math('90°'))],
+    answer: ['q38-b', 'q38-d', 'q38-a', 'q38-c'],
+    solution: {
+      idea: rich(text('ترتيب القياسات هو نفسه ترتيب الأنواع: حادّة ثمّ قائمة ثمّ منفرجة ثمّ مستقيمة.')),
+      steps: [
+        rich(math('35°'), text(' حادّة، '), math('90°'), text(' قائمة.')),
+        rich(math('125°'), text(' منفرجة، '), math('180°'), text(' مستقيمة.')),
+      ],
+      finalAnswer: rich(math('35° < 90° < 125° < 180°')),
+    },
+    originalityNote: 'يرتّب أربعة قياسات تمثّل الأنواع الأربعة، فيدمج الترتيب العددي بالتصنيف في مهمّة واحدة.',
+  }),
+  q(39, [ANGLES], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('زاويتان متجاورتان تكوّنان زاوية مستقيمة، وقياس إحداهما يزيد على الأخرى بـ'), math('20°'), text('. ما قياس الزاوية الأكبر؟')),
+    concepts: ['angle-addition'], skills: ['solve-angle-difference'], sourceConcepts: ['angle-measure-and-types'],
+    answer: { expected: '100', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: DEGREE_UNITS } },
+    solution: {
+      idea: rich(text('نوزّع '), math('180°'), text(' على زاويتين فرقهما معلوم.')),
+      steps: [
+        rich(text('لو تساوتا لكانت كلّ واحدة '), math('90°'), text('.')),
+        rich(text('الفرق '), math('20°'), text(' يوزَّع مناصفةً: '), math('90° + 10° = 100°'), text(' للأكبر و'), math('90° − 10° = 80°'), text(' للأصغر.')),
+        rich(text('التحقّق: '), math('100° + 80° = 180°'), text(' والفرق '), math('20°'), text('.')),
+      ],
+      finalAnswer: rich(math('100°')),
+      commonError: rich(text('إضافة '), math('20°'), text(' إلى '), math('90°'), text(' مباشرةً من دون توزيع الفرق مناصفةً.')),
+    },
+    originalityNote: 'مسألة مجموع وفرق على زاويتين متجاورتين، وهي بنية حسابية لم ترد في أسئلة قياس الزوايا السابقة.',
+  }),
+  q(40, [ANGLES], {
+    type: 'matching', difficulty: 'medium',
+    prompt: rich(text('طابق كلّ موقف مع نوع الزاوية التي يصنعها.')),
+    concepts: ['angle-types'], skills: ['match-situation-to-angle-type'], sourceConcepts: ['angle-measure-and-types'],
+    coverage: { applications: ['real-life-measurement'] },
+    left: [
+      optionText('q40-l1', 'عقربا الساعة عند الثالثة تماماً'),
+      optionText('q40-l2', 'باب فُتح قليلاً عن إطاره'),
+      optionText('q40-l3', 'مسطرة مستقيمة مفرودة على الطاولة'),
+    ],
+    right: [optionText('q40-r1', 'زاوية حادّة'), optionText('q40-r2', 'زاوية مستقيمة'), optionText('q40-r3', 'زاوية قائمة')],
+    answer: [
+      { leftId: 'q40-l1', rightId: 'q40-r3' },
+      { leftId: 'q40-l2', rightId: 'q40-r1' },
+      { leftId: 'q40-l3', rightId: 'q40-r2' },
+    ],
+    solution: {
+      idea: rich(text('نقدّر فتحة كلّ موقف ثمّ نصنّفها.')),
+      steps: [
+        rich(text('عقربا الساعة عند الثالثة يصنعان '), math('90°'), text(' ⇐ قائمة.')),
+        rich(text('فتحة صغيرة للباب ⇐ أقلّ من '), math('90°'), text(' ⇐ حادّة.')),
+        rich(text('الفرد الكامل ⇐ '), math('180°'), text(' ⇐ مستقيمة.')),
+      ],
+      finalAnswer: rich(text('قائمة، ثمّ حادّة، ثمّ مستقيمة.')),
+    },
+    originalityNote: 'ينقل تصنيف الزوايا إلى ثلاثة مواقف من الحياة اليومية بدل قياسات مجرّدة.',
+  }),
+  q(41, [ANGLES], {
+    type: 'multi-select', difficulty: 'medium',
+    prompt: rich(text('في الزاوية '), math('∠ABC'), text('، اختر كلّ عبارة صحيحة.')),
+    concepts: ['angle-parts-and-naming'], skills: ['name-angle-correctly'], sourceConcepts: ['angle-measure-and-types'],
+    options: [
+      option('q41-a', text('رأسها هو '), math('B')),
+      option('q41-b', text('ضلعاها هما '), math('[BA)'), text(' و'), math('[BC)')),
+      option('q41-c', text('يمكن تسميتها '), math('∠CBA')),
+      option('q41-d', text('يمكن تسميتها '), math('∠BAC')),
+    ],
+    answer: ['q41-a', 'q41-b', 'q41-c'],
+    solution: {
+      idea: rich(text('الحرف الأوسط في تسمية الزاوية هو الرأس دائماً.')),
+      steps: [
+        rich(text('في '), math('∠ABC'), text(' الرأس '), math('B'), text(' والضلعان ينطلقان منه.')),
+        rich(math('∠CBA'), text(' تسمية صحيحة لأن الرأس بقي في الوسط.')),
+        rich(math('∠BAC'), text(' تجعل الرأس '), math('A'), text('، فهي زاوية أخرى.')),
+      ],
+      finalAnswer: rich(text('العبارات الثلاث الأولى صحيحة.')),
+      commonError: rich(text('تبديل موضع حرف الرأس عند إعادة التسمية.')),
+    },
+    originalityNote: 'يجمع الرأس والضلعين وإعادة التسمية الصحيحة والخاطئة في بند واحد متعدّد الاختيار.',
+  }),
+  q(42, [ANGLES], {
+    type: 'numeric', difficulty: 'advanced',
+    prompt: rich(text('زاوية مستقيمة قُسمت إلى ثلاث زوايا متجاورة قياسا اثنتين منها '), math('45°'), text(' و'), math('70°'), text('. ما قياس الثالثة؟')),
+    concepts: ['angle-addition'], skills: ['split-straight-angle'], sourceConcepts: ['angle-measure-and-types'],
+    answer: { expected: '65', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: DEGREE_UNITS } },
+    solution: {
+      idea: rich(text('مجموع الزوايا المتجاورة يساوي قياس الزاوية الكبرى.')),
+      steps: [
+        rich(math('45° + 70° = 115°'), text('.')),
+        rich(math('180° − 115° = 65°'), text('.')),
+      ],
+      finalAnswer: rich(math('65°')),
+      commonError: rich(text('طرح زاوية واحدة فقط من '), math('180°'), text('.')),
+    },
+    originalityNote: 'يوسّع جمع الزوايا المتجاورة إلى ثلاثة أجزاء، وهو موقف أكثر تركيباً من جزأين.',
+  }),
+  q(43, [ANGLES], {
+    type: 'error-analysis', difficulty: 'advanced',
+    prompt: rich(text('قال متعلّم عن زاوية قياسها '), math('90°'), text(' إنها حادّة. اختر التشخيص والتصحيح.')),
+    concepts: ['angle-types'], skills: ['diagnose-angle-type'], sourceConcepts: ['angle-measure-and-types'],
+    coverage: { commonErrors: ['confuse-angle-types'] },
+    studentWork: rich(text('الزاوية '), math('90°'), text(' حادّة لأنها أصغر من '), math('180°')),
+    diagnoses: [
+      optionText('q43-d1', 'استعمل حدّاً خاطئاً: الزاوية الحادّة أصغر من القائمة لا من المستقيمة'),
+      optionText('q43-d2', 'التصنيف صحيح، والخطأ في قراءة المنقلة فقط'),
+    ],
+    corrections: [optionText('q43-c1', 'الزاوية قائمة، لأن قياسها يساوي 90° بالضبط'), optionText('q43-c2', 'الزاوية منفرجة، لأن قياسها أكبر من 45°')],
+    answer: { diagnosisId: 'q43-d1', correctionId: 'q43-c1' },
+    solution: {
+      idea: rich(text('لكلّ نوع حدّ دقيق، ولا يكفي أن يكون القياس أصغر من قيمة ما.')),
+      steps: [
+        rich(text('الحادّة: أصغر من '), math('90°'), text('؛ القائمة: '), math('90°'), text(' بالضبط.')),
+        rich(text('المنفرجة: بين '), math('90°'), text(' و'), math('180°'), text('.')),
+      ],
+      finalAnswer: rich(text('التشخيص: حدّ خاطئ للتصنيف؛ والتصحيح: الزاوية قائمة.')),
+      commonError: rich(text('تعريف الحادّة بأنها «أصغر من المستقيمة».')),
+    },
+    originalityNote: 'يحلّل خطأً في حدود التصنيف لا في قراءة المنقلة، وهو نمط تشخيص جديد في هذا الدرس.',
+  }),
+  q(44, [ANGLES, PARALLELOGRAM], {
+    type: 'numeric', difficulty: 'thinking',
+    prompt: rich(text('في متوازي أضلاع قياس إحدى زواياه '), math('65°'), text('. ما قياس الزاوية المتتالية لها؟')),
+    concepts: ['angle-addition', 'opposite-parts'], skills: ['use-consecutive-angles'],
+    sourceConcepts: ['angle-measure-and-types', 'parallelogram-properties'],
+    coverage: { thinking: ['cross-lesson-synthesis'] },
+    answer: { expected: '115', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: DEGREE_UNITS } },
+    solution: {
+      idea: rich(text('نستعمل علاقة الزوايا المتتالية في متوازي الأضلاع مع حساب الزوايا من درس القياس.')),
+      steps: [
+        rich(text('الزاويتان المتتاليتان في متوازي الأضلاع مجموعهما '), math('180°'), text('.')),
+        rich(math('180° − 65° = 115°'), text('.')),
+        rich(text('التحقّق: الزوايا الأربع '), math('65° + 115° + 65° + 115° = 360°'), text('.')),
+      ],
+      finalAnswer: rich(math('115°')),
+      commonError: rich(text('إعطاء '), math('65°'), text(' لأن الزاويتين المتقابلتين متساويتان، مع أن المطلوب المتتالية.')),
+    },
+    originalityNote: 'سؤال تركيبي يستعمل حساب الزوايا داخل شكل هندسي من درس لاحق في الوحدة نفسها.',
+  }),
+
+  /* ------------------------------------------------- الدرس 7: متوازي الأضلاع */
+  q(45, [PARALLELOGRAM], {
+    type: 'true-false', difficulty: 'basic',
+    prompt: rich(text('في متوازي الأضلاع كلّ ضلعين متقابلين متساويان في الطول.')),
+    concepts: ['opposite-parts'], skills: ['state-opposite-side-property'], sourceConcepts: ['parallelogram-properties'],
+    answer: true,
+    solution: {
+      idea: rich(text('إحدى خاصّتي متوازي الأضلاع تخصّ الأضلاع المتقابلة.')),
+      steps: [
+        rich(text('الخاصّة الأولى: كلّ ضلعين متقابلين متساويان.')),
+        rich(text('الخاصّة الثانية: كلّ زاويتين متقابلتين متساويتان.')),
+      ],
+      finalAnswer: rich(text('صحيح.')),
+    },
+    originalityNote: 'عبارة صواب/خطأ مباشرة عن خاصّة الأضلاع المتقابلة، تمهّد لأسئلة المحيط اللاحقة في هذا الاختبار.',
+  }),
+  q(46, [PARALLELOGRAM], {
+    type: 'single-choice', difficulty: 'basic',
+    prompt: rich(text('أيّ الأشكال الآتية ليس متوازي أضلاع؟')),
+    concepts: ['special-parallelograms'], skills: ['exclude-non-parallelogram'], sourceConcepts: ['parallelogram-properties'],
+    options: [optionText('q46-a', 'شبه المنحرف'), optionText('q46-b', 'المستطيل'), optionText('q46-c', 'المربّع'), optionText('q46-d', 'المعيّن')],
+    answer: 'q46-a',
+    solution: {
+      idea: rich(text('متوازي الأضلاع يشترط زوجين من الأضلاع المتوازية.')),
+      steps: [
+        rich(text('المستطيل والمربّع والمعيّن: كلّ ضلعين متقابلين فيها متوازيان.')),
+        rich(text('شبه المنحرف فيه زوج واحد فقط من الأضلاع المتوازية.')),
+      ],
+      finalAnswer: rich(text('شبه المنحرف.')),
+    },
+    originalityNote: 'يطلب الشكل الشاذّ من بين أربعة أسماء، فيختبر عضوية العائلة بالاستبعاد لا بالتعريف المباشر.',
+  }),
+  q(47, [PARALLELOGRAM], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('في متوازي الأضلاع '), math('ABCD'), text('، المحيط '), math('30 cm'), text(' و'), math('AB = 9 cm'), text('. ما طول '), math('[BC]'), text('؟')),
+    concepts: ['parallelogram-perimeter'], skills: ['find-side-from-perimeter-parallelogram'], sourceConcepts: ['parallelogram-properties'],
+    coverage: { applications: ['workshop-and-frames'] },
+    answer: { expected: '6', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: CM_UNITS } },
+    solution: {
+      idea: rich(text('نصف المحيط يساوي مجموع ضلعين متجاورين.')),
+      steps: [
+        rich(math('30 ÷ 2 = 15'), text(' وهو مجموع '), math('AB + BC'), text('.')),
+        rich(math('15 − 9 = 6'), text('.')),
+        rich(text('التحقّق: '), math('9 + 6 + 9 + 6 = 30'), text('.')),
+      ],
+      finalAnswer: rich(math('6 cm')),
+      commonError: rich(text('قسمة المحيط على '), math('4'), text(' كما في المعيّن.')),
+    },
+    originalityNote: 'يطلب ضلعاً مسمّى بعينه في شكل محدّد الرؤوس انطلاقاً من المحيط، مع تحقّق بالجمع.',
+  }),
+  q(48, [PARALLELOGRAM], {
+    type: 'matching', difficulty: 'medium',
+    prompt: rich(text('في متوازي الأضلاع '), math('ABCD'), text(' المعطى '), math('AB = 7 cm'), text(' و'), math('Â = 110°'), text('. طابق كلّ مطلوب بقيمته.')),
+    concepts: ['opposite-parts'], skills: ['match-given-to-conclusion'], sourceConcepts: ['parallelogram-properties'],
+    left: [
+      option('q48-l1', text('طول '), math('[CD]')),
+      option('q48-l2', text('قياس '), math('Ĉ')),
+      option('q48-l3', text('قياس '), math('B̂')),
+    ],
+    right: [option('q48-r1', math('70°')), option('q48-r2', math('7 cm')), option('q48-r3', math('110°'))],
+    answer: [
+      { leftId: 'q48-l1', rightId: 'q48-r2' },
+      { leftId: 'q48-l2', rightId: 'q48-r3' },
+      { leftId: 'q48-l3', rightId: 'q48-r1' },
+    ],
+    solution: {
+      idea: rich(text('نحدّد لكلّ مطلوب نوع العلاقة: مقابل أم متتالٍ.')),
+      steps: [
+        rich(math('[CD]'), text(' يقابل '), math('[AB]'), text(' ⇐ '), math('7 cm'), text('.')),
+        rich(math('Ĉ'), text(' تقابل '), math('Â'), text(' ⇐ '), math('110°'), text('.')),
+        rich(math('B̂'), text(' متتالية مع '), math('Â'), text(' ⇐ '), math('180° − 110° = 70°'), text('.')),
+      ],
+      finalAnswer: rich(math('7 cm'), text('، '), math('110°'), text('، '), math('70°'), text('.')),
+      commonError: rich(text('إعطاء '), math('B̂'), text(' القيمة '), math('110°'), text(' بالخلط بين المتتالية والمتقابلة.')),
+    },
+    originalityNote: 'يطابق ثلاثة مطلوبات مختلفة النوع (طول، زاوية مقابلة، زاوية متتالية) انطلاقاً من معطيين فقط.',
+  }),
+  q(49, [PARALLELOGRAM], {
+    type: 'single-choice', difficulty: 'medium',
+    prompt: rich(text('ما الذي يميّز المستطيل عن متوازي الأضلاع العامّ؟')),
+    concepts: ['special-parallelograms'], skills: ['identify-rectangle-condition'], sourceConcepts: ['parallelogram-properties'],
+    options: [
+      optionText('q49-a', 'زواياه قائمة'),
+      optionText('q49-b', 'أضلاعه المتقابلة متوازية'),
+      optionText('q49-c', 'أضلاعه المتقابلة متساوية'),
+      optionText('q49-d', 'زواياه المتقابلة متساوية'),
+    ],
+    answer: 'q49-a',
+    solution: {
+      idea: rich(text('الخواصّ المشتركة لا تميّز؛ المميّز هو الشرط الإضافي.')),
+      steps: [
+        rich(text('التوازي والتساوي في الأضلاع والزوايا المتقابلة متحقّقة في كلّ متوازي أضلاع.')),
+        rich(text('الزوايا القائمة هي الشرط الذي يخصّ المستطيل.')),
+      ],
+      finalAnswer: rich(text('زواياه قائمة.')),
+    },
+    originalityNote: 'يعزل الشرط المميّز للمستطيل عن ثلاث خواصّ عامّة، على غرار منطق تمييز المعيّن في الدرس الثامن.',
+  }),
+  q(50, [PARALLELOGRAM], {
+    type: 'multi-select', difficulty: 'advanced',
+    prompt: rich(text('متوازي أضلاع قياس إحدى زواياه '), math('65°'), text('. اختر كلّ عبارة صحيحة عنه.')),
+    concepts: ['opposite-parts'], skills: ['infer-angles-in-parallelogram'], sourceConcepts: ['parallelogram-properties'],
+    coverage: { commonErrors: ['confuse-opposite-consecutive'] },
+    options: [
+      option('q50-a', text('زاويته المقابلة '), math('65°')),
+      option('q50-b', text('زاويتاه المتتاليتان '), math('115°'), text(' لكلٍّ منهما')),
+      option('q50-c', text('مجموع زواياه '), math('360°')),
+      optionText('q50-d', 'أضلاعه الأربعة متساوية'),
+    ],
+    answer: ['q50-a', 'q50-b', 'q50-c'],
+    solution: {
+      idea: rich(text('زاوية واحدة تكفي لتحديد الزوايا الأربع، لكنها لا تقول شيئاً عن الأطوال.')),
+      steps: [
+        rich(text('المقابلة تساويها: '), math('65°'), text('.')),
+        rich(text('المتتاليتان: '), math('180° − 65° = 115°'), text('.')),
+        rich(math('65 + 115 + 65 + 115 = 360'), text('؛ أمّا تساوي الأضلاع الأربعة فيخصّ المعيّن.')),
+      ],
+      finalAnswer: rich(text('العبارات الثلاث الأولى.')),
+    },
+    originalityNote: 'يبني شبكة زوايا متوازي الأضلاع من زاوية واحدة ويضيف مشتّتاً من خواصّ المعيّن لاختبار التمييز بين الشكلين.',
+  }),
+  q(51, [PARALLELOGRAM], {
+    type: 'error-analysis', difficulty: 'advanced',
+    prompt: rich(text('حسب متعلّم محيط متوازي أضلاع ضلعاه المتجاوران '), math('8 cm'), text(' و'), math('5 cm'), text('. اختر التشخيص والتصحيح.')),
+    concepts: ['parallelogram-perimeter'], skills: ['diagnose-perimeter-formula'], sourceConcepts: ['parallelogram-properties'],
+    coverage: { commonErrors: ['perimeter-of-two-sides'] },
+    studentWork: rich(text('المحيط '), math('= 8 + 5 = 13 cm')),
+    diagnoses: [
+      optionText('q51-d1', 'جمع ضلعين فقط، مع أن المحيط مجموع الأضلاع الأربعة'),
+      optionText('q51-d2', 'استعمل الأضلاع الأربعة لكنه أخطأ في الجمع'),
+    ],
+    corrections: [option('q51-c1', math('2 × (8 + 5) = 26 cm')), option('q51-c2', math('8 × 5 = 40 cm'))],
+    answer: { diagnosisId: 'q51-d1', correctionId: 'q51-c1' },
+    solution: {
+      idea: rich(text('المحيط مجموع أطوال الحدود الأربعة للشكل.')),
+      steps: [
+        rich(text('الأضلاع الأربعة: '), math('8, 5, 8, 5'), text('.')),
+        rich(math('8 + 5 + 8 + 5 = 26'), text('، أو '), math('2 × (8 + 5) = 26'), text('.')),
+      ],
+      finalAnswer: rich(math('26 cm')),
+      commonError: rich(text('اعتبار مجموع ضلعين متجاورين محيطاً.')),
+    },
+    originalityNote: 'يشخّص استعمال نصف المحيط مكان المحيط، ويقابله بمشتّت يستعمل الضرب بدل الجمع.',
+  }),
+  q(52, [PARALLELOGRAM, ANGLES], {
+    type: 'single-choice', difficulty: 'thinking',
+    prompt: rich(text('رُسم متوازي أضلاع قياس إحدى زواياه '), math('90°'), text('. ما الذي يمكن تأكيده عن زواياه الأربع؟')),
+    concepts: ['special-parallelograms', 'angle-types'], skills: ['deduce-right-angles'],
+    sourceConcepts: ['parallelogram-properties', 'angle-measure-and-types'],
+    coverage: { thinking: ['cross-lesson-synthesis'] },
+    options: [
+      optionText('q52-a', 'زواياه الأربع قائمة، فالشكل مستطيل'),
+      optionText('q52-b', 'زاويتان قائمتان فقط والأخريان مختلفتان'),
+      optionText('q52-c', 'لا يمكن تحديد شيء من دون معرفة الأطوال'),
+      optionText('q52-d', 'الشكل معيّن بالضرورة'),
+    ],
+    answer: 'q52-a',
+    solution: {
+      idea: rich(text('نطبّق علاقتي التقابل والتتالي معاً على الزاوية المعطاة.')),
+      steps: [
+        rich(text('المقابلة للزاوية القائمة تساويها: '), math('90°'), text('.')),
+        rich(text('المتتاليتان: '), math('180° − 90° = 90°'), text(' لكلٍّ منهما.')),
+        rich(text('إذن الزوايا الأربع قائمة والشكل مستطيل (ويكون مربّعاً إن تساوت أضلاعه).')),
+      ],
+      finalAnswer: rich(text('الزوايا الأربع قائمة، فالشكل مستطيل.')),
+      commonError: rich(text('الاكتفاء بزاويتين قائمتين من دون تطبيق العلاقتين معاً.')),
+    },
+    originalityNote: 'يستنتج نوع الشكل من زاوية واحدة بدمج خاصّتي التقابل والتتالي مع تصنيف الزوايا.',
+  }),
+
+  /* ------------------------------------------------- الدرس 8: المعيّن */
+  q(53, [RHOMBUS], {
+    type: 'true-false', difficulty: 'basic',
+    prompt: rich(text('كلّ معيّن هو متوازي أضلاع.')),
+    concepts: ['rhombus-family'], skills: ['place-rhombus-in-family'], sourceConcepts: ['rhombus-definition-properties'],
+    answer: true,
+    solution: {
+      idea: rich(text('تعريف المعيّن ينطلق من متوازي أضلاع ويضيف شرطاً.')),
+      steps: [
+        rich(text('المعيّن متوازي أضلاع تساوى فيه طولا ضلعين متجاورين.')),
+        rich(text('إذن كلّ خواصّ متوازي الأضلاع تنطبق عليه.')),
+      ],
+      finalAnswer: rich(text('صحيح.')),
+    },
+    originalityNote: 'يثبّت اتجاه الاحتواء بين المعيّن ومتوازي الأضلاع في عبارة واحدة قصيرة قبل الأسئلة الأعقد.',
+  }),
+  q(54, [RHOMBUS], {
+    type: 'single-choice', difficulty: 'basic',
+    prompt: rich(text('أيّ الأشكال الآتية يكون معيّناً دائماً؟')),
+    concepts: ['rhombus-family'], skills: ['identify-always-rhombus'], sourceConcepts: ['rhombus-definition-properties'],
+    options: [optionText('q54-a', 'المربّع'), optionText('q54-b', 'المستطيل'), optionText('q54-c', 'شبه المنحرف'), optionText('q54-d', 'متوازي الأضلاع العامّ')],
+    answer: 'q54-a',
+    solution: {
+      idea: rich(text('نبحث عن الشكل الذي يحقّق شرطَي المعيّن دائماً.')),
+      steps: [
+        rich(text('المربّع متوازي أضلاع وأضلاعه الأربعة متساوية ⇐ معيّن دائماً.')),
+        rich(text('المستطيل غير المربّع ومتوازي الأضلاع العامّ قد لا تتساوى أضلاعهما، وشبه المنحرف ليس متوازي أضلاع.')),
+      ],
+      finalAnswer: rich(text('المربّع.')),
+      commonError: rich(text('استبعاد المربّع لأنّ له اسماً خاصّاً.')),
+    },
+    originalityNote: 'يسأل عن العضوية الدائمة في عائلة المعيّنات، لا عن تسمية شكل مرسوم أو تعليل حالة واحدة.',
+  }),
+  q(55, [RHOMBUS], {
+    type: 'numeric', difficulty: 'medium',
+    prompt: rich(text('في المعيّن '), math('KLMN'), text(' قياس الزاوية '), math('K̂ = 72°'), text('. ما قياس الزاوية '), math('L̂'), text('؟')),
+    concepts: ['rhombus-angle-properties'], skills: ['find-rhombus-angle'], sourceConcepts: ['rhombus-definition-properties'],
+    answer: { expected: '108', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: DEGREE_UNITS } },
+    solution: {
+      idea: rich(text('الرأسان '), math('K'), text(' و'), math('L'), text(' متتاليان في الترتيب.')),
+      steps: [
+        rich(text('الزاويتان المتتاليتان مجموعهما '), math('180°'), text('.')),
+        rich(math('180° − 72° = 108°'), text('.')),
+      ],
+      finalAnswer: rich(math('108°')),
+      commonError: rich(text('إعطاء '), math('72°'), text(' باعتبار كلّ زوايا المعيّن متساوية.')),
+    },
+    originalityNote: 'يستعمل تسمية رؤوس جديدة وقياساً جديداً، ويطلب الزاوية المتتالية في المعيّن تحديداً.',
+  }),
+  q(56, [RHOMBUS], {
+    type: 'multi-select', difficulty: 'medium',
+    prompt: rich(text('اختر كلّ معلومة لازمة معاً للتأكّد من أنّ شكلاً رباعياً معيّن.')),
+    concepts: ['rhombus-conditions'], skills: ['select-rhombus-conditions'], sourceConcepts: ['rhombus-definition-properties'],
+    options: [
+      optionText('q56-a', 'كلّ ضلعين متقابلين فيه متوازيان'),
+      optionText('q56-b', 'ضلعان متجاوران فيه متساويان في الطول'),
+      optionText('q56-c', 'إحدى زواياه قائمة'),
+      optionText('q56-d', 'ضلعان متقابلان فيه متساويان في الطول'),
+    ],
+    answer: ['q56-a', 'q56-b'],
+    solution: {
+      idea: rich(text('شرطا التعريف هما التوازي في الزوجين وتساوي ضلعين متجاورين.')),
+      steps: [
+        rich(text('التوازي في الزوجين يجعل الشكل متوازي أضلاع.')),
+        rich(text('تساوي ضلعين متجاورين ينقل التساوي إلى الأضلاع الأربعة.')),
+        rich(text('الزاوية القائمة تخصّ المستطيل، وتساوي الضلعين المتقابلين متحقّق في كلّ متوازي أضلاع.')),
+      ],
+      finalAnswer: rich(text('المعلومتان الأولى والثانية معاً.')),
+      commonError: rich(text('الاكتفاء بتساوي الضلعين المتقابلين دليلاً.')),
+    },
+    originalityNote: 'يطلب حزمة الشروط اللازمة مجتمعة لا شرطاً واحداً، ويضع دليلاً غير مميّز بين البدائل.',
+  }),
+  q(57, [RHOMBUS], {
+    type: 'ordering', difficulty: 'medium',
+    prompt: rich(text('رتّب خطوات التأكّد من أنّ شكلاً مرسوماً معيّن.')),
+    concepts: ['rhombus-conditions'], skills: ['sequence-rhombus-verification'], sourceConcepts: ['rhombus-definition-properties'],
+    items: [
+      optionText('q57-a', 'قِس ضلعين متجاورين بالمسطرة وقارن طوليهما'),
+      optionText('q57-b', 'تأكّد أوّلاً أنّ الشكل رباعي له أربعة أضلاع'),
+      optionText('q57-c', 'افحص توازي كلّ ضلعين متقابلين'),
+      optionText('q57-d', 'اكتب الحكم مع ذكر التعريف الذي اعتمدت عليه'),
+    ],
+    answer: ['q57-b', 'q57-c', 'q57-a', 'q57-d'],
+    solution: {
+      idea: rich(text('الفحص يسير من الشرط الأعمّ إلى الشرط الأخصّ ثمّ إلى التعليل.')),
+      steps: [
+        rich(text('رباعي ⇐ ثمّ توازٍ في الزوجين ⇐ ثمّ تساوي ضلعين متجاورين.')),
+        rich(text('الحكم المكتوب مع التعليل هو الخطوة الأخيرة لا الأولى.')),
+      ],
+      finalAnswer: rich(text('رباعي، ثمّ التوازي، ثمّ القياس، ثمّ الحكم المعلَّل.')),
+    },
+    originalityNote: 'يرتّب إجراء تحقّق كامل ينتهي بكتابة التعليل، لا خطوات رسم كما في أمثلة الكتاب.',
+  }),
+  q(58, [RHOMBUS], {
+    type: 'numeric', difficulty: 'advanced',
+    prompt: rich(text('طول ضلع معيّن يساوي طول ضلع مربّع محيطه '), math('36 cm'), text('. ما محيط المعيّن؟')),
+    concepts: ['rhombus-perimeter-unit'], skills: ['link-square-and-rhombus-perimeter'], sourceConcepts: ['rhombus-definition-properties'],
+    coverage: { applications: ['workshop-and-frames'] },
+    answer: { expected: '36', format: 'integer', unitPolicy: { kind: 'required', acceptedUnits: CM_UNITS } },
+    solution: {
+      idea: rich(text('للشكلين أربعة أضلاع متساوية، فالمحيط يتحدّد بالضلع وحده.')),
+      steps: [
+        rich(text('ضلع المربّع: '), math('36 ÷ 4 = 9 cm'), text('.')),
+        rich(text('ضلع المعيّن '), math('9 cm'), text(' أيضاً، ومحيطه '), math('4 × 9 = 36 cm'), text('.')),
+      ],
+      finalAnswer: rich(math('36 cm')),
+      commonError: rich(text('الظنّ أنّ اختلاف الشكل يغيّر المحيط رغم تساوي الأضلاع.')),
+    },
+    originalityNote: 'يمرّ بالضلع المشترك بين مربّع ومعيّن ليكتشف المتعلّم أنّ المحيطين متساويان رغم اختلاف الزوايا.',
+  }),
+  q(59, [RHOMBUS], {
+    type: 'single-choice', difficulty: 'advanced',
+    prompt: rich(text('شكل رباعي أضلاعه الأربعة متساوية وزواياه غير قائمة. ما جميع الأسماء التي تناسبه؟')),
+    concepts: ['rhombus-family'], skills: ['name-shape-with-all-names'], sourceConcepts: ['rhombus-definition-properties'],
+    options: [
+      optionText('q59-a', 'رباعي، متوازي أضلاع، معيّن'),
+      optionText('q59-b', 'رباعي، معيّن، مستطيل'),
+      optionText('q59-c', 'رباعي، متوازي أضلاع، مربّع'),
+      optionText('q59-d', 'رباعي فقط'),
+    ],
+    answer: 'q59-a',
+    solution: {
+      idea: rich(text('الأسماء متداخلة، فنكتب كلّ ما تحقّق من شروط.')),
+      steps: [
+        rich(text('أربعة أضلاع ⇐ رباعي؛ وأضلاع متساوية مع التوازي ⇐ متوازي أضلاع ومعيّن.')),
+        rich(text('غياب الزوايا القائمة ينفي المستطيل والمربّع.')),
+      ],
+      finalAnswer: rich(text('رباعي، متوازي أضلاع، معيّن.')),
+      commonError: rich(text('إضافة «مربّع» لمجرّد تساوي الأضلاع.')),
+    },
+    originalityNote: 'يختار قائمة الأسماء الكاملة من بين قوائم ناقصة أو زائدة، بوصف لفظي لا برسم مرقّم.',
+  }),
+  q(60, [RHOMBUS, PARALLELOGRAM], {
+    type: 'multi-select', difficulty: 'thinking',
+    prompt: rich(text('معيّن ومتوازي أضلاع ليس معيّناً، لهما المحيط نفسه '), math('32 cm'), text('. اختر كلّ استنتاج صحيح.')),
+    concepts: ['rhombus-perimeter-unit', 'parallelogram-perimeter'], skills: ['compare-rhombus-and-parallelogram'],
+    sourceConcepts: ['rhombus-definition-properties', 'parallelogram-properties'],
+    coverage: { thinking: ['cross-lesson-synthesis', 'invariant-reasoning'], applications: ['workshop-and-frames'] },
+    options: [
+      option('q60-a', text('ضلع المعيّن '), math('8 cm')),
+      option('q60-b', text('مجموع ضلعين متجاورين في متوازي الأضلاع '), math('16 cm')),
+      optionText('q60-c', 'ضلعا متوازي الأضلاع المتجاوران متساويان'),
+      optionText('q60-d', 'الشكلان متطابقان لأنّ محيطيهما متساويان'),
+    ],
+    answer: ['q60-a', 'q60-b'],
+    solution: {
+      idea: rich(text('المحيط نفسه لا يعني الأبعاد نفسها ولا الشكل نفسه.')),
+      steps: [
+        rich(text('المعيّن: '), math('32 ÷ 4 = 8 cm'), text(' لكلّ ضلع.')),
+        rich(text('متوازي الأضلاع: '), math('32 ÷ 2 = 16 cm'), text(' مجموع ضلعين متجاورين، مثلاً '), math('10 cm'), text(' و'), math('6 cm'), text('.')),
+        rich(text('تساوي الضلعين المتجاورين سيجعله معيّناً، وهو مستبعد بالفرض؛ وتساوي المحيط لا يعني التطابق.')),
+      ],
+      finalAnswer: rich(text('الاستنتاجان الأوّل والثاني فقط.')),
+      commonError: rich(text('استنتاج تطابق الشكلين من تساوي محيطيهما.')),
+    },
+    originalityNote: 'يوازن بين المعيّن ومتوازي الأضلاع عند ثبات المحيط، ويكشف الخلط بين تساوي المحيط وتطابق الشكلين.',
+  }),
+]
+
+const definition = defineUnitTest({
+  id: testId,
+  unitId: 'unit-1',
+  title: 'اختبار الوحدة الأولى',
+  description: textOnly('ستّون سؤالاً جديداً تغطّي دروس الوحدة الأولى الثمانية: شبكة الإحداثيات، التمثيلات البيانية بالخطوط، الأعداد الطبيعية، التقريب، الجمع والطرح، قياس الزوايا، متوازي الأضلاع، والمعيّن.'),
+  instructions: textOnly('أجب عن الأسئلة الستّين بالترتيب الذي تريده. لا تظهر أيّ نتيجة أثناء المحاولة؛ تُعرض النتيجة والحلول التفصيلية بعد التسليم في منطقة الحلول.'),
+  lessonIds: [COORDINATES, LINE_GRAPHS, NATURAL, ROUNDING, ADD_SUB, ANGLES, PARALLELOGRAM, RHOMBUS],
+  lessonLabels: {
+    [COORDINATES]: 'شبكة الإحداثيات',
+    [LINE_GRAPHS]: 'التمثيلات البيانية بالخطوط',
+    [NATURAL]: 'الأعداد الطبيعية',
+    [ROUNDING]: 'تقريب الأعداد الطبيعية',
+    [ADD_SUB]: 'جمع الأعداد الطبيعيّة وطرحها',
+    [ANGLES]: 'قياس الزوايا',
+    [PARALLELOGRAM]: 'متوازي الأضلاع',
+    [RHOMBUS]: 'المعيّن',
+  },
+  questions,
+  sourceConcepts: [
+    { id: 'coordinates-ordered-pair', label: 'الزوج المرتّب وقراءة موقع النقطة على الشبكة', lessonId: COORDINATES, pages: [3, 4] },
+    { id: 'line-graph-reading', label: 'قراءة التمثيل البياني بالخطوط وتفسير اتجاه المقاطع', lessonId: LINE_GRAPHS, pages: [7, 8, 9] },
+    { id: 'place-value-millions', label: 'القيمة المنزلية والمجموعات حتى الملايين وقراءة الأعداد وكتابتها', lessonId: NATURAL, pages: [10, 11, 12, 13, 14] },
+    { id: 'rounding-rule', label: 'قاعدة التقريب ورقم القرار إلى أقرب مئة وألف ومئة ألف ومليون', lessonId: ROUNDING, pages: [15, 16, 17, 18] },
+    { id: 'column-add-subtract', label: 'الجمع والطرح العموديان مع الحمل والاستلاف والتحقّق بالعملية العكسية', lessonId: ADD_SUB, pages: [19, 20, 21, 22] },
+    { id: 'angle-measure-and-types', label: 'تسمية الزوايا وقياسها بالمنقلة وتصنيفها وجمع الزوايا المتجاورة', lessonId: ANGLES, pages: [23, 24, 25, 26, 27, 28, 29, 30] },
+    { id: 'parallelogram-properties', label: 'تعريف متوازي الأضلاع وخاصّتا الأضلاع والزوايا المتقابلة ومحيطه', lessonId: PARALLELOGRAM, pages: [31, 32, 33, 34, 35] },
+    { id: 'rhombus-definition-properties', label: 'تعريف المعيّن وخواصّه الثلاث وتسميته ضمن عائلة الأشكال الرباعية', lessonId: RHOMBUS, pages: [36, 37, 38, 39] },
+  ],
+  conceptLabels: {
+    'ordered-pair-order': 'ترتيب مركّبتي الزوج المرتّب',
+    'grid-position-reading': 'قراءة المواقع والتحرّك على الشبكة',
+    'grid-distance': 'حساب الأطوال من فروق الإحداثيات',
+    'line-graph-axes': 'اصطلاح المحورين في التمثيل البياني بالخطوط',
+    'segment-direction': 'دلالة اتجاه المقطع بين تسجيلين',
+    'reading-values': 'قراءة القيم المسجّلة ومقارنتها',
+    'place-value': 'القيمة المنزلية في الأعداد الطبيعية',
+    'number-groups': 'مجموعات الملايين والآلاف والوحدات',
+    'standard-and-expanded-form': 'الصيغة القياسية والصيغة المفكّكة',
+    'comparing-numbers': 'مقارنة الأعداد الطبيعية وترتيبها',
+    'rounding-decision-digit': 'رقم القرار في التقريب',
+    'rounding-to-place': 'التقريب إلى منزلة محدّدة',
+    'rounding-range': 'مجال الأعداد التي تعطي ناتج تقريب واحداً',
+    'column-addition': 'الجمع العمودي مع الحمل',
+    'column-subtraction': 'الطرح العمودي مع الاستلاف',
+    'inverse-check': 'التحقّق بالعملية العكسية',
+    'missing-addend': 'إيجاد الحدّ المجهول في الجمع',
+    'angle-parts-and-naming': 'أجزاء الزاوية وتسميتها',
+    'angle-types': 'أنواع الزوايا بحسب القياس',
+    'angle-addition': 'جمع الزوايا المتجاورة وتجزئتها',
+    'parallelogram-definition': 'تعريف متوازي الأضلاع',
+    'opposite-parts': 'الأضلاع والزوايا المتقابلة والمتتالية',
+    'parallelogram-perimeter': 'محيط متوازي الأضلاع',
+    'special-parallelograms': 'الحالات الخاصّة: المستطيل والمعيّن والمربّع',
+    'rhombus-family': 'موقع المعيّن في عائلة الأشكال الرباعية',
+    'rhombus-angle-properties': 'زوايا المعيّن المتقابلة والمتتالية',
+    'rhombus-conditions': 'شروط الحكم بأنّ الشكل معيّن',
+    'rhombus-perimeter-unit': 'محيط المعيّن من ضلع واحد',
+  },
+  skillLabels: {
+    'write-ordered-pair': 'كتابة الزوج المرتّب بالترتيب الصحيح',
+    'compare-two-points': 'المقارنة بين موقعي نقطتين',
+    'move-on-grid': 'تتبّع حركة نقطة على الشبكة',
+    'describe-axis-points': 'تمييز نقاط المحورين ونقطة الأصل',
+    'compute-grid-perimeter': 'حساب محيط شكل من إحداثيات رؤوسه',
+    'link-reading-to-point': 'تحويل تسجيل بياني إلى زوج مرتّب',
+    'state-axis-convention': 'ذكر اصطلاح المحورين',
+    'interpret-flat-segment': 'تفسير المقطع الأفقي',
+    'compute-range': 'حساب الفرق بين أكبر قراءة وأصغرها',
+    'describe-graph-path': 'وصف مسار الخط مقطعاً مقطعاً',
+    'track-successive-changes': 'تتبّع تغيّرات متتالية حتى القيمة النهائية',
+    'match-path-to-record': 'مطابقة وصف المسار بالسجلّ العددي',
+    'name-digit-value': 'تحديد قيمة الرقم بحسب منزلته',
+    'read-number-in-words': 'قراءة العدد بالصيغة اللفظية',
+    'write-from-expanded-form': 'الانتقال من الصيغة المفكّكة إلى القياسية',
+    'match-number-to-description': 'مطابقة العدد بوصف مجموعاته',
+    'order-numbers': 'ترتيب الأعداد الطبيعية',
+    'analyse-zeros': 'تحليل المنازل الصفرية داخل العدد',
+    'diagnose-word-form': 'كشف خطأ الانتقال من اللفظ إلى الرقم',
+    'compare-by-first-differing-digit': 'المقارنة بأوّل منزلة مختلفة',
+    'identify-decision-digit': 'تحديد رقم القرار',
+    'round-to-hundred': 'التقريب إلى أقرب مئة',
+    'round-to-hundred-thousand': 'التقريب إلى أقرب مئة ألف',
+    'apply-five-rule': 'تطبيق قاعدة الخمسة في التقريب',
+    'match-place-to-result': 'مطابقة منزلة التقريب بناتجها',
+    'select-numbers-with-same-rounding': 'تحديد الأعداد ذات ناتج التقريب نفسه',
+    'diagnose-wrong-decision-digit': 'كشف الخلط بين منزلة التقريب ورقم القرار',
+    'find-largest-original-number': 'إيجاد أكبر عدد ممكن قبل التقريب',
+    'add-with-carrying': 'الجمع العمودي مع نقل الحمل',
+    'subtract-with-borrowing': 'الطرح العمودي مع الاستلاف',
+    'choose-inverse-check': 'اختيار معادلة التحقّق العكسية',
+    'find-missing-addend': 'إيجاد الحدّ المجهول',
+    'diagnose-missing-borrow': 'كشف الطرح من دون استلاف',
+    'solve-two-step-problem': 'حلّ مسألة بخطوتين مرتّبتين',
+    'select-valid-checks': 'انتقاء صيغ التحقّق الصحيحة',
+    'round-a-computed-sum': 'تقريب ناتج عملية حسابية',
+    'split-right-angle': 'تجزئة الزاوية القائمة',
+    'order-angles-by-size': 'ترتيب الزوايا بحسب القياس',
+    'solve-angle-difference': 'حلّ مسألة مجموع وفرق زاويتين',
+    'match-situation-to-angle-type': 'ربط موقف واقعي بنوع الزاوية',
+    'name-angle-correctly': 'تسمية الزاوية وتحديد رأسها وضلعيها',
+    'split-straight-angle': 'تجزئة الزاوية المستقيمة إلى ثلاثة أجزاء',
+    'diagnose-angle-type': 'كشف خطأ في حدود تصنيف الزوايا',
+    'use-consecutive-angles': 'استعمال علاقة الزاويتين المتتاليتين',
+    'state-opposite-side-property': 'ذكر خاصّة الأضلاع المتقابلة',
+    'exclude-non-parallelogram': 'استبعاد الشكل الذي ليس متوازي أضلاع',
+    'find-side-from-perimeter-parallelogram': 'إيجاد ضلع من محيط متوازي الأضلاع',
+    'match-given-to-conclusion': 'مطابقة المعطى بالاستنتاج المناسب',
+    'identify-rectangle-condition': 'تحديد الشرط المميّز للمستطيل',
+    'infer-angles-in-parallelogram': 'استنتاج زوايا متوازي الأضلاع من زاوية واحدة',
+    'diagnose-perimeter-formula': 'كشف الخطأ في حساب المحيط',
+    'deduce-right-angles': 'استنتاج قائمية الزوايا الأربع',
+    'place-rhombus-in-family': 'تحديد موقع المعيّن في عائلة الأشكال',
+    'identify-always-rhombus': 'تمييز الشكل الذي يكون معيّناً دائماً',
+    'find-rhombus-angle': 'إيجاد زاوية في المعيّن',
+    'select-rhombus-conditions': 'انتقاء شروط الحكم بالمعيّن',
+    'sequence-rhombus-verification': 'ترتيب خطوات التحقّق من المعيّن',
+    'link-square-and-rhombus-perimeter': 'ربط محيط المربّع بمحيط المعيّن',
+    'name-shape-with-all-names': 'كتابة جميع الأسماء المناسبة للشكل',
+    'compare-rhombus-and-parallelogram': 'مقارنة المعيّن بمتوازي الأضلاع عند ثبات المحيط',
+  },
+  applicationLabels: {
+    'real-life-measurement': 'قياسات ومواقف من الحياة اليومية',
+    'school-and-market-data': 'بيانات المدرسة والمستودع والسجلّات',
+    'workshop-and-frames': 'الأطر والأعمال اليدوية والمحيط',
+  },
+  thinkingLabels: {
+    'cross-lesson-synthesis': 'الربط بين درسين أو أكثر في الوحدة',
+    'reverse-reasoning': 'التفكير العكسي من النتيجة إلى المعطى',
+    'invariant-reasoning': 'تمييز ما يبقى ثابتاً عمّا يتغيّر',
+  },
+  commonErrorLabels: {
+    'swap-ordered-pair': 'عكس ترتيب مركّبتي الزوج المرتّب',
+    'drop-empty-groups': 'إهمال المنازل الخالية عند الكتابة بالأرقام',
+    'wrong-decision-digit': 'اختيار رقم قرار خاطئ في التقريب',
+    'ignore-borrow': 'الطرح داخل العمود من دون استلاف',
+    'confuse-angle-types': 'الخلط بين حدود أنواع الزوايا',
+    'confuse-opposite-consecutive': 'الخلط بين الزاويتين المتقابلتين والمتتاليتين',
+    'perimeter-of-two-sides': 'حساب المحيط بجمع ضلعين فقط',
+  },
+})
+
+export default definition

@@ -23,6 +23,11 @@ export interface GeoFigureProps {
   height?: number
   /** Parallel marks: `count` chevrons drawn at the middle of the side. */
   marks?: Array<{ side: SidePair; count: number; tone?: 'blue' | 'red' }>
+  /**
+   * Equal-length marks: `count` short hash strokes crossing the middle of the side
+   * (used by Lesson 8 — المعيّن — where the textbook marks equal sides with slashes).
+   */
+  ticks?: Array<{ side: SidePair; count: number; tone?: 'blue' | 'red' }>
   /** Side length captions such as `4cm`. */
   sides?: Array<{ side: SidePair; label: string; gap?: number }>
   /** Angle arcs. `at` is the vertex, `from`/`to` are the two neighbouring vertices. */
@@ -51,7 +56,7 @@ const norm = (a: Pt): Pt => scale(a, 1 / len(a))
 const midpoint = (a: Pt, b: Pt): Pt => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 })
 
 export function GeoFigure({
-  pts, order, width = 300, height = 200, marks = [], sides = [], angles = [], right = [],
+  pts, order, width = 300, height = 200, marks = [], ticks = [], sides = [], angles = [], right = [],
   diagonals = [], colored = [], showLabels = true, children, ariaLabel, className = '', open = false, dashed = [],
 }: GeoFigureProps) {
   const poly = order.map(name => pts[name])
@@ -124,6 +129,24 @@ export function GeoFigure({
               const w1 = add(add(c, scale(u, -3.5)), scale(n, 4.5))
               const w2 = add(add(c, scale(u, -3.5)), scale(n, -4.5))
               return <path key={i} d={`M ${w1.x} ${w1.y} L ${tip.x} ${tip.y} L ${w2.x} ${w2.y}`} />
+            })}
+          </g>
+        )
+      })}
+
+      {ticks.map(({ side: [a, b], count, tone = 'red' }) => {
+        const pa = pts[a]
+        const pb = pts[b]
+        const u = norm(sub(pb, pa))
+        const n = { x: -u.y, y: u.x }
+        const m = midpoint(pa, pb)
+        return (
+          <g key={`tick-${a}${b}`} className={`l7-geo-tick is-${tone}`}>
+            {Array.from({ length: count }, (_, i) => {
+              const c = add(m, scale(u, (i - (count - 1) / 2) * 7))
+              const top = add(add(c, scale(n, 6)), scale(u, 2.2))
+              const bottom = add(add(c, scale(n, -6)), scale(u, -2.2))
+              return <path key={i} d={`M ${top.x} ${top.y} L ${bottom.x} ${bottom.y}`} />
             })}
           </g>
         )
