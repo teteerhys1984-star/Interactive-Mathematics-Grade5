@@ -210,7 +210,7 @@ async function main(): Promise<void> {
     )
     assert.equal(gated.unitTests.length, 0, `the unit test must be hidden while unit-1 is ${status}`)
     assert.equal(gated.getTestById('unit-unit-1-test'), undefined)
-    assert.equal(gated.lessonTests.length, EXPECTED_LESSONS.length, 'lesson tests must stay available regardless of unit status')
+    assert.equal(gated.lessonTests.length, EXPECTED_LESSONS.length + 1, 'all eight Unit 1 lesson tests plus the available Unit 2 Lesson 1 test must stay available regardless of Unit 1 status')
   }
 
   /* ---------------------------------------------------- report */

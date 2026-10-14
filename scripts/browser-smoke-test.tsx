@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('8 اختبارات متاحة')) fail('Test Area did not show the eight eligible lesson tests')
+  if (!screen.getByText('9 اختبارات متاحة')) fail('Test Area did not show the nine eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,10 +54,12 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 8) fail(`Expected 8 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 9) fail(`Expected 9 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
-  console.log('✅ Home lists Lessons 1–8 as available')
+  if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('مقارنة الأعداد'))?.getAttribute('href') !== '#lesson/compare-order-natural-numbers') fail('Unit 2 Lesson 1 Home link has the wrong route')
+  console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lesson 1 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -369,7 +371,38 @@ async function main() {
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 8 final test did not produce a score')
   console.log(`✅ Lesson 8 (المعيّن): ${l8Phases.length + 1} sequential steps, rhombus lab, detector, construction player, blanks, vertex activity and final test all pass`)
 
-  // ---- PR3 regression across Lessons 1–8: position vs completion + accessible outline dialog ----
+  // ---- Unit 2, Lesson 1: discovery, source-task checking, comparison lab, sorting and LTR input ----
+  goTo('#lesson/compare-order-natural-numbers')
+  if (!screen.getByRole('heading', { name: 'مقارنة الأعداد الطبيعية وترتيبها', level: 1 })) fail('Unit 2 Lesson 1 did not open')
+  const lessonNineBreadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
+  if (!within(lessonNineBreadcrumbs).getByText('الوحدة الثانية')) fail('Unit 2 Lesson 1 breadcrumb has the wrong unit')
+  const discoveryChoices = Array.from(document.querySelectorAll('.l9-discovery-options button')) as HTMLElement[]
+  if (discoveryChoices.length !== 2) fail('Lesson 9 opening discovery must present both new number cards')
+  fireEvent.click(discoveryChoices[1])
+  fireEvent.click(screen.getByRole('button', { name: 'تحقّق من توقّعك' }))
+  if (!screen.getByText(/صحيح\. الملايين ومئات الألوف متساوية/)) fail('Lesson 9 discovery comparison feedback is missing')
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  const starterGroup = document.querySelector('[data-source-group="l9-p44-q1"]')!
+  const starterSelects = Array.from(starterGroup.querySelectorAll('select')) as HTMLSelectElement[]
+  ;['<', '>', '='].forEach((value, index) => fireEvent.change(starterSelects[index], { target: { value } }))
+  fireEvent.click(within(starterGroup).getByRole('button', { name: 'تحقّق من الإجابات' }))
+  if (!within(starterGroup).getByText(/أحسنت\. راجع تعليل كل خطوة/)) fail('Lesson 9 printed comparison exercise did not validate its three branches')
+  for (let index = 0; index < 8; index += 1) fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  const compareInput = document.querySelector('#l9-left-number') as HTMLInputElement
+  const compareInputRight = document.querySelector('#l9-right-number') as HTMLInputElement
+  fireEvent.change(compareInput, { target: { value: '٤٠٨٣٧٢٠' } })
+  fireEvent.change(compareInputRight, { target: { value: '٤٠٣٨٩٩٩' } })
+  fireEvent.click(screen.getByRole('button', { name: 'حلّل المقارنة' }))
+  if (!screen.getAllByText(/4,083,720/).length) fail('Lesson 9 comparison lab did not normalize Arabic-Indic digits')
+  if (!screen.getAllByText(/عشرات الألوف/).length) fail('Lesson 9 comparison lab did not identify the first differing place')
+  fireEvent.change(document.querySelector('#l9-sort-direction')!, { target: { value: 'descending' } })
+  fireEvent.click(screen.getByRole('button', { name: 'قدّم 4,200,000 إلى موضع أعلى' }))
+  fireEvent.click(screen.getByRole('button', { name: 'قدّم 4,025,800 إلى موضع أعلى' }))
+  fireEvent.click(screen.getByRole('button', { name: /تحقّق من الترتيب/ }))
+  if (!screen.getByText(/ترتيب صحيح/)) fail('Lesson 9 keyboard-operable sort workbench did not validate a descending order')
+  console.log('✅ Unit 2 Lesson 1: discovery, three printed comparisons, Arabic-Indic input, first-difference analysis and accessible sort controls pass')
+
+  // ---- Regression across all 9 available lessons: position vs completion + outline dialog ----
   // Two things are guarded here for every lesson:
   //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
   //   2. the mobile outline bottom sheet behaves like a real modal (focus in, trap, Escape, focus back).
@@ -382,6 +415,7 @@ async function main() {
     ['angle-measurement', 'قياس الزوايا'],
     ['parallelogram', 'متوازي الأضلاع'],
     ['rhombus', 'المعيّن'],
+    ['compare-order-natural-numbers', 'مقارنة الأعداد الطبيعية وترتيبها'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
@@ -438,7 +472,7 @@ async function main() {
     fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
     if (completedBadges('desktop') !== 2) fail(`${lessonTitle}: going back must keep the two visited steps marked as «مكتملة»`)
   }
-  console.log(`✅ PR3 regression on Lessons 1–8: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
+  console.log(`✅ Lesson-shell regression on all 9 available lessons: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
 
   // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')
@@ -481,6 +515,13 @@ async function main() {
   for (const page of [36, 37, 38, 39]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 8 teacher guide missing page ${page} source metadata`)
   if (screen.getAllByText('نشاط تفاعلي إضافي').length < 10) fail('Lesson 8 teacher guide missing the ten new final-test solutions')
   console.log('✅ Teacher Area: Lesson 8 guide shows real textbook page numbers (36–39) and ten platform final-test solutions')
+
+  fireEvent.click(screen.getByRole('button', { name: 'مقارنة الأعداد الطبيعية وترتيبها' }))
+  if (!screen.getByText('دليل درس: مقارنة الأعداد الطبيعية وترتيبها')) fail('Teacher tab did not switch to Unit 2 Lesson 1 guide')
+  for (const page of [44, 45, 46, 47]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 9 teacher guide missing page ${page} source metadata`)
+  if (document.querySelectorAll('.teacher-entry').length !== 46) fail('Lesson 9 teacher guide must include all 44 source solutions and 2 clearly labelled platform activities')
+  if (screen.getAllByText('نشاط تفاعلي إضافي').length !== 2) fail('Lesson 9 teacher guide must distinguish both platform activities from textbook entries')
+  console.log('✅ Teacher Area: Unit 2 Lesson 1 has all four source pages, 44 textbook solutions, and 2 labelled platform activities')
 
   console.log('\nAll jsdom interaction smoke checks passed.')
   await vite.close()
