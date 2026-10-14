@@ -1,4 +1,4 @@
-import { ArrowLeft, BookOpen, Check, Clock, LockKeyhole } from 'lucide-react'
+import { ArrowLeft, BookOpen, BookOpenCheck, Check, Clock, LockKeyhole } from 'lucide-react'
 import type { UnitMeta } from '../types'
 
 export function UnitCard({ unit }: { unit: UnitMeta }) {
@@ -35,6 +35,10 @@ export function UnitCard({ unit }: { unit: UnitMeta }) {
         </li>
       })}
     </ol>
+    {unit.id === 'unit-1' && <section className="unit-exercises-card-entry" aria-label="مراجعة تمارين الكتاب">
+      <div><strong><BookOpenCheck size={17} aria-hidden="true" /> تمارين الوحدة الأولى</strong><p>حلّ تمارين الكتاب المطبوعة التي تراجع موضوعات الوحدة كلها؛ هذا قسم مستقل، وليس درساً تاسعاً أو اختبار الوحدة.</p></div>
+      <a href="#unit-exercises/unit-1">افتح التمارين <ArrowLeft size={16} aria-hidden="true" /></a>
+    </section>}
   </article>
 }
 

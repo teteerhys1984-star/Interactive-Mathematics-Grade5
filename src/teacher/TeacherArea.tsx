@@ -9,6 +9,7 @@ import { lessonFiveTeacherEntries } from './lesson5'
 import { lessonSixTeacherEntries } from './lesson6'
 import { lessonSevenTeacherEntries } from './lesson7'
 import { lessonEightTeacherEntries } from './lesson8'
+import { TeacherUnitExercisesView } from './TeacherUnitExercisesView'
 
 /** Shared registry: future lessons add one TeacherLessonData object, not a new page architecture. */
 const teacherLessons: TeacherLessonData[] = [
@@ -25,10 +26,12 @@ const teacherLessons: TeacherLessonData[] = [
 export function TeacherArea({ initialLessonId }: { initialLessonId?: string | null }) {
   const initialIndex = Math.max(0, teacherLessons.findIndex(lesson => lesson.lessonId === initialLessonId))
   const [activeIndex, setActiveIndex] = useState(initialIndex)
+  const [activeUnitExercises, setActiveUnitExercises] = useState(initialLessonId === 'unit-exercises')
   return <TeacherPasswordGate>
-    <nav className="teacher-lesson-tabs" aria-label="اختيار دليل الدرس">
-      {teacherLessons.map((lesson, index) => <button key={lesson.lessonId} className={index === activeIndex ? 'is-active' : ''} aria-current={index === activeIndex ? 'true' : undefined} onClick={() => setActiveIndex(index)}>{lesson.lessonTitle}</button>)}
+    <nav className="teacher-lesson-tabs" aria-label="اختيار دليل المدرس">
+      {teacherLessons.map((lesson, index) => <button key={lesson.lessonId} className={!activeUnitExercises && index === activeIndex ? 'is-active' : ''} aria-current={!activeUnitExercises && index === activeIndex ? 'page' : undefined} onClick={() => { setActiveIndex(index); setActiveUnitExercises(false) }}>{lesson.lessonTitle}</button>)}
+      <button type="button" className={activeUnitExercises ? 'is-active' : ''} aria-current={activeUnitExercises ? 'page' : undefined} onClick={() => setActiveUnitExercises(true)}>تمارين الوحدة الأولى</button>
     </nav>
-    <TeacherLessonView lesson={teacherLessons[activeIndex]} />
+    {activeUnitExercises ? <TeacherUnitExercisesView /> : <TeacherLessonView lesson={teacherLessons[activeIndex]} />}
   </TeacherPasswordGate>
 }

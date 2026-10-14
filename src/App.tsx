@@ -8,6 +8,7 @@ import { curriculumRegistry } from './content/registry'
 import { lessonComponents } from './content/lessonComponents'
 import { TeacherArea } from './teacher/TeacherArea'
 import { TestArea } from './tests/TestArea'
+import { UnitOneExercisesPage } from './exercises/UnitOneExercisesPage'
 import { parseTestAreaRoute } from './tests/routing'
 import type { TestRegistrySnapshot } from './tests/registry'
 import type { UnitMeta } from './types'
@@ -24,6 +25,7 @@ function readRoute() {
     lessonId: lessonMatch && lessonComponents[lessonMatch[1]] ? lessonMatch[1] : null,
     teacherOpen: Boolean(teacherMatch),
     teacherLessonId: teacherMatch?.[1] ?? null,
+    unitExercisesOpen: hash === '#unit-exercises/unit-1' || /^#unit-exercise-(?:[1-9]|1[0-2])$/.test(hash),
     testRoute,
   }
 }
@@ -53,6 +55,10 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+  useEffect(() => {
+    const match = window.location.hash.match(/^#(unit-exercise-(?:[1-9]|1[0-2]))$/)
+    if (route.unitExercisesOpen && match) document.getElementById(match[1])?.scrollIntoView?.({ block: 'start' })
+  }, [route.unitExercisesOpen])
   const allLessons = useMemo(() => curriculum.flatMap(unit => unit.lessons), [curriculum])
   const unitCount = curriculum.length
   const lessonCount = allLessons.length
@@ -65,6 +71,12 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
     <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#teacher">منطقة المدرس</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
     <main><TeacherArea initialLessonId={route.teacherLessonId} /></main>
     <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
+  </div>
+
+  if (route.unitExercisesOpen) return <div className="app-shell lesson-page unit-exercises-route">
+    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#unit-exercises/unit-1">تمارين الوحدة الأولى</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
+    <main><UnitOneExercisesPage /></main>
+    <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>مراجعة تمارين الكتاب · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
   </div>
 
   if (activeLesson && ActiveLessonComponent) return <div className="app-shell lesson-page">
