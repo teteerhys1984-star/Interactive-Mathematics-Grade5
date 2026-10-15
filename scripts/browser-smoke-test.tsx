@@ -431,7 +431,7 @@ async function main() {
   if (!screen.getByText(/أُضيف ثلاثة أصفار/)) fail('Lesson 10 pattern lab did not explain the thousand factor')
   fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
   const assocGroup = document.querySelector('[data-source-group="l10-p50-assoc"]')!
-  fireEvent.click(within(assocGroup as HTMLElement).getByText('(2 × 5) × 897'))
+  fireEvent.click(within(assocGroup as HTMLElement).getByLabelText('(2 × 5) × 897'))
   fireEvent.click(within(assocGroup as HTMLElement).getByRole('button', { name: 'تحقّق من الإجابة' }))
   if (!within(assocGroup as HTMLElement).getByText(/إجابة صحيحة/)) fail('Lesson 10 printed opinion question did not validate the easiest grouping')
   for (let index = 0; index < 4; index += 1) fireEvent.click(screen.getByRole('button', { name: /التالي/ }))

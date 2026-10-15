@@ -36,6 +36,21 @@ function parseProductValue(value: string): number | undefined {
   return Number(digits)
 }
 
+/**
+ * Maximal numeric run joined by math operators (× + = − -), parentheses allowed around numbers.
+ * The printed book sets such runs left-to-right; isolating them keeps the on-screen order
+ * identical to the page (a bare RTL paragraph would mirror runs containing × or =).
+ */
+const MATH_RUN_REGEX = /(\(?\d[\d,]*\)?(?:\s*[×+=−-]\s*\(?\d[\d,]*\)?)+)/gu
+
+/** Lesson-10 bidi renderer: Arabic prose stays RTL while every printed math run keeps its LTR order. */
+function L10Bidi({ text }: { text: string }) {
+  const parts = text.split(MATH_RUN_REGEX)
+  return <>{parts.map((part, index) => index % 2 === 1
+    ? <MathExpression key={index}>{part}</MathExpression>
+    : <BidiText key={index}>{part}</BidiText>)}</>
+}
+
 /* ------------------------------------------------------------------ source cards */
 
 function SourceElementCard({ id }: { id: string }) {
@@ -43,14 +58,14 @@ function SourceElementCard({ id }: { id: string }) {
   return <div className="l10-source-element" data-source-id={element.id}>
     <SourceCard label={`من الكتاب · ص ${element.page} · ${element.section}`}>
       <h3 className="l10-source-title">{element.title}</h3>
-      <p className="l10-printed-text"><BidiText>{element.prompt}</BidiText></p>
+      <p className="l10-printed-text"><L10Bidi text={element.prompt} /></p>
       <SourceVisuals ids={element.visualAssetIds} />
       <div className="l10-platform-explanation">
         <p className="l10-platform-label"><Lightbulb size={16} aria-hidden="true" /> شرح المنصة</p>
-        <ol>{element.reasoning.map((line, index) => <li key={`${element.id}-${index}`}><BidiText>{line}</BidiText></li>)}</ol>
-        <p className="l10-result-line"><strong>الخلاصة:</strong> <BidiText>{element.answer}</BidiText></p>
-        <p className="l10-check-line"><Check size={15} aria-hidden="true" /><span><strong>تحقّق:</strong> <BidiText>{element.verification}</BidiText></span></p>
-        <p className="l10-pitfall"><CircleAlert size={15} aria-hidden="true" /><span><strong>انتبه:</strong> <BidiText>{element.pitfall}</BidiText></span></p>
+        <ol>{element.reasoning.map((line, index) => <li key={`${element.id}-${index}`}><L10Bidi text={line} /></li>)}</ol>
+        <p className="l10-result-line"><strong>الخلاصة:</strong> <L10Bidi text={element.answer} /></p>
+        <p className="l10-check-line"><Check size={15} aria-hidden="true" /><span><strong>تحقّق:</strong> <L10Bidi text={element.verification} /></span></p>
+        <p className="l10-pitfall"><CircleAlert size={15} aria-hidden="true" /><span><strong>انتبه:</strong> <L10Bidi text={element.pitfall} /></span></p>
       </div>
     </SourceCard>
   </div>
@@ -154,11 +169,12 @@ function ColumnStepsFigure() {
       <caption>الضرب العمودي 425 × 12 كما في ص 49 (الخطوة {step} من 3)</caption>
       <tbody>
         <tr className="l10-column-carries" aria-hidden="true">
-          <td /><td /><td>{step === 3 ? <span className="l10-carry is-red">1</span> : ''}</td><td>{step === 3 ? <span className="l10-carry is-blue">1</span> : ''}</td><td />
+          <td /><td /><td />{step === 1 ? <td><span className="l10-carry is-blue">1</span></td> : <td />}<td />
         </tr>
         <tr><td /><td><MathExpression>4</MathExpression></td><td><MathExpression>2</MathExpression></td><td><MathExpression>5</MathExpression></td><td /></tr>
         <tr className="l10-column-multiplier"><td className="l10-column-sign" aria-hidden="true"><MathExpression>×</MathExpression></td><td /><td><MathExpression>1</MathExpression></td><td><MathExpression>2</MathExpression></td><td /></tr>
         <tr className="l10-column-rule" aria-hidden="true"><td /><td /><td /><td /><td /></tr>
+        {step >= 3 && <tr className="l10-column-carries l10-column-carries-add" aria-hidden="true"><td /><td><span className="l10-carry is-red">1</span></td><td><span className="l10-carry is-blue">1</span></td><td /><td /></tr>}
         <tr><td /><td /><td><MathExpression>8</MathExpression></td><td><MathExpression>5</MathExpression></td><td><MathExpression>0</MathExpression></td></tr>
         {step >= 2 && <tr><td /><td><MathExpression>4</MathExpression></td><td><MathExpression>2</MathExpression></td><td><MathExpression>5</MathExpression></td><td><MathExpression className="is-shift-zero">0</MathExpression></td></tr>}
         {step >= 3 && <tr className="l10-column-sum"><td aria-hidden="true"><MathExpression>+</MathExpression></td><td><MathExpression>5</MathExpression></td><td><MathExpression>1</MathExpression></td><td><MathExpression>0</MathExpression></td><td><MathExpression>0</MathExpression></td></tr>}
@@ -185,7 +201,7 @@ function DistTable({ visualId, title, lines, tone }: { visualId: string; title: 
 
 function RectangleFigure() {
   return <div className="l10-figure-wrap" role="img" aria-label="المستطيل ABCD مقسوم بالقطعة EH إلى جزأين: 60 و140، وعرضه 82" data-source-visual="p51-rectangle-abcd">
-    <svg viewBox="0 0 360 170" className="l10-rectangle-svg" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 360 170" className="l10-rectangle-svg" style={{ direction: 'ltr' }} aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id="l10-rect-fill" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#bfe3f2" /><stop offset="1" stopColor="#8fc9e8" />
@@ -212,11 +228,11 @@ function RectangleFigure() {
 function KarimModel() {
   const cell = (tone: 'green' | 'red', key: string) => <span key={key} className={`l10-bar-cell is-${tone}`} aria-hidden="true" />
   return <div className="l10-figure-wrap" role="img" aria-label="مخطط شرائط درجات كريم: شريط من 5 مربعات خضراء بدرجة 5 لكل سؤال وشريط من 6 مربعات حمراء بدرجة 6 لكل سؤال، ثم شبكة من 3 صفوف لكل مجموعة" data-source-visual="p51-karim-bar-model">
-    <div className="l10-bar-strip" dir="rtl">
+    <div className="l10-bar-strip" dir="ltr">
       <span className="l10-bar-group">{[0, 1, 2, 3, 4].map(index => cell('green', `g-${index}`))}<small>5 درجات</small></span>
       <span className="l10-bar-group">{[0, 1, 2, 3, 4, 5].map(index => cell('red', `r-${index}`))}<small>6 درجات</small></span>
     </div>
-    <div className="l10-bar-grid-row" dir="rtl">
+    <div className="l10-bar-grid-row" dir="ltr">
       <span className="l10-bar-rows-label">3 أسئلة</span>
       <span className="l10-bar-grid">{[0, 1, 2].map(row => <span className="l10-bar-grid-row-inner" key={row}>{[0, 1, 2, 3, 4].map(index => cell('green', `gg-${row}-${index}`))}</span>)}<small><MathExpression>5 × 3</MathExpression></small></span>
       <span className="l10-bar-grid">{[0, 1, 2].map(row => <span className="l10-bar-grid-row-inner" key={row}>{[0, 1, 2, 3, 4, 5].map(index => cell('red', `rr-${row}-${index}`))}</span>)}<small><MathExpression>6 × 3</MathExpression></small></span>
@@ -236,7 +252,7 @@ function QuestionGroup({ groupId }: { groupId: string }) {
       <span className="l10-source-tag">من الكتاب · ص {group.page}</span>
       <h3 id={`${group.id}-title`}>{group.title}</h3>
     </div>
-    <p className="l10-group-prompt"><BidiText>{tasks[0].prompt}</BidiText></p>
+    <p className="l10-group-prompt"><L10Bidi text={tasks[0].prompt} /></p>
     {tasks[0].visualAssetIds.includes('p51-rectangle-abcd') && <RectangleFigure />}
     {tasks[0].visualAssetIds.includes('p51-karim-bar-model') && <KarimModel />}
     <div className="l10-task-list">
@@ -259,7 +275,7 @@ function TaskRow({ task }: { task: MultiplyNaturalNumbersBookElement }) {
   return <article className="l10-task-row" data-source-id={task.id}>
     <div className="l10-task-source">
       <span className="l10-task-branch">{task.branch ?? '•'}</span>
-      <span className="l10-task-source-text" id={`${task.id}-source`}><BidiText>{task.sourceText ?? task.title}</BidiText></span>
+      <span className="l10-task-source-text" id={`${task.id}-source`}><L10Bidi text={task.sourceText ?? task.title} /></span>
     </div>
     <div className="l10-task-response">
       {response.kind === 'product' && <label className="l10-control-label" htmlFor={`${task.id}-product`}>
@@ -348,11 +364,11 @@ function Feedback({ task, result, hasNote }: { task: MultiplyNaturalNumbersBookE
   if (response.kind === 'pair-products') {
     if (result === undefined) return <p className="l10-task-feedback is-guidance" role="status">اكتب الناتجين أولاً، ثم دوّن ملاحظتك.</p>
     if (result) return <p className="l10-task-feedback is-correct" role="status"><Check size={15} aria-hidden="true" /> الناتجان صحيحان. {hasNote ? `قارن ملاحظتك بهذه النقاط: ${response.criteria.join('؛ ')}.` : `اكتب ملاحظتك الآن، ومنها: ${response.criteria[0]}.`}</p>
-    return <p className="l10-task-feedback is-hint" role="status"><Lightbulb size={15} aria-hidden="true" /> تلميح: {task.pitfall}</p>
+    return <p className="l10-task-feedback is-hint" role="status"><Lightbulb size={15} aria-hidden="true" /> تلميح: <L10Bidi text={task.pitfall} /></p>
   }
-  if (result === undefined) return <p className="l10-task-feedback is-guidance" role="status">أدخل إجابة كاملة أولاً، ثم تحقّق منها. {task.verification}</p>
-  if (result) return <p className="l10-task-feedback is-correct" role="status"><Check size={15} aria-hidden="true" /> إجابة صحيحة. {task.verification}</p>
-  return <p className="l10-task-feedback is-hint" role="status"><Lightbulb size={15} aria-hidden="true" /> تلميح: {task.pitfall}</p>
+  if (result === undefined) return <p className="l10-task-feedback is-guidance" role="status">أدخل إجابة كاملة أولاً، ثم تحقّق منها. <L10Bidi text={task.verification} /></p>
+  if (result) return <p className="l10-task-feedback is-correct" role="status"><Check size={15} aria-hidden="true" /> إجابة صحيحة. <L10Bidi text={task.verification} /></p>
+  return <p className="l10-task-feedback is-hint" role="status"><Lightbulb size={15} aria-hidden="true" /> تلميح: <L10Bidi text={task.pitfall} /></p>
 }
 
 function SolutionDisclosure({ element }: { element: MultiplyNaturalNumbersBookElement }) {
@@ -361,15 +377,15 @@ function SolutionDisclosure({ element }: { element: MultiplyNaturalNumbersBookEl
     <div className="l10-solution-content">
       <SourceVisuals ids={element.visualAssetIds} />
       <dl className="l10-solution-frame">
-        <div><dt>المعطيات</dt><dd><BidiText>{element.given}</BidiText></dd></div>
-        <div><dt>المطلوب</dt><dd><BidiText>{element.required}</BidiText></dd></div>
-        <div><dt>القاعدة</dt><dd><BidiText>{element.rule}</BidiText></dd></div>
-        <div><dt>لماذا تنطبق؟</dt><dd><BidiText>{element.why}</BidiText></dd></div>
+        <div><dt>المعطيات</dt><dd><L10Bidi text={element.given} /></dd></div>
+        <div><dt>المطلوب</dt><dd><L10Bidi text={element.required} /></dd></div>
+        <div><dt>القاعدة</dt><dd><L10Bidi text={element.rule} /></dd></div>
+        <div><dt>لماذا تنطبق؟</dt><dd><L10Bidi text={element.why} /></dd></div>
       </dl>
-      <ol>{element.reasoning.map((line, index) => <li key={index}><BidiText>{line}</BidiText></li>)}</ol>
-      <p className="l10-result-line"><strong>الإجابة النهائية:</strong> <BidiText>{element.answer}</BidiText></p>
-      <p className="l10-check-line"><Check size={15} aria-hidden="true" /><span><strong>التحقّق:</strong> <BidiText>{element.verification}</BidiText></span></p>
-      <p className="l10-pitfall"><CircleAlert size={15} aria-hidden="true" /><span><strong>خطأ شائع:</strong> <BidiText>{element.pitfall}</BidiText></span></p>
+      <ol>{element.reasoning.map((line, index) => <li key={index}><L10Bidi text={line} /></li>)}</ol>
+      <p className="l10-result-line"><strong>الإجابة النهائية:</strong> <L10Bidi text={element.answer} /></p>
+      <p className="l10-check-line"><Check size={15} aria-hidden="true" /><span><strong>التحقّق:</strong> <L10Bidi text={element.verification} /></span></p>
+      <p className="l10-pitfall"><CircleAlert size={15} aria-hidden="true" /><span><strong>خطأ شائع:</strong> <L10Bidi text={element.pitfall} /></span></p>
     </div>
   </details>
 }

@@ -411,8 +411,8 @@ export const multiplyNaturalNumbersBookTasks: MultiplyNaturalNumbersBookElement[
     prompt: 'استعمل الخاصة التجميعية في حساب ناتج كل مما يأتي:', sourceText: '50 × 30 × 4',
     given: 'ثلاثة عوامل: 50 و30 و4.', required: 'اختيار تجميع سهل ثم الحساب.', rule: '(50 × 4) × 30 = 200 × 30.', why: '50 × 4 = 200 عدد مدوّر يسهل ضربه في 30.',
     reasoning: ['50 × 4 = 200.', '200 × 30 = 6000.'],
-    answer: '60000.', verification: '50 × 30 = 1500 ثم × 4 = 60000؛ النتيجة واحدة.', pitfall: 'عدّ أصفار 200 × 30 خطأً (خمسة أصفار لا أربعة).',
-    visualAssetIds: [], response: { kind: 'product', expected: 60000 },
+    answer: '6000.', verification: '50 × 30 = 1500 ثم × 4 = 6000؛ النتيجة واحدة.', pitfall: 'عدّ أصفار 200 × 30 خطأً (أربعة أصفار لا ثلاثة).',
+    visualAssetIds: [], response: { kind: 'product', expected: 6000 },
   }),
   task({
     id: 'l10-p51-ex3-d', page: 51, section: 'تدرّب · السؤال 3', title: 'استعمل التجميعية: 1000 × 6 × 5', groupId: 'l10-practice-ex3', branch: 'د',

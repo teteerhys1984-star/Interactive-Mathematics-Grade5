@@ -9,6 +9,9 @@
 import assert from 'node:assert/strict'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { JSDOM } from 'jsdom'
+
+/** Same shape as the lesson's printed math-run pattern: digits joined by × + = − - operators. */
+const MATH_RUN_GUARD = /\(?\d[\d,]*\)?(?:\s*[×+=−-]\s*\(?\d[\d,]*\)?)+/gu
 import {
   multiplyNaturalNumbersBookElements,
   multiplyNaturalNumbersBookTasks,
@@ -169,7 +172,7 @@ async function main() {
   Object.defineProperty(globalThis, 'navigator', { value: window.navigator, configurable: true })
   ;(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
   const React = await import('react')
-  const { render, screen, fireEvent } = await import('@testing-library/react')
+  const { render, screen, fireEvent, within } = await import('@testing-library/react')
   const { MultiplyNaturalNumbersLesson } = await import('../src/lessons/MultiplyNaturalNumbersLesson')
   const view = render(React.createElement(MultiplyNaturalNumbersLesson))
   const studentRecords = new Map<string, { rendered: boolean; promptRendered: boolean; branchRendered: boolean; text: string }>()
@@ -212,6 +215,44 @@ async function main() {
         branchRendered: !isInteractive(element) || Boolean(matchingNode),
         text: matchingNode?.textContent?.trim().slice(0, 500) ?? '',
       })
+    }
+
+    // Bidi/figure regression guards (added after the 2026-10-15 real-browser visual audit):
+    // printed math runs must stay isolated LTR, and the p51 figures must keep the printed orientation.
+    for (const source of view.container.querySelectorAll<HTMLElement>('.l10-task-source-text')) {
+      const text = source.textContent ?? ''
+      for (const run of text.match(MATH_RUN_GUARD) ?? []) {
+        const isolated = Array.from(source.querySelectorAll<HTMLElement>('.math-expression'))
+          .some(node => (node.textContent ?? '') === run && node.getAttribute('dir') === 'ltr')
+        assert.ok(isolated, `math run "${run}" inside "${text}" must render in one LTR-isolated math-expression`)
+      }
+    }
+    const karim = view.container.querySelector<HTMLElement>('[data-source-visual="p51-karim-bar-model"]')
+    if (karim) {
+      for (const selector of ['.l10-bar-strip', '.l10-bar-grid-row']) {
+        assert.equal(karim.querySelector(selector)?.getAttribute('dir'), 'ltr', `${selector} must lay out left-to-right like the printed figure`)
+      }
+      const groups = karim.querySelectorAll<HTMLElement>('.l10-bar-strip .l10-bar-group')
+      assert.ok(groups[0]?.querySelector('.l10-bar-cell')?.classList.contains('is-green'), 'karim strip must start with the green five-square bar (left on the printed page)')
+      assert.ok(groups[1]?.querySelector('.l10-bar-cell')?.classList.contains('is-red'), 'karim strip must follow with the red six-square bar (right on the printed page)')
+      assert.ok(karim.querySelector('.l10-bar-grid-row')?.firstElementChild?.classList.contains('l10-bar-rows-label'), 'the «3 أسئلة» label must sit left of the grids like the printed page')
+    }
+    const rectSvg = view.container.querySelector<HTMLElement>('.l10-rectangle-svg')
+    if (rectSvg) assert.equal(rectSvg.style.direction, 'ltr', 'rectangle svg must keep LTR glyph anchoring so the 82 label never clips')
+
+    const columnSteps = view.container.querySelector<HTMLElement>('[data-source-visual="p49-column-425x12-steps"]')
+    if (columnSteps) {
+      // printed page 49: multiplication carry box sits above the tens column (step 1), and the two
+      // addition carries sit BELOW the rule over the thousands/hundreds columns (step 3).
+      fireEvent.click(within(columnSteps).getByRole('button', { name: 'الخطوة الأولى' }))
+      const topCarries = columnSteps.querySelector('tr.l10-column-carries')
+      assert.ok(topCarries?.children[3]?.querySelector('.l10-carry'), 'step 1 must show the multiplication carry above the tens column like page 49')
+      fireEvent.click(within(columnSteps).getByRole('button', { name: 'الخطوة الثالثة' }))
+      const addCarries = columnSteps.querySelector('tr.l10-column-carries-add')
+      assert.ok(addCarries, 'step 3 must render the two addition carries')
+      assert.ok(addCarries?.previousElementSibling?.classList.contains('l10-column-rule'), 'addition carries must sit directly below the rule like page 49')
+      assert.ok(addCarries?.children[1]?.querySelector('.l10-carry.is-red'), 'red addition carry must sit over the thousands column')
+      assert.ok(addCarries?.children[2]?.querySelector('.l10-carry.is-blue'), 'blue addition carry must sit over the hundreds column')
     }
 
     if (stepIndex < stepCount - 1) fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
