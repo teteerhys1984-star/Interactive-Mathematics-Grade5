@@ -24,12 +24,14 @@ export const curriculumRegistry: UnitMeta[] = [
   {
     id: 'unit-2',
     title: 'الوحدة الثانية',
-    description: 'مقارنة الأعداد الطبيعية وترتيبها حتى الملايين',
+    description: 'مقارنة الأعداد الطبيعية وترتيبها وضرب الأعداد الطبيعية',
     accent: 'mint',
-    // The unit remains in progress: only its first available lesson is registered so far.
+    // The unit remains in progress: two of its lessons are registered so far, and completion is
+    // authored data — never inferred from how many lessons happen to be available.
     status: 'in-progress',
     lessons: [
       { id: 'compare-order-natural-numbers', title: 'مقارنة الأعداد الطبيعية وترتيبها', description: 'مقارنة الأعداد الطبيعية حتى الملايين وترتيبها تصاعدياً وتنازلياً.', availability: 'available' },
+      { id: 'multiply-natural-numbers', title: 'ضرب الأعداد الطبيعية', description: 'الضرب العمودي مع الحمل، أنماط العشرات والصفر، والخواص التبديلية والتجميعية والتوزيعية.', availability: 'available' },
     ],
   },
 ]
