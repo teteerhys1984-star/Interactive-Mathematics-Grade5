@@ -13,6 +13,7 @@ import { lessonSixTeacherEntries } from '../src/teacher/lesson6'
 import { lessonSevenTeacherEntries } from '../src/teacher/lesson7'
 import { lessonEightTeacherEntries } from '../src/teacher/lesson8'
 import { lessonNineTeacherEntries } from '../src/teacher/lesson9'
+import { lessonTenTeacherEntries } from '../src/teacher/lesson10'
 import {
   DIFFICULTIES,
   QUESTION_TYPES,
@@ -41,6 +42,7 @@ const EXPECTED_PRODUCTION_TESTS = [
   'lesson-parallelogram-test',
   'lesson-rhombus-test',
   'lesson-compare-order-natural-numbers-test',
+  'lesson-multiply-natural-numbers-test',
 ] as const
 const EXPECTED_UNIT_TESTS = ['unit-unit-1-test'] as const
 const UNIT_ONE_LESSON_IDS = [
@@ -65,6 +67,7 @@ const AUDITED_SOURCE_PAGE_RANGES: Readonly<Record<string, readonly [number, numb
   parallelogram: [31, 35],
   rhombus: [36, 39],
   'compare-order-natural-numbers': [44, 47],
+  'multiply-natural-numbers': [48, 51],
 }
 const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   coordinates: lessonOneTeacherEntries.map((entry) => entry.prompt),
@@ -76,6 +79,9 @@ const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   parallelogram: lessonSevenTeacherEntries.map((entry) => entry.prompt),
   rhombus: lessonEightTeacherEntries.map((entry) => entry.prompt),
   'compare-order-natural-numbers': lessonNineTeacherEntries
+    .filter((entry) => entry.source.type === 'textbook')
+    .map((entry) => entry.prompt),
+  'multiply-natural-numbers': lessonTenTeacherEntries
     .filter((entry) => entry.source.type === 'textbook')
     .map((entry) => entry.prompt),
 }
@@ -502,8 +508,8 @@ async function main(): Promise<void> {
   const unitTwo = curriculumRegistry[1]
   assert.equal(unitTwo.id, 'unit-2')
   assert.equal(unitTwo.status, 'in-progress')
-  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers'])
-  assert.equal(unitTwo.lessons[0].availability, 'available')
+  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers'])
+  assert.ok(unitTwo.lessons.every((lesson) => lesson.availability === 'available'))
   assert.ok(!loadedRegistry.testRegistry.unitTests.some((test) => test.type === 'unit' && test.unitId === 'unit-2'), 'Unit 2 stays in progress and has no unit test.')
   for (const lessonId of UNIT_ONE_LESSON_IDS) {
     assert.ok(

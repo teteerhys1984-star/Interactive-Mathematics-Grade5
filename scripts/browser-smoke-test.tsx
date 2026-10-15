@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('9 اختبارات متاحة')) fail('Test Area did not show the nine eligible lesson tests')
+  if (!screen.getByText('10 اختبارات متاحة')) fail('Test Area did not show the ten eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,11 +54,13 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 9) fail(`Expected 9 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 10) fail(`Expected 10 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
+  if (!screen.getByText('ضرب الأعداد الطبيعية')) fail('Unit 2 Lesson 2 title missing from Home')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('مقارنة الأعداد'))?.getAttribute('href') !== '#lesson/compare-order-natural-numbers') fail('Unit 2 Lesson 1 Home link has the wrong route')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('ضرب الأعداد الطبيعية'))?.getAttribute('href') !== '#lesson/multiply-natural-numbers') fail('Unit 2 Lesson 2 Home link has the wrong route')
   console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lesson 1 as available')
 
   // ---- Lesson 1 still works end-to-end ----
@@ -402,6 +404,53 @@ async function main() {
   if (!screen.getByText(/ترتيب صحيح/)) fail('Lesson 9 keyboard-operable sort workbench did not validate a descending order')
   console.log('✅ Unit 2 Lesson 1: discovery, three printed comparisons, Arabic-Indic input, first-difference analysis and accessible sort controls pass')
 
+  // ---- Unit 2, Lesson 2: printed branches, column steps, labs and rectangle classification ----
+  goTo('#lesson/multiply-natural-numbers')
+  if (!screen.getByRole('heading', { name: 'ضرب الأعداد الطبيعية', level: 1 })) fail('Unit 2 Lesson 2 did not open')
+  const lessonTenBreadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
+  if (!within(lessonTenBreadcrumbs).getByText('الوحدة الثانية')) fail('Unit 2 Lesson 2 breadcrumb has the wrong unit')
+  fireEvent.click(screen.getByRole('button', { name: /متساويان/ }))
+  fireEvent.click(screen.getByRole('button', { name: 'تحقّق من توقّعك' }))
+  if (!screen.getByText(/صحيح\. الضرب جمع متكرر/)) fail('Lesson 10 discovery feedback is missing')
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  const launchGroup = document.querySelector('[data-source-group="l10-launch"]')!
+  const launchInputs = Array.from(launchGroup.querySelectorAll('input')) as HTMLInputElement[]
+  ;['96', '150', '1095', '30'].forEach((value, index) => fireEvent.change(launchInputs[index], { target: { value } }))
+  const launchChecks = within(launchGroup as HTMLElement).getAllByRole('button', { name: 'تحقّق من الإجابة' })
+  launchChecks.forEach(button => fireEvent.click(button))
+  if (within(launchGroup as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 4) fail('Lesson 10 launch activity did not validate its four printed branches')
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  const exampleTwoGroup = document.querySelector('[data-source-group="l10-example2"]')!
+  const partInputs = Array.from(exampleTwoGroup.querySelectorAll('input')) as HTMLInputElement[]
+  ;['850', '4250', '5100'].forEach((value, index) => fireEvent.change(partInputs[index], { target: { value } }))
+  fireEvent.click(within(exampleTwoGroup as HTMLElement).getByRole('button', { name: 'تحقّق من الإجابة' }))
+  if (!within(exampleTwoGroup as HTMLElement).getByText(/إجابة صحيحة/)) fail('Lesson 10 example 2 column-steps response did not validate')
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  fireEvent.change(document.querySelector('#l10-pattern-factor')!, { target: { value: '1000' } })
+  if (!screen.getByText(/أُضيف ثلاثة أصفار/)) fail('Lesson 10 pattern lab did not explain the thousand factor')
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  const assocGroup = document.querySelector('[data-source-group="l10-p50-assoc"]')!
+  fireEvent.click(within(assocGroup as HTMLElement).getByLabelText('(2 × 5) × 897'))
+  fireEvent.click(within(assocGroup as HTMLElement).getByRole('button', { name: 'تحقّق من الإجابة' }))
+  if (!within(assocGroup as HTMLElement).getByText(/إجابة صحيحة/)) fail('Lesson 10 printed opinion question did not validate the easiest grouping')
+  for (let index = 0; index < 4; index += 1) fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  const rectangleGroup = document.querySelector('[data-source-group="l10-practice-ex4"]')!
+  if (within(rectangleGroup as HTMLElement).getAllByText('140').length < 1) fail('Lesson 10 rectangle figure did not rebuild the printed lengths')
+  const classifyRadios = Array.from(rectangleGroup.querySelectorAll('input[type="radio"]')) as HTMLInputElement[]
+  fireEvent.click(classifyRadios[0])
+  fireEvent.click(classifyRadios[2])
+  fireEvent.click(classifyRadios[5])
+  const rectangleChecks = within(rectangleGroup as HTMLElement).getAllByRole('button', { name: 'تحقّق من الإجابة' })
+  rectangleChecks.forEach(button => fireEvent.click(button))
+  if (within(rectangleGroup as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 3) fail('Lesson 10 rectangle classification did not validate area/area/perimeter')
+  fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+  fireEvent.change(document.querySelector('#l10-mult-a')!, { target: { value: '425' } })
+  fireEvent.change(document.querySelector('#l10-mult-b')!, { target: { value: '12' } })
+  fireEvent.click(screen.getByRole('button', { name: 'اعرض الحل العمودي' }))
+  if (!screen.getAllByText(/5,100/).length) fail('Lesson 10 multiplication lab did not reproduce the textbook column for 425 × 12')
+  console.log('✅ Unit 2 Lesson 2: four launch branches, column-steps example, pattern lab, printed opinion question, rectangle classification and multiplication lab all pass')
+
   // ---- Regression across all 9 available lessons: position vs completion + outline dialog ----
   // Two things are guarded here for every lesson:
   //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
@@ -416,6 +465,7 @@ async function main() {
     ['parallelogram', 'متوازي الأضلاع'],
     ['rhombus', 'المعيّن'],
     ['compare-order-natural-numbers', 'مقارنة الأعداد الطبيعية وترتيبها'],
+    ['multiply-natural-numbers', 'ضرب الأعداد الطبيعية'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
