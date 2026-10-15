@@ -9,6 +9,7 @@ import { ParallelogramLesson } from '../lessons/ParallelogramLesson'
 import { RhombusLesson } from '../lessons/RhombusLesson'
 import { ComparingNaturalNumbersLesson } from '../lessons/ComparingNaturalNumbersLesson'
 import { MultiplyNaturalNumbersLesson } from '../lessons/MultiplyNaturalNumbersLesson'
+import { LeastCommonMultipleLesson } from '../lessons/LeastCommonMultipleLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -25,4 +26,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   rhombus: RhombusLesson,
   'compare-order-natural-numbers': ComparingNaturalNumbersLesson,
   'multiply-natural-numbers': MultiplyNaturalNumbersLesson,
+  'least-common-multiple': LeastCommonMultipleLesson,
 }

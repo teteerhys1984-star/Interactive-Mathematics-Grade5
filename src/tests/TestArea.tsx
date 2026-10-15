@@ -322,7 +322,8 @@ function InvalidTestRoute() {
 function formatTestCount(count: number): string {
   if (count === 1) return 'اختبار واحد متاح'
   if (count === 2) return 'اختباران متاحان'
-  return `${count} اختبارات متاحة`
+  if (count <= 10) return `${count} اختبارات متاحة`
+  return `${count} اختباراً متاحاً`
 }
 
 function testTypeLabel(type: TestType): string {

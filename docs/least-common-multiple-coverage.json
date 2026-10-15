@@ -1,0 +1,371 @@
+{
+  "title": "المضاعف المشترك الأصغر",
+  "lessonId": "least-common-multiple",
+  "sourcePages": [
+    52,
+    53
+  ],
+  "audit": "Student Area: real component mounted across 10 steps; Teacher Area: structured solutions with page metadata.",
+  "target": {
+    "FULL": "100%",
+    "PARTIAL": 0,
+    "MISSING": 0
+  },
+  "summary": {
+    "total": 22,
+    "FULL": 22,
+    "PARTIAL": 0,
+    "MISSING": 0,
+    "percent": 100
+  },
+  "totals": {
+    "teachingElements": 4,
+    "printedQuestionBranches": 18,
+    "questionGroups": 8,
+    "rebuiltVisuals": 7
+  },
+  "independentTest": {
+    "id": "lesson-least-common-multiple-test",
+    "questionCount": 20,
+    "difficultyDistribution": {
+      "basic": 6,
+      "medium": 7,
+      "advanced": 4,
+      "thinking": 3
+    },
+    "solutionGroups": [
+      {
+        "group": 1,
+        "firstQuestion": 1,
+        "lastQuestion": 5
+      },
+      {
+        "group": 2,
+        "firstQuestion": 6,
+        "lastQuestion": 10
+      },
+      {
+        "group": 3,
+        "firstQuestion": 11,
+        "lastQuestion": 15
+      },
+      {
+        "group": 4,
+        "firstQuestion": 16,
+        "lastQuestion": 20
+      }
+    ],
+    "unitTwoStatus": "in-progress",
+    "unitTwoTestCreated": false
+  },
+  "items": [
+    {
+      "id": "l11-p52-goals",
+      "page": 52,
+      "section": "سنتعلم",
+      "kind": "teaching",
+      "title": "بطاقة «سنتعلم» — المضاعف المشترك الأصغر",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-laser-setup",
+      "page": 52,
+      "section": "تعلم",
+      "kind": "teaching",
+      "title": "مثال الليزر — معطيات المسألة",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-definition",
+      "page": 52,
+      "section": "تعلم",
+      "kind": "teaching",
+      "title": "تعريف المضاعف المشترك الأصغر",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-rule-pinned",
+      "page": 53,
+      "section": "تعلم",
+      "kind": "teaching",
+      "title": "بطاقة القاعدة (المثبّتة بالدبوس)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-launch-a",
+      "page": 52,
+      "section": "انطلاقة نشطة",
+      "kind": "task",
+      "title": "انطلاقة نشطة 1 — مضاعفات العدد 2",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-launch-b",
+      "page": 52,
+      "section": "انطلاقة نشطة",
+      "kind": "task",
+      "title": "انطلاقة نشطة 2 — مضاعفات العدد 3",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-laser-a",
+      "page": 52,
+      "section": "تعلم",
+      "kind": "task",
+      "title": "مثال الليزر (أ) — ثلاثة أزمنة مشتركة",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-laser-b",
+      "page": 52,
+      "section": "تعلم",
+      "kind": "task",
+      "title": "مثال الليزر (ب) — أصغر زمن بعد الصفر",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p52-example-3-5",
+      "page": 52,
+      "section": "مثال",
+      "kind": "example",
+      "title": "مثال: جد المضاعف المشترك الأصغر للعددين 3 و5",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-example-4-6-8",
+      "page": 53,
+      "section": "مثال",
+      "kind": "example",
+      "title": "مثال: م.م.أ للأعداد 4 و6 و8",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-farmer",
+      "page": 53,
+      "section": "مثال",
+      "kind": "example",
+      "title": "مثال الفلاح والمبيدات",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-verbal",
+      "page": 53,
+      "section": "تعبير شفهي",
+      "kind": "task",
+      "title": "تعبير شفهي — كيف نوجد م.م.أ لثلاثة أعداد؟",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-check",
+      "page": 53,
+      "section": "تحقق من فهمك",
+      "kind": "task",
+      "title": "تحقق من فهمك — م.م.أ (8 ، 5 ، 4)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-a",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب أ) م.م.أ (20 ، 30)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-b",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب ب) م.م.أ (30 ، 40)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-c",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب ج) م.م.أ (40 ، 60 ، 80)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-d",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب د) م.م.أ (200 ، 300)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-e",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب هـ) م.م.أ (300 ، 400)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-f",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب و) م.م.أ (400 ، 600 ، 800)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-g",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب ز) م.م.أ (2000 ، 3000)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-h",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب ح) م.م.أ (3000 ، 4000)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l11-p53-drill-i",
+      "page": 53,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "تدرّب ط) م.م.أ (4000 ، 6000 ، 8000)",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherArea": {
+        "status": "FULL"
+      },
+      "status": "FULL"
+    }
+  ]
+}
