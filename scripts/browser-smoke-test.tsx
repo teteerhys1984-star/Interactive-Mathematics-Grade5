@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('10 اختبارات متاحة')) fail('Test Area did not show the ten eligible lesson tests')
+  if (!screen.getByText('11 اختباراً متاحاً')) fail('Test Area did not show the eleven eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,14 +54,16 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 10) fail(`Expected 10 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 11) fail(`Expected 11 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
   if (!screen.getByText('ضرب الأعداد الطبيعية')) fail('Unit 2 Lesson 2 title missing from Home')
+  if (!screen.getByText('المضاعف المشترك الأصغر')) fail('Unit 2 Lesson 3 title missing from Home')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('مقارنة الأعداد'))?.getAttribute('href') !== '#lesson/compare-order-natural-numbers') fail('Unit 2 Lesson 1 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('ضرب الأعداد الطبيعية'))?.getAttribute('href') !== '#lesson/multiply-natural-numbers') fail('Unit 2 Lesson 2 Home link has the wrong route')
-  console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lesson 1 as available')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('المضاعف المشترك الأصغر'))?.getAttribute('href') !== '#lesson/least-common-multiple') fail('Unit 2 Lesson 3 Home link has the wrong route')
+  console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lessons 1–3 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -451,7 +453,7 @@ async function main() {
   if (!screen.getAllByText(/5,100/).length) fail('Lesson 10 multiplication lab did not reproduce the textbook column for 425 × 12')
   console.log('✅ Unit 2 Lesson 2: four launch branches, column-steps example, pattern lab, printed opinion question, rectangle classification and multiplication lab all pass')
 
-  // ---- Regression across all 9 available lessons: position vs completion + outline dialog ----
+  // ---- Regression across all 11 available lessons: position vs completion + outline dialog ----
   // Two things are guarded here for every lesson:
   //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
   //   2. the mobile outline bottom sheet behaves like a real modal (focus in, trap, Escape, focus back).
@@ -466,6 +468,7 @@ async function main() {
     ['rhombus', 'المعيّن'],
     ['compare-order-natural-numbers', 'مقارنة الأعداد الطبيعية وترتيبها'],
     ['multiply-natural-numbers', 'ضرب الأعداد الطبيعية'],
+    ['least-common-multiple', 'المضاعف المشترك الأصغر'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
@@ -522,7 +525,7 @@ async function main() {
     fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
     if (completedBadges('desktop') !== 2) fail(`${lessonTitle}: going back must keep the two visited steps marked as «مكتملة»`)
   }
-  console.log(`✅ Lesson-shell regression on all 9 available lessons: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
+  console.log(`✅ Lesson-shell regression on all ${lessonRoutes.length} available lessons: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
 
   // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')

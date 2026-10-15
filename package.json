@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && tsc --noEmit && vite build",
+    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
@@ -20,6 +20,7 @@
     "lesson-8-check": "tsx scripts/lesson-8-check.ts",
     "lesson-9-coverage-check": "tsx scripts/lesson-9-coverage-check.tsx",
     "lesson-10-coverage-check": "tsx scripts/lesson-10-coverage-check.tsx",
+    "lesson-11-coverage-check": "tsx scripts/lesson-11-coverage-check.tsx",
     "unit-1-check": "tsx scripts/unit-1-check.ts",
     "unit-exercises-check": "tsx scripts/unit-exercises-check.ts",
     "unit-exercises-coverage": "tsx scripts/unit-exercises-check.ts --write-coverage",
