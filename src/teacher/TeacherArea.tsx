@@ -12,6 +12,7 @@ import { lessonEightTeacherEntries } from './lesson8'
 import { lessonNineTeacherEntries } from './lesson9'
 import { lessonTenTeacherEntries } from './lesson10'
 import { lessonElevenTeacherEntries } from './lesson11'
+import { lessonTwelveTeacherEntries } from './lesson12'
 import { TeacherUnitExercisesView } from './TeacherUnitExercisesView'
 
 /** Shared registry: future lessons add one TeacherLessonData object, not a new page architecture. */
@@ -27,6 +28,7 @@ const teacherLessons: TeacherLessonData[] = [
   { lessonId: 'compare-order-natural-numbers', lessonTitle: 'مقارنة الأعداد الطبيعية وترتيبها', entries: lessonNineTeacherEntries },
   { lessonId: 'multiply-natural-numbers', lessonTitle: 'ضرب الأعداد الطبيعية', entries: lessonTenTeacherEntries },
   { lessonId: 'least-common-multiple', lessonTitle: 'المضاعف المشترك الأصغر', entries: lessonElevenTeacherEntries },
+  { lessonId: 'fractions-one', lessonTitle: 'الكسور (1)', entries: lessonTwelveTeacherEntries, mathMode: 'fractions' },
 ]
 
 export function TeacherArea({ initialLessonId }: { initialLessonId?: string | null }) {

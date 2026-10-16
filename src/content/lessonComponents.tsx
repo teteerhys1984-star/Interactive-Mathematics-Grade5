@@ -10,10 +10,11 @@ import { RhombusLesson } from '../lessons/RhombusLesson'
 import { ComparingNaturalNumbersLesson } from '../lessons/ComparingNaturalNumbersLesson'
 import { MultiplyNaturalNumbersLesson } from '../lessons/MultiplyNaturalNumbersLesson'
 import { LeastCommonMultipleLesson } from '../lessons/LeastCommonMultipleLesson'
+import { FractionsOneLesson } from '../lessons/FractionsOneLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
- * Adding Lesson 3 later means adding one entry here — no routing changes elsewhere.
+ * Adding a new available lesson means adding one entry here — no routing changes elsewhere.
  */
 export const lessonComponents: Record<string, ComponentType> = {
   coordinates: CoordinatesLesson,
@@ -27,4 +28,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   'compare-order-natural-numbers': ComparingNaturalNumbersLesson,
   'multiply-natural-numbers': MultiplyNaturalNumbersLesson,
   'least-common-multiple': LeastCommonMultipleLesson,
+  'fractions-one': FractionsOneLesson,
 }

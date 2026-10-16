@@ -1,0 +1,1311 @@
+{
+  "title": "الكسور (1)",
+  "lessonId": "fractions-one",
+  "sourcePages": [
+    54,
+    55,
+    56,
+    57
+  ],
+  "sourceImageReview": {
+    "method": "Manual visual review of the four supplied page images; every listed source row and figure was transcribed/reconstructed, then rendered and cross-checked against the Teacher Area in jsdom.",
+    "readability": {
+      "54": "واضحة: عنوان الدرس ورقمه، بطاقة الهدفين، نص التمهيد، ملاحظتا المقارنة، أربعة نماذج دائرية (حتى 16 قطاعاً)، أربع مقارنات وخمسة أسئلة تكافؤ مقروءة.",
+      "55": "واضحة: الأشكال (5)–(7)، نماذج 2/3 و1/2 ثم 4/6 و3/6، قاعدة المقام المشترك، ملاحظة م.م.أ، المثال، وسؤالا تحقق الفهم مقروءة.",
+      "56": "واضحة: قاعدة الترتيب، الكسور الأربعة، عوامل التحويل إلى 12، والنتيجة التصاعدية مقروءة.",
+      "57": "واضحة: قائمة التحقق، التعبير الشفهي، الأسئلة 1–6 وفروع المقارنة الخمسة، ومسائل التطبيق الثلاث مقروءة. صياغة «عند قطع مسافة 100 كيلومتر في الساعة» في السؤال (6) نُقلت كما طُبعت ولم يُفترض لها تفسير بديل."
+    },
+    "noPartialOrMissingSourceRows": true,
+    "notes": [
+      "قراءة ص54 هي «خُمسي قالب الحلوى»؛ جرى تمثيلها 2/5 كما في الصورة، لا 1/5.",
+      "صياغة ص57 في بند السيارة «عند قطع مسافة 100 كيلومتر في الساعة» نُقلت كما طبعت دون استبدالها بتفسير مستنتج.",
+      "رسوم الدوائر وإعادة التقسيم مصنفة كإعادة بناء للمنصة وليست صوراً أصلية، وأسماؤها تربطها بمرجع المصدر في منطقة المعلم.",
+      "أنشطة المحاذاة والفرز وصيد الخطأ والتحدي الختامي إضافات منصة معلّمة بوضوح وليست من الكتاب."
+    ]
+  },
+  "target": {
+    "FULL": "100%",
+    "PARTIAL": 0,
+    "MISSING": 0
+  },
+  "summary": {
+    "total": 50,
+    "FULL": 50,
+    "PARTIAL": 0,
+    "MISSING": 0,
+    "percent": 100
+  },
+  "totals": {
+    "textbookElements": 50,
+    "teachingElements": 10,
+    "workedExamples": 3,
+    "printedInstructions": 7,
+    "printedQuestionBranches": 30,
+    "questionGroups": 15,
+    "rebuiltVisuals": 15,
+    "platformOnlyActivities": 4
+  },
+  "test": {
+    "id": "lesson-fractions-one-test",
+    "questionCount": 20,
+    "difficultyDistribution": {
+      "basic": 6,
+      "medium": 7,
+      "advanced": 4,
+      "thinking": 3
+    },
+    "solutionGroups": [
+      {
+        "group": 1,
+        "firstQuestion": 1,
+        "lastQuestion": 5
+      },
+      {
+        "group": 2,
+        "firstQuestion": 6,
+        "lastQuestion": 10
+      },
+      {
+        "group": 3,
+        "firstQuestion": 11,
+        "lastQuestion": 15
+      },
+      {
+        "group": 4,
+        "firstQuestion": 16,
+        "lastQuestion": 20
+      }
+    ],
+    "allAnswerKeysScoreCorrect": true
+  },
+  "curriculum": {
+    "unitTwoStatus": "in-progress",
+    "unitTwoTestCreated": false,
+    "lessonCount": 4
+  },
+  "items": [
+    {
+      "id": "l12-p54-title",
+      "page": 54,
+      "section": "عنوان الدرس",
+      "kind": "teaching",
+      "title": "عنوان الكتاب ورقم الدرس",
+      "branch": null,
+      "sourceText": "الكسور (1) — الدرس الرابع من الوحدة الثانية.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "الكسور (1) — الدرس الرابع من الوحدة الثانية، ص 54–57.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-opening",
+      "page": 54,
+      "section": "مدخل الدرس",
+      "kind": "task",
+      "title": "قالب الحلوى — سؤال التمهيد",
+      "branch": null,
+      "sourceText": "تناول صلاح ثلاثة أرباع قالب الحلوى، وتناولت مايا خُمسي قالب الحلوى. ترى من تناول كمية أكبر؟ هل تعرف الإجابة؟ لنتعلم مقارنة كسرين.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "صلاح تناول كمية أكبر: 3/4 = 15/20 و2/5 = 8/20، ولذلك 3/4 > 2/5.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-goals",
+      "page": 54,
+      "section": "سنتعلم",
+      "kind": "teaching",
+      "title": "بطاقة «سنتعلم»",
+      "branch": null,
+      "sourceText": "سنتعلم: مقارنة كسرين؛ ترتيب الكسور.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "مقارنة كسرين، وترتيب الكسور.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-same-denominator-rule",
+      "page": 54,
+      "section": "ملاحظة",
+      "kind": "teaching",
+      "title": "مقارنة كسرين لهما المقام نفسه",
+      "branch": null,
+      "sourceText": "لمقارنة كسرين لهما المقام نفسه نوازن البسطين. الكسر الأكبر هو الذي بسطه أكبر.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "مع تساوي المقامين: الأكبر بسطاً هو الكسر الأكبر.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-multiple-denominator-rule",
+      "page": 54,
+      "section": "ملاحظة",
+      "kind": "teaching",
+      "title": "مقام أحد الكسرين مضاعف لمقام الآخر",
+      "branch": null,
+      "sourceText": "لمقارنة كسرين مقام أحدهما مضاعف لمقام الآخر نوحد المقامين (نبحث عن كسر مكافئ) ثم نوازن بسطَي الكسرين الناتجين.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "نوحّد المقامين بكسر مكافئ، ثم نقارن البسطين.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-launch-instruction",
+      "page": 54,
+      "section": "انطلاقة نشطة",
+      "kind": "instruction",
+      "title": "تعليمات الانطلاقة النشطة",
+      "branch": null,
+      "sourceText": "اكتب الكسر الدال على عدد الأجزاء الملونة في كل دائرة من الدوائر الآتية:",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "تظهر الإجابات لكل شكل في الفروع الأربعة المرفقة بالتعليمات.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-launch-fig1",
+      "page": 54,
+      "section": "انطلاقة نشطة",
+      "kind": "task",
+      "title": "الشكل (1) — كسر الجزء الملون",
+      "branch": "(1)",
+      "sourceText": "الشكل (1): دائرة مقسمة إلى 4 أجزاء متساوية، جزء واحد ملون.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "1/4.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-launch-fig2",
+      "page": 54,
+      "section": "انطلاقة نشطة",
+      "kind": "task",
+      "title": "الشكل (2) — كسر الأجزاء الملونة",
+      "branch": "(2)",
+      "sourceText": "الشكل (2): دائرة مقسمة إلى 5 أجزاء متساوية، 3 أجزاء منها ملونة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "3/5.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-launch-fig3",
+      "page": 54,
+      "section": "انطلاقة نشطة",
+      "kind": "task",
+      "title": "الشكل (3) — كسر الأجزاء الملونة",
+      "branch": "(3)",
+      "sourceText": "الشكل (3): دائرة مقسمة إلى 8 أجزاء متساوية، 3 أجزاء منها ملونة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "3/8.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-launch-fig4",
+      "page": 54,
+      "section": "انطلاقة نشطة",
+      "kind": "task",
+      "title": "الشكل (4) — كسر الأجزاء الملونة",
+      "branch": "(4)",
+      "sourceText": "الشكل (4): دائرة مقسمة إلى 16 جزءاً متساوياً، 6 أجزاء منها ملونة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "6/16.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-compare-instruction",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "instruction",
+      "title": "تعليمات المقارنة (ص 54)",
+      "branch": null,
+      "sourceText": "انسخ إلى دفترك ثم ضع ( > أو < أو = ) في المربع لتحصل على مقارنة صحيحة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "حل الفروع الأربعة مدرج مع كل بند في منطقة المعلم.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-compare-a",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "قارن الكسرين (أ)",
+      "branch": "أ",
+      "sourceText": "2/7 □ 2/7",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "2/7 = 2/7.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-compare-b",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "قارن الكسرين (ب)",
+      "branch": "ب",
+      "sourceText": "2/7 □ 5/7",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "2/7 < 5/7.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-compare-c",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "قارن الكسرين (ج)",
+      "branch": "ج",
+      "sourceText": "4/9 □ 9/9",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "4/9 < 9/9.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-compare-d",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "قارن الكسرين (د)",
+      "branch": "د",
+      "sourceText": "3/4 □ 1/4",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "3/4 > 1/4.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-equivalent-instruction",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "instruction",
+      "title": "تعليمات تكوين الكسور المتكافئة",
+      "branch": null,
+      "sourceText": "انسخ إلى دفترك ثم ضع عدداً مناسباً في المربعات لتحصل على كسور متكافئة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "تظهر الإجابات الصحيحة لكل فرع بجانب خطواته في منطقة المعلم.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-equivalent-a",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "كسر مكافئ (أ)",
+      "branch": "أ",
+      "sourceText": "3/4 = □/8",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "integer"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "6.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-equivalent-b",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "كسر مكافئ (ب)",
+      "branch": "ب",
+      "sourceText": "5/8 = 10/□",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "integer"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "16.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-equivalent-c",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "كسر مكافئ (ج)",
+      "branch": "ج",
+      "sourceText": "2/5 = □/□",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "إجابة ممكنة: 4/10؛ وتقبل الكسور المكافئة الأخرى مثل 6/15.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-equivalent-d",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "كسر مكافئ (د)",
+      "branch": "د",
+      "sourceText": "□/10 = 1/5",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "integer"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "2.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p54-equivalent-e",
+      "page": 54,
+      "section": "تدرّب",
+      "kind": "task",
+      "title": "كسر مكافئ (هـ)",
+      "branch": "هـ",
+      "sourceText": "7/□ = 1/3",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "integer"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "21.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-section-title",
+      "page": 55,
+      "section": "مقارنة كسرين",
+      "kind": "teaching",
+      "title": "عنوان الفقرة: مقارنة كسرين",
+      "branch": null,
+      "sourceText": "مقارنة كسرين.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "مقارنة كسرين.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-figures-instruction",
+      "page": 55,
+      "section": "مقارنة كسرين",
+      "kind": "instruction",
+      "title": "قراءة الشكلين (5) و(6)",
+      "branch": null,
+      "sourceText": "اكتب الكسر الدال على عدد الأجزاء الملونة في كل دائرة من الدائرتين (5) و(6) الآتيتين:",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "الشكل (5): 3/8؛ الشكل (6): 6/16.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-figures-5",
+      "page": 55,
+      "section": "مقارنة كسرين",
+      "kind": "task",
+      "title": "الشكل (5)",
+      "branch": "(5)",
+      "sourceText": "دائرة فيها 3 أجزاء ملونة من أصل 8 أجزاء متساوية.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "3/8.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-figures-6",
+      "page": 55,
+      "section": "مقارنة كسرين",
+      "kind": "task",
+      "title": "الشكل (6)",
+      "branch": "(6)",
+      "sourceText": "دائرة فيها 6 أجزاء ملونة من أصل 16 جزءاً متساوياً.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "fraction"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "6/16.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-equivalent-note",
+      "page": 55,
+      "section": "مقارنة كسرين",
+      "kind": "teaching",
+      "title": "تكافؤ الكسرين في الشكلين (5) و(6)",
+      "branch": null,
+      "sourceText": "نلاحظ أن الكسرين 3/8 و6/16 متكافئان (لاحظ الشكل (7)). أي إن 3/8 = 6/16.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "3/8 = 6/16؛ الشكل (7) يبرز المساحة المتساوية.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-example-halves-thirds",
+      "page": 55,
+      "section": "مقارنة كسرين",
+      "kind": "example",
+      "title": "تمثيل الكسرين 2/3 و1/2 ثم توحيد المقامين",
+      "branch": null,
+      "sourceText": "قارن الكسرين 2/3 و1/2. نمثل الكسرين بالدائرتين، ثم نجزئ كل دائرة إلى 6 أقسام متساوية.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "2/3 > 1/2؛ لأن 2/3 = 4/6 و1/2 = 3/6.",
+        "solutionSteps": 5
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-common-denominator-rule",
+      "page": 55,
+      "section": "ملاحظة",
+      "kind": "teaching",
+      "title": "القاعدة العامة لمقارنة كسرين",
+      "branch": null,
+      "sourceText": "لمقارنة كسرين نوحد المقامات بالبحث عن كسر مكافئ لكل منهما ولهما المقام ذاته ثم نقارن بسطَي الكسرين الناتجين فيكون الكسر الذي بسطه أكبر هو الكسر الأكبر.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "توحيد المقامات، ثم مقارنة البسطين.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-lcm-note",
+      "page": 55,
+      "section": "ملاحظة",
+      "kind": "teaching",
+      "title": "اختيار المقام المشترك الأصغر",
+      "branch": null,
+      "sourceText": "لتوحيد مقامي كسرين يمكن أن نجد المضاعف المشترك الأصغر لمقامي الكسرين الأصليين.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "يمكن استعمال م.م.أ المقامين بوصفه المقام المشترك.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-example-2-5-1-3",
+      "page": 55,
+      "section": "مثال",
+      "kind": "example",
+      "title": "مثال الكتاب: قارن 2/5 و1/3",
+      "branch": null,
+      "sourceText": "مثال: قارن الكسرين 2/5 و1/3.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "2/5 > 1/3.",
+        "solutionSteps": 5
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-check-instruction",
+      "page": 55,
+      "section": "تحقق من فهمك",
+      "kind": "instruction",
+      "title": "تعليمات «تحقق من فهمك»",
+      "branch": null,
+      "sourceText": "تحقق من فهمك.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "انظر الحلين الكاملين للبندين (1) و(2) في منطقة المعلم.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-check-1",
+      "page": 55,
+      "section": "تحقق من فهمك",
+      "kind": "task",
+      "title": "تحقق من فهمك (1) — قالب الحلوى",
+      "branch": "(1)",
+      "sourceText": "صلاح أم مايا؟",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "open"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "صلاح تناول كمية أكبر.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p55-check-2",
+      "page": 55,
+      "section": "تحقق من فهمك",
+      "kind": "task",
+      "title": "تحقق من فهمك (2) — المقارنة",
+      "branch": "(2)",
+      "sourceText": "1/4 و5/9",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "5/9 > 1/4.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p56-section-title",
+      "page": 56,
+      "section": "ترتيب الكسور",
+      "kind": "teaching",
+      "title": "عنوان الفقرة: ترتيب الكسور",
+      "branch": null,
+      "sourceText": "ترتيب الكسور.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "ترتيب الكسور.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p56-order-rule",
+      "page": 56,
+      "section": "ترتيب الكسور",
+      "kind": "teaching",
+      "title": "قاعدة ترتيب الكسور",
+      "branch": null,
+      "sourceText": "لترتيب الكسور نوحد مقاماتها ثم نرتب هذه الكسور بمقارنة بسطها.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "ترتيب الكسور = توحيد المقامات ثم ترتيب البسوط.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p56-order-example",
+      "page": 56,
+      "section": "مثال",
+      "kind": "example",
+      "title": "مثال الكتاب: ترتيب أربعة كسور تصاعدياً",
+      "branch": null,
+      "sourceText": "مثال: رتب الكسور الآتية تصاعدياً: 3/4، 1/3، 5/6، 7/12.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "1/3 < 7/12 < 3/4 < 5/6.",
+        "solutionSteps": 6
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-check-order",
+      "page": 57,
+      "section": "تحقق من فهمك",
+      "kind": "task",
+      "title": "تحقق من فهمك — ترتيب تصاعدي",
+      "branch": null,
+      "sourceText": "رتب الكسور الآتية تصاعدياً: 3/5، 11/15، 2/5، 1/3.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "ordering"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "1/3 < 2/5 < 3/5 < 11/15.",
+        "solutionSteps": 5
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-verbal",
+      "page": 57,
+      "section": "تعبير شفهي",
+      "kind": "task",
+      "title": "تعبير شفهي — الترتيب التنازلي",
+      "branch": null,
+      "sourceText": "اشرح كيف نرتب الكسور تنازلياً.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "open"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "إجابة نموذجية: نوحّد المقامات، ثم نرتب البسوط تنازلياً، ونكتب الكسور الأصلية بالترتيب نفسه.",
+        "solutionSteps": 5
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-practice-instruction",
+      "page": 57,
+      "section": "تدرّب",
+      "kind": "instruction",
+      "title": "تعليمات صفحة التدريب",
+      "branch": null,
+      "sourceText": "انسخ إلى دفترك ثم حل كلاً من التدريبات الآتية:",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "الصفحة تحتوي الأسئلة 1–6؛ السؤال 1 من (أ) إلى (هـ).",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-compare-instruction",
+      "page": 57,
+      "section": "تدرّب (1)",
+      "kind": "instruction",
+      "title": "تعليمات التدريب (1): المقارنة",
+      "branch": null,
+      "sourceText": "ضع ( > أو < أو = ) في المربع لتحصل على مقارنة صحيحة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "source-content"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "الإجابات للفروع (أ)–(هـ) هي: >، <، >، >، <.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-compare-a",
+      "page": 57,
+      "section": "تدرّب (1)",
+      "kind": "task",
+      "title": "مقارنة التدريب (1-أ)",
+      "branch": "أ",
+      "sourceText": "3/8 □ 4/11",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "3/8 > 4/11.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-compare-b",
+      "page": 57,
+      "section": "تدرّب (1)",
+      "kind": "task",
+      "title": "مقارنة التدريب (1-ب)",
+      "branch": "ب",
+      "sourceText": "2/9 □ 1/2",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "2/9 < 1/2.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-compare-c",
+      "page": 57,
+      "section": "تدرّب (1)",
+      "kind": "task",
+      "title": "مقارنة التدريب (1-ج)",
+      "branch": "ج",
+      "sourceText": "5/7 □ 1/3",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "5/7 > 1/3.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-compare-d",
+      "page": 57,
+      "section": "تدرّب (1)",
+      "kind": "task",
+      "title": "مقارنة التدريب (1-د)",
+      "branch": "د",
+      "sourceText": "6/7 □ 7/9",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "6/7 > 7/9.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-compare-e",
+      "page": 57,
+      "section": "تدرّب (1)",
+      "kind": "task",
+      "title": "مقارنة التدريب (1-هـ)",
+      "branch": "هـ",
+      "sourceText": "5/6 □ 11/12",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "relation"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "5/6 < 11/12.",
+        "solutionSteps": 3
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-order-ascending",
+      "page": 57,
+      "section": "تدرّب (2)",
+      "kind": "task",
+      "title": "تدرّب (2) — ترتيب تصاعدي",
+      "branch": null,
+      "sourceText": "رتب الكسور الآتية تصاعدياً: 3/4، 7/12، 17/24، 5/8، 8/8.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "ordering"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "7/12 < 5/8 < 17/24 < 3/4 < 8/8.",
+        "solutionSteps": 6
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-order-descending",
+      "page": 57,
+      "section": "تدرّب (3)",
+      "kind": "task",
+      "title": "تدرّب (3) — ترتيب تنازلي",
+      "branch": null,
+      "sourceText": "رتب الكسور الآتية تنازلياً: 1/4، 2/3، 5/6، 11/12.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "ordering"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "11/12 > 5/6 > 2/3 > 1/4.",
+        "solutionSteps": 5
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-distance",
+      "page": 57,
+      "section": "تدرّب (4)",
+      "kind": "task",
+      "title": "تدرّب (4) — المسافة إلى المدرسة",
+      "branch": null,
+      "sourceText": "يبتعد منزل بسام عن المدرسة مسافة 5/7 km ويبتعد منزل رهام عن المدرسة مسافة 3/5 km. حدد المنزل الأقرب إلى المدرسة.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "open"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "منزل رهام هو الأقرب؛ 3/5 km < 5/7 km.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-contest",
+      "page": 57,
+      "section": "تدرّب (5)",
+      "kind": "task",
+      "title": "تدرّب (5) — جولتا مسابقة حسّان",
+      "branch": null,
+      "sourceText": "اشترك حسان بمسابقة، في الجولة الأولى أجاب عن 13 سؤالاً من 20 سؤالاً إجابة صحيحة، وفي الجولة الثانية أجاب عن 16 سؤالاً من 25 سؤالاً إجابة صحيحة. حدد الجولة التي كانت الأكثر توفيقاً.",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "open"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "الجولة الأولى كانت الأكثر توفيقاً: 13/20 > 16/25.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    },
+    {
+      "id": "l12-p57-fuel",
+      "page": 57,
+      "section": "تدرّب (6)",
+      "kind": "task",
+      "title": "تدرّب (6) — اقتصاد استهلاك الوقود",
+      "branch": null,
+      "sourceText": "في معرض للسيارات يوجد طرازان من السيارات لهما نفس سعة خزان الوقود. الطراز الأول يستهلك 13/40 من خزان الوقود عند قطع مسافة 100 كيلومتر في الساعة، والطراز الثاني يستهلك 23/60 من خزان الوقود عند قطع مسافة 100 كيلومتر في الساعة. أي من السيارتين اقتصادية أكثر؟",
+      "studentArea": {
+        "status": "FULL",
+        "interaction": "open"
+      },
+      "teacherArea": {
+        "status": "FULL",
+        "answer": "الطراز الأول أكثر اقتصادية؛ 13/40 < 23/60.",
+        "solutionSteps": 4
+      },
+      "status": "FULL"
+    }
+  ],
+  "visuals": [
+    {
+      "id": "l12-v-p54-fig-1",
+      "page": 54,
+      "title": "الشكل (1)",
+      "description": "دائرة من 4 قطاعات متساوية، قطاع واحد مظلل؛ الكسر 1/4.",
+      "kind": "pie",
+      "numerator": 1,
+      "denominator": 4,
+      "segments": 4,
+      "shadedSegments": 1,
+      "startAngle": -90,
+      "shadeStart": 1,
+      "teacherRefId": "l12-p54-launch-fig1",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p54-launch-fig1"
+    },
+    {
+      "id": "l12-v-p54-fig-2",
+      "page": 54,
+      "title": "الشكل (2)",
+      "description": "دائرة من 5 قطاعات متساوية، 3 قطاعات مظللة؛ الكسر 3/5.",
+      "kind": "pie",
+      "numerator": 3,
+      "denominator": 5,
+      "segments": 5,
+      "shadedSegments": 3,
+      "startAngle": -90,
+      "shadeStart": 2,
+      "teacherRefId": "l12-p54-launch-fig2",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p54-launch-fig2"
+    },
+    {
+      "id": "l12-v-p54-fig-3",
+      "page": 54,
+      "title": "الشكل (3)",
+      "description": "دائرة من 8 قطاعات متساوية، 3 قطاعات مظللة؛ الكسر 3/8.",
+      "kind": "pie",
+      "numerator": 3,
+      "denominator": 8,
+      "segments": 8,
+      "shadedSegments": 3,
+      "startAngle": -90,
+      "shadeStart": 2,
+      "teacherRefId": "l12-p54-launch-fig3",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p54-launch-fig3"
+    },
+    {
+      "id": "l12-v-p54-fig-4",
+      "page": 54,
+      "title": "الشكل (4)",
+      "description": "دائرة من 16 قطاعاً متساوياً، 6 قطاعات مظللة؛ الكسر 6/16.",
+      "kind": "pie",
+      "numerator": 6,
+      "denominator": 16,
+      "segments": 16,
+      "shadedSegments": 6,
+      "startAngle": 0,
+      "shadeStart": 0,
+      "teacherRefId": "l12-p54-launch-fig4",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p54-launch-fig4"
+    },
+    {
+      "id": "l12-v-p55-fig-5",
+      "page": 55,
+      "title": "الشكل (5)",
+      "description": "دائرة من 8 قطاعات متساوية، 3 قطاعات مظللة؛ الكسر 3/8.",
+      "kind": "pie",
+      "numerator": 3,
+      "denominator": 8,
+      "segments": 8,
+      "shadedSegments": 3,
+      "startAngle": -90,
+      "shadeStart": 2,
+      "teacherRefId": "l12-p55-figures-5",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-figures-5"
+    },
+    {
+      "id": "l12-v-p55-fig-6",
+      "page": 55,
+      "title": "الشكل (6)",
+      "description": "دائرة من 16 قطاعاً متساوياً، 6 قطاعات مظللة؛ الكسر 6/16.",
+      "kind": "pie",
+      "numerator": 6,
+      "denominator": 16,
+      "segments": 16,
+      "shadedSegments": 6,
+      "startAngle": 0,
+      "shadeStart": 0,
+      "teacherRefId": "l12-p55-figures-6",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-figures-6"
+    },
+    {
+      "id": "l12-v-p55-fig-7",
+      "page": 55,
+      "title": "الشكل (7)",
+      "description": "قطاع دائري غير مقسم يوضح مساحة 3/8 من الدائرة نفسها، كما في شكل الكتاب.",
+      "kind": "pie",
+      "numerator": 3,
+      "denominator": 8,
+      "segments": 0,
+      "shadedSegments": 0,
+      "startAngle": 0,
+      "shadeStart": 0,
+      "unpartitioned": true,
+      "teacherRefId": "l12-p55-equivalent-note",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-equivalent-note"
+    },
+    {
+      "id": "l12-v-p55-model-2-3",
+      "page": 55,
+      "title": "نموذج 2/3 قبل التوحيد",
+      "description": "دائرة مقسمة إلى 3 أقسام متساوية، قسمان مظللان لتمثيل 2/3.",
+      "kind": "pie",
+      "numerator": 2,
+      "denominator": 3,
+      "segments": 3,
+      "shadedSegments": 2,
+      "startAngle": -90,
+      "shadeStart": 1,
+      "teacherRefId": "l12-p55-example-halves-thirds",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-example-halves-thirds"
+    },
+    {
+      "id": "l12-v-p55-model-1-2",
+      "page": 55,
+      "title": "نموذج 1/2 قبل التوحيد",
+      "description": "نصف دائرة واحد مظلل لتمثيل 1/2.",
+      "kind": "pie",
+      "numerator": 1,
+      "denominator": 2,
+      "segments": 2,
+      "shadedSegments": 1,
+      "startAngle": 0,
+      "shadeStart": 0,
+      "teacherRefId": "l12-p55-example-halves-thirds",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-example-halves-thirds"
+    },
+    {
+      "id": "l12-v-p55-model-4-6",
+      "page": 55,
+      "title": "نموذج 4/6 بعد التوحيد",
+      "description": "دائرة مقسمة إلى 6 أقسام متساوية، 4 منها مظللة لتمثيل 4/6.",
+      "kind": "pie",
+      "numerator": 4,
+      "denominator": 6,
+      "segments": 6,
+      "shadedSegments": 4,
+      "startAngle": -90,
+      "shadeStart": 2,
+      "teacherRefId": "l12-p55-example-halves-thirds",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-example-halves-thirds"
+    },
+    {
+      "id": "l12-v-p55-model-3-6",
+      "page": 55,
+      "title": "نموذج 3/6 بعد التوحيد",
+      "description": "دائرة مقسمة إلى 6 أقسام متساوية، 3 منها مظللة لتمثيل 3/6.",
+      "kind": "pie",
+      "numerator": 3,
+      "denominator": 6,
+      "segments": 6,
+      "shadedSegments": 3,
+      "startAngle": -90,
+      "shadeStart": 3,
+      "teacherRefId": "l12-p55-example-halves-thirds",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p55-example-halves-thirds"
+    },
+    {
+      "id": "l12-v-p56-eq-3-4",
+      "page": 56,
+      "title": "تحويل 3/4 إلى 9/12",
+      "description": "3/4 = (3×3)/(4×3) = 9/12.",
+      "kind": "equivalence",
+      "numerator": 3,
+      "denominator": 4,
+      "factor": 3,
+      "teacherRefId": "l12-p56-order-example",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p56-order-example"
+    },
+    {
+      "id": "l12-v-p56-eq-1-3",
+      "page": 56,
+      "title": "تحويل 1/3 إلى 4/12",
+      "description": "1/3 = (1×4)/(3×4) = 4/12.",
+      "kind": "equivalence",
+      "numerator": 1,
+      "denominator": 3,
+      "factor": 4,
+      "teacherRefId": "l12-p56-order-example",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p56-order-example"
+    },
+    {
+      "id": "l12-v-p56-eq-5-6",
+      "page": 56,
+      "title": "تحويل 5/6 إلى 10/12",
+      "description": "5/6 = (5×2)/(6×2) = 10/12.",
+      "kind": "equivalence",
+      "numerator": 5,
+      "denominator": 6,
+      "factor": 2,
+      "teacherRefId": "l12-p56-order-example",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p56-order-example"
+    },
+    {
+      "id": "l12-v-p56-eq-7-12",
+      "page": 56,
+      "title": "تحويل 7/12 إلى 7/12",
+      "description": "7/12 = (7×1)/(12×1) = 7/12.",
+      "kind": "equivalence",
+      "numerator": 7,
+      "denominator": 12,
+      "factor": 1,
+      "teacherRefId": "l12-p56-order-example",
+      "studentArea": {
+        "status": "FULL"
+      },
+      "teacherReference": "l12-p56-order-example"
+    }
+  ],
+  "platformActivities": [
+    "l12-platform-comparator",
+    "l12-platform-sorter",
+    "l12-platform-error",
+    "l12-platform-final-challenge"
+  ],
+  "uiAudit": {
+    "studentComponent": "mounted; all 10 steps visited in jsdom",
+    "teacherArea": "all 50 source entries rendered with page metadata and solutions",
+    "testRunner": "definition scoring verified; solution gating verified by the independent Test Area UI check",
+    "realBrowser": false
+  }
+}
