@@ -1,0 +1,146 @@
+/* Unit 2 · Lesson 5 «الكسور (2)» — «مطبخ الكسور» identity.
+   Palette: cocoa ink, berry accent, pistachio support, apricot paper. Deliberately not the green/orange
+   studio of lesson 4 nor the blue/gold of earlier units. Every rule is scoped to .l25-lesson. */
+
+.l25-lesson {
+  --l25-cocoa: #3b2a24;
+  --l25-cocoa-soft: #6b5249;
+  --l25-berry: #9e3758;
+  --l25-berry-deep: #7b2643;
+  --l25-berry-soft: #f9e4eb;
+  --l25-pistachio: #7f9d5d;
+  --l25-pistachio-soft: #eef4e2;
+  --l25-apricot: #f4b98a;
+  --l25-apricot-soft: #fdeedd;
+  --l25-cream: #fff9f0;
+  --l25-paper: #fffdf8;
+  --l25-line: #ead9c8;
+  color: var(--l25-cocoa);
+}
+.l25-lesson .lesson-content { color: var(--l25-cocoa); }
+.l25-lesson .l25-step-content { display: grid; gap: 20px; min-width: 0; }
+.l25-lesson .l25-step-content > * { min-width: 0; }
+.l25-lesson .l25-prose { line-height: 2; }
+
+/* ── Notation: vertical fractions, always LTR, never inline a/b ── */
+.l25-lesson .l25-frac { display: inline-grid; grid-template-rows: auto auto auto; justify-items: center; vertical-align: middle; direction: ltr; font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1.1; padding: 0 2px; }
+.l25-lesson .l25-frac-rule { display: block; width: 100%; min-width: 1.4em; height: 2px; margin: 2px 0; background: currentColor; border-radius: 2px; }
+.l25-lesson .l25-mixed { display: inline-flex; align-items: center; gap: 4px; direction: ltr; vertical-align: middle; font-variant-numeric: tabular-nums; font-weight: 800; }
+.l25-lesson .l25-mixed-whole { font-size: 1.25em; color: var(--l25-berry); }
+.l25-lesson .l25-eq { margin: 0 4px; color: var(--l25-berry); font-weight: 900; }
+
+/* ── Hero ── */
+.l25-lesson .l25-hero { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 22px; padding: 26px; border-radius: 26px 8px 26px 8px; background: linear-gradient(135deg, var(--l25-apricot-soft), var(--l25-cream) 60%); border: 1px solid var(--l25-line); }
+.l25-lesson .l25-hero h2 { margin: 12px 0 10px; font-size: clamp(1.6rem,4vw,2.6rem); line-height: 1.3; color: var(--l25-berry-deep); }
+.l25-lesson .l25-hero p { margin: 0; font-size: 1.05rem; line-height: 2.05; color: var(--l25-cocoa-soft); }
+.l25-lesson .l25-hero-art { display: grid; gap: 10px; }
+.l25-lesson .l25-hero-cake { display: grid; grid-template-columns: repeat(2,30px); gap: 4px; padding: 10px; border-radius: 14px; background: var(--l25-paper); border: 2px solid var(--l25-berry); }
+.l25-lesson .l25-hero-cake span { height: 30px; border-radius: 6px; background: var(--l25-apricot); }
+.l25-lesson .l25-hero-cake.is-half { grid-template-columns: repeat(2,30px); opacity: .9; }
+.l25-lesson .l25-hero-cake.is-half span:last-child { background: var(--l25-pistachio-soft); border: 1px dashed var(--l25-pistachio); }
+
+.l25-lesson .l25-tag { display: inline-flex; align-items: center; gap: 7px; min-height: 30px; padding: 5px 12px; border-radius: 999px; background: var(--l25-berry-soft); color: var(--l25-berry-deep); font-size: .86rem; font-weight: 850; }
+.l25-lesson .l25-goals { padding: 18px 20px; border-radius: 18px; background: var(--l25-pistachio-soft); border: 1px solid #d5e2bf; }
+.l25-lesson .l25-goals ul { margin: 12px 0 0; padding-inline-start: 22px; line-height: 2; }
+
+.l25-lesson .l25-step-intro { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 14px; align-items: start; padding: 16px 18px; border-radius: 18px; background: var(--l25-cream); border-inline-start: 6px solid var(--l25-berry); }
+.l25-lesson .l25-step-index { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--l25-berry); color: #fff; font-weight: 900; }
+.l25-lesson .l25-step-intro p { margin: 0 0 6px; line-height: 1.9; }
+.l25-lesson .l25-step-intro strong { color: var(--l25-berry-deep); }
+
+/* ── Source / platform cards ── */
+.l25-lesson .l25-rule-list { margin: 0; padding-inline-start: 20px; line-height: 2.1; }
+.l25-lesson .l25-worked-example { display: grid; gap: 8px; margin-top: 12px; padding: 14px 16px; border-radius: 14px; background: var(--l25-paper); border: 1px dashed var(--l25-apricot); text-align: left; }
+.l25-lesson .l25-worked-line { font-variant-numeric: tabular-nums; font-weight: 700; }
+.l25-lesson .l25-source-note { margin: 0; color: var(--l25-cocoa-soft); font-size: .92rem; }
+
+/* ── Labs ── */
+.l25-lesson .l25-lab { display: grid; gap: 14px; padding: 22px; border-radius: 24px 10px 24px 10px; background: var(--l25-paper); border: 2px solid var(--l25-apricot); box-shadow: 0 8px 22px rgba(59,42,36,.07); }
+.l25-lesson .l25-lab h3 { margin: 0; font-size: 1.25rem; color: var(--l25-berry-deep); }
+.l25-lesson .l25-lab > p { margin: 0; line-height: 1.95; }
+.l25-lesson .l25-lab-topline { display: flex; gap: 8px; flex-wrap: wrap; }
+.l25-lesson .l25-lab-note { font-size: .95rem; color: var(--l25-cocoa-soft); }
+.l25-lesson .l25-lab-inputs, .l25-lesson .l25-mixed-input, .l25-lesson .l25-fraction-input { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.l25-lesson .l25-number-field { display: grid; gap: 6px; min-width: 140px; font-weight: 800; color: var(--l25-cocoa); }
+.l25-lesson .l25-number-field input { min-height: 46px; padding: 8px 12px; border: 2px solid var(--l25-line); border-radius: 12px; background: #fff; font: inherit; font-size: 1.1rem; font-weight: 800; color: var(--l25-cocoa); direction: ltr; text-align: center; font-variant-numeric: tabular-nums; }
+.l25-lesson .l25-number-field input:focus-visible { outline: 3px solid var(--l25-berry); outline-offset: 2px; }
+.l25-lesson .l25-number-field input[aria-invalid="true"] { border-color: #c0392b; }
+.l25-lesson .l25-input-rule { width: 110px; height: 3px; background: var(--l25-cocoa); align-self: center; margin-top: 22px; border-radius: 2px; }
+.l25-lesson .l25-input-error { margin: 0; color: #a4262c; font-weight: 700; }
+.l25-lesson .l25-slider-label { display: grid; gap: 8px; font-weight: 800; }
+.l25-lesson .l25-slider-label input { width: 100%; accent-color: var(--l25-berry); }
+.l25-lesson .l25-readout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.l25-lesson .l25-readout > div, .l25-lesson .l25-readout.is-single { display: grid; gap: 8px; padding: 14px; border-radius: 16px; background: var(--l25-cream); border: 1px solid var(--l25-line); }
+.l25-lesson .l25-readout span { font-size: .86rem; color: var(--l25-cocoa-soft); font-weight: 800; }
+.l25-lesson .l25-readout small { color: var(--l25-cocoa-soft); line-height: 1.6; }
+.l25-lesson .l25-readout p { margin: 0; line-height: 1.9; }
+.l25-lesson .l25-whole-only { font-size: 1.6rem; color: var(--l25-berry); }
+
+/* Cake model: slices in groups of four */
+.l25-lesson .l25-cake-model { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 12px; border-radius: 18px; background: var(--l25-pistachio-soft); }
+.l25-lesson .l25-cake { display: grid; grid-template-columns: repeat(2,minmax(34px,1fr)); gap: 4px; width: 120px; padding: 8px; border-radius: 16px; background: #fff; border: 2px solid var(--l25-berry); }
+.l25-lesson .l25-slice { display: block; aspect-ratio: 1; border-radius: 50%; background: #f3e6d6; border: 1px solid var(--l25-line); }
+.l25-lesson .l25-slice.is-taken { background: var(--l25-apricot); border-color: var(--l25-berry); }
+
+/* Division: quotient above the bracket, dividend and divisor below */
+.l25-lesson .l25-division { display: grid; justify-items: start; gap: 4px; width: fit-content; padding: 14px 18px; border-radius: 16px; background: var(--l25-cream); border: 1px solid var(--l25-line); font-variant-numeric: tabular-nums; }
+.l25-lesson .l25-division-head { padding-inline-start: 60px; font-size: 1.25rem; font-weight: 900; color: var(--l25-berry-deep); }
+.l25-lesson .l25-division-body { display: grid; grid-template-columns: auto auto; align-items: center; border-inline-start: 3px solid var(--l25-cocoa); border-top: 3px solid var(--l25-cocoa); border-start-start-radius: 8px; }
+.l25-lesson .l25-division-divisor { padding: 0 12px 0 0; font-weight: 900; }
+.l25-lesson .l25-division-dividend { padding: 4px 10px; font-weight: 900; font-size: 1.2rem; }
+.l25-lesson .l25-division-rest { font-size: .95rem; color: var(--l25-cocoa-soft); }
+
+/* Relation row (<, =, >) */
+.l25-lesson .l25-relation-row { display: flex; align-items: center; gap: 12px; justify-content: center; font-size: 1.3rem; font-weight: 900; }
+.l25-lesson .l25-relation-box { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; border: 2px dashed var(--l25-berry); background: #fff; color: var(--l25-berry-deep); }
+
+/* ── Tables ── */
+.l25-lesson .l25-compare-table { display: grid; gap: 6px; }
+.l25-lesson .l25-compare-table [role="row"] { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+.l25-lesson .l25-compare-table [role="columnheader"] { font-weight: 900; color: var(--l25-berry-deep); padding: 6px; font-size: .9rem; }
+.l25-lesson .l25-compare-table [role="cell"] { display: grid; place-items: center; padding: 8px; border-radius: 10px; background: #fff; border: 1px solid var(--l25-line); }
+
+/* ── Book task groups ── */
+.l25-lesson .l25-group { display: grid; gap: 12px; }
+.l25-lesson .l25-group-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.l25-lesson .l25-group-head h3 { margin: 0; font-size: 1.1rem; color: var(--l25-cocoa); }
+.l25-lesson .l25-source-tag { padding: 3px 10px; border-radius: 6px; background: var(--l25-cocoa); color: var(--l25-cream); font-size: .8rem; font-weight: 800; }
+.l25-lesson .l25-task-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,260px),1fr)); gap: 12px; }
+.l25-lesson .l25-task { display: grid; align-content: start; gap: 10px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid var(--l25-line); }
+.l25-lesson .l25-task-head { display: flex; align-items: center; gap: 10px; }
+.l25-lesson .l25-task-label { display: grid; place-items: center; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 10px; background: var(--l25-apricot); font-weight: 900; color: var(--l25-cocoa); }
+.l25-lesson .l25-task-printed { font-size: 1.15rem; font-weight: 900; direction: ltr; font-variant-numeric: tabular-nums; }
+.l25-lesson .l25-choice-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.l25-lesson .l25-choice-row button { min-height: 42px; padding: 8px 14px; border-radius: 12px; border: 2px solid var(--l25-line); background: var(--l25-cream); color: var(--l25-cocoa); font: inherit; font-weight: 800; cursor: pointer; }
+.l25-lesson .l25-choice-row button.is-picked { border-color: var(--l25-berry); background: var(--l25-berry-soft); color: var(--l25-berry-deep); }
+.l25-lesson .l25-choice-row button:focus-visible, .l25-lesson .l25-check:focus-visible, .l25-lesson .l25-solution summary:focus-visible { outline: 3px solid var(--l25-berry); outline-offset: 2px; }
+.l25-lesson .l25-check { justify-self: start; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 14px; border-radius: 12px; border: 0; background: var(--l25-berry); color: #fff; font: inherit; font-weight: 850; cursor: pointer; }
+.l25-lesson .l25-check:disabled { opacity: .5; cursor: not-allowed; }
+.l25-lesson .l25-feedback { display: grid; gap: 8px; padding: 10px 12px; border-radius: 12px; font-size: .95rem; line-height: 1.8; }
+.l25-lesson .l25-feedback p { margin: 0; display: flex; gap: 6px; align-items: flex-start; }
+.l25-lesson .l25-feedback.is-correct { background: var(--l25-pistachio-soft); color: #3f5a24; }
+.l25-lesson .l25-feedback.is-hint { background: var(--l25-apricot-soft); color: #7a3d1b; }
+.l25-lesson .l25-solution summary { cursor: pointer; font-weight: 850; color: var(--l25-berry-deep); }
+.l25-lesson .l25-solution ol { margin: 8px 0; padding-inline-start: 22px; line-height: 1.9; }
+
+/* ── Summary and challenge ── */
+.l25-lesson .l25-summary-board { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,220px),1fr)); gap: 12px; }
+.l25-lesson .l25-summary-board article { display: grid; gap: 8px; padding: 16px; border-radius: 18px 6px 18px 6px; background: var(--l25-cream); border: 1px solid var(--l25-line); }
+.l25-lesson .l25-summary-board h3 { margin: 0; font-size: 1.02rem; color: var(--l25-berry-deep); }
+.l25-lesson .l25-summary-board p { margin: 0; line-height: 1.85; }
+.l25-lesson .l25-challenge { display: grid; gap: 10px; padding: 18px; border-radius: 20px; background: var(--l25-pistachio-soft); border: 1px solid #cadbb0; }
+.l25-lesson .l25-challenge p { margin: 0; line-height: 1.95; }
+.l25-lesson .l25-next-cta { display: inline-flex; align-items: center; gap: 8px; color: var(--l25-berry-deep); font-weight: 850; }
+.l25-lesson .l25-undo-line { display: inline-flex; gap: 6px; align-items: center; margin: 0; font-size: .85rem; color: var(--l25-cocoa-soft); }
+
+/* ── Narrow screens: keep the cake hero, labs, and notation from overflowing ── */
+@media (max-width: 720px) {
+  .l25-lesson .l25-hero { grid-template-columns: minmax(0,1fr); padding: 20px; }
+  .l25-lesson .l25-hero-art { display: none; }
+  .l25-lesson .l25-readout { grid-template-columns: minmax(0,1fr); }
+  .l25-lesson .l25-lab { padding: 16px; }
+  .l25-lesson .l25-mixed-input, .l25-lesson .l25-fraction-input { display: grid; grid-template-columns: minmax(0,1fr); }
+  .l25-lesson .l25-input-rule { display: none; }
+  .l25-lesson .l25-step-intro { grid-template-columns: minmax(0,1fr); }
+  .l25-lesson .l25-compare-table [role="row"] { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}

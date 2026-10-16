@@ -11,6 +11,7 @@ import { ComparingNaturalNumbersLesson } from '../lessons/ComparingNaturalNumber
 import { MultiplyNaturalNumbersLesson } from '../lessons/MultiplyNaturalNumbersLesson'
 import { LeastCommonMultipleLesson } from '../lessons/LeastCommonMultipleLesson'
 import { FractionsOneLesson } from '../lessons/FractionsOneLesson'
+import { FractionsTwoLesson } from '../lessons/FractionsTwoLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -29,4 +30,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   'multiply-natural-numbers': MultiplyNaturalNumbersLesson,
   'least-common-multiple': LeastCommonMultipleLesson,
   'fractions-one': FractionsOneLesson,
+  'fractions-two': FractionsTwoLesson,
 }

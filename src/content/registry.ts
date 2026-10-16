@@ -34,6 +34,7 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'multiply-natural-numbers', title: 'ضرب الأعداد الطبيعية', description: 'الضرب العمودي مع الحمل، أنماط العشرات والصفر، والخواص التبديلية والتجميعية والتوزيعية.', availability: 'available' },
       { id: 'least-common-multiple', title: 'المضاعف المشترك الأصغر', description: 'إيجاد المضاعف المشترك الأصغر لعددين أو ثلاثة أعداد وتطبيقاته الحياتية.', availability: 'available' },
       { id: 'fractions-one', title: 'الكسور (1)', description: 'مقارنة الكسور وترتيبها باستعمال الكسور المكافئة والمقام المشترك.', availability: 'available' },
+      { id: 'fractions-two', title: 'الكسور (2)', description: 'الكسر العادي والكسر المركب، والتحويل بينهما بالقسمة مع الباقي والضرب والجمع.', availability: 'available' },
     ],
   },
 ]
