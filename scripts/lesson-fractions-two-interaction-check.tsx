@@ -94,6 +94,8 @@ async function main() {
   fireEvent.change(bn, { target: { value: '3' } }); fireEvent.change(bd, { target: { value: '4' } })
   assert(buildLab.textContent?.includes('العدد الصحيح 1 فأكثر'), 'whole part 0 is rejected with a message')
   fireEvent.change(wInput, { target: { value: '2' } })
+  fireEvent.change(bn, { target: { value: '4' } }); fireEvent.change(bd, { target: { value: '4' } })
+  assert(buildLab.querySelector('[role="alert"]') && !buildLab.querySelector('[role="status"]'), 'numerator equal to denominator is not a proper part; no readout')
   fireEvent.change(bn, { target: { value: '1' } }); fireEvent.change(bd, { target: { value: '4' } })
   assert(buildLab.querySelector('[role="status"] [role="img"][aria-label="9 على 4"]'), '2 1/4 becomes 9/4 in the build lab')
   assert(noLinear(buildLab.textContent ?? ''), 'build lab text never shows a linear a/b')
@@ -105,8 +107,11 @@ async function main() {
   const slider = within(cakeLab).getByRole('slider') as HTMLInputElement
   fireEvent.change(slider, { target: { value: '8' } })
   const cakeModel = cakeLab.querySelector('.l25-cake-model') as HTMLElement
-  assert(cakeModel && /قالب كامل/u.test(cakeModel.getAttribute('aria-label') ?? ''), 'cake with 8 pieces names whole cakes')
-  assert(!/و0 قطع/u.test(cakeModel.getAttribute('aria-label') ?? ''), 'cake readout never says "and 0 pieces"')
+  const cakeLabel = cakeModel?.getAttribute('aria-label') ?? ''
+  assert(cakeLabel.includes('أي 2 قالب كامل') && !cakeLabel.includes('قطع، أي 2 قالب كامل و'), '8 pieces read exactly as 2 whole cakes')
+  assert(!/و0 قطع/u.test(cakeLabel), 'cake readout never says "and 0 pieces"')
+  fireEvent.change(slider, { target: { value: '6' } })
+  assert((cakeModel.getAttribute('aria-label') ?? '').includes('أي 1 قالب كامل و2 قطع'), '6 pieces read as 1 whole cake and 2 pieces')
   console.log('✅ cake lab: whole-number readout clean')
 
   // ---- Ambiguous printed item «ح» (bare 5) ----
