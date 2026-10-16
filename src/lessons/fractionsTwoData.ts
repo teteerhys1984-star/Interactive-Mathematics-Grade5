@@ -68,6 +68,8 @@ export function formatFraction(fraction: Fraction): string {
 /* ────────────────────────── Textbook items ────────────────────────── */
 
 export type ItemKind = 'classify' | 'to-mixed' | 'to-improper'
+/** `ambiguous`: printed text cannot settle the requested classification. Never counted as complete. */
+export type ExpectedKind = 'ordinary' | 'mixed' | 'ambiguous'
 export interface BookItem {
   id: string
   page: number
@@ -75,7 +77,7 @@ export interface BookItem {
   kind: ItemKind
   /** ordinary: a/b as printed; mixed: w a/b as printed. */
   printed: string
-  /** Expected answer, derived with the helpers above. */
+  /** Expected answer, derived with the helpers above (for classify items: ordinary | mixed | ambiguous). */
   expected: string
   source: 'textbook' | 'platform'
 }
@@ -105,8 +107,9 @@ export const checkClassifyItems: BookItem[] = [
   { id: 'b59-c-e', page: 59, label: 'هـ', kind: 'classify', printed: '0/5', expected: 'ordinary', source: 'textbook' },
   { id: 'b59-c-f', page: 59, label: 'و', kind: 'classify', printed: '10/5', expected: 'ordinary', source: 'textbook' },
   { id: 'b59-c-g', page: 59, label: 'ز', kind: 'classify', printed: '44/444', expected: 'ordinary', source: 'textbook' },
-  // The printed item «5» is a whole number. It is written 5/1 as an ordinary fraction, so it is not a mixed fraction.
-  { id: 'b59-c-h', page: 59, label: 'ح', kind: 'classify', printed: '5', expected: 'ordinary', source: 'textbook' },
+  // The printed item «5» has no fraction bar and no denominator. It has no fractional part, so it is not mixed;
+  // the printed page does not settle whether it counts as an ordinary fraction. Status: ambiguous (see audit doc).
+  { id: 'b59-c-h', page: 59, label: 'ح', kind: 'classify', printed: '5', expected: 'ambiguous', source: 'textbook' },
   { id: 'b59-c-i', page: 59, label: 'ط', kind: 'classify', printed: '1/7', expected: 'ordinary', source: 'textbook' },
   { id: 'b59-c-j', page: 59, label: 'ي', kind: 'classify', printed: '42 8/11', expected: 'mixed', source: 'textbook' },
 ]

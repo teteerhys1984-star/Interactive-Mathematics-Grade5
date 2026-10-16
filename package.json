@@ -23,6 +23,7 @@
     "lesson-11-coverage-check": "tsx scripts/lesson-11-coverage-check.tsx",
     "lesson-12-coverage-check": "tsx scripts/lesson-12-coverage-check.tsx",
     "lesson-fractions-two-check": "tsx scripts/lesson-fractions-two-check.ts",
+    "lesson-fractions-two-interaction-check": "tsx scripts/lesson-fractions-two-interaction-check.tsx",
     "unit-1-check": "tsx scripts/unit-1-check.ts",
     "unit-exercises-check": "tsx scripts/unit-exercises-check.ts",
     "unit-exercises-coverage": "tsx scripts/unit-exercises-check.ts --write-coverage",

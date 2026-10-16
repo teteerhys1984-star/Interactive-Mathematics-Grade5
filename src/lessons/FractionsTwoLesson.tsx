@@ -149,17 +149,24 @@ function ClassifyLab() {
 
 /* ───────────────────────── Book task rows ───────────────────────── */
 
-function gradeClassify(item: BookItem, answer: 'ordinary' | 'mixed' | undefined): 'correct' | 'incorrect' | 'incomplete' {
+type ClassifyAnswer = 'ordinary' | 'mixed' | 'unclear'
+
+/** Ambiguous printed items never produce correct/incorrect; any response is acknowledged neutrally. */
+function gradeClassify(item: BookItem, answer: ClassifyAnswer | undefined): 'correct' | 'incorrect' | 'incomplete' | 'ambiguous' {
   if (!answer) return 'incomplete'
+  if (item.expected === 'ambiguous') return 'ambiguous'
   return answer === item.expected ? 'correct' : 'incorrect'
 }
 
 function reasoningFor(item: BookItem): string[] {
   if (item.kind === 'classify') {
+    if (item.expected === 'ambiguous') return [
+      'نص البند المطبوع هو العدد 5 دون خط كسر أو مقام.',
+      'رياضياً: 5 ليس كسراً مركباً، لأنه لا يحتوي على جزء كسري.',
+      'الكتاب لا يحسم هل يُعد 5 كسراً عادياً؛ لذلك لا يُحسب هذا البند ضمن الإجابات المكتملة.',
+    ]
     return item.expected === 'mixed'
       ? [`الكسر المركب يتكوّن من عدد صحيح ثم كسر عادي أصغر من 1: ${item.printed}.`, 'وجود عدد صحيح قبل الكسر يجعله مركباً.']
-      : item.printed === '5'
-        ? ['العدد 5 ليس كسراً مركباً، لأنه لا يحتوي على جزء كسري.', 'الكتاب لا يطبع له مقاماً، لذلك تصنيفه بين «عادي» وغيره قيد الحسم؛ الإجابة المعروضة هنا تفسير منطقي وليست منقولة من الكتاب.']
         : [`${item.printed} لا يحتوي على عدد صحيح قبل الكسر، فهو كسر عادي.`]
   }
   if (item.kind === 'to-mixed') {
@@ -177,14 +184,16 @@ function parseMixedFromPrinted(printed: string): MixedNumber | undefined {
 }
 
 function ClassifyTask({ item }: { item: BookItem }) {
-  const [answer, setAnswer] = useState<'ordinary' | 'mixed'>()
+  const [answer, setAnswer] = useState<ClassifyAnswer>()
   const [checked, setChecked] = useState(false)
   const outcome = checked ? gradeClassify(item, answer) : undefined
+  const isAmbiguous = item.expected === 'ambiguous'
   return <article className="l25-task" data-source-id={item.id}>
     <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><Notation text={item.printed} /></span></div>
     <div className="l25-choice-row" role="group" aria-label={`نوع الكسر ${item.label}`}>
       <button type="button" className={answer === 'ordinary' ? 'is-picked' : ''} aria-pressed={answer === 'ordinary'} onClick={() => { setAnswer('ordinary'); setChecked(false) }}>كسر عادي</button>
       <button type="button" className={answer === 'mixed' ? 'is-picked' : ''} aria-pressed={answer === 'mixed'} onClick={() => { setAnswer('mixed'); setChecked(false) }}>كسر مركب</button>
+      {isAmbiguous && <button type="button" className={answer === 'unclear' ? 'is-picked' : ''} aria-pressed={answer === 'unclear'} onClick={() => { setAnswer('unclear'); setChecked(false) }}>لا يمكن الحسم من النص المطبوع</button>}
     </div>
     <button type="button" className="l25-check" onClick={() => setChecked(true)}><Check size={15} aria-hidden="true" /> تحقّق</button>
     {outcome && <TaskFeedback outcome={outcome} reasoning={reasoningFor(item)} />}
@@ -203,7 +212,7 @@ function MixedTask({ item }: { item: BookItem }) {
   const outcome = checked ? (!complete ? 'incomplete' : isAcceptedMixed(item.id, { whole: w!, numerator: n!, denominator: d! }, item.expected) ? 'correct' : 'incorrect') : undefined
   return <article className="l25-task" data-source-id={item.id}>
     <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><Notation text={item.printed} /></span></div>
-    <div className="l25-mixed-input" dir="ltr" role="group" aria-label={`اكتب ${item.printed} بشكل كسر مركب`}>
+    <div className="l25-mixed-input" dir="ltr" role="group" aria-label={`اكتب البند ${item.label} بشكل عدد مركب`}>
       <NumberField label="العدد الصحيح" value={whole} onChange={(v) => { setWhole(v); setChecked(false) }} max={9999} />
       <NumberField label="البسط" value={numerator} onChange={(v) => { setNumerator(v); setChecked(false) }} max={9999} />
       <NumberField label="المقام" value={denominator} onChange={(v) => { setDenominator(v); setChecked(false) }} max={9999} />
@@ -223,7 +232,7 @@ function ImproperTask({ item }: { item: BookItem }) {
   const outcome = checked ? (!complete ? 'incomplete' : isAcceptedFraction({ numerator: n!, denominator: d! }, item.expected) ? 'correct' : 'incorrect') : undefined
   return <article className="l25-task" data-source-id={item.id}>
     <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><Notation text={item.printed} /></span></div>
-    <div className="l25-fraction-input" dir="ltr" role="group" aria-label={`اكتب ${item.printed} ككسر عادي`}>
+    <div className="l25-fraction-input" dir="ltr" role="group" aria-label={`اكتب البند ${item.label} بشكل كسر عادي`}>
       <NumberField label="البسط" value={numerator} onChange={(v) => { setNumerator(v); setChecked(false) }} max={99999} />
       <span className="l25-input-rule" aria-hidden="true" />
       <NumberField label="المقام" value={denominator} onChange={(v) => { setDenominator(v); setChecked(false) }} max={99999} />
@@ -233,11 +242,12 @@ function ImproperTask({ item }: { item: BookItem }) {
   </article>
 }
 
-function TaskFeedback({ outcome, reasoning, answerLabel }: { outcome: 'correct' | 'incorrect' | 'incomplete'; reasoning: string[]; answerLabel?: string }) {
+function TaskFeedback({ outcome, reasoning, answerLabel }: { outcome: 'correct' | 'incorrect' | 'incomplete' | 'ambiguous'; reasoning: string[]; answerLabel?: string }) {
   return <div className={`l25-feedback ${outcome === 'correct' ? 'is-correct' : 'is-hint'}`} role="status">
     <p>{outcome === 'correct' && <><Check size={15} aria-hidden="true" /> إجابة صحيحة.</>}
       {outcome === 'incorrect' && <><CircleAlert size={15} aria-hidden="true" /> ليست صحيحة بعد. راجع الطريقة أدناه.</>}
-      {outcome === 'incomplete' && <><Lightbulb size={15} aria-hidden="true" /> أكمل المدخلات أولاً (المقام أكبر من 1 للكسر المركب).</>}</p>
+      {outcome === 'incomplete' && <><Lightbulb size={15} aria-hidden="true" /> أكمل المدخلات أولاً (المقام أكبر من 1 للكسر المركب).</>}
+      {outcome === 'ambiguous' && <><Lightbulb size={15} aria-hidden="true" /> استجابتك مسجّلة. هذا البند لا يُحسب ضمن الإجابات المكتملة لأن النص المطبوع لا يحسم تصنيفه.</>}</p>
     {outcome !== 'incomplete' && <details className="l25-solution">
       <summary>طريقة الحل</summary>
       <ol>{reasoning.map((line, index) => <li key={index}><Notation text={line} /></li>)}</ol>
