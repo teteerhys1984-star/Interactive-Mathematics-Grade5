@@ -33,6 +33,20 @@ function Eq({ children }: { children: ReactNode }) { return <MathExpression clas
 /** Prose that mixes Arabic with notation: each piece is its own isolated LTR island. */
 function Prose({ children }: { children: ReactNode }) { return <span className="l25-prose" dir="rtl">{children}</span> }
 
+const NOTATION_PATTERN = /(\d+\s+\d+\s*\/\s*\d+|\d+\s*\/\s*\d+)/gu
+
+/** Plain learner-facing text: fractions inside it become vertical glyphs (mixed first, then ordinary). */
+function Notation({ text }: { text: string }) {
+  return <span dir="rtl">{text.split(NOTATION_PATTERN).map((piece, index) => {
+    if (!piece) return null
+    const mixed = /^\s*(\d+)\s+(\d+)\s*\/\s*(\d+)\s*$/u.exec(piece)
+    if (mixed) return <Mixed key={index} w={mixed[1]} n={mixed[2]} d={mixed[3]} />
+    const plain = /^\s*(\d+)\s*\/\s*(\d+)\s*$/u.exec(piece)
+    if (plain) return <Frac key={index} n={plain[1]} d={plain[2]} />
+    return <BidiText key={index}>{piece}</BidiText>
+  })}</span>
+}
+
 /* ───────────────────────── Teaching visuals ───────────────────────── */
 
 /** Cake slices in groups of four: the picture that makes "one whole" and "one and a bit" visible. */
@@ -97,7 +111,7 @@ function CakeLab() {
     <CakeModel pieces={pieces} />
     <div className="l25-readout">
       <div><span>كسر عادي</span><Frac n={pieces} d={4} /><small>{kind === 'proper' ? 'أصغر من 1' : kind === 'equal-one' ? 'يساوي 1' : kind === 'whole' ? 'يساوي عدداً صحيحاً' : 'أكبر من 1'}</small></div>
-      <div><span>كسر مركب</span>{rest === 0 ? <strong className="l25-whole-only">{cakes}</strong> : cakes === 0 ? <Frac n={rest} d={4} /> : <Mixed w={cakes} n={rest} d={4} />}<small>{cakes} قالب كامل {rest ? `و${rest} قطع` : ''}</small></div>
+      <div><span>{rest === 0 ? (cakes === 0 ? 'لا عدد صحيح بعد' : 'عدد صحيح') : cakes === 0 ? 'أصغر من 1 (يبقى عادياً)' : 'كسر مركب'}</span>{rest === 0 ? <strong className="l25-whole-only">{cakes}</strong> : cakes === 0 ? <Frac n={rest} d={4} /> : <Mixed w={cakes} n={rest} d={4} />}<small>{cakes} قالب كامل {rest ? `و${rest} قطع` : ''}</small></div>
     </div>
     <p className="l25-lab-note">تذكّر: كل كسر عادي بسطه أصغر من مقامه أصغر من 1، وكل كسر بسطه أكبر من مقامه أكبر من 1، والكسر المركب يُفهم عدداً صحيحاً مع كسر أصغر من 1.</p>
   </section>
@@ -145,7 +159,7 @@ function reasoningFor(item: BookItem): string[] {
     return item.expected === 'mixed'
       ? [`الكسر المركب يتكوّن من عدد صحيح ثم كسر عادي أصغر من 1: ${item.printed}.`, 'وجود عدد صحيح قبل الكسر يجعله مركباً.']
       : item.printed === '5'
-        ? ['العدد 5 عدد صحيح، ويُكتب ككسر عادي 5/1 وليس كسراً مركباً.', 'لا يحتوي على جزء كسري يُكتب بجانب عدد صحيح.']
+        ? ['العدد 5 ليس كسراً مركباً، لأنه لا يحتوي على جزء كسري.', 'الكتاب لا يطبع له مقاماً، لذلك تصنيفه بين «عادي» وغيره قيد الحسم؛ الإجابة المعروضة هنا تفسير منطقي وليست منقولة من الكتاب.']
         : [`${item.printed} لا يحتوي على عدد صحيح قبل الكسر، فهو كسر عادي.`]
   }
   if (item.kind === 'to-mixed') {
@@ -167,7 +181,7 @@ function ClassifyTask({ item }: { item: BookItem }) {
   const [checked, setChecked] = useState(false)
   const outcome = checked ? gradeClassify(item, answer) : undefined
   return <article className="l25-task" data-source-id={item.id}>
-    <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><BidiText>{item.printed}</BidiText></span></div>
+    <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><Notation text={item.printed} /></span></div>
     <div className="l25-choice-row" role="group" aria-label={`نوع الكسر ${item.label}`}>
       <button type="button" className={answer === 'ordinary' ? 'is-picked' : ''} aria-pressed={answer === 'ordinary'} onClick={() => { setAnswer('ordinary'); setChecked(false) }}>كسر عادي</button>
       <button type="button" className={answer === 'mixed' ? 'is-picked' : ''} aria-pressed={answer === 'mixed'} onClick={() => { setAnswer('mixed'); setChecked(false) }}>كسر مركب</button>
@@ -188,7 +202,7 @@ function MixedTask({ item }: { item: BookItem }) {
   const complete = w !== undefined && n !== undefined && d !== undefined && d > 1 && n > 0 && n < d
   const outcome = checked ? (!complete ? 'incomplete' : isAcceptedMixed(item.id, { whole: w!, numerator: n!, denominator: d! }, item.expected) ? 'correct' : 'incorrect') : undefined
   return <article className="l25-task" data-source-id={item.id}>
-    <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><BidiText>{item.printed}</BidiText></span></div>
+    <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><Notation text={item.printed} /></span></div>
     <div className="l25-mixed-input" dir="ltr" role="group" aria-label={`اكتب ${item.printed} بشكل كسر مركب`}>
       <NumberField label="العدد الصحيح" value={whole} onChange={(v) => { setWhole(v); setChecked(false) }} max={9999} />
       <NumberField label="البسط" value={numerator} onChange={(v) => { setNumerator(v); setChecked(false) }} max={9999} />
@@ -208,7 +222,7 @@ function ImproperTask({ item }: { item: BookItem }) {
   const complete = n !== undefined && d !== undefined && d > 0
   const outcome = checked ? (!complete ? 'incomplete' : isAcceptedFraction({ numerator: n!, denominator: d! }, item.expected) ? 'correct' : 'incorrect') : undefined
   return <article className="l25-task" data-source-id={item.id}>
-    <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><BidiText>{item.printed}</BidiText></span></div>
+    <div className="l25-task-head"><span className="l25-task-label">{item.label}</span><span className="l25-task-printed"><Notation text={item.printed} /></span></div>
     <div className="l25-fraction-input" dir="ltr" role="group" aria-label={`اكتب ${item.printed} ككسر عادي`}>
       <NumberField label="البسط" value={numerator} onChange={(v) => { setNumerator(v); setChecked(false) }} max={99999} />
       <span className="l25-input-rule" aria-hidden="true" />
@@ -226,8 +240,8 @@ function TaskFeedback({ outcome, reasoning, answerLabel }: { outcome: 'correct' 
       {outcome === 'incomplete' && <><Lightbulb size={15} aria-hidden="true" /> أكمل المدخلات أولاً (المقام أكبر من 1 للكسر المركب).</>}</p>
     {outcome !== 'incomplete' && <details className="l25-solution">
       <summary>طريقة الحل</summary>
-      <ol>{reasoning.map((line, index) => <li key={index}>{line}</li>)}</ol>
-      {answerLabel && <p><strong>الإجابة:</strong> <BidiText>{answerLabel}</BidiText></p>}
+      <ol>{reasoning.map((line, index) => <li key={index}><Notation text={line} /></li>)}</ol>
+      {answerLabel && <p><strong>الإجابة:</strong> <Notation text={answerLabel} /></p>}
     </details>}
   </div>
 }
@@ -280,11 +294,12 @@ function DivisionLab() {
     {valid && result && mixed && <>
       <ImproperDivisionVisual numerator={numerator!} denominator={denominator!} />
       <div className="l25-readout is-single" role="status">
-        <p><Prose>
+        {result.quotient === 0 && <p><Prose>البسط أصغر من المقام، فالكسر <Frac n={numerator!} d={denominator!} /> أصغر من 1 ولا يُكتب مركباً؛ يبقى كسراً عادياً.</Prose></p>}
+        {result.quotient > 0 && result.remainder === 0 && <p><Prose><Frac n={numerator!} d={denominator!} /> <Eq>=</Eq> <strong>{result.quotient}</strong> والباقي صفر، فالناتج عدد صحيح.</Prose></p>}
+        {result.quotient > 0 && result.remainder > 0 && <p><Prose>
           <Frac n={numerator!} d={denominator!} /> <Eq>=</Eq> <Mixed w={mixed.whole} n={mixed.numerator} d={mixed.denominator} />
-        </Prose></p>
+        </Prose></p>}
         <p>التحقق: <MathExpression>{`${result.quotient} × ${denominator} + ${result.remainder} = ${numerator}`}</MathExpression></p>
-        {result.remainder === 0 && <p><Prose>الباقي صفر، فالكسر يساوي عدداً صحيحاً.</Prose></p>}
       </div>
     </>}
   </section>
@@ -299,7 +314,7 @@ function BuildLab() {
   const w = parseNatural(whole, 999)
   const n = parseNatural(numerator, 999)
   const d = parseNatural(denominator, 999)
-  const valid = w !== undefined && n !== undefined && d !== undefined && d > 1 && n < d
+  const valid = w !== undefined && w >= 1 && n !== undefined && d !== undefined && d > 1 && n >= 1 && n < d
   const product = valid ? w! * d! : undefined
   const improper = valid ? toImproper({ whole: w!, numerator: n!, denominator: d! }) : undefined
   return <section className="l25-lab l25-build-lab" aria-labelledby="l25-build-title" data-platform-activity="l25-build-lab">
@@ -310,7 +325,7 @@ function BuildLab() {
       <NumberField label="البسط" value={numerator} onChange={setNumerator} max={999} />
       <NumberField label="المقام" value={denominator} onChange={setDenominator} max={999} />
     </div>
-    {!valid && <p className="l25-input-error" role="alert">لكي يكون الكسر مركباً: المقام أكبر من 1، والبسط أصغر من المقام، والعدد الصحيح 0 فأكثر.</p>}
+    {!valid && <p className="l25-input-error" role="alert">لكي يكون الكسر مركباً: العدد الصحيح 1 فأكثر، والبسط من 1 إلى أقل من المقام، والمقام أكبر من 1.</p>}
     {valid && improper && <div className="l25-build-steps" role="status">
       <p><Prose>نضرب العدد الصحيح في المقام: <MathExpression>{`${w} × ${d} = ${product}`}</MathExpression></Prose></p>
       <p><Prose>نضيف البسط: <MathExpression>{`${product} + ${n} = ${product! + n!}`}</MathExpression></Prose></p>
@@ -366,7 +381,7 @@ function DefinitionsStep() {
       {classifyItems.map((item) => <ClassifyTask key={item.id} item={item} />)}
     </TaskGroup>
     <SourceCard label="من الكتاب · ص 59 · تحقّق من فهمك">
-      <p>البنود التالية من تمرين «تحقّق من فهمك» في الصفحة 59. انتبه إلى البند «5»: هو عدد صحيح يُكتب 5/1 ككسر عادي، وليس كسراً مركباً.</p>
+      <p>البنود التالية من تمرين «تحقّق من فهمك» في الصفحة 59. انتبه إلى البند «5»: هو عدد صحيح بلا جزء كسري، فليس كسراً مركباً، والكتاب لا يطبع له مقاماً، فتصنيفه بين «عادي» وغيره قيد الحسم.</p>
     </SourceCard>
     <TaskGroup title="تحقّق من فهمك: عادي أم مركب؟" page={59}>
       {checkClassifyItems.map((item) => <ClassifyTask key={item.id} item={item} />)}
@@ -392,7 +407,7 @@ function ComparisonStep() {
       <RelationTask fraction={{ numerator: 3, denominator: 4 }} correct="<" />
     </TaskGroup>
     <SourceCard label="من الكتاب · ص 58 · النشاط 3">
-      <p>يوضّح القالبان الأول والثاني 4/4 و 3/4، ويوضّح الثالث <Mixed w={1} n={3} d={4} /> والكسر <Frac n={7} d={4} />. هل يمثّل <Mixed w={1} n={3} d={4} /> و<Frac n={7} d={4} /> الكمية نفسها؟ نعم، لأن <Mixed w={1} n={3} d={4} /> = <Frac n={7} d={4} />.</p>
+      <p>في الجدول المطبوع: القالب الأول <Frac n={4} d={4} />، والثاني <Frac n={3} d={4} />، والرابع يُكتب <Mixed w={1} n={3} d={4} /> أو <Frac n={7} d={4} />. هل يمثّل <Mixed w={1} n={3} d={4} /> و<Frac n={7} d={4} /> الكمية نفسها؟ نعم، لأن <Mixed w={1} n={3} d={4} /> = <Frac n={7} d={4} />.</p>
     </SourceCard>
     <SourceCard label="من الكتاب · ص 58 · تعبير شفهي">
       <p>كيف نميّز بين الكسر المركب والكسر العادي؟ العادي كسر واحد بسطه ومقامه، والمركب يحوي عدداً صحيحاً قبل الكسر.</p>
@@ -475,7 +490,7 @@ function ApplicationsStep() {
     <SourceCard label="من الكتاب · ص 61 · التدريب 5">
       <p>قالب حلوى مقسّم إلى {cakeShare.pieces} قطع، تريد أمّ توزيعه على أولادها الثلاثة بالتساوي. كم ينال كل ولد من أولادها؟</p>
       <div className="l25-mixed-input" dir="ltr">
-        <label className="l25-number-field"><span>اكتب الناتج (مثل 2 2/3 أو 8/3)</span><input type="text" dir="ltr" autoComplete="off" value={childAnswer} onChange={(event) => { setChildAnswer(event.currentTarget.value); setChildChecked(false) }} aria-label="نصيب الولد الواحد" /></label>
+        <label className="l25-number-field"><span>اكتب الناتج كعدد مركب أو كسر عادي</span><input type="text" dir="ltr" autoComplete="off" value={childAnswer} onChange={(event) => { setChildAnswer(event.currentTarget.value); setChildChecked(false) }} aria-label="نصيب الولد الواحد" /></label>
       </div>
       <button type="button" className="l25-check" onClick={() => setChildChecked(true)}><Check size={15} aria-hidden="true" /> تحقّق</button>
       {childChecked && <div className={`l25-feedback ${childMixedOk ? 'is-correct' : 'is-hint'}`} role="status">
