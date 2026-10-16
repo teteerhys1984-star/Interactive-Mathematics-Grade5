@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('11 اختباراً متاحاً')) fail('Test Area did not show the eleven eligible lesson tests')
+  if (!screen.getByText('12 اختباراً متاحاً')) fail('Test Area did not show the twelve eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,16 +54,18 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 11) fail(`Expected 11 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 12) fail(`Expected 12 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
   if (!screen.getByText('ضرب الأعداد الطبيعية')) fail('Unit 2 Lesson 2 title missing from Home')
   if (!screen.getByText('المضاعف المشترك الأصغر')) fail('Unit 2 Lesson 3 title missing from Home')
+  if (!screen.getByText('الكسور (1)')) fail('Unit 2 Lesson 4 title missing from Home')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('مقارنة الأعداد'))?.getAttribute('href') !== '#lesson/compare-order-natural-numbers') fail('Unit 2 Lesson 1 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('ضرب الأعداد الطبيعية'))?.getAttribute('href') !== '#lesson/multiply-natural-numbers') fail('Unit 2 Lesson 2 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('المضاعف المشترك الأصغر'))?.getAttribute('href') !== '#lesson/least-common-multiple') fail('Unit 2 Lesson 3 Home link has the wrong route')
-  console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lessons 1–3 as available')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الكسور (1)'))?.getAttribute('href') !== '#lesson/fractions-one') fail('Unit 2 Lesson 4 Home link has the wrong route')
+  console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lessons 1–4 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -453,7 +455,110 @@ async function main() {
   if (!screen.getAllByText(/5,100/).length) fail('Lesson 10 multiplication lab did not reproduce the textbook column for 425 × 12')
   console.log('✅ Unit 2 Lesson 2: four launch branches, column-steps example, pattern lab, printed opinion question, rectangle classification and multiplication lab all pass')
 
-  // ---- Regression across all 11 available lessons: position vs completion + outline dialog ----
+  // ---- Unit 2, Lesson 4: source branches, accessible fraction tools, test isolation ----
+  goTo('#lesson/fractions-one')
+  if (!screen.getByRole('heading', { name: 'الكسور (1)', level: 1 })) fail('Unit 2 Lesson 4 did not open')
+  const lessonTwelveBreadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
+  if (!within(lessonTwelveBreadcrumbs).getByText('الوحدة الثانية')) fail('Unit 2 Lesson 4 breadcrumb has the wrong unit')
+  if (!screen.getByText(/خُمسي قالب الحلوى/)) fail('p. 54 source opening did not preserve «خُمسي» (2/5)')
+  const nextFractionStep = () => fireEvent.click(screen.getByRole('button', { name: /التالي/ }))
+
+  const openingGroup = document.querySelector('[data-source-group="l12-p54-opening-group"]')!
+  fireEvent.change(openingGroup.querySelector('select')!, { target: { value: '>' } })
+  fireEvent.click(within(openingGroup as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (!within(openingGroup as HTMLElement).getByText(/إجابة صحيحة/)) fail('Lesson 12 opening comparison did not validate')
+  nextFractionStep()
+
+  const pieGroup = document.querySelector('[data-source-group="l12-p54-launch"]')!
+  const pieInputs = Array.from(pieGroup.querySelectorAll('input')) as HTMLInputElement[]
+  ;['1', '4', '3', '5', '3', '8', '6', '16'].forEach((value, index) => fireEvent.change(pieInputs[index], { target: { value } }))
+  fireEvent.click(within(pieGroup as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (within(pieGroup as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 4) fail('Lesson 12 p. 54 fraction-from-picture branches did not validate')
+  const p54Compare = document.querySelector('[data-source-group="l12-p54-compare"]')!
+  const p54CompareInputs = Array.from(p54Compare.querySelectorAll('select')) as HTMLSelectElement[]
+  ;['=', '<', '<', '>'].forEach((value, index) => fireEvent.change(p54CompareInputs[index], { target: { value } }))
+  fireEvent.click(within(p54Compare as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (within(p54Compare as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 4) fail('Lesson 12 same-denominator comparisons did not validate')
+  const p54Equivalent = document.querySelector('[data-source-group="l12-p54-equivalent"]')!
+  const equivalentInputs = Array.from(p54Equivalent.querySelectorAll('input')) as HTMLInputElement[]
+  ;['6', '16', '4', '10', '2', '21'].forEach((value, index) => fireEvent.change(equivalentInputs[index], { target: { value } }))
+  fireEvent.click(within(p54Equivalent as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (within(p54Equivalent as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 5) fail('Lesson 12 equivalent-fraction tasks did not validate')
+  console.log('✅ Unit 2 Lesson 4 p. 54: the 2/5 source reading, pie counts, comparisons and equivalent-fraction inputs validate')
+
+  nextFractionStep()
+  const p55Figures = document.querySelector('[data-source-group="l12-p55-figures"]')!
+  const p55FigureInputs = Array.from(p55Figures.querySelectorAll('input')) as HTMLInputElement[]
+  ;['3', '8', '6', '16'].forEach((value, index) => fireEvent.change(p55FigureInputs[index], { target: { value } }))
+  fireEvent.click(within(p55Figures as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (within(p55Figures as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 2) fail('Lesson 12 p. 55 figures 5 and 6 did not validate')
+  nextFractionStep()
+  const p55Check = document.querySelector('[data-source-group="l12-p55-check"]')!
+  const p55CheckTextareas = Array.from(p55Check.querySelectorAll('textarea')) as HTMLTextAreaElement[]
+  fireEvent.change(p55CheckTextareas[0], { target: { value: 'صلاح تناول كمية أكبر' } })
+  fireEvent.change(p55Check.querySelectorAll('select')[0], { target: { value: '<' } })
+  fireEvent.click(within(p55Check as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (within(p55Check as HTMLElement).getAllByText(/إجابة صحيحة|سُجّل تفسيرك/).length !== 2) fail('Lesson 12 p. 55 understanding check did not record both responses')
+  nextFractionStep()
+  if (!document.querySelector('[data-source-id="l12-p56-order-example"]')) fail('Lesson 12 p. 56 worked ordering example is missing')
+  nextFractionStep()
+
+  const p57Ascending = document.querySelector('[data-source-group="l12-p57-check-order"]')!
+  for (let count = 0; count < 3; count += 1) fireEvent.click(within(p57Ascending as HTMLElement).getByRole('button', { name: 'ارفع الكسر 1/3' }))
+  for (let count = 0; count < 2; count += 1) fireEvent.click(within(p57Ascending as HTMLElement).getByRole('button', { name: 'ارفع الكسر 2/5' }))
+  fireEvent.click(within(p57Ascending as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (!within(p57Ascending as HTMLElement).getByText(/إجابة صحيحة/)) fail('Lesson 12 p. 57 ordering controls did not create the ascending order')
+  const verbalGroup = document.querySelector('[data-source-group="l12-p57-verbal"]')!
+  fireEvent.change(verbalGroup.querySelector('textarea')!, { target: { value: 'نوحد المقامات ثم نرتب البسوط من الأكبر إلى الأصغر.' } })
+  fireEvent.click(within(verbalGroup as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (!within(verbalGroup as HTMLElement).getByText(/سُجّل تفسيرك/)) fail('Lesson 12 verbal explanation was not recorded')
+  nextFractionStep()
+
+  const p57Comparisons = document.querySelector('[data-source-group="l12-p57-compare"]')!
+  ;['>', '<', '>', '>', '<'].forEach((value, index) => fireEvent.change(p57Comparisons.querySelectorAll('select')[index], { target: { value } }))
+  fireEvent.click(within(p57Comparisons as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+  if (within(p57Comparisons as HTMLElement).getAllByText(/إجابة صحيحة/).length !== 5) fail('Lesson 12 p. 57 five comparison branches did not validate')
+  if (!document.querySelector('[data-source-group="l12-p57-order-descending"]')) fail('Lesson 12 p. 57 descending order prompt is missing')
+  nextFractionStep()
+
+  const applications = ['l12-p57-distance', 'l12-p57-contest', 'l12-p57-fuel']
+  const applicationAnswers = ['منزل رهام هو الأقرب', 'الجولة الأولى كانت الأكثر توفيقاً', 'الطراز الأول أقل استهلاكاً']
+  applications.forEach((groupId, index) => {
+    const group = document.querySelector(`[data-source-group="${groupId}"]`)!
+    fireEvent.change(group.querySelector('textarea')!, { target: { value: applicationAnswers[index] } })
+    fireEvent.click(within(group as HTMLElement).getByRole('button', { name: 'تحقّق من إجابات هذه المجموعة' }))
+    if (!within(group as HTMLElement).getByText(/سُجّل تفسيرك/)) fail(`Lesson 12 application ${groupId} did not save its response`)
+  })
+  nextFractionStep()
+
+  const comparator = document.querySelector('[data-platform-activity="l12-platform-comparator"]')!
+  fireEvent.click(within(comparator as HTMLElement).getByRole('button', { name: 'قارن بالمقام المشترك' }))
+  if (!within(comparator as HTMLElement).getByText(/المقام المشترك الأصغر/)) fail('Lesson 12 fraction comparator did not calculate its shared denominator')
+  const fractionSorter = document.querySelector('[data-platform-activity="l12-platform-sorter"]')!
+  for (let count = 0; count < 2; count += 1) fireEvent.click(within(fractionSorter as HTMLElement).getByRole('button', { name: 'ارفع الكسر 1/3' }))
+  fireEvent.click(within(fractionSorter as HTMLElement).getByRole('button', { name: 'ارفع الكسر 7/18' }))
+  fireEvent.click(within(fractionSorter as HTMLElement).getByRole('button', { name: 'تحقّق من الترتيب' }))
+  if (!fractionSorter.querySelector('.l12-lab-feedback')?.textContent?.includes('ترتيب صحيح')) fail('Lesson 12 sorting lab did not validate keyboard/touch reorder controls')
+  const errorLab = document.querySelector('[data-platform-activity="l12-platform-error"]')!
+  fireEvent.click(errorLab.querySelector('input[value="common-denominator"]')!)
+  fireEvent.click(within(errorLab as HTMLElement).getByRole('button', { name: 'تحقّق من التصحيح' }))
+  if (!within(errorLab as HTMLElement).getByText(/20\/24 أكبر من 15\/24/)) fail('Lesson 12 misconception activity did not correct the denominator error')
+  nextFractionStep()
+
+  const finalChallenge = document.querySelector('[data-platform-activity="l12-platform-final-challenge"]')!
+  fireEvent.change(finalChallenge.querySelector('select')!, { target: { value: '<' } })
+  fireEvent.click(within(finalChallenge as HTMLElement).getByRole('button', { name: 'تحقّق' }))
+  if (!within(finalChallenge as HTMLElement).getByText(/5\/8 < 2\/3/)) fail('Lesson 12 final fraction challenge did not validate')
+  const independentLink = screen.getByRole('link', { name: /انتقل إلى اختبار الدرس المستقل/ })
+  if (independentLink.getAttribute('href') !== '#tests/run/lesson-fractions-one-test') fail('Lesson 12 independent test link has the wrong route')
+  goTo('#tests/run/lesson-fractions-one-test')
+  if (!screen.getByRole('heading', { name: 'اختبار الكسور (1)' })) fail('Lesson 12 independent test did not open')
+  if (screen.getByRole('progressbar', { name: 'موضعك في الاختبار' }).getAttribute('aria-valuemax') !== '20') fail('Lesson 12 test must contain exactly 20 questions')
+  goTo('#tests/solutions/lesson-fractions-one-test/1')
+  if (!screen.getByRole('heading', { name: 'الحلول غير متاحة قبل التسليم' })) fail('Lesson 12 test solutions were not locked before submission')
+  console.log('✅ Unit 2 Lesson 4: p. 55–57 branches, ordering, applications, platform labs, 20-question test route and pre-submit solution lock pass')
+
+  // ---- Regression across all 12 available lessons: position vs completion + outline dialog ----
   // Two things are guarded here for every lesson:
   //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
   //   2. the mobile outline bottom sheet behaves like a real modal (focus in, trap, Escape, focus back).
@@ -469,6 +574,7 @@ async function main() {
     ['compare-order-natural-numbers', 'مقارنة الأعداد الطبيعية وترتيبها'],
     ['multiply-natural-numbers', 'ضرب الأعداد الطبيعية'],
     ['least-common-multiple', 'المضاعف المشترك الأصغر'],
+    ['fractions-one', 'الكسور (1)'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
@@ -575,6 +681,16 @@ async function main() {
   if (document.querySelectorAll('.teacher-entry').length !== 46) fail('Lesson 9 teacher guide must include all 44 source solutions and 2 clearly labelled platform activities')
   if (screen.getAllByText('نشاط تفاعلي إضافي').length !== 2) fail('Lesson 9 teacher guide must distinguish both platform activities from textbook entries')
   console.log('✅ Teacher Area: Unit 2 Lesson 1 has all four source pages, 44 textbook solutions, and 2 labelled platform activities')
+
+  fireEvent.click(screen.getByRole('button', { name: 'الكسور (1)' }))
+  if (!screen.getByText('دليل درس: الكسور (1)')) fail('Teacher tab did not switch to Unit 2 Lesson 4 guide')
+  for (const page of [54, 55, 56, 57]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 12 teacher guide missing page ${page} source metadata`)
+  if (document.querySelectorAll('.teacher-entry').length !== 54) fail('Lesson 12 teacher guide must include all 50 source solutions and 4 separately labelled platform activities')
+  if (document.querySelectorAll('.teacher-entry[data-source-id]').length !== 54) fail('Every Lesson 12 teacher solution must expose its stable source/activity ID')
+  if (screen.getAllByText('نشاط تفاعلي إضافي').length !== 4) fail('Lesson 12 teacher guide must distinguish all four platform activities from textbook entries')
+  const lesson12TeacherText = document.querySelector('.teacher-area')!.textContent ?? ''
+  if (!lesson12TeacherText.includes('180') || !lesson12TeacherText.includes('المقام المشترك الأصغر')) fail('Lesson 12 teacher guide is missing the worked common-denominator reasoning')
+  console.log('✅ Teacher Area: Unit 2 Lesson 4 has all four source pages, 50 textbook solutions, and 4 separately labelled platform solutions')
 
   console.log('\nAll jsdom interaction smoke checks passed.')
   await vite.close()

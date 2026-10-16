@@ -20,6 +20,7 @@ const styles = readFileSync(join(root, 'src/styles.css'), 'utf8')
 const html = readFileSync(join(root, 'index.html'), 'utf8')
 const lessonCss = readFileSync(join(root, 'src/lesson.css'), 'utf8')
 const experienceCss = readFileSync(join(root, 'src/lesson-experience.css'), 'utf8')
+const fractionsLessonCss = readFileSync(join(root, 'src/lesson-twelve.css'), 'utf8')
 const lessonShell = readFileSync(join(root, 'src/components/lesson/LessonShell.tsx'), 'utf8')
 const lessonOutline = readFileSync(join(root, 'src/components/lesson/LessonOutline.tsx'), 'utf8')
 
@@ -153,7 +154,26 @@ for (const [name, pattern] of touchTargets) {
   if (!height || parseInt(height[1], 10) < 44) fail(`${name} must be at least 44px tall for touch (found ${height?.[1] ?? 'none'})`)
 }
 
-// ---- 10) lesson outline dialog accessibility --------------------------------
+// ---- 10) Unit 2 Lesson 4 responsive and touch controls -----------------------
+for (const breakpoint of ['@media (max-width: 760px)', '@media (max-width: 520px)']) {
+  if (!fractionsLessonCss.includes(breakpoint)) fail(`lesson-twelve.css is missing responsive breakpoint ${breakpoint}`)
+}
+if (!fractionsLessonCss.includes('@media (prefers-reduced-motion: reduce)')) fail('lesson-twelve.css must honor prefers-reduced-motion')
+if (!fractionsLessonCss.includes('.lesson-twelve .l12-check-button:focus-visible')) fail('Lesson 12 check controls must expose a visible keyboard focus indicator')
+const fractionTouchTargets: Array<[string, RegExp]> = [
+  ['fraction reorder arrows', /\.l12-order-buttons button \{[^}]*width:\s*(\d+)px[^}]*height:\s*(\d+)px/],
+  ['fraction denominator editors', /\.l12-fraction-answer input \{[^}]*min-height:\s*(\d+)px/],
+  ['platform fraction editors', /\.l12-editor input \{[^}]*min-height:\s*(\d+)px/],
+  ['direction and error radio labels', /\.l12-direction-picker label,[\s\S]*?\.l12-error-options label \{[^}]*min-height:\s*(\d+)px/],
+]
+for (const [name, pattern] of fractionTouchTargets) {
+  const match = fractionsLessonCss.match(pattern)
+  if (!match) fail(`lesson-twelve.css is missing a measurable ${name} touch target`)
+  const dimensions = match.slice(1).map((value) => parseInt(value, 10))
+  if (dimensions.some((dimension) => dimension < 44)) fail(`${name} must be at least 44px for touch (found ${dimensions.join('×')}px)`)
+}
+
+// ---- 11) lesson outline dialog accessibility --------------------------------
 const dialogRequirements: Array<[string, string]> = [
   ['role="dialog"', 'the mobile outline sheet must stay a role="dialog"'],
   ['aria-modal="true"', 'the mobile outline sheet must stay aria-modal="true"'],
@@ -173,4 +193,4 @@ if (!lessonShell.includes('aria-label="موقعك في الدرس"')) fail('the 
 if (!lessonOutline.includes('visitedSteps?.has(index)')) fail('LessonOutline must derive «مكتملة» from visited steps, not from index < activeStep')
 if (/index\s*<\s*activeStep/.test(lessonOutline)) fail('LessonOutline still marks every earlier step complete (index < activeStep)')
 
-console.log('Design-system checks passed: 36 tokens present · legacy tokens frozen · 19 AA contrast pairs · 13px text floor · fonts preconnected · lesson chrome untouched · mobile lesson header readable (>=13px) and tappable (>=44px) · outline dialog focus-trapped · position separated from completion.')
+console.log('Design-system checks passed: 36 tokens present · legacy tokens frozen · 19 AA contrast pairs · 13px text floor · fonts preconnected · lesson chrome untouched · mobile lesson header readable/tappable · Lesson 12 responsive breakpoints, reduced motion, keyboard focus and 44px touch targets · outline dialog focus-trapped · position separated from completion.')

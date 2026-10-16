@@ -41,7 +41,7 @@ async function main() {
 
     const homeExercisesLink = screen.getByRole('link', { name: /افتح التمارين/ })
     assert.equal(homeExercisesLink.getAttribute('href'), '#unit-exercises/unit-1')
-    assert.equal(container.querySelectorAll('.lesson-start').length, 11, 'Home has the original eight Unit 1 lessons plus Unit 2 Lessons 1–3; exercises remain a separate route.')
+    assert.equal(container.querySelectorAll('.lesson-start').length, 12, 'Home has the original eight Unit 1 lessons plus Unit 2 Lessons 1–4; exercises remain a separate route.')
     assert.equal(container.querySelectorAll('.unit-card')[0].querySelectorAll('.lesson-start').length, 8, 'the Unit 1 exercise entry must not create a ninth Unit 1 lesson link')
     console.log('PASS Home: Unit 1 still has eight lessons; Unit 2 lessons are separate; exercises have their own route.')
 
