@@ -104,7 +104,7 @@ async function main() {
   // Unit 2 still in progress
   const unitTwo = curriculumRegistry.find(u => u.id === 'unit-2')!
   assert.equal(unitTwo.status, 'in-progress')
-  assert.equal(unitTwo.lessons.length, 4)
+  assert.equal(unitTwo.lessons.length, 5)
   assert.ok(unitTwo.lessons.find(l => l.id === leastCommonMultipleLessonId && l.availability === 'available'))
   const unitOne = curriculumRegistry.find(u => u.id === 'unit-1')!
   assert.equal(unitOne.lessons.length, 8, 'Unit 1 must stay at 8 lessons')

@@ -144,7 +144,7 @@ async function main() {
   const unitTwo = curriculumRegistry.find(unit => unit.id === 'unit-2')
   assert.ok(unitTwo)
   assert.equal(unitTwo!.status, 'in-progress')
-  assert.deepEqual(unitTwo!.lessons.map(lesson => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one'])
+  assert.deepEqual(unitTwo!.lessons.map(lesson => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two'])
   assert.ok(unitTwo!.lessons.find(lesson => lesson.id === fractionsOneLessonId && lesson.availability === 'available'))
   assert.equal(curriculumRegistry.find(unit => unit.id === 'unit-1')?.lessons.length, 8, 'Unit 1 remains unchanged')
   assert.ok(!curriculumRegistry.some(unit => unit.id === 'unit-2' && unit.status === 'complete'), 'Unit 2 remains explicitly in progress')

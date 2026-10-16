@@ -16,6 +16,7 @@ import { lessonNineTeacherEntries } from '../src/teacher/lesson9'
 import { lessonTenTeacherEntries } from '../src/teacher/lesson10'
 import { lessonElevenTeacherEntries } from '../src/teacher/lesson11'
 import { lessonTwelveTeacherEntries } from '../src/teacher/lesson12'
+import { unit2Lesson5TeacherEntries } from '../src/teacher/unit2Lesson5'
 import {
   DIFFICULTIES,
   QUESTION_TYPES,
@@ -47,6 +48,7 @@ const EXPECTED_PRODUCTION_TESTS = [
   'lesson-multiply-natural-numbers-test',
   'lesson-least-common-multiple-test',
   'lesson-fractions-one-test',
+  'lesson-fractions-two-test',
 ] as const
 const EXPECTED_UNIT_TESTS = ['unit-unit-1-test'] as const
 const UNIT_ONE_LESSON_IDS = [
@@ -74,6 +76,7 @@ const AUDITED_SOURCE_PAGE_RANGES: Readonly<Record<string, readonly [number, numb
   'multiply-natural-numbers': [48, 51],
   'least-common-multiple': [52, 53],
   'fractions-one': [54, 57],
+  'fractions-two': [58, 61],
 }
 const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   coordinates: lessonOneTeacherEntries.map((entry) => entry.prompt),
@@ -94,6 +97,9 @@ const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
     .filter((entry) => entry.source.type === 'textbook')
     .map((entry) => entry.prompt),
   'fractions-one': lessonTwelveTeacherEntries
+    .filter((entry) => entry.source.type === 'textbook')
+    .map((entry) => entry.prompt),
+  'fractions-two': unit2Lesson5TeacherEntries
     .filter((entry) => entry.source.type === 'textbook')
     .map((entry) => entry.prompt),
 }
@@ -520,7 +526,7 @@ async function main(): Promise<void> {
   const unitTwo = curriculumRegistry[1]
   assert.equal(unitTwo.id, 'unit-2')
   assert.equal(unitTwo.status, 'in-progress')
-  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one'])
+  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two'])
   assert.ok(unitTwo.lessons.every((lesson) => lesson.availability === 'available'))
   assert.ok(!loadedRegistry.testRegistry.unitTests.some((test) => test.type === 'unit' && test.unitId === 'unit-2'), 'Unit 2 stays in progress and has no unit test.')
   for (const lessonId of UNIT_ONE_LESSON_IDS) {

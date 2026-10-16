@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('12 اختباراً متاحاً')) fail('Test Area did not show the twelve eligible lesson tests')
+  if (!screen.getByText('13 اختباراً متاحاً')) fail('Test Area did not show the thirteen eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,7 +54,7 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 12) fail(`Expected 12 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 13) fail(`Expected 13 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
@@ -575,6 +575,7 @@ async function main() {
     ['multiply-natural-numbers', 'ضرب الأعداد الطبيعية'],
     ['least-common-multiple', 'المضاعف المشترك الأصغر'],
     ['fractions-one', 'الكسور (1)'],
+    ['fractions-two', 'الكسور (2)'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
