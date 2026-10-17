@@ -221,7 +221,7 @@
 .lesson-outline-list li.is-complete .lesson-outline-marker { color: #fff; background: var(--ok); border-color: var(--ok) !important; }
 .lesson-outline-list li.is-current .lesson-outline-marker { color: #fff; background: var(--lesson-chrome-accent); border-color: var(--lesson-chrome-accent) !important; box-shadow: 0 0 0 4px color-mix(in srgb, var(--lesson-chrome-accent) 15%, transparent); }
 .lesson-outline-list li.is-current button { color: var(--lesson-chrome-deep); background: var(--lesson-chrome-soft); font-weight: 800; }
-.lesson-outline-list li.is-current .lesson-outline-number { color: var(--lesson-chrome-deep); }
+.lesson-outline-list li.is-current .lesson-outline-number { color: #fff; }
 @media (hover: hover) { .lesson-outline-list button:hover { color: var(--lesson-chrome-deep); background: color-mix(in srgb, var(--lesson-chrome-soft) 75%, var(--surface)); transform: translateX(-2px); } .lesson-outline-list button:hover .lesson-outline-marker { border-color: var(--lesson-chrome-accent) !important; color: var(--lesson-chrome-accent); } .lesson-outline-list li.is-complete button:hover .lesson-outline-marker, .lesson-outline-list li.is-current button:hover .lesson-outline-marker { color: #fff; background: var(--lesson-chrome-accent); } }
 
 /* ---- Current section and lesson content ---- */
