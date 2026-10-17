@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('13 اختباراً متاحاً')) fail('Test Area did not show the thirteen eligible lesson tests')
+  if (!screen.getByText('14 اختباراً متاحاً')) fail('Test Area did not show all fourteen eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,18 +54,22 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 13) fail(`Expected 13 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 14) fail(`Expected 14 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
   if (!screen.getByText('ضرب الأعداد الطبيعية')) fail('Unit 2 Lesson 2 title missing from Home')
   if (!screen.getByText('المضاعف المشترك الأصغر')) fail('Unit 2 Lesson 3 title missing from Home')
   if (!screen.getByText('الكسور (1)')) fail('Unit 2 Lesson 4 title missing from Home')
+  if (!screen.getByText('الكسور (2)')) fail('Unit 2 Lesson 5 title missing from Home')
+  if (!screen.getByText('الأجزاء العشرية (1)')) fail('Unit 2 Lesson 6 title missing from Home')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('مقارنة الأعداد'))?.getAttribute('href') !== '#lesson/compare-order-natural-numbers') fail('Unit 2 Lesson 1 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('ضرب الأعداد الطبيعية'))?.getAttribute('href') !== '#lesson/multiply-natural-numbers') fail('Unit 2 Lesson 2 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('المضاعف المشترك الأصغر'))?.getAttribute('href') !== '#lesson/least-common-multiple') fail('Unit 2 Lesson 3 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الكسور (1)'))?.getAttribute('href') !== '#lesson/fractions-one') fail('Unit 2 Lesson 4 Home link has the wrong route')
-  console.log('✅ Home lists all eight original Unit 1 lessons and Unit 2 Lessons 1–4 as available')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الكسور (2)'))?.getAttribute('href') !== '#lesson/fractions-two') fail('Unit 2 Lesson 5 Home link has the wrong route')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الأجزاء العشرية (1)'))?.getAttribute('href') !== '#lesson/tenths-one') fail('Unit 2 Lesson 6 Home link has the wrong route')
+  console.log('✅ Home lists all eight Unit 1 lessons and Unit 2 Lessons 1–6 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -576,6 +580,7 @@ async function main() {
     ['least-common-multiple', 'المضاعف المشترك الأصغر'],
     ['fractions-one', 'الكسور (1)'],
     ['fractions-two', 'الكسور (2)'],
+    ['tenths-one', 'الأجزاء العشرية (1)'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]
@@ -692,6 +697,17 @@ async function main() {
   const lesson12TeacherText = document.querySelector('.teacher-area')!.textContent ?? ''
   if (!lesson12TeacherText.includes('180') || !lesson12TeacherText.includes('المقام المشترك الأصغر')) fail('Lesson 12 teacher guide is missing the worked common-denominator reasoning')
   console.log('✅ Teacher Area: Unit 2 Lesson 4 has all four source pages, 50 textbook solutions, and 4 separately labelled platform solutions')
+
+  fireEvent.click(screen.getByRole('button', { name: 'الأجزاء العشرية (1)' }))
+  if (!screen.getByText('دليل درس: الأجزاء العشرية (1)')) fail('Teacher tab did not switch to Unit 2 Lesson 6 guide')
+  for (const page of [62, 63, 64, 65]) if (!screen.getAllByText(new RegExp(`المصدر: الكتاب — ص ${page}`)).length) fail(`Lesson 6 teacher guide missing page ${page} source metadata`)
+  if (document.querySelectorAll('.teacher-entry').length !== 61) fail('Lesson 6 teacher guide must include 58 source solutions and 3 separately labelled platform activities')
+  if (document.querySelectorAll('.teacher-entry[data-source-id]').length !== 61) fail('Every Lesson 6 teacher solution must expose its stable source/activity ID')
+  if (screen.getAllByText('نشاط تفاعلي إضافي').length !== 3) fail('Lesson 6 teacher guide must distinguish all three platform activities from textbook entries')
+  const lesson6TeacherText = document.querySelector('.teacher-area')!.textContent ?? ''
+  if (!lesson6TeacherText.includes('المحرف الصغير داخل القوسين غير واضح')) fail('Lesson 6 teacher guide lost the page 63 punctuation uncertainty')
+  if (!lesson6TeacherText.includes('لا يرسم خطوط وصل')) fail('Lesson 6 teacher guide must distinguish inferred page 65 matches from source')
+  console.log('✅ Teacher Area: Unit 2 Lesson 6 covers pages 62–65, 58 textbook solutions, source caveat, and three separately labelled platform activities')
 
   console.log('\nAll jsdom interaction smoke checks passed.')
   await vite.close()

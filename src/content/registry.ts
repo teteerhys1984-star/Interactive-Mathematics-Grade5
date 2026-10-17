@@ -24,10 +24,9 @@ export const curriculumRegistry: UnitMeta[] = [
   {
     id: 'unit-2',
     title: 'الوحدة الثانية',
-    description: 'مقارنة الأعداد الطبيعية وضربها، والمضاعف المشترك الأصغر، ومقارنة الكسور وترتيبها.',
+    description: 'مقارنة الأعداد الطبيعية وضربها، والمضاعف المشترك الأصغر، ومقارنة الكسور وترتيبها، وتمثيل الأجزاء من عشرة.',
     accent: 'mint',
-    // The unit remains in progress: its four currently shipped lessons are registered, and completion is
-    // authored data — never inferred from how many lessons happen to be available.
+    // The unit remains in progress: only the explicitly authored curriculum status controls completion.
     status: 'in-progress',
     lessons: [
       { id: 'compare-order-natural-numbers', title: 'مقارنة الأعداد الطبيعية وترتيبها', description: 'مقارنة الأعداد الطبيعية حتى الملايين وترتيبها تصاعدياً وتنازلياً.', availability: 'available' },
@@ -35,6 +34,7 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'least-common-multiple', title: 'المضاعف المشترك الأصغر', description: 'إيجاد المضاعف المشترك الأصغر لعددين أو ثلاثة أعداد وتطبيقاته الحياتية.', availability: 'available' },
       { id: 'fractions-one', title: 'الكسور (1)', description: 'مقارنة الكسور وترتيبها باستعمال الكسور المكافئة والمقام المشترك.', availability: 'available' },
       { id: 'fractions-two', title: 'الكسور (2)', description: 'الكسر العادي والكسر المركب، والتحويل بينهما بالقسمة مع الباقي والضرب والجمع.', availability: 'available' },
+      { id: 'tenths-one', title: 'الأجزاء العشرية (1)', description: 'تمثيل الأجزاء من عشرة كتابةً ولفظاً، وقراءتها ومقارنتها على النماذج وخط الأعداد.', availability: 'available' },
     ],
   },
 ]
