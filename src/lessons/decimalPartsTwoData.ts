@@ -186,19 +186,27 @@ export function isHundredthsFractionInput(input: string, numerator: number): boo
   return d > 0 && Math.abs(n / d - numerator / 100) < 1e-9
 }
 
-const UNIT_WORDS = ['', 'واحد', 'اثنان', 'ثلاثه', 'اربعه', 'خمسه', 'ستة', 'سبعه', 'ثمانيه', 'تسعه'] as const
-const TEEN_WORDS = ['احد عشر', 'اثنا عشر', 'ثلاثه عشر', 'اربعه عشر', 'خمسه عشر', 'ستة عشر', 'سبعه عشر', 'ثمانيه عشر', 'تسعه عشر'] as const
-const TENS_WORDS = ['', '', 'عشرون', 'ثلاثون', 'اربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'] as const
+const UNIT_WORDS = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة'] as const
+const TEEN_WORDS = ['أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'] as const
+const TENS_WORDS = ['', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'] as const
 
 /** Feminine Arabic counting words for 1–99 (used with «أجزاء»). */
 export function verbalForHundredths(numerator: number): string {
   if (numerator < 10) return UNIT_WORDS[numerator]
-  if (numerator === 10) return 'عشره'
+  if (numerator === 10) return 'عشرة'
   if (numerator < 20) return TEEN_WORDS[numerator - 11]
   const tens = Math.floor(numerator / 10)
   const units = numerator % 10
   if (units === 0) return TENS_WORDS[tens]
   return `${UNIT_WORDS[units]} و${TENS_WORDS[tens]}`
+}
+
+/** Full printed-style phrase «… جزءاً من مئة» with correct singular/dual/plural forms for 1, 2, 3–10 and 11–99. */
+export function hundredthsPhrase(numerator: number): string {
+  if (numerator === 1) return 'جزء واحد من مئة'
+  if (numerator === 2) return 'جزءان من مئة'
+  if (numerator <= 10) return `${verbalForHundredths(numerator)} أجزاء من مئة`
+  return `${verbalForHundredths(numerator)} جزءاً من مئة`
 }
 
 const STOP_TOKENS = new Set(['جزء', 'اجزاء', 'جزءا', 'من', 'مئه', 'المئه', 'بالمئه', 'مائه', 'المائه', 'بالمائه'])

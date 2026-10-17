@@ -9,7 +9,7 @@ import {
   isHundredthsFractionInput, isStrictlyBetweenDecimals, lessonTitle, p66ComparisonItems, p66GridItems,
   p66IntroFacts, p67Examples, p68CheckOne, p68CheckThree, p68CompareExamples, p69BetweenExamples, p69CheckOne,
   p70RulerOne, p70RulerTwo, p70TableColumns, p71BetweenItems, p71ComparisonItems, p71Ex4, p71MatchDecimals,
-  p71MatchFractions, p71ShadeItems, rulerMarkValue, verbalForHundredths, type ComparisonItem,
+  p71MatchFractions, p71ShadeItems, rulerMarkValue, verbalForHundredths, hundredthsPhrase, type ComparisonItem,
 } from './decimalPartsTwoData'
 
 /* ─────────────────────────── isolated notation ─────────────────────────── */
@@ -221,7 +221,7 @@ function StatementTask() {
 
 function HundredsLab() {
   const [count, setCount] = useState(14)
-  const verbal = count === 0 ? 'صفر' : count === 100 ? 'مئة جزء من مئة' : `${verbalForHundredths(count)} جزءاً من مئة`
+  const verbal = count === 0 ? 'صفر' : count === 100 ? 'مئة جزء من مئة' : hundredthsPhrase(count)
   return <section className="l7-platform-lab" aria-labelledby="l7-lab-title" data-platform-activity="l7-hundreds-slider">
     <div className="l7-source-label is-platform"><Sparkles size={14} aria-hidden="true" /> مختبر تفاعلي · من إعداد المنصة</div>
     <h3 id="l7-lab-title">حرّك المؤشر: كم جزءاً من مئة اخترت؟</h3>
@@ -368,7 +368,7 @@ function CheckStepPages66to68() {
         prompt={<span>الكسر <L7Fraction numerator={item.numerator} denominator={100} /></span>}
         fields={[{ label: 'الكتابة العشرية', inputMode: 'decimal' }, { label: 'بالكلمات' }]}
         check={(values) => isDecimalEquivalentToHundredths(values[0], item.numerator) && isAcceptedVerbalHundredths(values[1], item.numerator)}
-        success={`أحسنت: ${decimalForHundredths(item.numerator)}، ${verbalForHundredths(item.numerator)} جزءاً من مئة.`} />)}</div>
+        success={`أحسنت: ${decimalForHundredths(item.numerator)}، ${hundredthsPhrase(item.numerator)}.`} />)}</div>
     </SourceCard></SourceMarker>
     <SourceMarker id="l7-p68-check2"><SourceCard label="من الكتاب · ص68 · تحقّق من فهمك ②">
       <p>اكتب التعبير اللفظي عن <L7Decimal>0.07</L7Decimal>، ثم الكسر المساوي له الذي مقامه 100.</p>

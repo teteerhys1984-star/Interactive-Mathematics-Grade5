@@ -1,7 +1,7 @@
 import {
   decimalForHundredths, p66ComparisonItems, p66GridItems, p67Examples, p68CheckOne, p68CheckThree,
   p68CompareExamples, p69BetweenExamples, p69CheckOne, p70RulerTwo, p70TableColumns,
-  p71ComparisonItems, p71MatchDecimals, p71ShadeItems, verbalForHundredths,
+  p71ComparisonItems, p71MatchDecimals, p71ShadeItems, verbalForHundredths, hundredthsPhrase,
 } from '../lessons/decimalPartsTwoData'
 import type { TeacherEntry } from './types'
 
@@ -65,8 +65,8 @@ export const unit2Lesson7TeacherEntriesPart2: TeacherEntry[] = [
     ['0.3 = 0.30 (نضيف صفراً إلى يمين الفاصلة دون تغيير القيمة).', 'نقارن الجزأين بعد الفاصلة: 13 < 30، فإن 0.13 < 0.30.']),
   ...p68CheckOne.map((item, index) => book(
     item.id.replace(/^l7/u, 't-l7'), `تحقّق من فهمك (1) · ${index === 0 ? 'الأرض' : 'النملة'} · ص68`, `اكتب ${item.numerator}/100 كتابة عشرية ولفظية.`,
-    `${decimalForHundredths(item.numerator)}؛ ${verbalForHundredths(item.numerator)} جزءاً من مئة.`, 68,
-    [`المقام 100 والبسط ${item.numerator}.`, `الكتابة العشرية ${decimalForHundredths(item.numerator)}.`, `لفظياً: ${verbalForHundredths(item.numerator)} أجزاء من مئة.`],
+    `${decimalForHundredths(item.numerator)}؛ ${hundredthsPhrase(item.numerator)}.`, 68,
+    [`المقام 100 والبسط ${item.numerator}.`, `الكتابة العشرية ${decimalForHundredths(item.numerator)}.`, `لفظياً: ${hundredthsPhrase(item.numerator)}.`],
   )),
   ...p68CheckThree.map((item) => book(
     item.id.replace(/^l7/u, 't-l7'), `تحقّق من فهمك (3) · ${item.numerator}/100 · ص68`, `اكتب ${item.numerator}/100 كتابة عشرية.`, decimalForHundredths(item.numerator), 68,
