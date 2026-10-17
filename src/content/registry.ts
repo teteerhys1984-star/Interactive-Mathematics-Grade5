@@ -35,6 +35,7 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'fractions-one', title: 'الكسور (1)', description: 'مقارنة الكسور وترتيبها باستعمال الكسور المكافئة والمقام المشترك.', availability: 'available' },
       { id: 'fractions-two', title: 'الكسور (2)', description: 'الكسر العادي والكسر المركب، والتحويل بينهما بالقسمة مع الباقي والضرب والجمع.', availability: 'available' },
       { id: 'tenths-one', title: 'الأجزاء العشرية (1)', description: 'تمثيل الأجزاء من عشرة كتابةً ولفظاً، وقراءتها ومقارنتها على النماذج وخط الأعداد.', availability: 'available' },
+      { id: 'decimal-parts-two', title: 'الأجزاء العشرية (2)', description: 'تمثيل الأجزاء من مئة كتابةً عشرية ولفظاً، والتحويل بينها وبين الكسور، ومقارنتها على الشبكات وخط الأعداد.', availability: 'available' },
     ],
   },
 ]

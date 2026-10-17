@@ -122,11 +122,11 @@ const wrongFraction = definition.questions.find((question) => question.type === 
 assert.equal(evaluateQuestion(wrongFraction, { type: 'fraction', value: '1/1' }).status, 'incorrect', 'wrong fraction form rejected')
 assert.equal(evaluateQuestion(definition.questions[0], undefined).status, 'unanswered', 'empty answer is unanswered')
 
-// 6. Registry: lesson is listed in Unit 2 as available, after the four earlier Unit 2 lessons.
+// 6. Registry: lesson is listed in Unit 2 as available, after the four earlier Unit 2 lessons (Lessons 6 and 7 follow it).
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit-2 exists')
 assert.equal(unitTwo!.status, 'in-progress', 'Unit 2 stays in progress')
-assert.deepEqual(unitTwo!.lessons.map((lesson) => lesson.id).slice(-3), ['fractions-one', 'fractions-two', 'tenths-one'])
+assert.deepEqual(unitTwo!.lessons.map((lesson) => lesson.id).slice(-4), ['fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two'])
 assert.equal(unitTwo!.lessons.find((lesson) => lesson.id === 'fractions-two')?.availability, 'available')
 
 console.log(`PASS fractions-two: ${allItems.length} printed items verified, 20-question test (6/7/4/3), teacher coverage complete, registry wired.`)

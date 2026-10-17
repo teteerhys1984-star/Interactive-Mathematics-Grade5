@@ -41,7 +41,7 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('14 اختباراً متاحاً')) fail('Test Area did not show all fourteen eligible lesson tests')
+  if (!screen.getByText('15 اختباراً متاحاً')) fail('Test Area did not show all fifteen eligible lesson tests')
   if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
@@ -54,7 +54,7 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 14) fail(`Expected 14 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 15) fail(`Expected 15 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
@@ -69,7 +69,8 @@ async function main() {
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الكسور (1)'))?.getAttribute('href') !== '#lesson/fractions-one') fail('Unit 2 Lesson 4 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الكسور (2)'))?.getAttribute('href') !== '#lesson/fractions-two') fail('Unit 2 Lesson 5 Home link has the wrong route')
   if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الأجزاء العشرية (1)'))?.getAttribute('href') !== '#lesson/tenths-one') fail('Unit 2 Lesson 6 Home link has the wrong route')
-  console.log('✅ Home lists all eight Unit 1 lessons and Unit 2 Lessons 1–6 as available')
+  if (startLinks.find(link => link.closest('.lesson-tile')?.textContent?.includes('الأجزاء العشرية (2)'))?.getAttribute('href') !== '#lesson/decimal-parts-two') fail('Unit 2 Lesson 7 Home link has the wrong route')
+  console.log('✅ Home lists all eight Unit 1 lessons and Unit 2 Lessons 1–7 as available')
 
   // ---- Lesson 1 still works end-to-end ----
   goTo('#lesson/coordinates')
@@ -581,6 +582,7 @@ async function main() {
     ['fractions-one', 'الكسور (1)'],
     ['fractions-two', 'الكسور (2)'],
     ['tenths-one', 'الأجزاء العشرية (1)'],
+    ['decimal-parts-two', 'الأجزاء العشرية (2)'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]

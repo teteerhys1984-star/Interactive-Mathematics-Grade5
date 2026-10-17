@@ -15,6 +15,7 @@ import { lessonElevenTeacherEntries } from './lesson11'
 import { lessonTwelveTeacherEntries } from './lesson12'
 import { unit2Lesson5PlatformEntries, unit2Lesson5TeacherEntries } from './unit2Lesson5'
 import { unit2Lesson6PlatformEntries, unit2Lesson6TeacherEntries } from './unit2Lesson6'
+import { unit2Lesson7AllEntries } from './unit2Lesson7'
 import { TeacherUnitExercisesView } from './TeacherUnitExercisesView'
 
 /** Shared registry: future lessons add one TeacherLessonData object, not a new page architecture. */
@@ -33,6 +34,7 @@ const teacherLessons: TeacherLessonData[] = [
   { lessonId: 'fractions-one', lessonTitle: 'الكسور (1)', entries: lessonTwelveTeacherEntries, mathMode: 'fractions' },
   { lessonId: 'fractions-two', lessonTitle: 'الكسور (2)', entries: [...unit2Lesson5TeacherEntries, ...unit2Lesson5PlatformEntries], mathMode: 'fractions' },
   { lessonId: 'tenths-one', lessonTitle: 'الأجزاء العشرية (1)', entries: [...unit2Lesson6TeacherEntries, ...unit2Lesson6PlatformEntries], mathMode: 'fractions' },
+  { lessonId: 'decimal-parts-two', lessonTitle: 'الأجزاء العشرية (2)', entries: unit2Lesson7AllEntries, mathMode: 'fractions' },
 ]
 
 export function TeacherArea({ initialLessonId }: { initialLessonId?: string | null }) {

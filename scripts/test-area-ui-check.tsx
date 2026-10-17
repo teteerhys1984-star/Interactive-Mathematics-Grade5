@@ -233,10 +233,10 @@ async function main() {
     const productionRegistry = registryModule.testRegistry
     assert.equal(productionRegistry.report.coverageMode, 'strict')
     assert.equal(productionRegistry.report.valid, true, JSON.stringify(productionRegistry.issues, null, 2))
-    assert.equal(productionRegistry.lessonTests.length, 14)
+    assert.equal(productionRegistry.lessonTests.length, 15)
     assert.equal(productionRegistry.unitTests.length, 1)
     assert.equal(productionRegistry.comprehensiveTests.length, 0)
-    assert.equal(productionRegistry.discoveredDefinitionCount, 15)
+    assert.equal(productionRegistry.discoveredDefinitionCount, 16)
     assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-1')?.status, 'complete')
     assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-2')?.status, 'in-progress')
     assert.equal(productionRegistry.unitTests.some((test) => test.type === 'unit' && test.unitId === 'unit-2'), false)
@@ -257,17 +257,17 @@ async function main() {
     navigate('#tests')
     view = render(React.createElement(App, { testRegistry: productionRegistry, curriculum: curriculumRegistry }))
     assert.ok(screen.getByRole('heading', { name: 'منطقة الاختبارات' }))
-    assert.ok(screen.getByText('14 اختباراً متاحاً'), 'The lessons category must advertise all fourteen eligible lesson tests.')
+    assert.ok(screen.getByText('15 اختباراً متاحاً'), 'The lessons category must advertise all fifteen eligible lesson tests.')
     assert.ok(screen.getByText('اختبار واحد متاح'), 'The units category must advertise the eligible Unit 1 test.')
     assert.equal(screen.getAllByText('لا توجد اختبارات مؤهلة حالياً').length, 1)
 
     navigate('#tests/lessons')
     assert.ok(screen.getByRole('heading', { name: 'اختبارات الدروس' }))
-    assert.equal(screen.getAllByText('20 سؤالاً').length, 14)
+    assert.equal(screen.getAllByText('20 سؤالاً').length, 15)
     for (const test of productionRegistry.lessonTests) {
       assert.ok(screen.getByRole('heading', { name: test.title }), `Production lesson test was not listed: ${test.id}`)
     }
-    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 14)
+    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 15)
 
     navigate('#tests/units')
     assert.ok(screen.getByRole('heading', { name: 'اختبارات الوحدات' }))

@@ -120,7 +120,7 @@ async function main() {
   assert.ok(unitOne)
   assert.equal(unitOne!.lessons.length, 8, 'Unit 1 remains at its original eight-lesson boundary')
   assert.equal(unitTwo?.status, 'in-progress')
-  assert.deepEqual(unitTwo?.lessons.map(lesson => lesson.id), ['compare-order-natural-numbers', lessonTenId, 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one'])
+  assert.deepEqual(unitTwo?.lessons.map(lesson => lesson.id), ['compare-order-natural-numbers', lessonTenId, 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two'])
   assert.equal(unitTwo?.lessons[1].availability, 'available')
   assert.equal(unitTwo?.lessons[2].availability, 'available')
 

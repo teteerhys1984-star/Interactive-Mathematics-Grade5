@@ -1,0 +1,522 @@
+{
+  "lessonId": "decimal-parts-two",
+  "sourcePages": [
+    66,
+    67,
+    68,
+    69,
+    70,
+    71
+  ],
+  "totals": {
+    "elements": 30,
+    "branches": 51,
+    "anchors": 81,
+    "sourceBlocks": 30,
+    "confirmed": 30,
+    "partial": 0,
+    "unresolved": 0
+  },
+  "elements": [
+    {
+      "id": "l7-p66-title",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p66-earth",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p66-ant",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p66-cube",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p66-definition",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p66-ex1",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p66-ex1-a",
+          "teacherEntryIds": [
+            "t-l7-p66-ex1-a"
+          ]
+        },
+        {
+          "id": "l7-p66-ex1-b",
+          "teacherEntryIds": [
+            "t-l7-p66-ex1-b"
+          ]
+        },
+        {
+          "id": "l7-p66-ex1-c",
+          "teacherEntryIds": [
+            "t-l7-p66-ex1-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p66-ex2",
+      "page": 66,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p66-ex2-a",
+          "teacherEntryIds": [
+            "t-l7-p66-ex2-a"
+          ]
+        },
+        {
+          "id": "l7-p66-ex2-b",
+          "teacherEntryIds": [
+            "t-l7-p66-ex2-b"
+          ]
+        },
+        {
+          "id": "l7-p66-ex2-c",
+          "teacherEntryIds": [
+            "t-l7-p66-ex2-c"
+          ]
+        },
+        {
+          "id": "l7-p66-ex2-d",
+          "teacherEntryIds": [
+            "t-l7-p66-ex2-d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p67-decimal-form",
+      "page": 67,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p67-examples",
+      "page": 67,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p67-ex-14",
+          "teacherEntryIds": [
+            "t-l7-p67-ex-14"
+          ]
+        },
+        {
+          "id": "l7-p67-ex-5",
+          "teacherEntryIds": [
+            "t-l7-p67-ex-5"
+          ]
+        },
+        {
+          "id": "l7-p67-ex-3",
+          "teacherEntryIds": [
+            "t-l7-p67-ex-3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p67-hundred-one",
+      "page": 67,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p67-trailing-zeros",
+      "page": 67,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p68-equal-examples",
+      "page": 68,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p68-check1",
+      "page": 68,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p68-check1-earth",
+          "teacherEntryIds": [
+            "t-l7-p68-check1-earth"
+          ]
+        },
+        {
+          "id": "l7-p68-check1-ant",
+          "teacherEntryIds": [
+            "t-l7-p68-check1-ant"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p68-check2",
+      "page": 68,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p68-check3",
+      "page": 68,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p68-check3-a",
+          "teacherEntryIds": [
+            "t-l7-p68-check3-a"
+          ]
+        },
+        {
+          "id": "l7-p68-check3-b",
+          "teacherEntryIds": [
+            "t-l7-p68-check3-b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p68-compare-examples",
+      "page": 68,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p68-cmp-a",
+          "teacherEntryIds": [
+            "t-l7-p68-cmp-a"
+          ]
+        },
+        {
+          "id": "l7-p68-cmp-b",
+          "teacherEntryIds": [
+            "t-l7-p68-cmp-b"
+          ]
+        },
+        {
+          "id": "l7-p68-cmp-c",
+          "teacherEntryIds": [
+            "t-l7-p68-cmp-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p68-compare-rule",
+      "page": 68,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p69-relation",
+      "page": 69,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p69-numberline",
+      "page": 69,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p69-between",
+      "page": 69,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p69-between-a",
+          "teacherEntryIds": [
+            "t-l7-p69-between-a"
+          ]
+        },
+        {
+          "id": "l7-p69-between-b",
+          "teacherEntryIds": [
+            "t-l7-p69-between-b"
+          ]
+        },
+        {
+          "id": "l7-p69-between-c",
+          "teacherEntryIds": [
+            "t-l7-p69-between-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p69-check1",
+      "page": 69,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p69-check1-a",
+          "teacherEntryIds": [
+            "t-l7-p69-check1-a"
+          ]
+        },
+        {
+          "id": "l7-p69-check1-b",
+          "teacherEntryIds": [
+            "t-l7-p69-check1-b"
+          ]
+        },
+        {
+          "id": "l7-p69-check1-c",
+          "teacherEntryIds": [
+            "t-l7-p69-check1-c"
+          ]
+        },
+        {
+          "id": "l7-p69-check1-d",
+          "teacherEntryIds": [
+            "t-l7-p69-check1-d"
+          ]
+        },
+        {
+          "id": "l7-p69-check1-e",
+          "teacherEntryIds": [
+            "t-l7-p69-check1-e"
+          ]
+        },
+        {
+          "id": "l7-p69-check1-f",
+          "teacherEntryIds": [
+            "t-l7-p69-check1-f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p69-check2",
+      "page": 70,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p70-practice1",
+      "page": 70,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p70-practice2",
+      "page": 70,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p70-ruler2-a",
+          "teacherEntryIds": [
+            "t-l7-p70-ruler2-a"
+          ]
+        },
+        {
+          "id": "l7-p70-ruler2-b",
+          "teacherEntryIds": [
+            "t-l7-p70-ruler2-b"
+          ]
+        },
+        {
+          "id": "l7-p70-ruler2-c",
+          "teacherEntryIds": [
+            "t-l7-p70-ruler2-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p70-table",
+      "page": 70,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p70-table-1",
+          "teacherEntryIds": [
+            "t-l7-p70-table-1"
+          ]
+        },
+        {
+          "id": "l7-p70-table-2",
+          "teacherEntryIds": [
+            "t-l7-p70-table-2"
+          ]
+        },
+        {
+          "id": "l7-p70-table-3",
+          "teacherEntryIds": [
+            "t-l7-p70-table-3"
+          ]
+        },
+        {
+          "id": "l7-p70-table-4",
+          "teacherEntryIds": [
+            "t-l7-p70-table-4"
+          ]
+        },
+        {
+          "id": "l7-p70-table-5",
+          "teacherEntryIds": [
+            "t-l7-p70-table-5"
+          ]
+        },
+        {
+          "id": "l7-p70-table-6",
+          "teacherEntryIds": [
+            "t-l7-p70-table-6"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p71-ex4",
+      "page": 71,
+      "sourceStatus": "confirmed",
+      "branches": []
+    },
+    {
+      "id": "l7-p71-ex5",
+      "page": 71,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p71-ex5-a",
+          "teacherEntryIds": [
+            "t-l7-p71-ex5-a"
+          ]
+        },
+        {
+          "id": "l7-p71-ex5-b",
+          "teacherEntryIds": [
+            "t-l7-p71-ex5-b"
+          ]
+        },
+        {
+          "id": "l7-p71-ex5-c",
+          "teacherEntryIds": [
+            "t-l7-p71-ex5-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p71-ex6",
+      "page": 71,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p71-ex6-a",
+          "teacherEntryIds": [
+            "t-l7-p71-ex6-a"
+          ]
+        },
+        {
+          "id": "l7-p71-ex6-b",
+          "teacherEntryIds": [
+            "t-l7-p71-ex6-b"
+          ]
+        },
+        {
+          "id": "l7-p71-ex6-c",
+          "teacherEntryIds": [
+            "t-l7-p71-ex6-c"
+          ]
+        },
+        {
+          "id": "l7-p71-ex6-d",
+          "teacherEntryIds": [
+            "t-l7-p71-ex6-d"
+          ]
+        },
+        {
+          "id": "l7-p71-ex6-e",
+          "teacherEntryIds": [
+            "t-l7-p71-ex6-e"
+          ]
+        },
+        {
+          "id": "l7-p71-ex6-f",
+          "teacherEntryIds": [
+            "t-l7-p71-ex6-f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p71-ex7",
+      "page": 71,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p71-ex7-07",
+          "teacherEntryIds": [
+            "t-l7-p71-ex7-07"
+          ]
+        },
+        {
+          "id": "l7-p71-ex7-04",
+          "teacherEntryIds": [
+            "t-l7-p71-ex7-04"
+          ]
+        },
+        {
+          "id": "l7-p71-ex7-05",
+          "teacherEntryIds": [
+            "t-l7-p71-ex7-05"
+          ]
+        },
+        {
+          "id": "l7-p71-ex7-06",
+          "teacherEntryIds": [
+            "t-l7-p71-ex7-06"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-p71-ex8",
+      "page": 71,
+      "sourceStatus": "confirmed",
+      "branches": [
+        {
+          "id": "l7-p71-ex8-a",
+          "teacherEntryIds": [
+            "t-l7-p71-ex8-a"
+          ]
+        },
+        {
+          "id": "l7-p71-ex8-b",
+          "teacherEntryIds": [
+            "t-l7-p71-ex8-b"
+          ]
+        },
+        {
+          "id": "l7-p71-ex8-c",
+          "teacherEntryIds": [
+            "t-l7-p71-ex8-c"
+          ]
+        }
+      ]
+    }
+  ]
+}
