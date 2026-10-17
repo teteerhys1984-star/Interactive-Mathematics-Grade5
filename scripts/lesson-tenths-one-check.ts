@@ -86,8 +86,8 @@ assert.equal(lessonComponents['tenths-one'] !== undefined, true, 'the new lesson
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo)
 assert.equal(unitTwo!.status, 'in-progress', 'Unit 2 remains in progress')
-assert.equal(unitTwo!.lessons[unitTwo!.lessons.length - 1]?.id, 'tenths-one')
-assert.equal(unitTwo!.lessons[unitTwo!.lessons.length - 1]?.availability, 'available')
+assert.equal(unitTwo!.lessons[unitTwo!.lessons.length - 2]?.id, 'tenths-one', 'Lesson 6 remains directly before Lesson 7')
+assert.equal(unitTwo!.lessons.find((lesson) => lesson.id === 'tenths-one')?.availability, 'available')
 
 assert.equal(definition.type, 'lesson')
 assert.equal(definition.id, 'lesson-tenths-one-test')
