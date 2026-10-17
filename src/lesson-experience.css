@@ -216,7 +216,7 @@
 }
 .lesson-outline-copy { min-width: 0; }
 .lesson-outline-number { margin-bottom: 1px; color: var(--text-3); font-size: .8125rem !important; font-weight: 700; }
-.lesson-outline-copy strong { display: block; overflow: hidden; color: inherit; font-size: .8125rem; line-height: 1.55; text-overflow: ellipsis; white-space: nowrap; }
+.lesson-outline-copy strong { display: block; overflow: hidden; color: inherit; font-size: .8125rem; line-height: 1.55; overflow-wrap: anywhere; white-space: normal; }
 .lesson-outline-status { color: var(--ok); font-size: .8125rem !important; font-weight: 800; }
 .lesson-outline-list li.is-complete .lesson-outline-marker { color: #fff; background: var(--ok); border-color: var(--ok) !important; }
 .lesson-outline-list li.is-current .lesson-outline-marker { color: #fff; background: var(--lesson-chrome-accent); border-color: var(--lesson-chrome-accent) !important; box-shadow: 0 0 0 4px color-mix(in srgb, var(--lesson-chrome-accent) 15%, transparent); }
