@@ -51,6 +51,13 @@ export function LessonOutline({ steps, activeStep, visitedSteps, onStepChange }:
     const doc = sheet?.ownerDocument ?? document
     closeRef.current?.focus()
 
+    // Bring the current step into view inside the sheet itself (not the page).
+    const current = sheet?.querySelector<HTMLElement>('.lesson-outline-list.is-mobile > li.is-current')
+    if (sheet && current) {
+      const offset = current.getBoundingClientRect().top - sheet.getBoundingClientRect().top
+      sheet.scrollTop += offset - (sheet.clientHeight - current.offsetHeight) / 2
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault()
