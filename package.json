@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && tsc --noEmit && vite build",
+    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
@@ -24,6 +24,8 @@
     "lesson-12-coverage-check": "tsx scripts/lesson-12-coverage-check.tsx",
     "lesson-fractions-two-check": "tsx scripts/lesson-fractions-two-check.ts",
     "lesson-fractions-two-interaction-check": "tsx scripts/lesson-fractions-two-interaction-check.tsx",
+    "lesson-tenths-one-check": "tsx scripts/lesson-tenths-one-check.ts",
+    "lesson-tenths-one-interaction-check": "tsx scripts/lesson-tenths-one-interaction-check.tsx",
     "unit-1-check": "tsx scripts/unit-1-check.ts",
     "unit-exercises-check": "tsx scripts/unit-exercises-check.ts",
     "unit-exercises-coverage": "tsx scripts/unit-exercises-check.ts --write-coverage",
