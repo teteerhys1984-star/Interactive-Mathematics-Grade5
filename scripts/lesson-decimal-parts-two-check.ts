@@ -48,12 +48,12 @@ for (const entry of unit2Lesson7AllEntries) {
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit 2 exists in the registry')
 assert.equal(unitTwo!.status, 'in-progress', 'unit 2 stays in progress (no unit-2 test yet)')
-assert.equal(unitTwo!.lessons[unitTwo!.lessons.length - 2]?.id, 'tenths-one', 'Lesson 6 (tenths-one) keeps its position directly before Lesson 7')
-const lastLesson = unitTwo!.lessons[unitTwo!.lessons.length - 1]
-assert.equal(lastLesson?.id, 'decimal-parts-two', 'Lesson 7 is appended at the end of Unit 2 in the registry')
-assert.equal(lastLesson?.title, 'الأجزاء العشرية (2)')
-assert.equal(lastLesson?.availability, 'available')
-assert.equal(typeof lessonComponents['decimal-parts-two'], 'function', 'Lesson 7 is wired into lessonComponents')
+assert.equal(unitTwo!.lessons[unitTwo!.lessons.length - 3]?.id, 'tenths-one', 'Lesson 6 stays immediately before Lesson 7')
+const previousLastLesson = unitTwo!.lessons[unitTwo!.lessons.length - 2]
+assert.equal(previousLastLesson?.id, 'decimal-parts-two', 'Lesson 7 keeps its position immediately before Lesson 8')
+assert.equal(previousLastLesson?.title, 'الأجزاء العشرية (2)')
+assert.equal(previousLastLesson?.availability, 'available')
+assert.equal(typeof lessonComponents['decimal-parts-two'], 'function', 'Lesson 7 remains wired into lessonComponents')
 
 // 4 · test contract (strict 20: 6 basic, 7 medium, 4 advanced, 3 thinking)
 assert.equal(definition.id, 'lesson-decimal-parts-two-test')

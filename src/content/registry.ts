@@ -24,7 +24,7 @@ export const curriculumRegistry: UnitMeta[] = [
   {
     id: 'unit-2',
     title: 'الوحدة الثانية',
-    description: 'مقارنة الأعداد الطبيعية وضربها، والمضاعف المشترك الأصغر، ومقارنة الكسور وترتيبها، وتمثيل الأجزاء من عشرة.',
+    description: 'مقارنة الأعداد الطبيعية وضربها، والمضاعف المشترك الأصغر، والكسور، والأجزاء العشرية حتى الألف.',
     accent: 'mint',
     // The unit remains in progress: only the explicitly authored curriculum status controls completion.
     status: 'in-progress',
@@ -36,6 +36,7 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'fractions-two', title: 'الكسور (2)', description: 'الكسر العادي والكسر المركب، والتحويل بينهما بالقسمة مع الباقي والضرب والجمع.', availability: 'available' },
       { id: 'tenths-one', title: 'الأجزاء العشرية (1)', description: 'تمثيل الأجزاء من عشرة كتابةً ولفظاً، وقراءتها ومقارنتها على النماذج وخط الأعداد.', availability: 'available' },
       { id: 'decimal-parts-two', title: 'الأجزاء العشرية (2)', description: 'تمثيل الأجزاء من مئة كتابةً عشرية ولفظاً، والتحويل بينها وبين الكسور، ومقارنتها على الشبكات وخط الأعداد.', availability: 'available' },
+      { id: 'decimal-parts-three', title: 'الأجزاء العشرية (3)', description: 'كتابة الأجزاء من ألف وقراءتها، وربطها بالأجزاء من عشرة ومئة، ومقارنتها على خط الأعداد.', availability: 'available' },
     ],
   },
 ]

@@ -1,0 +1,503 @@
+{
+  "lessonId": "decimal-parts-three",
+  "title": "الأجزاء العشرية (3)",
+  "sourcePages": [
+    72,
+    73,
+    74,
+    75,
+    76
+  ],
+  "totals": {
+    "elements": 22,
+    "branches": 46,
+    "anchors": 68,
+    "confirmed": 22,
+    "partial": 0,
+    "unresolved": 0
+  },
+  "elements": [
+    {
+      "id": "l8-p72-goals",
+      "page": 72,
+      "sourceStatus": "confirmed",
+      "section": "سنتعلّم",
+      "teacherEntryIds": [
+        "t-l8-p72-goals"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p72-opening",
+      "page": 72,
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة",
+      "teacherEntryIds": [
+        "t-l8-p72-opening"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p72-ex1",
+      "page": 72,
+      "sourceStatus": "confirmed",
+      "section": "السؤال 1 · أجزاء المكعب الملوّنة",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p72-cube-a",
+          "teacherEntryIds": [
+            "t-l8-p72-cube-a"
+          ]
+        },
+        {
+          "id": "l8-p72-cube-b",
+          "teacherEntryIds": [
+            "t-l8-p72-cube-b"
+          ]
+        },
+        {
+          "id": "l8-p72-cube-c",
+          "teacherEntryIds": [
+            "t-l8-p72-cube-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p72-ex2",
+      "page": 72,
+      "sourceStatus": "confirmed",
+      "section": "السؤال 2 · مقارنة الكسور",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p72-compare-a",
+          "teacherEntryIds": [
+            "t-l8-p72-compare-a"
+          ]
+        },
+        {
+          "id": "l8-p72-compare-b",
+          "teacherEntryIds": [
+            "t-l8-p72-compare-b"
+          ]
+        },
+        {
+          "id": "l8-p72-compare-c",
+          "teacherEntryIds": [
+            "t-l8-p72-compare-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p73-place-value",
+      "page": 73,
+      "sourceStatus": "confirmed",
+      "section": "الأجزاء من ألف",
+      "teacherEntryIds": [
+        "t-l8-p73-place-value"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p73-examples",
+      "page": 73,
+      "sourceStatus": "confirmed",
+      "section": "أمثلة محلولة · ثلاث خانات",
+      "teacherEntryIds": [
+        "t-l8-p73-examples"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p73-whole",
+      "page": 73,
+      "sourceStatus": "confirmed",
+      "section": "كل ألف جزء من ألف",
+      "teacherEntryIds": [
+        "t-l8-p73-whole"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p73-check1",
+      "page": 73,
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 1",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p73-check1-415",
+          "teacherEntryIds": [
+            "t-l8-p73-check1-415"
+          ]
+        },
+        {
+          "id": "l8-p73-check1-318",
+          "teacherEntryIds": [
+            "t-l8-p73-check1-318"
+          ]
+        },
+        {
+          "id": "l8-p73-check1-81",
+          "teacherEntryIds": [
+            "t-l8-p73-check1-81"
+          ]
+        },
+        {
+          "id": "l8-p73-check1-9",
+          "teacherEntryIds": [
+            "t-l8-p73-check1-9"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p75-check2",
+      "page": 75,
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 2",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p75-check2-a",
+          "teacherEntryIds": [
+            "t-l8-p75-check2-a"
+          ]
+        },
+        {
+          "id": "l8-p75-check2-b",
+          "teacherEntryIds": [
+            "t-l8-p75-check2-b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p74-compare-rule",
+      "page": 74,
+      "sourceStatus": "confirmed",
+      "section": "المقارنة بين الأجزاء من ألف",
+      "teacherEntryIds": [
+        "t-l8-p74-compare-rule"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p74-examples",
+      "page": 74,
+      "sourceStatus": "confirmed",
+      "section": "مثالا المقارنة",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p74-example-513-418",
+          "teacherEntryIds": [
+            "t-l8-p74-example-513-418"
+          ]
+        },
+        {
+          "id": "l8-p74-example-42-325",
+          "teacherEntryIds": [
+            "t-l8-p74-example-42-325"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p74-relation",
+      "page": 74,
+      "sourceStatus": "confirmed",
+      "section": "العلاقة بين الأعشار والأجزاء من مئة وألف",
+      "teacherEntryIds": [
+        "t-l8-p74-relation"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p74-number-line",
+      "page": 74,
+      "sourceStatus": "confirmed",
+      "section": "خط الأعداد المكبّر",
+      "teacherEntryIds": [
+        "t-l8-p74-number-line"
+      ],
+      "branches": []
+    },
+    {
+      "id": "l8-p75-between-examples",
+      "page": 75,
+      "sourceStatus": "confirmed",
+      "section": "مثالا إيجاد عدد بين عددين",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p75-between-a",
+          "teacherEntryIds": [
+            "t-l8-p75-between-a"
+          ]
+        },
+        {
+          "id": "l8-p75-between-b",
+          "teacherEntryIds": [
+            "t-l8-p75-between-b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p75-check1",
+      "page": 75,
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 1",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p75-check-a",
+          "teacherEntryIds": [
+            "t-l8-p75-check-a"
+          ]
+        },
+        {
+          "id": "l8-p75-check-b",
+          "teacherEntryIds": [
+            "t-l8-p75-check-b"
+          ]
+        },
+        {
+          "id": "l8-p75-check-c",
+          "teacherEntryIds": [
+            "t-l8-p75-check-c"
+          ]
+        },
+        {
+          "id": "l8-p75-check-d",
+          "teacherEntryIds": [
+            "t-l8-p75-check-d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p75-practice1",
+      "page": 75,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 1 (أ، ب)",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p75-ruler-a",
+          "teacherEntryIds": [
+            "t-l8-p75-ruler-a"
+          ]
+        },
+        {
+          "id": "l8-p75-ruler-b",
+          "teacherEntryIds": [
+            "t-l8-p75-ruler-b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p76-practice1-th",
+      "page": 76,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 1 (ث)",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p76-ruler-th",
+          "teacherEntryIds": [
+            "t-l8-p76-ruler-th"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p76-table",
+      "page": 76,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 2 (الجدول)",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p76-table-1",
+          "teacherEntryIds": [
+            "t-l8-p76-table-1"
+          ]
+        },
+        {
+          "id": "l8-p76-table-2",
+          "teacherEntryIds": [
+            "t-l8-p76-table-2"
+          ]
+        },
+        {
+          "id": "l8-p76-table-3",
+          "teacherEntryIds": [
+            "t-l8-p76-table-3"
+          ]
+        },
+        {
+          "id": "l8-p76-table-4",
+          "teacherEntryIds": [
+            "t-l8-p76-table-4"
+          ]
+        },
+        {
+          "id": "l8-p76-table-5",
+          "teacherEntryIds": [
+            "t-l8-p76-table-5"
+          ]
+        },
+        {
+          "id": "l8-p76-table-6",
+          "teacherEntryIds": [
+            "t-l8-p76-table-6"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p76-between",
+      "page": 76,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 3",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p76-check3",
+          "teacherEntryIds": [
+            "t-l8-p76-check3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p76-check4",
+      "page": 76,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 4",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p76-check4-a",
+          "teacherEntryIds": [
+            "t-l8-p76-check4-a"
+          ]
+        },
+        {
+          "id": "l8-p76-check4-b",
+          "teacherEntryIds": [
+            "t-l8-p76-check4-b"
+          ]
+        },
+        {
+          "id": "l8-p76-check4-c",
+          "teacherEntryIds": [
+            "t-l8-p76-check4-c"
+          ]
+        },
+        {
+          "id": "l8-p76-check4-d",
+          "teacherEntryIds": [
+            "t-l8-p76-check4-d"
+          ]
+        },
+        {
+          "id": "l8-p76-check4-e",
+          "teacherEntryIds": [
+            "t-l8-p76-check4-e"
+          ]
+        },
+        {
+          "id": "l8-p76-check4-f",
+          "teacherEntryIds": [
+            "t-l8-p76-check4-f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p76-match",
+      "page": 76,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 5",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p76-match-008",
+          "teacherEntryIds": [
+            "t-l8-p76-match-008"
+          ]
+        },
+        {
+          "id": "l8-p76-match-04",
+          "teacherEntryIds": [
+            "t-l8-p76-match-04"
+          ]
+        },
+        {
+          "id": "l8-p76-match-004",
+          "teacherEntryIds": [
+            "t-l8-p76-match-004"
+          ]
+        },
+        {
+          "id": "l8-p76-match-08",
+          "teacherEntryIds": [
+            "t-l8-p76-match-08"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-p76-intervals",
+      "page": 76,
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 6",
+      "teacherEntryIds": [],
+      "branches": [
+        {
+          "id": "l8-p76-interval-a",
+          "teacherEntryIds": [
+            "t-l8-p76-interval-a"
+          ]
+        },
+        {
+          "id": "l8-p76-interval-b",
+          "teacherEntryIds": [
+            "t-l8-p76-interval-b"
+          ]
+        },
+        {
+          "id": "l8-p76-interval-c",
+          "teacherEntryIds": [
+            "t-l8-p76-interval-c"
+          ]
+        },
+        {
+          "id": "l8-p76-interval-d",
+          "teacherEntryIds": [
+            "t-l8-p76-interval-d"
+          ]
+        },
+        {
+          "id": "l8-p76-interval-e",
+          "teacherEntryIds": [
+            "t-l8-p76-interval-e"
+          ]
+        },
+        {
+          "id": "l8-p76-interval-w",
+          "teacherEntryIds": [
+            "t-l8-p76-interval-w"
+          ]
+        }
+      ]
+    }
+  ]
+}
