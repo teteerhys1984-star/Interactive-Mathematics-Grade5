@@ -85,6 +85,8 @@ async function main() {
         const majorMarks = panel().querySelector('.l8-numberline-major')
         const zoom = panel().querySelector('.l8-numberline-zoom')
         assert.ok(majorMarks && zoom, 'thousandths number line and magnified part render')
+        assert.equal(panel().querySelector('.l8-numberline-demo')?.getAttribute('dir'), 'ltr', 'mobile horizontal scrolling starts at the number line origin')
+        assert.ok(panel().querySelector('.l8-numberline-mobile-hint')?.textContent?.includes('اسحب'), 'mobile users receive a visible horizontal-scroll instruction')
         for (const value of ['0.01', '0.05', '0.09']) assert.ok(majorMarks!.textContent?.includes(value), `major number line labels ${value}`)
         for (const value of ['0.011', '0.015', '0.019']) assert.ok(zoom!.textContent?.includes(value), `magnified line labels ${value}`)
         for (const item of p75Comparisons) checkCompare(item.id, item.relation)

@@ -1,6 +1,8 @@
 .lesson-decimal-three { --l8-ink: #142c3e; --l8-blue: #146b8c; --l8-cyan: #25a9bd; --l8-coral: #e66d51; --l8-sand: #fff6e7; --l8-line: #d8e5e8; }
 .lesson-decimal-three .lesson-journey-header { background: radial-gradient(ellipse at 82% 18%, rgba(37,169,189,.14), transparent 34%), linear-gradient(135deg,#f8fcfb,#fff7e8 88%); border-bottom: 1px solid #dfebeb; }
 .lesson-decimal-three .lesson-title-block h1 { color: var(--l8-ink); }
+/* Keep the 1 / 8 numeric position in its intended order inside the RTL progress card. */
+.lesson-decimal-three .lesson-progress-card-top strong { direction: ltr; unicode-bidi: isolate; }
 .lesson-decimal-three .lesson-progress-track > span, .lesson-decimal-three .lesson-outline-progress > span, .lesson-decimal-three .lesson-outline-sheet-progress > span { background: linear-gradient(90deg,var(--l8-blue),var(--l8-cyan)); }
 .lesson-decimal-three .lesson-outline-list li.is-current .lesson-outline-marker { background: var(--l8-blue); color: white; }
 .lesson-decimal-three .lesson-navigation .is-next { background: var(--l8-blue); }
@@ -74,7 +76,8 @@
 .l8-line-point i { display: block; width: 1px; height: 10px; margin-top: -2px; background: #345d70; }
 .l8-numberline-zoom { margin: 0 6%; border-color: var(--l8-coral); }
 .l8-numberline-zoom .l8-line-point i { background: var(--l8-coral); }
-.l8-numberline-demo p { margin: 0; text-align: center; color: #48606b; }
+.l8-numberline-demo p { margin: 0; text-align: center; color: #48606b; direction: rtl; }
+.l8-numberline-mobile-hint { display: none; margin: 0 0 8px; color: #526f79; font-size: .84rem; line-height: 1.7; }
 .l8-branch-prompt { display: flex; align-items: baseline; gap: 9px; padding: 8px 2px; color: #395965; }
 .l8-branch-prompt span { color: var(--l8-blue); font-weight: 900; }
 .l8-branch-prompt p { margin: 0; line-height: 1.8; }
@@ -107,6 +110,7 @@
 .l8-summary ol { padding-inline-start: 23px; line-height: 2; }
 .l8-summary a { display: inline-flex; margin-top: 8px; padding: 10px 15px; border-radius: 12px; color: white; background: var(--l8-blue); font-weight: 850; text-decoration: none; }
 @media (max-width: 760px) {
+  .l8-numberline-mobile-hint { display: block; }
   .l8-cube-task { grid-template-columns: minmax(0,1fr) minmax(130px,1fr); }
   .l8-example-cards { grid-template-columns: 1fr; }
   .l8-conversion { grid-template-columns: 78px minmax(100px,1fr); }

@@ -151,10 +151,10 @@ function CubeSection() { const element = find('l8-p72-ex1'); return <TaskGroup e
 function CompareSection({ elementId, items }: { elementId: string; items: CompareItem[] }) { const element = find(elementId); return <TaskGroup element={element}>{items.map((item) => <CompareTask item={item} key={item.id} />)}</TaskGroup> }
 
 function NumberLineIllustration() {
-  return <div className="l8-numberline-demo" aria-label="خط الأعداد من صفر إلى 0.1، وتكبير الأجزاء من 0.010 إلى 0.020" role="group" tabIndex={0}>
+  return <div className="l8-numberline-demo" dir="ltr" aria-label="خط الأعداد من صفر إلى 0.1، وتكبير الأجزاء من 0.010 إلى 0.020" role="group" tabIndex={0}>
     <div className="l8-numberline-major"><span className="l8-line-end">0</span>{Array.from({ length: 9 }, (_, i) => <span className="l8-line-point" key={i}><i />0.{String(i + 1).padStart(2, '0')}</span>)}<span className="l8-line-end">0.1</span></div>
     <div className="l8-numberline-zoom"><span className="l8-line-end">0.010</span>{Array.from({ length: 9 }, (_, i) => <span className="l8-line-point" key={i}><i />0.{String(i + 11).padStart(3, '0')}</span>)}<span className="l8-line-end">0.020</span></div>
-    <p><MathExpression>0.01 = 0.010</MathExpression> · كل خطوة صغيرة تساوي <MathExpression>0.001</MathExpression></p>
+    <p dir="rtl"><MathExpression>0.01 = 0.010</MathExpression> · كل خطوة صغيرة تساوي <MathExpression>0.001</MathExpression></p>
   </div>
 }
 function ThousandCubeDiagram() {
@@ -183,7 +183,7 @@ export function DecimalPartsThreeLesson() {
     </div> },
     { id: 'relationships-and-open-intervals', title: 'منزلة الألف وخط الأعداد', content: <div className="l8-step-content">
       <SourceCard element={find('l8-p74-relation')}><div className="l8-place-equivalences"><div><Fraction value="1/10" /><span>=</span><Fraction value="10/100" /><span>=</span><Fraction value="100/1000" /></div><div><Fraction value="1/100" /><span>=</span><Fraction value="10/1000" /></div><div><Fraction value="1/1000" /><span>=</span><MathExpression>0.001</MathExpression></div></div><ThousandCubeDiagram /></SourceCard>
-      <SourceCard element={find('l8-p74-number-line')}><NumberLineIllustration /></SourceCard>
+      <SourceCard element={find('l8-p74-number-line')}><p className="l8-numberline-mobile-hint">إرشاد للمنصة على الهاتف: اسحب مخطط خط الأعداد أفقياً لرؤية جميع التدريجات.</p><NumberLineIllustration /></SourceCard>
       <TaskGroup element={find('l8-p75-between-examples')}>{find('l8-p75-between-examples').branches!.map((branch) => <div key={branch.id} data-source-id={branch.id}><BranchIntro branch={branch} /><BetweenTask id={`${branch.id}-try`} lower={branch.id.endsWith('a') ? '0.01' : '0.175'} upper={branch.id.endsWith('a') ? '0.02' : '0.2'} sample={branch.id.endsWith('a') ? '0.015' : '0.181'} printed={branch.id.endsWith('b')} /></div>)}</TaskGroup>
       <CompareSection elementId="l8-p75-check1" items={p75Comparisons} />
     </div> },
