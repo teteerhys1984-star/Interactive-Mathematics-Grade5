@@ -171,7 +171,7 @@ async function main() {
     assert.equal(document.body.textContent?.includes('الخطأ الشائع'), false, 'solution hints remain hidden in the student runner')
     const registryModule = await vite.ssrLoadModule('/src/tests/registry.ts') as { testRegistry: { lessonTests: readonly { id: string }[]; unitTests: readonly { unitId?: string }[] } }
     assert.ok(registryModule.testRegistry.lessonTests.some((test) => test.id === 'lesson-decimal-parts-three-test'), 'strict test discovery registers the lesson test')
-    assert.equal(registryModule.testRegistry.unitTests.some((test) => test.unitId === 'unit-2'), false, 'no Unit 2 test was created')
+    assert.ok(registryModule.testRegistry.unitTests.some((test) => test.unitId === 'unit-2'), 'the separate Unit 2 test is registered now that Unit 2 is complete')
     console.log(`PASS lesson 8 interaction: ${stepCount} steps, ${flattenLesson8CoverageIds().length} ledger anchors, cube/comparison/conversion/rulers/table/matching/open intervals, teacher guide and protected lesson quiz.`)
   } finally { await vite.close() }
 }

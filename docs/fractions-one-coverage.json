@@ -79,9 +79,9 @@
     "allAnswerKeysScoreCorrect": true
   },
   "curriculum": {
-    "unitTwoStatus": "in-progress",
-    "unitTwoTestCreated": false,
-    "lessonCount": 9
+    "unitTwoStatus": "complete",
+    "unitTwoTestCreated": true,
+    "lessonCount": 10
   },
   "items": [
     {

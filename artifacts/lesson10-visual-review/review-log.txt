@@ -1,0 +1,61 @@
+Browser: 153.0.8010.0
+
+=== laptop 1440×900 (dpr 1) ===
+[laptop] home tile for the lesson: {"card":"10المربّعتعريفا المربّع المتكافئان وخواصّه الثلاث ورسمه بالمسطرة والمنقلة أو الكوس، مع تعل","available":true,"title":true}
+[laptop] lesson opened, 14 steps, document direction=rtl
+[laptop] step 1 «المربّع: لماذا هذا الشكل؟» — no horizontal overflow
+[laptop] step 2 «انطلاقة نشطة: سبعة أشكال» — no horizontal overflow
+[laptop] step 3 «تعريف المربّع» — no horizontal overflow
+[laptop] step 4 «مثال الكتاب: ABCD» — no horizontal overflow
+[laptop] step 5 «لماذا هو مربّع؟» — no horizontal overflow
+[laptop] step 6 «لماذا ليس مربّعاً؟» — no horizontal overflow
+[laptop] step 7 «خواصّ المربّع» — no horizontal overflow
+[laptop] step 8 «رسم مربّع ضلعه 3cm» — no horizontal overflow
+[laptop] step 9 «ارسم مربّعاً ضلعه 4cm» — no horizontal overflow
+[laptop] step 10 «تدرّب ①: صح أم خطأ» — no horizontal overflow
+[laptop] step 11 «تدرّب ②: الرأسان Z و W» — no horizontal overflow
+[laptop] step 12 «تدرّب ③: أسماء الأشكال» — no horizontal overflow
+[laptop] step 13 «تدرّب ④: أطوال مركّبة» — no horizontal overflow
+[laptop] step 14 «الخلاصة والاختبار» — no horizontal overflow
+[laptop] distinct data-source-id anchors seen: 59; LTR-isolated math spans counted: 100
+[laptop] last step test link → ابدأ اختبار الدرس
+[laptop] back navigation → 13 / 14
+[laptop] teacher route h1=«دليل درس: المربّع», 84 .teacher-entry cards, 25 platform-labelled, pages: 📖 المصدر: الكتاب — ص 81 / 📖 المصدر: الكتاب — ص 82 / 📖 المصدر: الكتاب — ص 83 / 📖 المصدر: الكتاب — ص 84
+[laptop] teacher page — no horizontal overflow
+[laptop] solutions before submit → «الحلول غير متاحة قبل التسليم»
+[laptop] runner title «اختبار المربّع», body has «الإجابة النهائية»? false
+[laptop] confirm dialog → مراجعة قبل التسليم هل تريد تسليم الاختبار؟ أجبت عن 1 من 20 سؤالاً. ما زال هناك 19 بلا إجابة. يمكنك مراجعتها أو المتابعة إلى التسليم. مراجعة الأسئلة غير المجابة 
+[laptop] result → نتيجة الاختبار · 1من20 · اكتملت المحاولةنتيجة الاختباراختبار المربّع1من205%إجابات صحيحة1إجابات غير صحيحة0بلا إجابة19عرض الحلول إعادة الاختبارالعودة إلى قائمة الاختبارات
+[laptop] solutions after submit → markers: الإجابة النهائية, الفكرة, القاعدة, خطوات
+
+=== mobile 390×844 (dpr 2) ===
+[mobile] home tile for the lesson: {"card":"10المربّعتعريفا المربّع المتكافئان وخواصّه الثلاث ورسمه بالمسطرة والمنقلة أو الكوس، مع تعل","available":true,"title":true}
+[mobile] lesson opened, 14 steps, document direction=rtl
+[mobile] outline sheet opened with 14 step items, aria-expanded=true
+[mobile] step 1 «المربّع: لماذا هذا الشكل؟» — no horizontal overflow
+[mobile] step 2 «انطلاقة نشطة: سبعة أشكال» — no horizontal overflow
+[mobile] step 3 «تعريف المربّع» — no horizontal overflow
+[mobile] step 4 «مثال الكتاب: ABCD» — no horizontal overflow
+[mobile] step 5 «لماذا هو مربّع؟» — no horizontal overflow
+[mobile] step 6 «لماذا ليس مربّعاً؟» — no horizontal overflow
+[mobile] step 7 «خواصّ المربّع» — no horizontal overflow
+[mobile] step 8 «رسم مربّع ضلعه 3cm» — no horizontal overflow
+[mobile] step 9 «ارسم مربّعاً ضلعه 4cm» — no horizontal overflow
+[mobile] step 10 «تدرّب ①: صح أم خطأ» — no horizontal overflow
+[mobile] step 11 «تدرّب ②: الرأسان Z و W» — no horizontal overflow
+[mobile] step 12 «تدرّب ③: أسماء الأشكال» — no horizontal overflow
+[mobile] step 13 «تدرّب ④: أطوال مركّبة» — no horizontal overflow
+[mobile] step 14 «الخلاصة والاختبار» — no horizontal overflow
+[mobile] distinct data-source-id anchors seen: 59; LTR-isolated math spans counted: 100
+[mobile] last step test link → ابدأ اختبار الدرس
+[mobile] back navigation → 13 / 14
+[mobile] teacher route h1=«دليل درس: المربّع», 84 .teacher-entry cards, 25 platform-labelled, pages: 📖 المصدر: الكتاب — ص 81 / 📖 المصدر: الكتاب — ص 82 / 📖 المصدر: الكتاب — ص 83 / 📖 المصدر: الكتاب — ص 84
+[mobile] teacher page — no horizontal overflow
+[mobile] solutions before submit → «الحلول غير متاحة قبل التسليم»
+[mobile] runner title «اختبار المربّع», body has «الإجابة النهائية»? false
+[mobile] confirm dialog → مراجعة قبل التسليم هل تريد تسليم الاختبار؟ أجبت عن 1 من 20 سؤالاً. ما زال هناك 19 بلا إجابة. يمكنك مراجعتها أو المتابعة إلى التسليم. مراجعة الأسئلة غير المجابة 
+[mobile] result → نتيجة الاختبار · 1من20 · اكتملت المحاولةنتيجة الاختباراختبار المربّع1من205%إجابات صحيحة1إجابات غير صحيحة0بلا إجابة19عرض الحلول إعادة الاختبارالعودة إلى قائمة الاختبارات
+[mobile] solutions after submit → markers: الإجابة النهائية, الفكرة, القاعدة, خطوات
+
+External request intercepted for local font substitution: https://fonts.googleapis.com/css2?family (no network in the sandbox; Cairo/DM Mono were served from @fontsource files with the same family names and weights).
+No real handset, Safari or Firefox was tested; mobile is Chromium viewport emulation.

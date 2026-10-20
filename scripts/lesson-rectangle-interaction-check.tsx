@@ -265,7 +265,7 @@ async function main() {
     assert.equal(document.body.textContent?.includes('متوازي أضلاع فيه زاوية قائمة.'), false, 'final answers are not printed in the runner')
     const registryModule = await vite.ssrLoadModule('/src/tests/registry.ts') as { testRegistry: { lessonTests: readonly { id: string }[]; unitTests: readonly { unitId?: string }[] } }
     assert.ok(registryModule.testRegistry.lessonTests.some((test) => test.id === 'lesson-rectangle-test'), 'strict test discovery registers the lesson test')
-    assert.equal(registryModule.testRegistry.unitTests.some((test) => test.unitId === 'unit-2'), false, 'no Unit 2 test was created')
+    assert.ok(registryModule.testRegistry.unitTests.some((test) => test.unitId === 'unit-2'), 'the separate Unit 2 test is registered now that Unit 2 is complete')
     console.log(`PASS lesson 9 interaction: ${stepCount} steps, ${flattenRectangleCoverageIds().length} ledger anchors, flag ratio/sorter/angle lab/justifications/properties/construction/ordering/plan/blanks/true-false/grid/composite, teacher guide (${teacherCards.length} entries) and protected lesson quiz.`)
   } finally { await vite.close() }
 }

@@ -103,8 +103,8 @@ async function main() {
 
   // Unit 2 still in progress
   const unitTwo = curriculumRegistry.find(u => u.id === 'unit-2')!
-  assert.equal(unitTwo.status, 'in-progress')
-  assert.equal(unitTwo.lessons.length, 9)
+  assert.equal(unitTwo.status, 'complete')
+  assert.equal(unitTwo.lessons.length, 10)
   assert.equal(unitTwo.lessons[7]?.id, 'decimal-parts-three', 'Unit 2 Lesson 8 is appended without moving existing lessons')
   assert.ok(unitTwo.lessons.find(l => l.id === leastCommonMultipleLessonId && l.availability === 'available'))
   const unitOne = curriculumRegistry.find(u => u.id === 'unit-1')!
@@ -139,7 +139,7 @@ async function main() {
   assert.equal(getSolutionGroups(definition).length, 4, 'four groups of five')
   assert.ok(definition.questions.every(q => q.solution.steps.length >= 2 && q.originalityNote.trim().length >= 30), 'each question needs real solution and originality note')
   assert.ok(definition.questions.every(q => q.coverage.lessonIds.includes(leastCommonMultipleLessonId)))
-  assert.ok(!curriculumRegistry.some(u => u.id === 'unit-2' && u.status === 'complete'))
+  assert.ok(curriculumRegistry.some(u => u.id === 'unit-2' && u.status === 'complete'), 'Unit 2 is complete after its final lesson')
 
   // Mount the lesson in jsdom and walk every step.
   const dom = new JSDOM('<!doctype html><html lang="ar" dir="rtl"><body><div id="root"></div></body></html>', {
@@ -239,7 +239,7 @@ async function main() {
       id: definition.id, questionCount: definition.questions.length,
       difficultyDistribution: actualDifficulty,
       solutionGroups: getSolutionGroups(definition).map(g => ({ group: g.groupNumber, firstQuestion: g.firstQuestionNumber, lastQuestion: g.lastQuestionNumber })),
-      unitTwoStatus: unitTwo.status, unitTwoTestCreated: false,
+      unitTwoStatus: unitTwo.status, unitTwoTestCreated: true,
     },
     items: reportItems,
   }
@@ -253,7 +253,7 @@ async function main() {
   const plainTaskCount = leastCommonMultipleBookTasks.length - exampleCount
   console.log(`PASS Source inventory: ${leastCommonMultipleTeachingElements.length} teaching elements, ${exampleCount} worked examples, ${plainTaskCount} printed task branches across pages 52–53, and all ${expectedVisualIds.length} reconstructed multiples-strip visuals rendered.`)
   console.log('PASS Teacher Area: every textbook entry has full frame (given/goal/rule/why/steps/answer/check/error).')
-  console.log('PASS Independent test: exactly 20 questions, 6/7/4/3 difficulty split, four solution groups; Unit 2 remains in progress.')
+  console.log('PASS Independent test: exactly 20 questions, 6/7/4/3 difficulty split, four solution groups; Unit 2 is complete and its own 60-question test is registered.')
   console.log('Wrote docs/least-common-multiple-coverage.json')
 }
 main().catch(error => { console.error(error); process.exitCode = 1 })

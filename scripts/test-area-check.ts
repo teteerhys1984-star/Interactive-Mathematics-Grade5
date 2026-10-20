@@ -21,6 +21,7 @@ import { unit2Lesson6TeacherEntries } from '../src/teacher/unit2Lesson6'
 import { unit2Lesson7AllEntries } from '../src/teacher/unit2Lesson7'
 import { lesson8TeacherEntries } from '../src/lessons/decimalPartsThreeData'
 import { rectangleTeacherEntries } from '../src/lessons/rectangleData'
+import { squareTeacherEntries } from '../src/lessons/squareData'
 import {
   DIFFICULTIES,
   QUESTION_TYPES,
@@ -57,8 +58,9 @@ const EXPECTED_PRODUCTION_TESTS = [
   'lesson-decimal-parts-two-test',
   'lesson-decimal-parts-three-test',
   'lesson-rectangle-test',
+  'lesson-square-test',
 ] as const
-const EXPECTED_UNIT_TESTS = ['unit-unit-1-test'] as const
+const EXPECTED_UNIT_TESTS = ['unit-unit-1-test', 'unit-unit-2-test'] as const
 const UNIT_ONE_LESSON_IDS = [
   'coordinates',
   'line-graphs',
@@ -69,7 +71,20 @@ const UNIT_ONE_LESSON_IDS = [
   'parallelogram',
   'rhombus',
 ] as const
+const UNIT_TWO_LESSON_IDS = [
+  'compare-order-natural-numbers',
+  'multiply-natural-numbers',
+  'least-common-multiple',
+  'fractions-one',
+  'fractions-two',
+  'tenths-one',
+  'decimal-parts-two',
+  'decimal-parts-three',
+  'rectangle',
+  'square',
+] as const
 const EXPECTED_UNIT_QUESTION_COUNT = 60
+const MIN_UNIT_LESSON_QUESTIONS = 4
 const EXPECTED_DIFFICULTY_DISTRIBUTION = { basic: 6, medium: 7, advanced: 4, thinking: 3 } as const
 const AUDITED_SOURCE_PAGE_RANGES: Readonly<Record<string, readonly [number, number]>> = {
   coordinates: [3, 4],
@@ -89,6 +104,7 @@ const AUDITED_SOURCE_PAGE_RANGES: Readonly<Record<string, readonly [number, numb
   'decimal-parts-two': [66, 71],
   'decimal-parts-three': [72, 76],
   rectangle: [77, 80],
+  square: [81, 84],
 }
 const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   coordinates: lessonOneTeacherEntries.map((entry) => entry.prompt),
@@ -123,6 +139,7 @@ const AUDITED_LEGACY_PROMPTS: Readonly<Record<string, readonly string[]>> = {
   'decimal-parts-three': lesson8TeacherEntries.map((entry) => entry.prompt),
   // Only the textbook-derived prompts: the rectangle guide also embeds the lesson-test solutions themselves.
   rectangle: rectangleTeacherEntries.map((entry) => entry.prompt),
+  square: squareTeacherEntries.map((entry) => entry.prompt),
 }
 
 
@@ -546,10 +563,10 @@ async function main(): Promise<void> {
   assert.ok(curriculumRegistry[0].lessons.every((lesson) => lesson.availability === 'available'))
   const unitTwo = curriculumRegistry[1]
   assert.equal(unitTwo.id, 'unit-2')
-  assert.equal(unitTwo.status, 'in-progress')
-  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle'])
+  assert.equal(unitTwo.status, 'complete', 'Unit 2 is explicitly complete: its final lesson shipped with the standalone unit test.')
+  assert.deepEqual(unitTwo.lessons.map((lesson) => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle', 'square'])
   assert.ok(unitTwo.lessons.every((lesson) => lesson.availability === 'available'))
-  assert.ok(!loadedRegistry.testRegistry.unitTests.some((test) => test.type === 'unit' && test.unitId === 'unit-2'), 'Unit 2 stays in progress and has no unit test.')
+  assert.equal(loadedRegistry.testRegistry.unitTests.filter((test) => test.type === 'unit' && test.unitId === 'unit-2').length, 1, 'Complete Unit 2 exposes exactly one eligible standalone unit test.')
   for (const lessonId of UNIT_ONE_LESSON_IDS) {
     assert.ok(
       loadedRegistry.testRegistry.lessonTests.some((test) => test.type === 'lesson' && test.lessonId === lessonId),
@@ -561,7 +578,7 @@ async function main(): Promise<void> {
   assert.deepEqual(productionTests.map((test) => test.id).sort(), [...EXPECTED_PRODUCTION_TESTS].sort())
   assert.equal(productionTests.reduce((total, test) => total + test.questions.length, 0), EXPECTED_PRODUCTION_TESTS.length * 20)
   const allProductionQuestionIds = loadedRegistry.testRegistry.allTests.flatMap((test) => test.questions.map((question) => question.id))
-  const expectedQuestionTotal = EXPECTED_PRODUCTION_TESTS.length * 20 + EXPECTED_UNIT_QUESTION_COUNT
+  const expectedQuestionTotal = EXPECTED_PRODUCTION_TESTS.length * 20 + EXPECTED_UNIT_TESTS.length * EXPECTED_UNIT_QUESTION_COUNT
   assert.equal(allProductionQuestionIds.length, expectedQuestionTotal)
   assert.equal(new Set(allProductionQuestionIds).size, expectedQuestionTotal, 'Question IDs must be globally unique.')
   const findProductionQuestion = (testId: string, questionId: string) =>
@@ -646,8 +663,10 @@ async function main(): Promise<void> {
 
   // ---------------------------------------------------------------- Unit 1 test audit
   const unitTests = loadedRegistry.testRegistry.unitTests
-  assert.equal(unitTests.length, 1, 'Unit 1 must expose exactly one eligible unit test.')
-  const unitOneTest = unitTests[0]
+  assert.equal(unitTests.length, 2, 'Each complete unit exposes exactly one eligible standalone unit test.')
+  const unitOneTest = unitTests.find((test) => test.id === 'unit-unit-1-test')!
+  const unitTwoTest = unitTests.find((test) => test.id === 'unit-unit-2-test')!
+  assert.ok(unitOneTest && unitTwoTest)
   assert.equal(unitOneTest.type, 'unit')
   assert.equal(unitOneTest.id, 'unit-unit-1-test')
   assert.equal(unitOneTest.type === 'unit' ? unitOneTest.unitId : '', 'unit-1')
@@ -687,6 +706,52 @@ async function main(): Promise<void> {
     }
   }
 
+  // ---------------------------------------------------------------- Unit 2 test audit
+  assert.equal(unitTwoTest.type, 'unit')
+  assert.equal(unitTwoTest.type === 'unit' ? unitTwoTest.unitId : '', 'unit-2')
+  assert.equal(unitTwoTest.questions.length, EXPECTED_UNIT_QUESTION_COUNT, 'The Unit 2 test targets 60 questions.')
+  assert.equal(unitTwoTest.blueprint.targetQuestionCount, EXPECTED_UNIT_QUESTION_COUNT)
+  assert.deepEqual(unitTwoTest.blueprint.difficultyDistribution, Object.fromEntries(DIFFICULTIES.map((difficulty) => [
+    difficulty,
+    unitTwoTest.questions.filter((question) => question.difficulty === difficulty).length,
+  ])))
+  assert.deepEqual(unitTwoTest.blueprint.questionTypeDistribution, countQuestionsByType(unitTwoTest.questions))
+  assert.deepEqual(unitTwoTest.blueprint.coverage.lessons.map((entry) => entry.id), [...UNIT_TWO_LESSON_IDS], 'The Unit 2 blueprint must cover all ten lessons in curriculum order.')
+  for (const entry of unitTwoTest.blueprint.coverage.lessons) {
+    const expectedIds = unitTwoTest.questions
+      .filter((question) => question.coverage.lessonIds.includes(entry.id))
+      .map((question) => question.id)
+    assert.deepEqual([...entry.questionIds].sort(), [...expectedIds].sort(), `Unit 2 coverage for ${entry.id} does not match the questions.`)
+    assert.ok(entry.questionIds.length >= MIN_UNIT_LESSON_QUESTIONS, `Unit 2 lesson ${entry.id} needs at least ${MIN_UNIT_LESSON_QUESTIONS} questions; found ${entry.questionIds.length}.`)
+  }
+  const unitTwoSourceIds = new Set(unitTwoTest.blueprint.sourceConceptInventory.map((source) => source.id))
+  const unitTwoUsedSourceIds = new Set(unitTwoTest.questions.flatMap((question) => question.sourceConcepts))
+  assert.deepEqual([...unitTwoSourceIds].sort(), [...unitTwoUsedSourceIds].sort(), 'The Unit 2 source inventory must be fully used and traceable.')
+  for (const source of unitTwoTest.blueprint.sourceConceptInventory) {
+    assert.ok(source.references.length > 0)
+    for (const reference of source.references) {
+      assert.ok(UNIT_TWO_LESSON_IDS.includes(reference.lessonId as (typeof UNIT_TWO_LESSON_IDS)[number]), `Unit 2 source concept cites a lesson outside Unit 2: ${reference.lessonId}`)
+      if (reference.kind === 'textbook-page') {
+        const range = AUDITED_SOURCE_PAGE_RANGES[reference.lessonId]
+        assert.ok(range, `No audited page range for ${reference.lessonId}.`)
+        assert.ok(reference.page >= range[0] && reference.page <= range[1], `Unit 2 test cites out-of-range page ${reference.page} for ${reference.lessonId}.`)
+      }
+    }
+  }
+  for (const question of unitTwoTest.questions) {
+    assert.equal(question.testId, unitTwoTest.id)
+    assert.ok(question.coverage.lessonIds.length > 0)
+    assert.ok(question.coverage.lessonIds.every((lessonId) => UNIT_TWO_LESSON_IDS.includes(lessonId as (typeof UNIT_TWO_LESSON_IDS)[number])))
+    assert.ok(question.solution.steps.length > 0)
+    assert.ok(question.originalityNote.trim().length >= 35, `${question.id} needs a specific editorial originality note.`)
+    assert.equal(evaluateQuestion(question, studentAnswerFromKey(question)).status, 'correct', `Deterministic answer key failed for ${question.id}.`)
+  }
+  assert.equal(
+    scoreTest(unitTwoTest, Object.fromEntries(unitTwoTest.questions.map((question) => [question.id, studentAnswerFromKey(question)])) as Record<string, StudentAnswer | undefined>).correctCount,
+    EXPECTED_UNIT_QUESTION_COUNT,
+    'The Unit 2 test must score all keyed answers deterministically.',
+  )
+
   // Originality screen for the unit test: against every lesson's audited legacy prompts and
   // against every production lesson-test prompt, exactly and after masking numbers.
   const allLegacyPrompts = Object.values(AUDITED_LEGACY_PROMPTS).flat()
@@ -696,10 +761,11 @@ async function main(): Promise<void> {
   const lessonTestTemplates = new Set(productionTests.flatMap((test) => test.questions.map((question) => normalizeTemplate(flattenRich(question.prompt)))))
   const unitTemplates = new Set<string>()
   const unitCollisions: string[] = []
-  for (const question of unitOneTest.questions) {
-    assert.equal(question.testId, unitOneTest.id)
+  for (const question of [...unitOneTest.questions, ...unitTwoTest.questions]) {
+    const owningUnitLessons = question.testId === unitOneTest.id ? UNIT_ONE_LESSON_IDS : UNIT_TWO_LESSON_IDS
+    assert.ok(question.testId === unitOneTest.id || question.testId === unitTwoTest.id)
     assert.ok(question.coverage.lessonIds.length > 0)
-    assert.ok(question.coverage.lessonIds.every((lessonId) => UNIT_ONE_LESSON_IDS.includes(lessonId as (typeof UNIT_ONE_LESSON_IDS)[number])))
+    assert.ok(question.coverage.lessonIds.every((lessonId) => owningUnitLessons.includes(lessonId as never)))
     assert.ok(question.solution.steps.length > 0)
     assert.ok(question.originalityNote.trim().length >= 35, `${question.id} needs a specific editorial originality note.`)
     const prompt = flattenRich(question.prompt)
@@ -724,9 +790,21 @@ async function main(): Promise<void> {
       loadedRegistry.discoveredTestDefinitions,
       { coverageMode: 'strict' },
     )
-    assert.equal(gatedRegistry.unitTests.length, 0, `Unit test must stay hidden while unit-1 is ${status}.`)
+    assert.equal(gatedRegistry.unitTests.length, 1, `Unit 1 test must stay hidden while unit-1 is ${status}.`)
     assert.equal(gatedRegistry.getTestById('unit-unit-1-test'), undefined)
+    assert.ok(gatedRegistry.getTestById('unit-unit-2-test'), 'The Unit 2 test stays available because its own unit is complete.')
     assert.equal(gatedRegistry.lessonTests.length, EXPECTED_PRODUCTION_TESTS.length, 'Lesson tests stay available regardless of unit status.')
+  }
+
+  for (const status of ['unknown', 'in-progress'] as const) {
+    const gatedRegistry = loadedRegistry.createTestRegistry(
+      curriculumRegistry.map((unit) => unit.id === 'unit-2' ? { ...unit, status } : unit),
+      loadedRegistry.discoveredTestDefinitions,
+      { coverageMode: 'strict' },
+    )
+    assert.equal(gatedRegistry.unitTests.length, 1, `Unit 2 test must stay hidden while unit-2 is ${status}.`)
+    assert.equal(gatedRegistry.getTestById('unit-unit-2-test'), undefined)
+    assert.ok(gatedRegistry.getTestById('unit-unit-1-test'), 'The Unit 1 test stays available because its own unit is complete.')
   }
 
   const syntheticRegistry = loadedRegistry.createTestRegistry(

@@ -103,7 +103,7 @@ async function main(): Promise<void> {
   const allDefinitions = [...lessonDefinitions, ...unitDefinitions]
   const analysis = analyzeTestCatalog(curriculumRegistry, allDefinitions, { coverageMode: 'strict' })
   assert.equal(analysis.report.valid, true, JSON.stringify(analysis.report.issues, null, 2))
-  assert.equal(unitDefinitions.length, 1, 'Unit 1 must own exactly one unit-test definition file.')
+  assert.equal(unitDefinitions.length, 2, 'Each complete unit owns exactly one unit-test definition file.')
 
   // The production registry resolves its definitions through a Vite glob; load it the same way so
   // autodiscovery of the new unit-test file is proven, not assumed.
@@ -120,8 +120,9 @@ async function main(): Promise<void> {
   }
   assert.equal(loaded.discoveredTestDefinitions.length, allDefinitions.length, 'Vite autodiscovery must pick up every lesson test plus the Unit 1 test.')
   assert.equal(loaded.testRegistry.report.valid, true, JSON.stringify(loaded.testRegistry.issues, null, 2))
-  assert.equal(loaded.testRegistry.unitTests.length, 1, 'the Unit 1 test must be discovered and eligible in the production registry')
-  assert.equal(loaded.testRegistry.unitTests[0].id, 'unit-unit-1-test')
+  assert.equal(loaded.testRegistry.unitTests.length, 2, 'both complete units expose their discovered unit test')
+  assert.ok(loaded.testRegistry.getTestById('unit-unit-1-test'), 'the Unit 1 test must be discovered and eligible in the production registry')
+  assert.ok(loaded.testRegistry.getTestById('unit-unit-2-test'), 'the Unit 2 test must be discovered and eligible in the production registry')
 
   for (const expected of EXPECTED_LESSONS) {
     const test = lessonDefinitions.find((definition) => definition.type === 'lesson' && definition.lessonId === expected.id)
@@ -129,7 +130,7 @@ async function main(): Promise<void> {
     assert.equal(test!.questions.length, 20, `lesson test ${test!.id} must keep exactly 20 questions`)
   }
 
-  const unitTest = unitDefinitions[0]
+  const unitTest = unitDefinitions.find((definition) => definition.id === 'unit-unit-1-test')!
   assert.equal(unitTest.id, 'unit-unit-1-test')
   assert.equal(unitTest.type, 'unit')
   assert.equal(unitTest.type === 'unit' ? unitTest.unitId : '', 'unit-1')
@@ -200,17 +201,19 @@ async function main(): Promise<void> {
 
   /* ---------------------------------------------------- 5. the completion gate really gates */
   const eligible = loaded.createTestRegistry(curriculumRegistry, loaded.discoveredTestDefinitions, { coverageMode: 'strict' })
-  assert.equal(eligible.unitTests.length, 1)
+  assert.equal(eligible.unitTests.length, 2)
   assert.ok(eligible.getTestById('unit-unit-1-test'))
+  assert.ok(eligible.getTestById('unit-unit-2-test'))
   for (const status of ['unknown', 'in-progress'] as const) {
     const gated = loaded.createTestRegistry(
       curriculumRegistry.map((candidate) => (candidate.id === 'unit-1' ? { ...candidate, status } : candidate)),
       loaded.discoveredTestDefinitions,
       { coverageMode: 'strict' },
     )
-    assert.equal(gated.unitTests.length, 0, `the unit test must be hidden while unit-1 is ${status}`)
+    assert.equal(gated.unitTests.length, 1, `the Unit 1 test must be hidden while unit-1 is ${status}`)
     assert.equal(gated.getTestById('unit-unit-1-test'), undefined)
-    assert.equal(gated.lessonTests.length, EXPECTED_LESSONS.length + 9, 'all eight Unit 1 lesson tests plus the nine available Unit 2 lesson tests must stay available regardless of Unit 1 status')
+    assert.ok(gated.getTestById('unit-unit-2-test'), 'the Unit 2 test stays available because unit-2 is complete')
+    assert.equal(gated.lessonTests.length, EXPECTED_LESSONS.length + 10, 'all eight Unit 1 lesson tests plus the ten available Unit 2 lesson tests must stay available regardless of Unit 1 status')
   }
 
   /* ---------------------------------------------------- report */

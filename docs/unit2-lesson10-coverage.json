@@ -1,0 +1,539 @@
+{
+  "lessonId": "square",
+  "title": "المربّع",
+  "sourcePages": [
+    81,
+    82,
+    83,
+    84
+  ],
+  "totals": {
+    "elements": 18,
+    "branches": 41,
+    "anchors": 59,
+    "bookTasks": 11,
+    "teacherTextbookEntries": 59,
+    "teacherPlatformEntries": 5,
+    "teacherTestEntries": 20,
+    "testQuestions": 20,
+    "confirmed": 18,
+    "partial": 0,
+    "unresolved": 0
+  },
+  "elements": [
+    {
+      "id": "sq-p81-goals",
+      "page": 81,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "سنتعلّم",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p81-goals"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p81-tile-entry",
+      "page": 81,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "مدخل الدرس · بلاط المربّع",
+      "note": "لا يوجد نص مطبوع مرافق لهذه الصورة في ص 81؛ وصفها هنا من اجتهاد المنصة، والمحتوى الرياضي المستعمل في العرض (تساوي الأضلاع والزوايا القائمة في البلاط) شرح إضافي من المنصة.",
+      "teacherEntryIds": [
+        "t-sq-p81-tile-entry"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p81-opening-figures",
+      "page": 81,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · الأشكال السبعة",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p81-opening-figures"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p81-opening-q1",
+      "page": 81,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · السؤال 1",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p81-opening-q1"
+      ],
+      "branches": [
+        {
+          "id": "sq-p81-shape-1",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-1"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-2",
+          "label": "الشكل (2)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-2"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-3",
+          "label": "الشكل (3)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-3"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-4",
+          "label": "الشكل (4)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-4"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-5",
+          "label": "الشكل (5)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-5"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-6",
+          "label": "الشكل (6)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-6"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-7",
+          "label": "الشكل (7)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p81-opening-q2",
+      "page": 81,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · السؤال 2",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p81-opening-q2"
+      ],
+      "branches": [
+        {
+          "id": "sq-p81-shape-1-right",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-1-right"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-2-right",
+          "label": "الشكل (2)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-2-right"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-3-right",
+          "label": "الشكل (3)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-3-right"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-4-right",
+          "label": "الشكل (4)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-4-right"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-5-right",
+          "label": "الشكل (5)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-5-right"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-6-right",
+          "label": "الشكل (6)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-6-right"
+          ]
+        },
+        {
+          "id": "sq-p81-shape-7-right",
+          "label": "الشكل (7)",
+          "teacherEntryIds": [
+            "t-sq-p81-shape-7-right"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p81-opening-q3",
+      "page": 81,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · السؤال 3",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p81-opening-q3"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p81-definition",
+      "page": 81,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "تعلّم ① · تعريف المربّع",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p81-definition"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p82-example",
+      "page": 82,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "مثال",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p82-example"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p82-check1",
+      "page": 82,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 1",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p82-check1"
+      ],
+      "branches": [
+        {
+          "id": "sq-p82-check1-s1",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-sq-p82-check1-s1"
+          ]
+        },
+        {
+          "id": "sq-p82-check1-s2",
+          "label": "الشكل (2)",
+          "teacherEntryIds": [
+            "t-sq-p82-check1-s2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p82-check2",
+      "page": 82,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 2",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p82-check2"
+      ],
+      "branches": [
+        {
+          "id": "sq-p82-check2-s1",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-sq-p82-check2-s1"
+          ]
+        },
+        {
+          "id": "sq-p82-check2-s2",
+          "label": "الشكل (2)",
+          "teacherEntryIds": [
+            "t-sq-p82-check2-s2"
+          ]
+        },
+        {
+          "id": "sq-p82-check2-s3",
+          "label": "الشكل (3)",
+          "teacherEntryIds": [
+            "t-sq-p82-check2-s3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p82-properties",
+      "page": 82,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "تعلّم ② · خواص المربّع",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p82-properties"
+      ],
+      "branches": []
+    },
+    {
+      "id": "sq-p82-oral",
+      "page": 82,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تعبير شفهي",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p82-oral"
+      ],
+      "branches": [
+        {
+          "id": "sq-p82-oral-q1",
+          "label": "السؤال 1",
+          "teacherEntryIds": [
+            "t-sq-p82-oral-q1"
+          ]
+        },
+        {
+          "id": "sq-p82-oral-q2",
+          "label": "السؤال 2",
+          "teacherEntryIds": [
+            "t-sq-p82-oral-q2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p83-construction",
+      "page": 83,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "تعلّم ③ · رسم مربّع (باستعمال المسطرة والمنقلة أو الكوس)",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p83-construction"
+      ],
+      "branches": [
+        {
+          "id": "sq-p83-step-1",
+          "label": "الخطوة 1",
+          "teacherEntryIds": [
+            "t-sq-p83-step-1"
+          ]
+        },
+        {
+          "id": "sq-p83-step-2",
+          "label": "الخطوة 2",
+          "teacherEntryIds": [
+            "t-sq-p83-step-2"
+          ]
+        },
+        {
+          "id": "sq-p83-step-3",
+          "label": "الخطوة 3",
+          "teacherEntryIds": [
+            "t-sq-p83-step-3"
+          ]
+        },
+        {
+          "id": "sq-p83-step-4",
+          "label": "الخطوة 4",
+          "teacherEntryIds": [
+            "t-sq-p83-step-4"
+          ]
+        },
+        {
+          "id": "sq-p83-step-5",
+          "label": "الخطوة 5",
+          "teacherEntryIds": [
+            "t-sq-p83-step-5"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p84-check-draw",
+      "page": 84,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · الرسم",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p84-check-draw"
+      ],
+      "branches": [
+        {
+          "id": "sq-p84-check-draw-lengths",
+          "label": "خطة الأطوال",
+          "teacherEntryIds": [
+            "t-sq-p84-check-draw-lengths"
+          ]
+        },
+        {
+          "id": "sq-p84-check-draw-tools",
+          "label": "خطوات الرسم بالأدوات",
+          "teacherEntryIds": [
+            "t-sq-p84-check-draw-tools"
+          ]
+        },
+        {
+          "id": "sq-p84-check-draw-angles",
+          "label": "تحديد الزوايا القائمة",
+          "teacherEntryIds": [
+            "t-sq-p84-check-draw-angles"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p84-ex1",
+      "page": 84,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 1",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p84-ex1"
+      ],
+      "branches": [
+        {
+          "id": "sq-p84-ex1-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-sq-p84-ex1-a"
+          ]
+        },
+        {
+          "id": "sq-p84-ex1-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-sq-p84-ex1-b"
+          ]
+        },
+        {
+          "id": "sq-p84-ex1-t",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-sq-p84-ex1-t"
+          ]
+        },
+        {
+          "id": "sq-p84-ex1-th",
+          "label": "د",
+          "teacherEntryIds": [
+            "t-sq-p84-ex1-th"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p84-ex2",
+      "page": 84,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 2",
+      "note": "الرسم المطبوع قطعة واحدة [XY] رأسية. لا يحدد الكتاب جهة بناء المربّع، لذلك يذكر الحل أن البناء على أي جهة صحيح، وتعرض المنصة جهة واحدة على شبكة نقاط لتبقى الإجابة قابلة للتحقق.",
+      "teacherEntryIds": [
+        "t-sq-p84-ex2"
+      ],
+      "branches": [
+        {
+          "id": "sq-p84-ex2-z",
+          "label": "تعيين Z",
+          "teacherEntryIds": [
+            "t-sq-p84-ex2-z"
+          ]
+        },
+        {
+          "id": "sq-p84-ex2-w",
+          "label": "تعيين W",
+          "teacherEntryIds": [
+            "t-sq-p84-ex2-w"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p84-ex3",
+      "page": 84,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 3",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p84-ex3"
+      ],
+      "branches": [
+        {
+          "id": "sq-p84-ex3-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-sq-p84-ex3-a"
+          ]
+        },
+        {
+          "id": "sq-p84-ex3-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-sq-p84-ex3-b"
+          ]
+        },
+        {
+          "id": "sq-p84-ex3-t",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-sq-p84-ex3-t"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sq-p84-ex4",
+      "page": 84,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 4",
+      "note": null,
+      "teacherEntryIds": [
+        "t-sq-p84-ex4"
+      ],
+      "branches": [
+        {
+          "id": "sq-p84-ex4-rs",
+          "label": "RS",
+          "teacherEntryIds": [
+            "t-sq-p84-ex4-rs"
+          ]
+        },
+        {
+          "id": "sq-p84-ex4-ts",
+          "label": "TS",
+          "teacherEntryIds": [
+            "t-sq-p84-ex4-ts"
+          ]
+        },
+        {
+          "id": "sq-p84-ex4-xs",
+          "label": "XS",
+          "teacherEntryIds": [
+            "t-sq-p84-ex4-xs"
+          ]
+        }
+      ]
+    }
+  ]
+}
