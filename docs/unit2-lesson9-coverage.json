@@ -1,0 +1,470 @@
+{
+  "lessonId": "rectangle",
+  "title": "المستطيل",
+  "sourcePages": [
+    77,
+    78,
+    79,
+    80
+  ],
+  "totals": {
+    "elements": 17,
+    "branches": 33,
+    "anchors": 50,
+    "bookTasks": 10,
+    "teacherTextbookEntries": 50,
+    "teacherPlatformEntries": 5,
+    "teacherTestEntries": 20,
+    "testQuestions": 20,
+    "confirmed": 17,
+    "partial": 0,
+    "unresolved": 0
+  },
+  "elements": [
+    {
+      "id": "rect-p77-goals",
+      "page": 77,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "سنتعلّم",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p77-goals"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p77-flag",
+      "page": 77,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "مدخل الدرس · العلم السوري",
+      "note": "النص المطبوع في ص 77 يصف ألوان العلم بالأحمر والأبيض والأسود مع نجمتين خضراوين، بينما صورة العلم المطبوعة في الصفحة نفسها تُظهر الأخضر والأبيض والأسود مع ثلاث نجوم حمراء. نقلت المنصة النص كما طُبع ورسمت العلم كما في صورة الكتاب؛ الفكرة الرياضية واحدة في الحالتين.",
+      "teacherEntryIds": [
+        "t-rect-p77-flag"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p77-opening-figures",
+      "page": 77,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · الأشكال الأربعة",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p77-opening-figures"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p77-opening-q1",
+      "page": 77,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · السؤال 1",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p77-opening-q1"
+      ],
+      "branches": [
+        {
+          "id": "rect-p77-opening-q1-s1",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-rect-p77-opening-q1-s1"
+          ]
+        },
+        {
+          "id": "rect-p77-opening-q1-s2",
+          "label": "الشكل (2)",
+          "teacherEntryIds": [
+            "t-rect-p77-opening-q1-s2"
+          ]
+        },
+        {
+          "id": "rect-p77-opening-q1-s3",
+          "label": "الشكل (3)",
+          "teacherEntryIds": [
+            "t-rect-p77-opening-q1-s3"
+          ]
+        },
+        {
+          "id": "rect-p77-opening-q1-s4",
+          "label": "الشكل (4)",
+          "teacherEntryIds": [
+            "t-rect-p77-opening-q1-s4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p77-opening-q2",
+      "page": 77,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "انطلاقة نشطة · السؤال 2",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p77-opening-q2"
+      ],
+      "branches": [
+        {
+          "id": "rect-p77-opening-q2-s1",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-rect-p77-opening-q2-s1"
+          ]
+        },
+        {
+          "id": "rect-p77-opening-q2-s4",
+          "label": "الشكل (4)",
+          "teacherEntryIds": [
+            "t-rect-p77-opening-q2-s4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p77-definition",
+      "page": 77,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "تعلّم ① · تعريف المستطيل",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p77-definition"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p78-example",
+      "page": 78,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "مثال",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p78-example"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p78-check1",
+      "page": 78,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 1",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p78-check1"
+      ],
+      "branches": [
+        {
+          "id": "rect-p78-check1-s1",
+          "label": "الشكل (1)",
+          "teacherEntryIds": [
+            "t-rect-p78-check1-s1"
+          ]
+        },
+        {
+          "id": "rect-p78-check1-s2",
+          "label": "الشكل (2)",
+          "teacherEntryIds": [
+            "t-rect-p78-check1-s2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p78-check2",
+      "page": 78,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · السؤال 2",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p78-check2"
+      ],
+      "branches": [
+        {
+          "id": "rect-p78-check2-s1",
+          "label": "الشكل الأول (يمين الجدول)",
+          "teacherEntryIds": [
+            "t-rect-p78-check2-s1"
+          ]
+        },
+        {
+          "id": "rect-p78-check2-s2",
+          "label": "الشكل الثاني (وسط الجدول)",
+          "teacherEntryIds": [
+            "t-rect-p78-check2-s2"
+          ]
+        },
+        {
+          "id": "rect-p78-check2-s3",
+          "label": "الشكل الثالث (يسار الجدول)",
+          "teacherEntryIds": [
+            "t-rect-p78-check2-s3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p78-properties",
+      "page": 78,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "تعلّم ② · خواص المستطيل",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p78-properties"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p78-oral",
+      "page": 78,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تعبير شفهي",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p78-oral"
+      ],
+      "branches": []
+    },
+    {
+      "id": "rect-p79-construction",
+      "page": 79,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "تعلّم ③ · رسم المستطيل (باستعمال المسطرة والمنقلة أو الكوس)",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p79-construction"
+      ],
+      "branches": [
+        {
+          "id": "rect-p79-construction-step1",
+          "label": "الخطوة 1",
+          "teacherEntryIds": [
+            "t-rect-p79-construction-step1"
+          ]
+        },
+        {
+          "id": "rect-p79-construction-step2",
+          "label": "الخطوة 2",
+          "teacherEntryIds": [
+            "t-rect-p79-construction-step2"
+          ]
+        },
+        {
+          "id": "rect-p79-construction-step3",
+          "label": "الخطوة 3",
+          "teacherEntryIds": [
+            "t-rect-p79-construction-step3"
+          ]
+        },
+        {
+          "id": "rect-p79-construction-step4",
+          "label": "الخطوة 4",
+          "teacherEntryIds": [
+            "t-rect-p79-construction-step4"
+          ]
+        },
+        {
+          "id": "rect-p79-construction-step5",
+          "label": "الخطوة 5",
+          "teacherEntryIds": [
+            "t-rect-p79-construction-step5"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p80-check-draw",
+      "page": 80,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تحقّق من فهمك · الرسم",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p80-check-draw"
+      ],
+      "branches": [
+        {
+          "id": "rect-p80-check-draw-lengths",
+          "label": "خطة الأطوال",
+          "teacherEntryIds": [
+            "t-rect-p80-check-draw-lengths"
+          ]
+        },
+        {
+          "id": "rect-p80-check-draw-tools",
+          "label": "خطوات الرسم بالأدوات",
+          "teacherEntryIds": [
+            "t-rect-p80-check-draw-tools"
+          ]
+        },
+        {
+          "id": "rect-p80-check-draw-angles",
+          "label": "تحديد الزوايا القائمة",
+          "teacherEntryIds": [
+            "t-rect-p80-check-draw-angles"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p80-ex1",
+      "page": 80,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 1",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p80-ex1"
+      ],
+      "branches": [
+        {
+          "id": "rect-p80-ex1-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-rect-p80-ex1-a"
+          ]
+        },
+        {
+          "id": "rect-p80-ex1-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-rect-p80-ex1-b"
+          ]
+        },
+        {
+          "id": "rect-p80-ex1-t",
+          "label": "ت",
+          "teacherEntryIds": [
+            "t-rect-p80-ex1-t"
+          ]
+        },
+        {
+          "id": "rect-p80-ex1-th",
+          "label": "ث",
+          "teacherEntryIds": [
+            "t-rect-p80-ex1-th"
+          ]
+        },
+        {
+          "id": "rect-p80-ex1-j",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-rect-p80-ex1-j"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p80-ex2",
+      "page": 80,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 2",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p80-ex2"
+      ],
+      "branches": [
+        {
+          "id": "rect-p80-ex2-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-rect-p80-ex2-a"
+          ]
+        },
+        {
+          "id": "rect-p80-ex2-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-rect-p80-ex2-b"
+          ]
+        },
+        {
+          "id": "rect-p80-ex2-t",
+          "label": "ت",
+          "teacherEntryIds": [
+            "t-rect-p80-ex2-t"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p80-ex3",
+      "page": 80,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 3",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p80-ex3"
+      ],
+      "branches": [
+        {
+          "id": "rect-p80-ex3-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-rect-p80-ex3-a"
+          ]
+        },
+        {
+          "id": "rect-p80-ex3-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-rect-p80-ex3-b"
+          ]
+        },
+        {
+          "id": "rect-p80-ex3-t",
+          "label": "ت",
+          "teacherEntryIds": [
+            "t-rect-p80-ex3-t"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rect-p80-ex4",
+      "page": 80,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "تدرّب · السؤال 4",
+      "note": null,
+      "teacherEntryIds": [
+        "t-rect-p80-ex4"
+      ],
+      "branches": [
+        {
+          "id": "rect-p80-ex4-ac",
+          "label": "AC",
+          "teacherEntryIds": [
+            "t-rect-p80-ex4-ac"
+          ]
+        },
+        {
+          "id": "rect-p80-ex4-eb",
+          "label": "EB",
+          "teacherEntryIds": [
+            "t-rect-p80-ex4-eb"
+          ]
+        },
+        {
+          "id": "rect-p80-ex4-fe",
+          "label": "FE",
+          "teacherEntryIds": [
+            "t-rect-p80-ex4-fe"
+          ]
+        }
+      ]
+    }
+  ]
+}

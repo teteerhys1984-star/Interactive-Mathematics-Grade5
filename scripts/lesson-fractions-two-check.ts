@@ -126,7 +126,7 @@ assert.equal(evaluateQuestion(definition.questions[0], undefined).status, 'unans
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit-2 exists')
 assert.equal(unitTwo!.status, 'in-progress', 'Unit 2 stays in progress')
-assert.deepEqual(unitTwo!.lessons.map((lesson) => lesson.id).slice(-5), ['fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three'])
+assert.deepEqual(unitTwo!.lessons.map((lesson) => lesson.id).slice(-5), ['fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle'])
 assert.equal(unitTwo!.lessons.find((lesson) => lesson.id === 'fractions-two')?.availability, 'available')
 
 console.log(`PASS fractions-two: ${allItems.length} printed items verified, 20-question test (6/7/4/3), teacher coverage complete, registry wired.`)

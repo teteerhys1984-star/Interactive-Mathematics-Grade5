@@ -75,6 +75,8 @@ npm run lesson-8-check    # تغطية الدرس الثامن (ص 36–39) + ت
 npm run unit-1-check      # اكتمال الوحدة الأولى + تدقيق اختبار الوحدة (60 سؤالاً) وبوابة الأهلية
 npm run test-area-check   # تدقيق منطقة الاختبارات: الاكتشاف، التحقق الصارم، التصحيح، وواجهة الاختبارات
 npm run browser-smoke-test # تفاعل حقيقي عبر jsdom + Testing Library: تنقّل بين الخطوات، الاختبار الختامي، بوابة المدرّس
+npm run lesson-rectangle-check             # الوحدة 2 · الدرس 9 «المستطيل» (ص 77–80): سجلّ المصدر 17 كتلة / 33 فرعاً، تغطية حلول المدرّس، اختبار الدرس، ويكتب docs/unit2-lesson9-coverage.json مع --write-coverage
+npm run lesson-rectangle-interaction-check # الدرس 9: تشغيل التطبيق الحقيقي في jsdom عبر 13 خطوة، كل الأنشطة حتى «إجابة صحيحة»، 50 مرساة مصدر، دليل المدرّس، وحجب حلول الاختبار قبل التسليم
 ```
 
 ## الدرس السابع — متوازي الأضلاع (ص 31–35)
@@ -118,3 +120,11 @@ npm run browser-smoke-test # تفاعل حقيقي عبر jsdom + Testing Librar
 - منطقة المدرّس: 42 حلاً نموذجياً مرتبطاً بالصفحة والفرع، و4 حلول لأنشطة المنصة مفصولة المصدر (`src/teacher/lesson10.ts`).
 - اختبار مستقل من **20 سؤالاً** جديداً (6 أساسي / 7 متوسط / 4 متقدّم / 3 تفكير) في `src/tests/definitions/lessons/multiply-natural-numbers.test.ts`، وحلوله في مساحة الحلول بعد التسليم فقط.
 - الوحدة الثانية تبقى `in-progress` ولا يُنشأ لها اختبار وحدة؛ التدقيق الآلي: `npm run lesson-10-coverage-check` يكتب `docs/multiply-natural-numbers-coverage.json` (42/42 FULL) والتقرير المصدر `docs/unit2-lesson2-source-report.md`.
+
+## الوحدة الثانية — الدرس التاسع: المستطيل (ص 77–80)
+
+- 13 خطوة قصيرة داخل `LessonShell` بسمة مستقلة `lesson-rectangle` («ورشة الكوس والمسطرة»: لوحات ورقية، شريط صفحات، مختبر زاوية، لوحة إنشاء بمراحل) في `src/lessons/RectangleLesson.tsx` و`src/lesson-rectangle.css`.
+- سجلّ المصدر `src/lessons/rectangleData.ts`: **17 كتلة** من الصفحات الأربع (أهداف، فقرة العلم، أشكال الانطلاقة وسؤالاها، التعريف، المثال المحلول، تحقّق ① و②، الخواص، التعبير الشفهي، خطوات الإنشاء الخمس، تحقّق الرسم ص 80، وتدرّب ①–④) و**33 فرعاً مطبوعاً**؛ كل فرع له مرساة `data-source-id` تُفحص آلياً. كل ما أضافته المنصة موسوم «شرح إضافي من المنصة» أو «نشاط من إعداد المنصة».
+- منطقة المدرّس: 50 حلاً للكتاب (بالصفحة والفرع) + 5 أدلة لأنشطة المنصة + 20 حلاً لأسئلة اختبار الدرس = 75 مدخلاً، عبر الآلية الموجودة في `src/teacher/TeacherArea.tsx`.
+- اختبار مستقل من **20 سؤالاً** (6 أساسي / 7 متوسط / 4 متقدّم / 3 تفكير) في `src/tests/definitions/lessons/rectangle.test.ts`؛ الحلول في مساحة الحلول بعد التسليم فقط. الوحدة الثانية تبقى `in-progress` ولا يُنشأ لها اختبار وحدة.
+- التدقيق: `npm run lesson-rectangle-check` و`npm run lesson-rectangle-interaction-check` (ضمن `npm run build`)، تقرير المصدر `docs/unit2-lesson9-source-audit.md` والتغطية `docs/unit2-lesson9-coverage.json`.
