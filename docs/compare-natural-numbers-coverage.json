@@ -1106,7 +1106,7 @@
         "lastQuestion": 20
       }
     ],
-    "unitTwoStatus": "in-progress",
-    "unitTwoTestCreated": false
+    "unitTwoStatus": "complete",
+    "unitTwoTestCreated": true
   }
 }

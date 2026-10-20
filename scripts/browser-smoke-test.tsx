@@ -41,8 +41,8 @@ async function main() {
   if (testAreaNavLink.getAttribute('href') !== '#tests') fail('Course Home Test Area navigation does not use the expected hash route')
   goTo('#tests')
   if (!screen.getByRole('heading', { name: 'منطقة الاختبارات' })) fail('Course Home navigation did not open the Test Area')
-  if (!screen.getByText('17 اختباراً متاحاً')) fail('Test Area did not show all seventeen eligible lesson tests')
-  if (!screen.getByText('اختبار واحد متاح')) fail('Test Area did not show the eligible Unit 1 test')
+  if (!screen.getByText('18 اختباراً متاحاً')) fail('Test Area did not show all eighteen eligible lesson tests')
+  if (!screen.getByText('اختباران متاحان')) fail('Test Area did not show the eligible Unit 1 and Unit 2 tests')
   if (screen.getByRole('link', { name: 'مساحة المدرس' }).getAttribute('href') !== '#teacher') fail('Test Area lost the Teacher Area navigation')
   if (!screen.getByText('المهندس سومر شاهين:')) fail('Instructor attribution is missing from the Test Area')
   goTo('#top')
@@ -54,7 +54,7 @@ async function main() {
   if (!screen.getByText('التمثيلات البيانية بالخطوط')) fail('Lesson 2 title missing from Home')
   if (!screen.getByText('جمع الأعداد الطبيعيّة وطرحها')) fail('Lesson 5 title missing from Home')
   const startLinks = screen.getAllByText('ابدأ')
-  if (startLinks.length !== 17) fail(`Expected 17 "ابدأ" lesson links on Home, found ${startLinks.length}`)
+  if (startLinks.length !== 18) fail(`Expected 18 "ابدأ" lesson links on Home, found ${startLinks.length}`)
   if (!screen.getByText('متوازي الأضلاع')) fail('Lesson 7 title missing from Home')
   if (!screen.getByText('المعيّن')) fail('Lesson 8 title missing from Home')
   if (!screen.getByText('مقارنة الأعداد الطبيعية وترتيبها')) fail('Unit 2 Lesson 1 title missing from Home')
@@ -567,7 +567,7 @@ async function main() {
   if (!screen.getByRole('heading', { name: 'الحلول غير متاحة قبل التسليم' })) fail('Lesson 12 test solutions were not locked before submission')
   console.log('✅ Unit 2 Lesson 4: p. 55–57 branches, ordering, applications, platform labs, 20-question test route and pre-submit solution lock pass')
 
-  // ---- Regression across all 17 available lessons: position vs completion + outline dialog ----
+  // ---- Regression across all 18 available lessons: position vs completion + outline dialog ----
   // Two things are guarded here for every lesson:
   //   1. jumping ahead only moves «موقعك في الدرس»; skipped steps are never marked «مكتملة»,
   //   2. the mobile outline bottom sheet behaves like a real modal (focus in, trap, Escape, focus back).
@@ -589,6 +589,7 @@ async function main() {
     ['decimal-parts-two', 'الأجزاء العشرية (2)'],
     ['decimal-parts-three', 'الأجزاء العشرية (3)'],
     ['rectangle', 'المستطيل'],
+    ['square', 'المربّع'],
   ]
   const completedBadges = (variant: 'desktop' | 'mobile') => document.querySelectorAll(`.lesson-outline-list.is-${variant} .lesson-outline-status`).length
   const focusablesIn = (root: Element) => Array.from(root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) as HTMLElement[]

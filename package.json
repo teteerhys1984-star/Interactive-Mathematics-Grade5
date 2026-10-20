@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && npm run lesson-decimal-parts-two-check && npm run lesson-decimal-parts-two-interaction-check && npm run lesson-decimal-parts-three-check && npm run lesson-decimal-parts-three-interaction-check && npm run lesson-rectangle-check && npm run lesson-rectangle-interaction-check && tsc --noEmit && vite build",
+    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && npm run lesson-decimal-parts-two-check && npm run lesson-decimal-parts-two-interaction-check && npm run lesson-decimal-parts-three-check && npm run lesson-decimal-parts-three-interaction-check && npm run lesson-rectangle-check && npm run lesson-rectangle-interaction-check && npm run lesson-square-check && npm run lesson-square-interaction-check && tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
@@ -38,7 +38,10 @@
     "unit-exercises-coverage": "tsx scripts/unit-exercises-check.ts --write-coverage",
     "unit-exercises-ui-check": "tsx scripts/unit-exercises-ui-check.tsx",
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx",
-    "test-area-check": "tsx scripts/test-area-check.ts && tsx scripts/test-area-ui-check.tsx"
+    "test-area-check": "tsx scripts/test-area-check.ts && tsx scripts/test-area-ui-check.tsx",
+    "lesson-square-check": "tsx scripts/lesson-square-check.ts",
+    "lesson-square-coverage": "tsx scripts/lesson-square-check.ts --write-coverage",
+    "lesson-square-interaction-check": "tsx scripts/lesson-square-interaction-check.tsx"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

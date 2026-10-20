@@ -26,8 +26,9 @@ export const curriculumRegistry: UnitMeta[] = [
     title: 'الوحدة الثانية',
     description: 'مقارنة الأعداد الطبيعية وضربها، والمضاعف المشترك الأصغر، والكسور، والأجزاء العشرية حتى الألف.',
     accent: 'mint',
-    // The unit remains in progress: only the explicitly authored curriculum status controls completion.
-    status: 'in-progress',
+    // Unit 2 is complete: its final textbook lesson (المربّع, ص 81–84) shipped together with the
+    // standalone unit test. Only this authored flag controls completion, never runtime discovery.
+    status: 'complete',
     lessons: [
       { id: 'compare-order-natural-numbers', title: 'مقارنة الأعداد الطبيعية وترتيبها', description: 'مقارنة الأعداد الطبيعية حتى الملايين وترتيبها تصاعدياً وتنازلياً.', availability: 'available' },
       { id: 'multiply-natural-numbers', title: 'ضرب الأعداد الطبيعية', description: 'الضرب العمودي مع الحمل، أنماط العشرات والصفر، والخواص التبديلية والتجميعية والتوزيعية.', availability: 'available' },
@@ -38,6 +39,7 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'decimal-parts-two', title: 'الأجزاء العشرية (2)', description: 'تمثيل الأجزاء من مئة كتابةً عشرية ولفظاً، والتحويل بينها وبين الكسور، ومقارنتها على الشبكات وخط الأعداد.', availability: 'available' },
       { id: 'decimal-parts-three', title: 'الأجزاء العشرية (3)', description: 'كتابة الأجزاء من ألف وقراءتها، وربطها بالأجزاء من عشرة ومئة، ومقارنتها على خط الأعداد.', availability: 'available' },
       { id: 'rectangle', title: 'المستطيل', description: 'تعريف المستطيل بوصفه متوازي أضلاع فيه زاوية قائمة، وخواصه، ورسمه بالمسطرة والمنقلة أو الكوس.', availability: 'available' },
+      { id: 'square', title: 'المربّع', description: 'تعريفا المربّع المتكافئان وخواصّه الثلاث ورسمه بالمسطرة والمنقلة أو الكوس، مع تعليل كونه مربّعاً أو ليس مربّعاً وأطوال في شكل مركّب.', availability: 'available' },
     ],
   },
 ]

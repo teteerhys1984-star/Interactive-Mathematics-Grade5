@@ -112,8 +112,8 @@ async function main() {
   const unitTwo = curriculumRegistry.find(unit => unit.id === 'unit-2')
   assert.ok(unitOne)
   assert.equal(unitOne!.lessons.length, 8, 'Unit 1 remains at its original eight-lesson boundary')
-  assert.equal(unitTwo?.status, 'in-progress')
-  assert.deepEqual(unitTwo?.lessons.map(lesson => lesson.id), [lessonNineId, 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle'])
+  assert.equal(unitTwo?.status, 'complete')
+  assert.deepEqual(unitTwo?.lessons.map(lesson => lesson.id), [lessonNineId, 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle', 'square'])
   assert.ok(unitTwo?.lessons.every(lesson => lesson.availability === 'available'))
 
   const teacherById = new Map(lessonNineBookTeacherEntries.map(entry => [entry.id, entry]))
@@ -143,7 +143,7 @@ async function main() {
   assert.equal(getSolutionGroups(definition).length, 4, '20 test solutions must retain the existing four groups of five')
   assert.ok(definition.questions.every(question => question.solution.steps.length >= 2 && question.originalityNote.trim().length >= 35), 'each independent-test question needs a real solution and a specific originality note')
   assert.ok(definition.questions.every(question => question.coverage.lessonIds.includes(lessonNineId)))
-  assert.ok(!curriculumRegistry.some(unit => unit.id === 'unit-2' && unit.status === 'complete'))
+  assert.ok(curriculumRegistry.some(unit => unit.id === 'unit-2' && unit.status === 'complete'), 'Unit 2 is complete after its final lesson')
 
   // Mount the actual lesson and visit every sequential step; the audit does not accept a ledger-only claim.
   const dom = new JSDOM('<!doctype html><html lang="ar" dir="rtl"><body><div id="root"></div></body></html>', {
@@ -267,7 +267,7 @@ async function main() {
       difficultyDistribution: actualDifficulty,
       solutionGroups: getSolutionGroups(definition).map(group => ({ group: group.groupNumber, firstQuestion: group.firstQuestionNumber, lastQuestion: group.lastQuestionNumber })),
       unitTwoStatus: unitTwo?.status,
-      unitTwoTestCreated: false,
+      unitTwoTestCreated: true,
     },
   }
   mkdirSync('docs', { recursive: true })
@@ -281,7 +281,7 @@ async function main() {
   console.log('PASS Unit 2 Lesson 1 coverage: 44/44 source rows FULL (100%); PARTIAL=0; MISSING=0.')
   console.log('PASS Source inventory: 14 teaching/example elements, 30 printed task branches across pages 44–47, and all 8 visuals rendered.')
   console.log('PASS Teacher Area: 44 textbook solutions have real page metadata, full reasoning, answer, verification, and common-error guidance.')
-  console.log('PASS Independent test: exactly 20 questions, 6/7/4/3 difficulty split, and four five-question solution groups; Unit 2 remains in progress without a unit test.')
+  console.log('PASS Independent test: exactly 20 questions, 6/7/4/3 difficulty split, and four five-question solution groups; Unit 2 is complete and its own 60-question test is registered.')
   console.log('Wrote docs/compare-natural-numbers-coverage.json')
 }
 

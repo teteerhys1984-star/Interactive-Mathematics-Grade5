@@ -234,9 +234,9 @@ async function main() {
 
     const registryModule = await vite.ssrLoadModule('/src/tests/registry.ts') as { testRegistry: { lessonTests: readonly { id: string }[]; unitTests: readonly { unitId?: string }[] } }
     assert.ok(registryModule.testRegistry.lessonTests.some((test) => test.id === 'lesson-tenths-one-test'), 'new lesson test is discovered')
-    assert.equal(registryModule.testRegistry.unitTests.some((test) => test.unitId === 'unit-2'), false, 'no Unit 2 test is created')
+    assert.ok(registryModule.testRegistry.unitTests.some((test) => test.unitId === 'unit-2'), 'the separate Unit 2 test is registered now that Unit 2 is complete')
     assert.equal(document.querySelector('.teacher-area') !== null, true)
-    console.log('✅ Registration: lesson is available, Unit 2 remains in-progress with no unit test.')
+    console.log('✅ Registration: lesson is available; Unit 2 is complete after its final lesson and has its own unit test.')
   } finally {
     await vite.close()
     dom.window.close()

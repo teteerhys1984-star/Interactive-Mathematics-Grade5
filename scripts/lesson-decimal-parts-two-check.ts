@@ -47,7 +47,7 @@ for (const entry of unit2Lesson7AllEntries) {
 // 3 · registry and component wiring; earlier lessons remain in their original order
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit 2 exists in the registry')
-assert.equal(unitTwo!.status, 'in-progress', 'unit 2 stays in progress (no unit-2 test yet)')
+assert.equal(unitTwo!.status, 'complete', 'unit 2 is complete after the final lesson and its standalone unit test shipped')
 assert.equal(unitTwo!.lessons[5]?.id, 'tenths-one', 'Lesson 6 stays immediately before Lesson 7')
 const previousLastLesson = unitTwo!.lessons[6]
 assert.equal(previousLastLesson?.id, 'decimal-parts-two', 'Lesson 7 keeps its position immediately before Lesson 8')

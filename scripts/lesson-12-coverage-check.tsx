@@ -143,11 +143,11 @@ async function main() {
 
   const unitTwo = curriculumRegistry.find(unit => unit.id === 'unit-2')
   assert.ok(unitTwo)
-  assert.equal(unitTwo!.status, 'in-progress')
-  assert.deepEqual(unitTwo!.lessons.map(lesson => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle'])
+  assert.equal(unitTwo!.status, 'complete')
+  assert.deepEqual(unitTwo!.lessons.map(lesson => lesson.id), ['compare-order-natural-numbers', 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle', 'square'])
   assert.ok(unitTwo!.lessons.find(lesson => lesson.id === fractionsOneLessonId && lesson.availability === 'available'))
   assert.equal(curriculumRegistry.find(unit => unit.id === 'unit-1')?.lessons.length, 8, 'Unit 1 remains unchanged')
-  assert.ok(!curriculumRegistry.some(unit => unit.id === 'unit-2' && unit.status === 'complete'), 'Unit 2 remains explicitly in progress')
+  assert.ok(curriculumRegistry.some(unit => unit.id === 'unit-2' && unit.status === 'complete'), 'Unit 2 is explicitly complete after its final lesson')
 
   const teacherById = new Map(lessonTwelveBookTeacherEntries.map(entry => [entry.id, entry]))
   assert.equal(teacherById.size, fractionsOneBookElements.length, 'one independent Teacher Area solution per source element')
@@ -310,7 +310,7 @@ async function main() {
       solutionGroups: getSolutionGroups(definition).map(group => ({ group: group.groupNumber, firstQuestion: group.firstQuestionNumber, lastQuestion: group.lastQuestionNumber })),
       allAnswerKeysScoreCorrect: true,
     },
-    curriculum: { unitTwoStatus: unitTwo!.status, unitTwoTestCreated: false, lessonCount: unitTwo!.lessons.length },
+    curriculum: { unitTwoStatus: unitTwo!.status, unitTwoTestCreated: true, lessonCount: unitTwo!.lessons.length },
     items: reports,
     visuals: fractionsOneVisualInventory.map(visual => ({ ...visual, studentArea: { status: 'FULL' }, teacherReference: visual.teacherRefId })),
     platformActivities: [...expectedPlatformIds],
@@ -323,7 +323,7 @@ async function main() {
   console.log(`PASS Source inventory: 10 teaching elements, 3 examples, 7 instructions, 30 task branches, 15 groups and all ${expectedVisualIds.length} source figures.`)
   console.log('PASS Teacher Area: 50 textbook solutions plus four clearly labelled platform solutions.')
   console.log('PASS Independent test: exactly 20 questions (6/7/4/3); answer keys score correctly; solutions remain separate and locked before submission.')
-  console.log('PASS Unit 2 remains in progress; no Unit 2 test was created. Real-browser screenshot testing is unavailable; the component audit used jsdom.')
+  console.log('PASS Unit 2 is complete and keeps its own 60-question test. Real-browser screenshot testing is unavailable for this legacy check; the component audit used jsdom.')
   console.log('Wrote docs/fractions-one-coverage.json')
 }
 

@@ -18,8 +18,8 @@ const pages = [...rectangleTextbookPages]
 /* ------------------------------------------------------------------ registration & wiring */
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit 2 is registered')
-assert.equal(unitTwo.status, 'in-progress', 'adding lesson nine does not mark Unit 2 complete')
-assert.equal(unitTwo.lessons.length, 9, 'Unit 2 now lists exactly nine lessons')
+assert.equal(unitTwo.status, 'complete', 'Unit 2 is complete after lesson ten shipped')
+assert.equal(unitTwo.lessons.length, 10, 'Unit 2 now lists exactly ten lessons')
 assert.equal(unitTwo.lessons[5]?.id, 'tenths-one', 'Lesson 6 remains in place')
 assert.equal(unitTwo.lessons[6]?.id, 'decimal-parts-two', 'Lesson 7 remains in place')
 assert.equal(unitTwo.lessons[7]?.id, 'decimal-parts-three', 'Lesson 8 remains in place')

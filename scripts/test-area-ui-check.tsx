@@ -233,15 +233,16 @@ async function main() {
     const productionRegistry = registryModule.testRegistry
     assert.equal(productionRegistry.report.coverageMode, 'strict')
     assert.equal(productionRegistry.report.valid, true, JSON.stringify(productionRegistry.issues, null, 2))
-    assert.equal(productionRegistry.lessonTests.length, 17)
-    assert.equal(productionRegistry.unitTests.length, 1)
+    assert.equal(productionRegistry.lessonTests.length, 18)
+    assert.equal(productionRegistry.unitTests.length, 2)
     assert.equal(productionRegistry.comprehensiveTests.length, 0)
-    assert.equal(productionRegistry.discoveredDefinitionCount, 18)
+    assert.equal(productionRegistry.discoveredDefinitionCount, 20)
     assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-1')?.status, 'complete')
-    assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-2')?.status, 'in-progress')
-    assert.equal(productionRegistry.unitTests.some((test) => test.type === 'unit' && test.unitId === 'unit-2'), false)
+    assert.equal(curriculumRegistry.find((unit) => unit.id === 'unit-2')?.status, 'complete')
     assert.ok(productionRegistry.getTestById('unit-unit-1-test'))
     assert.equal(productionRegistry.getTestById('unit-unit-1-test')?.questions.length, 60)
+    assert.ok(productionRegistry.getTestById('unit-unit-2-test'), 'Complete Unit 2 exposes its standalone unit test.')
+    assert.equal(productionRegistry.getTestById('unit-unit-2-test')?.questions.length, 60)
     assert.equal(productionRegistry.getTestById('comprehensive-unit-1-test'), undefined)
 
     // Gate check in the UI registry itself: an incomplete unit hides its test again.
@@ -250,30 +251,32 @@ async function main() {
       registryModule.discoveredTestDefinitions,
       { coverageMode: 'strict' },
     )
-    assert.equal(gatedRegistry.unitTests.length, 0)
+    assert.equal(gatedRegistry.unitTests.length, 1, 'Hiding Unit 1 leaves the Unit 2 test untouched.')
     assert.equal(gatedRegistry.getTestById('unit-unit-1-test'), undefined)
+    assert.ok(gatedRegistry.getTestById('unit-unit-2-test'))
 
     view.unmount()
     navigate('#tests')
     view = render(React.createElement(App, { testRegistry: productionRegistry, curriculum: curriculumRegistry }))
     assert.ok(screen.getByRole('heading', { name: 'منطقة الاختبارات' }))
-    assert.ok(screen.getByText('17 اختباراً متاحاً'), 'The lessons category must advertise all seventeen eligible lesson tests.')
-    assert.ok(screen.getByText('اختبار واحد متاح'), 'The units category must advertise the eligible Unit 1 test.')
+    assert.ok(screen.getByText('18 اختباراً متاحاً'), 'The lessons category must advertise all eighteen eligible lesson tests.')
+    assert.ok(screen.getByText('اختباران متاحان'), 'The units category must advertise the eligible Unit 1 and Unit 2 tests.')
     assert.equal(screen.getAllByText('لا توجد اختبارات مؤهلة حالياً').length, 1)
 
     navigate('#tests/lessons')
     assert.ok(screen.getByRole('heading', { name: 'اختبارات الدروس' }))
-    assert.equal(screen.getAllByText('20 سؤالاً').length, 17)
+    assert.equal(screen.getAllByText('20 سؤالاً').length, 18)
     for (const test of productionRegistry.lessonTests) {
       assert.ok(screen.getByRole('heading', { name: test.title }), `Production lesson test was not listed: ${test.id}`)
     }
-    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 17)
+    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 18)
 
     navigate('#tests/units')
     assert.ok(screen.getByRole('heading', { name: 'اختبارات الوحدات' }))
     assert.ok(screen.getByRole('heading', { name: 'اختبار الوحدة الأولى' }))
-    assert.ok(screen.getByText('60 سؤالاً'))
-    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 1)
+    assert.ok(screen.getByRole('heading', { name: 'اختبار الوحدة الثانية' }))
+    assert.equal(screen.getAllByText('60 سؤالاً').length, 2)
+    assert.equal(screen.getAllByRole('link', { name: 'ابدأ الاختبار' }).length, 2)
     navigate('#tests/comprehensive')
     assert.ok(screen.getByRole('heading', { name: 'الاختبارات الشاملة' }))
     assert.ok(screen.getByRole('heading', { name: 'لا توجد اختبارات شاملة مؤهلة حالياً' }))

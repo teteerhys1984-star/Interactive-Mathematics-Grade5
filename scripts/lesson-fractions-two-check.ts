@@ -125,8 +125,8 @@ assert.equal(evaluateQuestion(definition.questions[0], undefined).status, 'unans
 // 6. Registry: lesson is listed in Unit 2 as available, after the four earlier Unit 2 lessons (Lessons 6 and 7 follow it).
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit-2 exists')
-assert.equal(unitTwo!.status, 'in-progress', 'Unit 2 stays in progress')
-assert.deepEqual(unitTwo!.lessons.map((lesson) => lesson.id).slice(-5), ['fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle'])
+assert.equal(unitTwo!.status, 'complete', 'Unit 2 is complete after all ten lessons shipped')
+assert.deepEqual(unitTwo!.lessons.map((lesson) => lesson.id).slice(-5), ['tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle', 'square'])
 assert.equal(unitTwo!.lessons.find((lesson) => lesson.id === 'fractions-two')?.availability, 'available')
 
 console.log(`PASS fractions-two: ${allItems.length} printed items verified, 20-question test (6/7/4/3), teacher coverage complete, registry wired.`)

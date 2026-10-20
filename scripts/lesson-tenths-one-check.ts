@@ -85,7 +85,7 @@ for (const id of ['t-l6-p65-q8-03', 't-l6-p65-q8-04', 't-l6-p65-q8-05', 't-l6-p6
 assert.equal(lessonComponents['tenths-one'] !== undefined, true, 'the new lesson is wired into the lesson component registry')
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo)
-assert.equal(unitTwo!.status, 'in-progress', 'Unit 2 remains in progress')
+assert.equal(unitTwo!.status, 'complete', 'Unit 2 is complete after its final lesson')
 assert.equal(unitTwo!.lessons[5]?.id, 'tenths-one', 'Lesson 6 remains in place directly before Lessons 7, 8 and 9')
 assert.equal(unitTwo!.lessons.find((lesson) => lesson.id === 'tenths-one')?.availability, 'available')
 
