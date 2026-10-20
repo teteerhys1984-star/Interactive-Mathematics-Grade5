@@ -48,8 +48,8 @@ for (const entry of unit2Lesson7AllEntries) {
 const unitTwo = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(unitTwo, 'unit 2 exists in the registry')
 assert.equal(unitTwo!.status, 'in-progress', 'unit 2 stays in progress (no unit-2 test yet)')
-assert.equal(unitTwo!.lessons[unitTwo!.lessons.length - 3]?.id, 'tenths-one', 'Lesson 6 stays immediately before Lesson 7')
-const previousLastLesson = unitTwo!.lessons[unitTwo!.lessons.length - 2]
+assert.equal(unitTwo!.lessons[5]?.id, 'tenths-one', 'Lesson 6 stays immediately before Lesson 7')
+const previousLastLesson = unitTwo!.lessons[6]
 assert.equal(previousLastLesson?.id, 'decimal-parts-two', 'Lesson 7 keeps its position immediately before Lesson 8')
 assert.equal(previousLastLesson?.title, 'الأجزاء العشرية (2)')
 assert.equal(previousLastLesson?.availability, 'available')

@@ -104,7 +104,7 @@ async function main() {
   // Unit 2 still in progress
   const unitTwo = curriculumRegistry.find(u => u.id === 'unit-2')!
   assert.equal(unitTwo.status, 'in-progress')
-  assert.equal(unitTwo.lessons.length, 8)
+  assert.equal(unitTwo.lessons.length, 9)
   assert.equal(unitTwo.lessons[7]?.id, 'decimal-parts-three', 'Unit 2 Lesson 8 is appended without moving existing lessons')
   assert.ok(unitTwo.lessons.find(l => l.id === leastCommonMultipleLessonId && l.availability === 'available'))
   const unitOne = curriculumRegistry.find(u => u.id === 'unit-1')!

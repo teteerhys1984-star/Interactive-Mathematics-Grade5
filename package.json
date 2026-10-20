@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && npm run lesson-decimal-parts-two-check && npm run lesson-decimal-parts-two-interaction-check && npm run lesson-decimal-parts-three-check && npm run lesson-decimal-parts-three-interaction-check && tsc --noEmit && vite build",
+    "build": "npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && npm run lesson-decimal-parts-two-check && npm run lesson-decimal-parts-two-interaction-check && npm run lesson-decimal-parts-three-check && npm run lesson-decimal-parts-three-interaction-check && npm run lesson-rectangle-check && npm run lesson-rectangle-interaction-check && tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "coordinate-check": "tsx scripts/coordinate-check.ts",
@@ -30,6 +30,9 @@
     "lesson-decimal-parts-two-interaction-check": "tsx scripts/lesson-decimal-parts-two-interaction-check.tsx",
     "lesson-decimal-parts-three-check": "tsx scripts/lesson-decimal-parts-three-check.ts",
     "lesson-decimal-parts-three-interaction-check": "tsx scripts/lesson-decimal-parts-three-interaction-check.tsx",
+    "lesson-rectangle-check": "tsx scripts/lesson-rectangle-check.ts",
+    "lesson-rectangle-coverage": "tsx scripts/lesson-rectangle-check.ts --write-coverage",
+    "lesson-rectangle-interaction-check": "tsx scripts/lesson-rectangle-interaction-check.tsx",
     "unit-1-check": "tsx scripts/unit-1-check.ts",
     "unit-exercises-check": "tsx scripts/unit-exercises-check.ts",
     "unit-exercises-coverage": "tsx scripts/unit-exercises-check.ts --write-coverage",

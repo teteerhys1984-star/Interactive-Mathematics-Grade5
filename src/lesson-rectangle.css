@@ -1,0 +1,304 @@
+/* Unit 2 · Lesson 9 — «المستطيل» (الكتاب ص 77–80).
+   Visual identity: «ورشة الكوس والمسطرة» — a drafting-bench look built from the lesson's own tools:
+   cream drawing sheets with a ruler-tick strip, millimetre-paper figure boards, an L-shaped
+   right-angle corner mark on every card, cobalt drawing lines, brick-red vertices/right angles and
+   a golden set-square accent. Nothing here reuses the layout of Lesson 8 (الأجزاء العشرية 3 — cyan
+   number lines/rulers) or the jade/indigo cards of the Unit 1 geometry lessons.
+   Every rule is scoped under .lesson-rectangle. Text never goes below 13px, interactive targets are
+   at least 44px tall, focus is visible, and motion respects prefers-reduced-motion. */
+.lesson-shell.lesson-rectangle {
+  --rect-ink: #22303f;
+  --rect-muted: #55657a;
+  --rect-cobalt: #1f5fbf;
+  --rect-cobalt-deep: #143f82;
+  --rect-cobalt-soft: #e7eefb;
+  --rect-brick: #b3261e;
+  --rect-brick-soft: #fbe9e7;
+  --rect-gold: #f5b700;
+  --rect-gold-soft: #fff4cc;
+  --rect-gold-ink: #5a4300;
+  --rect-paper: #fffdf7;
+  --rect-paper-deep: #f6f1e3;
+  --rect-line: #d9dde6;
+  --rect-grid: rgba(31, 95, 191, 0.13);
+  --rect-green: #1d7a4a;
+  --rect-green-soft: #e4f5ea;
+  --lesson-chrome-accent: var(--rect-cobalt);
+  --lesson-chrome-deep: var(--rect-cobalt-deep);
+  --lesson-chrome-soft: var(--rect-cobalt-soft);
+  --lesson-chrome-tint: #f8f9fd;
+}
+.lesson-rectangle .lesson-content { color: var(--rect-ink); }
+.lesson-rectangle .lesson-main h1, .lesson-rectangle .lesson-main h2, .lesson-rectangle .lesson-main h3 { color: var(--rect-ink); }
+.lesson-rectangle .lesson-step-count { color: var(--rect-cobalt-deep); }
+.lesson-rectangle .lesson-outline button.is-current { color: var(--rect-cobalt-deep); border-right-color: var(--rect-cobalt); }
+.lesson-rectangle .lesson-outline button.is-current span { background: var(--rect-cobalt); border-color: var(--rect-cobalt); }
+.lesson-rectangle .math-expression { color: var(--rect-cobalt-deep); font-weight: 700; }
+
+/* ---------------------------------------------------------------- layout */
+.lesson-rectangle .rect-stack { display: grid; gap: 18px; }
+.lesson-rectangle .rect-stack > * { min-width: 0; }
+.lesson-rectangle .rect-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: start; }
+.lesson-rectangle .rect-three { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 14px; }
+.lesson-rectangle .rect-four { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.lesson-rectangle .rect-split { display: grid; grid-template-columns: minmax(0, 230px) minmax(0, 1fr); gap: 14px; align-items: start; }
+.lesson-rectangle .rect-stack.is-tight { gap: 8px; }
+.lesson-rectangle .rect-rich { display: inline; }
+/* قبّعة الزاوية: النص الحقيقي (الحرف + العلامة المركّبة) يبقى في DOM، والعلامة نفسها تُخفى وتُرسم قبّعة CSS موحّدة فوق الحرف */
+.lesson-rectangle .rect-hat { position: relative; display: inline-block; line-height: 1; padding-top: .26em; margin-top: -.26em; }
+.lesson-rectangle .rect-hat-mark { font-size: 0; line-height: 0; }
+/* المقاطع الرياضية القصيرة داخل النص العربي لا تنكسر في منتصفها (أطول مقطع في الدرس 26 حرفاً). */
+.lesson-rectangle .rect-rich span[dir='ltr'] { white-space: nowrap; }
+.lesson-rectangle .rect-hat::after { content: ''; position: absolute; left: 50%; top: .02em; width: .34em; height: .34em; border-top: .11em solid currentColor; border-left: .11em solid currentColor; transform: translateX(-50%) rotate(45deg); }
+.lesson-rectangle .rect-eyebrow { margin: 0 0 6px; color: var(--rect-cobalt); font-size: .8125rem; font-weight: 900; letter-spacing: .02em; }
+.lesson-rectangle p { line-height: 1.85; }
+
+/* ---------------------------------------------------------------- drawing sheet (source card) */
+.lesson-rectangle .rect-sheet {
+  position: relative; border: 1.5px solid var(--rect-cobalt-deep); border-radius: 6px; background: var(--rect-paper);
+  padding: 18px 18px 16px; box-shadow: 0 10px 28px rgba(20, 63, 130, 0.08);
+}
+.lesson-rectangle .rect-sheet::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 10px; border-radius: 4px 4px 0 0;
+  background:
+    repeating-linear-gradient(90deg, var(--rect-cobalt-deep) 0 1.5px, transparent 1.5px 12px),
+    repeating-linear-gradient(90deg, transparent 0 58.5px, var(--rect-cobalt-deep) 58.5px 60px);
+  background-size: 100% 6px, 100% 10px; background-repeat: repeat-x; background-position: bottom, bottom; opacity: .55;
+}
+.lesson-rectangle .rect-sheet::after {
+  content: ''; position: absolute; top: 18px; left: 14px; width: 18px; height: 18px;
+  border-top: 2.5px solid var(--rect-brick); border-left: 2.5px solid var(--rect-brick);
+}
+.lesson-rectangle .rect-sheet-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 8px 0 12px; padding-left: 30px; }
+.lesson-rectangle .rect-page-tag {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1.5px solid var(--rect-cobalt-deep); border-radius: 4px;
+  background: #fff; color: var(--rect-cobalt-deep); font-size: .8125rem; font-weight: 900; letter-spacing: .01em;
+}
+.lesson-rectangle .rect-page-tag.is-platform { border-color: var(--rect-gold-ink); color: var(--rect-gold-ink); background: var(--rect-gold-soft); border-style: dashed; }
+.lesson-rectangle .rect-section-name { margin: 0; font-size: .9375rem; font-weight: 900; color: var(--rect-ink); }
+.lesson-rectangle .rect-quote {
+  margin: 0; padding: 10px 14px; border-inline-start: 4px solid var(--rect-brick); background: var(--rect-paper-deep);
+  border-radius: 4px; font-size: 1.0625rem; line-height: 1.95; font-weight: 600; color: var(--rect-ink);
+}
+.lesson-rectangle .rect-quote .math-expression { font-size: 1.05em; }
+.lesson-rectangle .rect-sheet-body { display: grid; gap: 14px; margin-top: 14px; }
+
+/* ---------------------------------------------------------------- platform note */
+.lesson-rectangle .rect-note {
+  border: 1.5px dashed var(--rect-gold-ink); border-radius: 6px; background: var(--rect-gold-soft); padding: 14px 16px; color: var(--rect-gold-ink);
+}
+.lesson-rectangle .rect-note > strong { display: inline-flex; align-items: center; gap: 6px; font-size: .875rem; margin-bottom: 6px; }
+.lesson-rectangle .rect-note p, .lesson-rectangle .rect-note li { color: #3e3200; margin: 0; }
+.lesson-rectangle .rect-note ul { margin: 6px 0 0; padding-inline-start: 20px; display: grid; gap: 4px; }
+
+/* ---------------------------------------------------------------- figure board (millimetre paper) */
+.lesson-rectangle .rect-board {
+  margin: 0; border: 1.5px solid var(--rect-line); border-radius: 6px; overflow: hidden; background: #fff;
+}
+.lesson-rectangle .rect-board-body {
+  padding: 10px; background-color: #fcfdff;
+  background-image: linear-gradient(var(--rect-grid) 1px, transparent 1px), linear-gradient(90deg, var(--rect-grid) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.lesson-rectangle .rect-board figcaption {
+  display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 12px;
+  border-top: 1.5px solid var(--rect-line); background: var(--rect-paper); font-size: .8125rem; font-weight: 800; color: var(--rect-muted);
+}
+.lesson-rectangle .rect-board figcaption b { color: var(--rect-cobalt-deep); }
+.lesson-rectangle .rect-board.is-tight .rect-board-body { padding: 4px; }
+.lesson-rectangle .rect-svg { display: block; width: 100%; height: auto; }
+.lesson-rectangle .l7-geo { width: min(100%, 300px); margin: 4px auto; }
+.lesson-rectangle .l7-geo-shape { fill: rgba(255, 253, 247, 0.9); stroke: var(--rect-cobalt); stroke-width: 2.8; }
+.lesson-rectangle .l7-geo-right { stroke: var(--rect-brick); stroke-width: 2.2; }
+.lesson-rectangle .l7-geo-vertex { fill: var(--rect-brick); }
+.lesson-rectangle .l7-geo-point { fill: var(--rect-ink); font-size: 16px; }
+.lesson-rectangle .l7-geo-side-label { fill: var(--rect-green); font-size: 13px; font-weight: 800; }
+.lesson-rectangle .l7-geo-mark path { stroke: var(--rect-cobalt); }
+.lesson-rectangle .l7-geo-mark.is-red path { stroke: var(--rect-brick); }
+.lesson-rectangle .l7-geo-colored.is-red { stroke: var(--rect-brick); }
+.lesson-rectangle .l7-geo-colored.is-blue { stroke: var(--rect-cobalt); }
+.lesson-rectangle .l7-geo-dashed { stroke: #8da4cf; }
+.lesson-rectangle .rect-shape-number {
+  position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 4px;
+  background: var(--rect-ink); color: #fff; font-weight: 900; font-size: .875rem;
+}
+.lesson-rectangle .rect-shape-card { position: relative; }
+
+/* ---------------------------------------------------------------- hero */
+.lesson-rectangle .rect-hero {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 18px; align-items: center;
+  border: 1.5px solid var(--rect-cobalt-deep); border-radius: 6px; background: linear-gradient(180deg, #fff 0%, var(--rect-paper) 100%); padding: 22px 22px 26px; position: relative; overflow: hidden;
+}
+.lesson-rectangle .rect-hero::after {
+  content: ''; position: absolute; inset: auto 0 0 0; height: 12px;
+  background: repeating-linear-gradient(90deg, #c99a5b 0 18px, #b8873f 18px 36px, #d4a86a 36px 54px); opacity: .85;
+}
+.lesson-rectangle .rect-hero h3 { margin: 0 0 8px; font-size: 1.375rem; line-height: 1.5; }
+.lesson-rectangle .rect-hero p { margin: 0; color: var(--rect-muted); }
+.lesson-rectangle .rect-goals { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-goals li { display: flex; gap: 10px; align-items: center; font-weight: 700; }
+.lesson-rectangle .rect-goals li span { width: 28px; height: 28px; flex: none; border: 2px solid var(--rect-cobalt); border-radius: 4px; display: grid; place-items: center; color: var(--rect-cobalt-deep); font-size: .8125rem; font-weight: 900; }
+.lesson-rectangle .rect-hero-art { display: grid; place-items: center; }
+.lesson-rectangle .rect-hero-art svg { width: min(100%, 260px); height: auto; }
+
+/* ---------------------------------------------------------------- tasks & controls */
+.lesson-rectangle .rect-task { border: 1.5px solid #c9d7f1; border-radius: 6px; background: var(--rect-cobalt-soft); padding: 14px 16px; display: grid; gap: 12px; }
+.lesson-rectangle .rect-task-head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.lesson-rectangle .rect-task-head strong { font-size: 1rem; }
+.lesson-rectangle .rect-task-head .rect-page-tag { margin-inline-start: auto; }
+.lesson-rectangle .rect-task p { margin: 0; }
+.lesson-rectangle .rect-choices { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-choices.is-inline { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+.lesson-rectangle .rect-choice {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 1.5px solid var(--rect-line); border-radius: 6px;
+  background: #fff; cursor: pointer; font-weight: 700; line-height: 1.6; transition: border-color .15s ease, background-color .15s ease;
+}
+.lesson-rectangle .rect-choice:hover { border-color: var(--rect-cobalt); }
+.lesson-rectangle .rect-choice:focus-within { outline: 3px solid rgba(31, 95, 191, .45); outline-offset: 2px; }
+.lesson-rectangle .rect-choice.is-selected { border-color: var(--rect-cobalt); background: #fff; box-shadow: inset 0 0 0 1.5px var(--rect-cobalt); }
+.lesson-rectangle .rect-choice.is-right { border-color: var(--rect-green); background: var(--rect-green-soft); }
+.lesson-rectangle .rect-choice.is-wrong { border-color: var(--rect-brick); background: var(--rect-brick-soft); }
+.lesson-rectangle .rect-choice input { width: 20px; height: 20px; flex: none; accent-color: var(--rect-cobalt); margin: 0; }
+.lesson-rectangle .rect-choice .rect-choice-math { font-size: 1.05em; }
+.lesson-rectangle .rect-field { display: grid; gap: 6px; }
+.lesson-rectangle .rect-field > span { font-weight: 800; font-size: .9375rem; }
+.lesson-rectangle .rect-input, .lesson-rectangle .rect-select {
+  min-height: 46px; padding: 8px 12px; border: 1.5px solid var(--rect-line); border-radius: 6px; background: #fff; font: inherit; font-size: 1rem; font-weight: 700; color: var(--rect-ink);
+}
+.lesson-rectangle .rect-input { direction: ltr; text-align: center; unicode-bidi: isolate; font-family: 'DM Mono', ui-monospace, monospace; width: 100%; max-width: 160px; }
+.lesson-rectangle .rect-select { width: 100%; max-width: 220px; }
+.lesson-rectangle .rect-input:focus-visible, .lesson-rectangle .rect-select:focus-visible, .lesson-rectangle .rect-button:focus-visible, .lesson-rectangle .rect-range:focus-visible, .lesson-rectangle .rect-grid-node:focus-visible, .lesson-rectangle .rect-stage-tab:focus-visible, .lesson-rectangle .rect-order-button:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, .5); outline-offset: 2px;
+}
+.lesson-rectangle .rect-input.is-right, .lesson-rectangle .rect-select.is-right { border-color: var(--rect-green); background: var(--rect-green-soft); }
+.lesson-rectangle .rect-input.is-wrong, .lesson-rectangle .rect-select.is-wrong { border-color: var(--rect-brick); background: var(--rect-brick-soft); }
+.lesson-rectangle .rect-fields { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.lesson-rectangle .rect-fields.is-quad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.lesson-rectangle .rect-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.lesson-rectangle .rect-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 18px; border-radius: 6px;
+  border: 1.5px solid var(--rect-cobalt-deep); background: var(--rect-cobalt); color: #fff; font: inherit; font-weight: 900; cursor: pointer;
+  transition: transform .15s ease, background-color .15s ease;
+}
+.lesson-rectangle .rect-button:hover { background: var(--rect-cobalt-deep); }
+.lesson-rectangle .rect-button:active { transform: translateY(1px); }
+.lesson-rectangle .rect-button:disabled { opacity: .55; cursor: not-allowed; }
+.lesson-rectangle .rect-button.is-ghost { background: #fff; color: var(--rect-cobalt-deep); }
+.lesson-rectangle .rect-button.is-gold { background: var(--rect-gold); border-color: #c99600; color: var(--rect-gold-ink); }
+.lesson-rectangle .rect-feedback { border-radius: 6px; padding: 12px 14px; border: 1.5px solid; font-weight: 700; line-height: 1.8; display: grid; gap: 6px; }
+.lesson-rectangle .rect-feedback.is-correct { background: var(--rect-green-soft); border-color: var(--rect-green); color: #0f4a2b; }
+.lesson-rectangle .rect-feedback.is-wrong { background: var(--rect-brick-soft); border-color: var(--rect-brick); color: #6e1812; }
+.lesson-rectangle .rect-feedback ul { margin: 0; padding-inline-start: 20px; display: grid; gap: 4px; font-weight: 600; }
+.lesson-rectangle .rect-feedback-title { display: inline-flex; align-items: center; gap: 6px; }
+.lesson-rectangle .rect-feedback-hint { margin: 0; display: flex; gap: 6px; align-items: flex-start; font-weight: 700; }
+.lesson-rectangle .rect-feedback-hint svg { flex: none; margin-top: .45em; }
+.lesson-rectangle .rect-feedback-retry { margin: 0; font-weight: 600; font-size: .9375rem; opacity: .9; }
+.lesson-rectangle .rect-feedback-body { display: grid; gap: 6px; }
+.lesson-rectangle .rect-feedback-reveal { margin: 0; font-weight: 800; }
+.lesson-rectangle .rect-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.lesson-rectangle .rect-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 4px; border: 1.5px solid var(--rect-line); background: #fff; font-size: .875rem; font-weight: 800; }
+.lesson-rectangle .rect-pill.is-ok { border-color: var(--rect-green); color: var(--rect-green); }
+.lesson-rectangle .rect-pill.is-no { border-color: var(--rect-brick); color: var(--rect-brick); }
+
+/* definition / property cards */
+.lesson-rectangle .rect-rule {
+  display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; border: 2px solid var(--rect-cobalt-deep); border-radius: 6px;
+  background: #fff; padding: 16px 18px; font-size: 1.125rem; font-weight: 800; line-height: 1.8;
+}
+.lesson-rectangle .rect-rule-badge { width: 54px; height: 54px; border-radius: 6px; display: grid; place-items: center; background: var(--rect-gold); color: var(--rect-gold-ink); flex: none; }
+.lesson-rectangle .rect-condition-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: cond; }
+.lesson-rectangle .rect-condition-list li { position: relative; padding: 12px 56px 12px 14px; border: 1.5px solid var(--rect-line); border-radius: 6px; background: #fff; font-weight: 700; line-height: 1.7; }
+.lesson-rectangle .rect-condition-list li::before { counter-increment: cond; content: counter(cond); position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 4px; background: var(--rect-cobalt); color: #fff; font-weight: 900; }
+.lesson-rectangle .rect-property-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); margin: 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-property-grid li { border: 1.5px solid var(--rect-line); border-radius: 6px; background: #fff; padding: 12px 14px; font-weight: 700; line-height: 1.7; display: grid; gap: 4px; }
+.lesson-rectangle .rect-property-grid li small { color: var(--rect-muted); font-size: .8125rem; font-weight: 700; }
+.lesson-rectangle .rect-property-grid li.is-new { border-color: var(--rect-brick); background: var(--rect-brick-soft); }
+
+/* angle lab */
+.lesson-rectangle .rect-lab { display: grid; gap: 12px; }
+.lesson-rectangle .rect-range { width: 100%; accent-color: var(--rect-cobalt); height: 44px; cursor: pointer; }
+.lesson-rectangle .rect-lab-readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 8px; }
+.lesson-rectangle .rect-lab-readout div { border: 1.5px solid var(--rect-line); border-radius: 6px; background: #fff; padding: 8px 10px; text-align: center; font-weight: 800; }
+.lesson-rectangle .rect-lab-readout div.is-right { border-color: var(--rect-green); background: var(--rect-green-soft); }
+.lesson-rectangle .rect-lab-status { border-radius: 6px; padding: 10px 14px; font-weight: 900; background: #fff; border: 1.5px solid var(--rect-line); }
+.lesson-rectangle .rect-lab-status.is-rectangle { background: var(--rect-green-soft); border-color: var(--rect-green); color: #0f4a2b; }
+
+/* construction board */
+.lesson-rectangle .rect-stage-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-stage-tab {
+  min-height: 44px; min-width: 44px; padding: 8px 14px; border-radius: 6px; border: 1.5px solid var(--rect-line); background: #fff; font: inherit; font-weight: 900; cursor: pointer; color: var(--rect-ink);
+}
+.lesson-rectangle .rect-stage-tab[aria-pressed='true'] { background: var(--rect-cobalt); border-color: var(--rect-cobalt-deep); color: #fff; }
+.lesson-rectangle .rect-stage-tab.is-done { border-color: var(--rect-green); color: var(--rect-green); }
+.lesson-rectangle .rect-stage-text { border: 1.5px solid var(--rect-line); border-radius: 6px; background: #fff; padding: 12px 14px; display: grid; gap: 6px; }
+.lesson-rectangle .rect-stage-text strong { color: var(--rect-cobalt-deep); }
+.lesson-rectangle .rect-stage-text p { margin: 0; }
+.lesson-rectangle .rect-stage-why { color: var(--rect-muted); font-size: .9375rem; }
+.lesson-rectangle .rect-stage-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ordering task */
+.lesson-rectangle .rect-order-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-order-list li { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; border: 1.5px solid var(--rect-line); border-radius: 6px; background: #fff; padding: 8px 12px; font-weight: 700; }
+.lesson-rectangle .rect-order-list li.is-right { border-color: var(--rect-green); background: var(--rect-green-soft); }
+.lesson-rectangle .rect-order-list li.is-wrong { border-color: var(--rect-brick); background: var(--rect-brick-soft); }
+.lesson-rectangle .rect-order-buttons { display: flex; gap: 6px; }
+.lesson-rectangle .rect-order-button { width: 44px; height: 44px; border-radius: 6px; border: 1.5px solid var(--rect-line); background: #fff; cursor: pointer; display: grid; place-items: center; color: var(--rect-cobalt-deep); }
+.lesson-rectangle .rect-order-button:disabled { opacity: .4; cursor: not-allowed; }
+.lesson-rectangle .rect-order-index { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 4px; background: var(--rect-cobalt-soft); color: var(--rect-cobalt-deep); font-weight: 900; margin-inline-end: 8px; }
+
+/* grid board for W */
+.lesson-rectangle .rect-grid-wrap { overflow-x: auto; padding-bottom: 4px; }
+.lesson-rectangle .rect-grid { position: relative; width: 324px; height: 252px; margin: 0 auto; direction: ltr; }
+.lesson-rectangle .rect-grid svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lesson-rectangle .rect-grid-node {
+  position: absolute; width: 36px; height: 36px; transform: translate(-50%, -50%); border-radius: 50%; border: 0; background: transparent; cursor: pointer; padding: 0;
+}
+.lesson-rectangle .rect-grid-node::after { content: ''; position: absolute; inset: 12px; border-radius: 50%; background: rgba(31, 95, 191, .35); }
+.lesson-rectangle .rect-grid-node:hover::after { background: var(--rect-cobalt); inset: 9px; }
+.lesson-rectangle .rect-grid-node.is-fixed { cursor: default; }
+.lesson-rectangle .rect-grid-node.is-fixed::after { background: transparent; }
+.lesson-rectangle .rect-grid-node.is-chosen::after { inset: 8px; background: var(--rect-gold); box-shadow: 0 0 0 2px var(--rect-gold-ink); }
+.lesson-rectangle .rect-grid-node.is-right::after { background: var(--rect-green); box-shadow: 0 0 0 2px var(--rect-green); }
+.lesson-rectangle .rect-grid-node.is-wrong::after { background: var(--rect-brick); box-shadow: 0 0 0 2px var(--rect-brick); }
+
+/* composite figure table */
+.lesson-rectangle .rect-given { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-given li { border: 1.5px solid var(--rect-line); border-radius: 4px; background: #fff; padding: 6px 10px; font-weight: 800; }
+
+/* summary */
+.lesson-rectangle .rect-summary { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.lesson-rectangle .rect-summary li { border: 1.5px solid var(--rect-cobalt-deep); border-radius: 6px; background: #fff; padding: 14px 16px; display: grid; gap: 6px; position: relative; }
+.lesson-rectangle .rect-summary li::after { content: ''; position: absolute; top: 10px; left: 10px; width: 14px; height: 14px; border-top: 2px solid var(--rect-brick); border-left: 2px solid var(--rect-brick); }
+.lesson-rectangle .rect-summary strong { color: var(--rect-cobalt-deep); }
+.lesson-rectangle .rect-test-link {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 20px; border-radius: 6px; background: var(--rect-ink); color: #fff; font-weight: 900; text-decoration: none; border: 1.5px solid var(--rect-ink);
+}
+.lesson-rectangle .rect-test-link:hover { background: #0f1a26; }
+.lesson-rectangle .rect-test-link:focus-visible { outline: 3px solid rgba(31, 95, 191, .5); outline-offset: 2px; }
+.lesson-rectangle .rect-flag { display: grid; place-items: center; }
+.lesson-rectangle .rect-flag svg { width: min(100%, 300px); height: auto; border: 1.5px solid var(--rect-line); }
+.lesson-rectangle .rect-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 0; padding: 0; list-style: none; font-size: .875rem; font-weight: 800; }
+.lesson-rectangle .rect-legend i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; vertical-align: middle; margin-inline-end: 6px; }
+.lesson-rectangle .rect-legend i.is-red { background: var(--rect-brick); }
+.lesson-rectangle .rect-legend i.is-blue { background: var(--rect-cobalt); }
+.lesson-rectangle .rect-legend i.is-green { background: var(--rect-green); }
+.lesson-rectangle .rect-table { width: 100%; border-collapse: collapse; background: #fff; border: 1.5px solid var(--rect-line); }
+.lesson-rectangle .rect-table th, .lesson-rectangle .rect-table td { border: 1px solid var(--rect-line); padding: 8px 10px; text-align: start; vertical-align: top; font-size: .9375rem; }
+.lesson-rectangle .rect-table th { background: var(--rect-cobalt-soft); font-weight: 900; }
+
+/* ---------------------------------------------------------------- responsive & motion */
+@media (max-width: 760px) {
+  .lesson-rectangle .rect-summary { grid-template-columns: minmax(0, 1fr); }
+  .lesson-rectangle .rect-hero { grid-template-columns: 1fr; padding: 18px 16px 24px; }
+  .lesson-rectangle .rect-hero-art svg { width: min(100%, 200px); }
+  .lesson-rectangle .rect-sheet { padding: 16px 14px 14px; }
+  .lesson-rectangle .rect-rule { grid-template-columns: 1fr; font-size: 1.0625rem; }
+  .lesson-rectangle .rect-input { max-width: 100%; }
+  .lesson-rectangle .rect-select { max-width: 100%; }
+  .lesson-rectangle .rect-fields.is-quad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lesson-rectangle .rect-split { grid-template-columns: 1fr; }
+  .lesson-rectangle .rect-split .rect-board { max-width: 260px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lesson-rectangle .rect-choice, .lesson-rectangle .rect-button, .lesson-rectangle .rect-construct-anim { transition: none !important; animation: none !important; }
+}

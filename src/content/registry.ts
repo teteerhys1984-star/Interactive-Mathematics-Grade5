@@ -37,6 +37,7 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'tenths-one', title: 'الأجزاء العشرية (1)', description: 'تمثيل الأجزاء من عشرة كتابةً ولفظاً، وقراءتها ومقارنتها على النماذج وخط الأعداد.', availability: 'available' },
       { id: 'decimal-parts-two', title: 'الأجزاء العشرية (2)', description: 'تمثيل الأجزاء من مئة كتابةً عشرية ولفظاً، والتحويل بينها وبين الكسور، ومقارنتها على الشبكات وخط الأعداد.', availability: 'available' },
       { id: 'decimal-parts-three', title: 'الأجزاء العشرية (3)', description: 'كتابة الأجزاء من ألف وقراءتها، وربطها بالأجزاء من عشرة ومئة، ومقارنتها على خط الأعداد.', availability: 'available' },
+      { id: 'rectangle', title: 'المستطيل', description: 'تعريف المستطيل بوصفه متوازي أضلاع فيه زاوية قائمة، وخواصه، ورسمه بالمسطرة والمنقلة أو الكوس.', availability: 'available' },
     ],
   },
 ]

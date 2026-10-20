@@ -15,6 +15,7 @@ import { FractionsTwoLesson } from '../lessons/FractionsTwoLesson'
 import { TenthsOneLesson } from '../lessons/TenthsOneLesson'
 import { DecimalPartsTwoLesson } from '../lessons/DecimalPartsTwoLesson'
 import { DecimalPartsThreeLesson } from '../lessons/DecimalPartsThreeLesson'
+import { RectangleLesson } from '../lessons/RectangleLesson'
 
 /**
  * Maps a lesson id from `curriculumRegistry` to the component that renders it.
@@ -37,4 +38,5 @@ export const lessonComponents: Record<string, ComponentType> = {
   'tenths-one': TenthsOneLesson,
   'decimal-parts-two': DecimalPartsTwoLesson,
   'decimal-parts-three': DecimalPartsThreeLesson,
+  rectangle: RectangleLesson,
 }

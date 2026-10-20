@@ -13,7 +13,7 @@ const fail = (message: string): never => { throw new Error(`Lesson 8 source chec
 const registry = curriculumRegistry.find((unit) => unit.id === 'unit-2')
 assert.ok(registry, 'unit 2 is registered')
 assert.equal(registry.status, 'in-progress', 'adding lesson eight does not mark Unit 2 complete')
-assert.equal(registry.lessons.length, 8, 'Unit 2 now lists exactly eight lessons')
+assert.equal(registry.lessons.length, 9, 'Unit 2 lists Lessons 1–8 plus the appended Lesson 9')
 assert.equal(registry.lessons[5]?.id, 'tenths-one', 'Lesson 6 remains in place')
 assert.equal(registry.lessons[6]?.id, 'decimal-parts-two', 'Lesson 7 remains in place')
 assert.equal(registry.lessons[7]?.id, lessonId, 'Lesson 8 is appended after Lesson 7')

@@ -1,0 +1,82 @@
+Browser: HeadlessChrome/153.0.8010.0
+
+=== laptop 1440×900 (dpr 1) ===
+[laptop] home tile: {"index":"9","href":"#lesson/rectangle","flag":"متاح"}
+[laptop] lesson opened, 13 steps, document direction=rtl
+[laptop] step 1 flag check → إجابة صحيحةالثلث: 90 ÷ 3 = 30، والثلثان: 30 × 2 = 60؛ فالعرض
+[laptop] step 1 «المستطيل من حولنا» — no horizontal overflow
+[laptop] step 2 Q1 feedback → إجابة صحيحةالشكل (1): متوازي أضلاع وفيه زاوية قائمة معلّمة ←
+[laptop] step 2 «انطلاقة نشطة: فرز الأشكال» — no horizontal overflow
+[laptop] step 3 angle lab readouts → Â = 90° | B̂ = 90° | Ĉ = 90° | D̂ = 90°
+[laptop] step 3 «تعريف المستطيل» — no horizontal overflow
+[laptop] back navigation 3→2 OK (الخطوة 2 من 13)
+[laptop] step 4 «مثال الكتاب: لماذا ABCD مستطيل؟» — no horizontal overflow
+[laptop] step 5 «تحقّق: لماذا هو مستطيل؟» — no horizontal overflow
+[laptop] step 6 first card feedback → إجابة صحيحةهو متوازي أضلاع، لكن لا توجد فيه زاوية قائمة. الشرط الأول متحقق والثا
+[laptop] step 6 «تحقّق: لماذا ليس مستطيلاً؟» — no horizontal overflow
+[laptop] step 7 «خواص المستطيل» — no horizontal overflow
+[laptop] step 8 construction figure → رسم المستطيل ABCD بعد الخطوة 5
+[laptop] step 8 «رسم المستطيل خطوة بخطوة» — no horizontal overflow
+[laptop] step 9 «تدرّب على الرسم» — no horizontal overflow
+[laptop] step 10 «تدرّب ① و②» — no horizontal overflow
+[laptop] step 11 «تدرّب ③: الرأس الرابع» — no horizontal overflow
+[laptop] step 12 wrong attempt feedback → راجع الإجابة تلميح: استبدل كل طول مجهول بالضلع المقابل له في المستطيل نفسه، ثم اجمع أو اطر
+[laptop] step 12 correct attempt feedback → إجابة صحيحة✔ AC: AB = GF = 3cm و BC = ED = 2cm ← AC = 3 + 2
+[laptop] step 12 «تدرّب ④: شكل مركّب» — no horizontal overflow
+[laptop] step 13 «الخلاصة والاختبار» — no horizontal overflow
+[laptop] LTR-isolated spans seen across steps: 149; distinct data-source-id anchors: 50
+[laptop] last step test link → ابدأ اختبار الدرس
+[laptop] teacher route h1=«دليل درس: المستطيل», 75 .teacher-entry cards, 25 platform-labelled, pages: 📖 المصدر: الكتاب — ص 77 / 📖 المصدر: الكتاب — ص 78 / 📖 المصدر: الكتاب — ص 79 / 📖 المصدر: الكتاب — ص 80
+[laptop] teacher page — no horizontal overflow
+[laptop] solutions before submit → «الحلول غير متاحة قبل التسليم»
+[laptop] runner title «اختبار المستطيل»
+[laptop] no answer/solution markers visible before submit
+[laptop] Q1 selected option index (0-based) = 2
+[laptop] moved to «السؤال 20 من 20»
+[laptop] confirm dialog → أجبت عن 1 من 20 سؤالاً.ما زال هناك 19 بلا إجابة. يمكنك مراجعتها أو المتابعة إلى التسليم.
+[laptop] result → score 1/20 (5%); إجابات صحيحة=1, إجابات غير صحيحة=0, بلا إجابة=19
+[laptop] solutions after submit → h1 «اختبار المستطيل», markers: الإجابة النهائية, الفكرة, القاعدة, خطوات
+[laptop] external requests blocked by the sandbox (expected, not app errors): fonts.googleapis.com
+[laptop] no page/console errors (JavaScript)
+
+=== mobile 390×844 (dpr 2) ===
+[mobile] home tile: {"index":"9","href":"#lesson/rectangle","flag":"متاح"}
+[mobile] lesson opened, 13 steps, document direction=rtl
+[mobile] step 1 flag check → إجابة صحيحةالثلث: 90 ÷ 3 = 30، والثلثان: 30 × 2 = 60؛ فالعرض
+[mobile] step 1 «المستطيل من حولنا» — no horizontal overflow
+[mobile] step 2 Q1 feedback → إجابة صحيحةالشكل (1): متوازي أضلاع وفيه زاوية قائمة معلّمة ←
+[mobile] step 2 «انطلاقة نشطة: فرز الأشكال» — no horizontal overflow
+[mobile] outline sheet opened with 13 steps
+[mobile] step 3 angle lab readouts → Â = 90° | B̂ = 90° | Ĉ = 90° | D̂ = 90°
+[mobile] step 3 «تعريف المستطيل» — no horizontal overflow
+[mobile] back navigation 3→2 OK (الخطوة 2 من 13)
+[mobile] step 4 «مثال الكتاب: لماذا ABCD مستطيل؟» — no horizontal overflow
+[mobile] step 5 «تحقّق: لماذا هو مستطيل؟» — no horizontal overflow
+[mobile] step 6 first card feedback → إجابة صحيحةهو متوازي أضلاع، لكن لا توجد فيه زاوية قائمة. الشرط الأول متحقق والثا
+[mobile] step 6 «تحقّق: لماذا ليس مستطيلاً؟» — no horizontal overflow
+[mobile] step 7 «خواص المستطيل» — no horizontal overflow
+[mobile] step 8 construction figure → رسم المستطيل ABCD بعد الخطوة 5
+[mobile] step 8 «رسم المستطيل خطوة بخطوة» — no horizontal overflow
+[mobile] step 9 «تدرّب على الرسم» — no horizontal overflow
+[mobile] step 10 «تدرّب ① و②» — no horizontal overflow
+[mobile] step 11 «تدرّب ③: الرأس الرابع» — no horizontal overflow
+[mobile] step 12 wrong attempt feedback → راجع الإجابة تلميح: استبدل كل طول مجهول بالضلع المقابل له في المستطيل نفسه، ثم اجمع أو اطر
+[mobile] step 12 correct attempt feedback → إجابة صحيحة✔ AC: AB = GF = 3cm و BC = ED = 2cm ← AC = 3 + 2
+[mobile] step 12 «تدرّب ④: شكل مركّب» — no horizontal overflow
+[mobile] step 13 «الخلاصة والاختبار» — no horizontal overflow
+[mobile] LTR-isolated spans seen across steps: 149; distinct data-source-id anchors: 50
+[mobile] last step test link → ابدأ اختبار الدرس
+[mobile] teacher route h1=«دليل درس: المستطيل», 75 .teacher-entry cards, 25 platform-labelled, pages: 📖 المصدر: الكتاب — ص 77 / 📖 المصدر: الكتاب — ص 78 / 📖 المصدر: الكتاب — ص 79 / 📖 المصدر: الكتاب — ص 80
+[mobile] teacher page — no horizontal overflow
+[mobile] solutions before submit → «الحلول غير متاحة قبل التسليم»
+[mobile] runner title «اختبار المستطيل»
+[mobile] no answer/solution markers visible before submit
+[mobile] Q1 selected option index (0-based) = 2
+[mobile] moved to «السؤال 20 من 20»
+[mobile] confirm dialog → أجبت عن 1 من 20 سؤالاً.ما زال هناك 19 بلا إجابة. يمكنك مراجعتها أو المتابعة إلى التسليم.
+[mobile] result → score 1/20 (5%); إجابات صحيحة=1, إجابات غير صحيحة=0, بلا إجابة=19
+[mobile] solutions after submit → h1 «اختبار المستطيل», markers: الإجابة النهائية, الفكرة, القاعدة, خطوات
+[mobile] external requests blocked by the sandbox (expected, not app errors): fonts.googleapis.com
+[mobile] no page/console errors (JavaScript)
+
+Done. 0 warning(s). Screenshots: 45

@@ -113,7 +113,7 @@ async function main() {
   assert.ok(unitOne)
   assert.equal(unitOne!.lessons.length, 8, 'Unit 1 remains at its original eight-lesson boundary')
   assert.equal(unitTwo?.status, 'in-progress')
-  assert.deepEqual(unitTwo?.lessons.map(lesson => lesson.id), [lessonNineId, 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three'])
+  assert.deepEqual(unitTwo?.lessons.map(lesson => lesson.id), [lessonNineId, 'multiply-natural-numbers', 'least-common-multiple', 'fractions-one', 'fractions-two', 'tenths-one', 'decimal-parts-two', 'decimal-parts-three', 'rectangle'])
   assert.ok(unitTwo?.lessons.every(lesson => lesson.availability === 'available'))
 
   const teacherById = new Map(lessonNineBookTeacherEntries.map(entry => [entry.id, entry]))
