@@ -19,6 +19,7 @@ import { unit2Lesson7AllEntries } from './unit2Lesson7'
 import { lesson8TeacherEntries, lesson8PlatformTeacherEntries } from '../lessons/decimalPartsThreeData'
 import { rectangleAllTeacherEntries } from '../lessons/rectangleData'
 import { squareAllTeacherEntries } from '../lessons/squareData'
+import { unit2ExercisesAllTeacherEntries } from '../lessons/unit2ExercisesData'
 import { TeacherUnitExercisesView } from './TeacherUnitExercisesView'
 
 /** Shared registry: future lessons add one TeacherLessonData object, not a new page architecture. */
@@ -41,6 +42,7 @@ const teacherLessons: TeacherLessonData[] = [
   { lessonId: 'decimal-parts-three', lessonTitle: 'الأجزاء العشرية (3)', entries: [...lesson8TeacherEntries, ...lesson8PlatformTeacherEntries], mathMode: 'fractions' },
   { lessonId: 'rectangle', lessonTitle: 'المستطيل', entries: rectangleAllTeacherEntries },
   { lessonId: 'square', lessonTitle: 'المربّع', entries: squareAllTeacherEntries },
+  { lessonId: 'unit-2-exercises', lessonTitle: 'تمرينات الوحدة الثانية', entries: unit2ExercisesAllTeacherEntries },
 ]
 
 export function TeacherArea({ initialLessonId }: { initialLessonId?: string | null }) {

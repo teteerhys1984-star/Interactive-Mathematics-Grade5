@@ -18,5 +18,6 @@ import './lesson-decimal-two.css'
 import './lesson-decimal-three.css'
 import './lesson-rectangle.css'
 import './lesson-square.css'
+import './lesson-unit2-exercises.css'
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>)
