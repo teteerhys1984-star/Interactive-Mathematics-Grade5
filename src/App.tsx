@@ -9,6 +9,7 @@ import { lessonComponents } from './content/lessonComponents'
 import { TeacherArea } from './teacher/TeacherArea'
 import { TestArea } from './tests/TestArea'
 import { UnitOneExercisesPage } from './exercises/UnitOneExercisesPage'
+import { lessonTitle as unit2ExercisesLessonTitle } from './lessons/unit2ExercisesData'
 import { parseTestAreaRoute } from './tests/routing'
 import type { TestRegistrySnapshot } from './tests/registry'
 import type { UnitMeta } from './types'
@@ -64,6 +65,7 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
   const lessonCount = allLessons.length
   const activeLesson = route.lessonId ? allLessons.find(lesson => lesson.id === route.lessonId) : undefined
   const ActiveLessonComponent = route.lessonId ? lessonComponents[route.lessonId] : undefined
+  const lesson = activeLesson ?? { id: route.lessonId!, title: unit2ExercisesLessonTitle }
 
   if (route.testRoute) return <TestArea route={route.testRoute} registry={injectedTestRegistry} curriculum={curriculum} />
 
@@ -79,8 +81,8 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
     <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>مراجعة تمارين الكتاب · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
   </div>
 
-  if (activeLesson && ActiveLessonComponent) return <div className="app-shell lesson-page">
-    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href={`#lesson/${activeLesson.id}`}>{activeLesson.title}</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
+  if (ActiveLessonComponent) return <div className="app-shell lesson-page">
+    <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href={`#lesson/${lesson.id}`}>{lesson.title}</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
     <main><ActiveLessonComponent /></main>
     <footer><div className="footer-inner"><div className="brand"><span className="brand-mark"><Sparkles size={16} /></span><span>رياضياتي</span></div><p>منصة الرياضيات التفاعلية · الصف الخامس</p><InstructorAttribution /><span className="footer-note">© {new Date().getFullYear()}</span></div></footer>
   </div>
