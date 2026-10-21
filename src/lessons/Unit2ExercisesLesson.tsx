@@ -15,13 +15,13 @@ import {
 } from './unit2ExercisesData'
 
 /* =============================================================================================
-   الوحدة الثانية · درس «تمرينات الوحدة» (الكتاب ص 85–86)
+   الوحدة الثانية · درس «تمرينات الوحدة الثانية» (الكتاب ص 85–86)
    درس مراجعة ختامي تفاعلي: يعرض كل تمرين من الكتاب مع معطياته ومطلوبه، ثم يحلّه خطوة بخطوة
    مع تلميحات تدريجية وتغذية راجعة تعليمية. كل صفحة معزولة LTR للرموز الرياضية.
    ============================================================================================= */
 
 const MATH_RUN = /((?:\\[?[A-Za-z]\\u0302?\\]?|\d)(?:[A-Za-z\\u0302\d[\]\s=∥⟂+−×÷°.,/]*[A-Za-z\\u0302\d\]])?)/g
-const HAT_LETTER = /([A-Za-z])\\u0302/g
+const HAT_LETTER = /([A-Za-z])\\\u0302/g
 const PRECOMPOSED_HAT = /[ÂĈÊÎÔÛŴŶẐâĉêîôûŵŷẑ]/g
 function withHats(text: string): ReactNode {
   const decomposed = text.replace(PRECOMPOSED_HAT, (char) => char.normalize('NFD'))
@@ -74,13 +74,13 @@ function PlatformNote({ title = 'إضافة من المنصة', children, id }: 
 }
 function Feedback({ state, hint, attempts = 1, children }: { state: 'idle' | 'correct' | 'wrong'; hint?: string; attempts?: number; children: ReactNode }) {
   if (state === 'idle') return null
-  const revealSolution = state === 'correct' || attempts >= 2
+  const revealSolution = state === 'correct' || attempts >= 1
   return <div className={`u2-feedback ${state === 'correct' ? 'is-correct' : 'is-wrong'}`} role="status">
     <span className="u2-feedback-title">{state === 'correct' ? <CircleCheck size={18} aria-hidden="true" /> : <CircleX size={18} aria-hidden="true" />}{state === 'correct' ? 'إجابة صحيحة' : 'راجع الإجابة'}</span>
     {state === 'wrong' && hint && <p className="u2-feedback-hint"><Lightbulb size={15} aria-hidden="true" /> تلميح: <Rich text={hint} /></p>}
     {revealSolution
-      ? <div className="u2-feedback-body">{state === 'wrong' && <p className="u2-feedback-reveal">الشرح الكامل بعد محاولتين — قارن خطواتك به:</p>}{children}</div>
-      : <p className="u2-feedback-retry">عدّل إجابتك وتحقّق مرة أخرى؛ يظهر الشرح الكامل بعد المحاولة الثانية.</p>}
+      ? <div className="u2-feedback-body">{state === 'wrong' && <p className="u2-feedback-reveal">الشرح الكامل بعد المحاولة — قارن خطواتك به:</p>}{children}</div>
+      : <p className="u2-feedback-retry">عدّل إجابتك وتحقّق مرة أخرى؛ يظهر الشرح الكامل بعد المحاولة.</p>}
   </div>
 }
 function TaskHead({ title, page, platform = false }: { title: string; page?: number; platform?: boolean }) {
@@ -102,39 +102,88 @@ function StepIntro() {
         <li><span>③</span> فهم سبب الحل، وليس فقط حفظ الناتج.</li>
       </ul>
       <PlatformNote title="نص غير واضح · تنبيه من إعداد المنصة">
-        <p>بعض نصوص الأسئلة ① و② و③ من ص 85 غير واضحة بالكامل في الصورة المرفقة. يركز الدرس على ما ظهر بوضوح من معطيات وخيارات، ولا يُخمن عن أرقام غير مطبوعة.</p>
+        <p>بعض نصوص الأسئلة ② و③ و④ و⑤ من ص 85 غير واضحة بالكامل في الصورة المرفقة. يركز الدرس على ما ظهر من معطيات وخيارات، ولا يُخمن عن أرقام غير مطبوعة.</p>
       </PlatformNote>
     </Sheet>
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 2 — السؤال ① (غير واضح) */
+/* ------------------------------------------------------------------ الخطوة 2 — السؤال ① */
 function StepQuestion1() {
   const element = findUnit2ExercisesElement('u2-p85-q1')
   return <div className="u2-stack">
     <Sheet element={element}>
-      <PlatformNote title="نص غير واضح في الصورة · توضيح من المنصة">
-        <p>نص السؤال ① غير واضح بالكامل في الصورة المرفقة. يعرض الدرس ما ظهر من العبارات المتعلقة بالكسور العشرية، ويوجه الطالب إلى مراجعة دروس الكسور العشرية في الوحدة.</p>
+      <PlatformNote title="نص غير واضح جزئياً · توضيح من المنصة">
+        <p>نص السؤال ① غير واضح جزئياً في الصورة المرفقة. يعرض الدرس العبارات الواضحة ويوجه الطالب إلى مراجعة دروس الكسور العشرية في الوحدة.</p>
       </PlatformNote>
     </Sheet>
-    <div className="u2-task" data-source-id="u2-p85-q1-a">
-      <TaskHead title="الخيار (أ): الحكم على العبارة" page={85} />
-      <p className="u2-question"><Rich text={findUnit2ExercisesElement('u2-p85-q1').branches![0].prompt} /></p>
-      <div className="u2-choice-row">
-        {(['correct', 'wrong', 'not-sure'] as const).map((value) => <label key={value} className={`u2-choice ${toneClass(false, false, false)}`}>
-          <input type="radio" name="u2-q1-a" onChange={() => {}} />
-          {value === 'correct' ? 'صح' : value === 'wrong' ? 'خطأ' : 'غير واضح'}
-        </label>)}
+    {element.branches!.map((branch) => {
+      const [answer, setAnswer] = useState<'correct' | 'wrong' | 'not-sure' | null>(null)
+      const [checked, setChecked, attempts] = useChecked()
+      const expected = branch.answer === 'صح' ? 'correct' : branch.answer === 'خطأ' ? 'wrong' : null
+      const ok = answer === expected
+      return <div key={branch.id} className="u2-task" data-source-id={branch.id}>
+        <TaskHead title={branch.label} page={85} />
+        <p className="u2-question"><Rich text={branch.prompt} /></p>
+        <div className="u2-choice-row">
+          {(['correct', 'wrong', 'not-sure'] as const).map((value) => <label key={value} className={`u2-choice ${toneClass(checked, answer === value, ok)}`}>
+            <input type="radio" name={`u2-q1-${branch.id}`} checked={answer === value} onChange={() => { setChecked(false); setAnswer(value) }} />
+            {value === 'correct' ? 'صح' : value === 'wrong' ? 'خطأ' : 'غير واضح'}
+          </label>)}
+        </div>
+        <div className="u2-actions"><button type="button" className="u2-button" onClick={() => setChecked(true)} disabled={answer === null}><Check size={15} aria-hidden="true" /> تحقّق</button></div>
+        <Feedback state={checked ? (ok ? 'correct' : 'wrong') : 'idle'} attempts={attempts} hint="يُسجل الجواب حسب ما يتعلمه الطالب في دروس الكسور العشرية؛ لا يُخمن عن أرقام غير مطبوعة.">
+          <p>{branch.answer}.</p>
+          <p>{branch.id === 'u2-p85-q1-a' ? 'كل عدد صحيح n يمكن كتابته ك n.0، إذن العبارة صحيحة.' : branch.id === 'u2-p85-q1-b' ? 'مثال مضاد: 0.5 كسر عشري وليس عدداً طبيعياً، إذن العبارة خاطئة.' : 'مثال: 7 = 7.0، إذن كل عدد طبيعي يمكن التعبير عنه ككسر عشري.'}</p>
+        </Feedback>
       </div>
+    })}
+  </div>
+}
+
+/* ------------------------------------------------------------------ الخطوة 3 — السؤال ② */
+function StepQuestion2() {
+  const element = findUnit2ExercisesElement('u2-p85-q2')
+  return <div className="u2-stack">
+    <Sheet element={element}>
+      <PlatformNote title="نص غير واضح · توضيح من المنصة">
+        <p>نص السؤال ② غير واضح بالكامل في الصورة المرفقة. يركز الدرس على ما ظهر من معطيات، ويوجه الطالب إلى مراجعة دروس مقارنة الأعداد الطبيعية في الوحدة.</p>
+      </PlatformNote>
+    </Sheet>
+    <div className="u2-task" data-source-id={element.id}>
+      <TaskHead title="فهم المطلوب" page={85} />
+      <p className="u2-question"><Rich text={element.prompt} /></p>
+      <p className="u2-guidance">يُقارن كل زوج من الأعداد باستخدام علامات المقارنة: أكبر من، أصغر من، أو يساوي.</p>
       <div className="u2-actions"><button type="button" className="u2-button" disabled><Check size={15} aria-hidden="true" /> تحقّق</button></div>
-      <Feedback state="idle" hint="يُRegistro الجواب حسب ما يتعلمه الطالب في الوحدة؛ النص الأصلي غير واضح في الصورة.">
-        <p>يُ registre الجواب حسب ما يتعلمه الطالب في دروس الكسور العشرية؛ لا يُخمن عن أرقام غير مطبوعة.</p>
+      <Feedback state="idle" hint="يُقارن كل عدد مع الآخر من أعلى منزل إلى أدنى منزل.">
+        <p>يُسجل الجواب حسب الأعداد الواضحة في السؤال؛ لا يُخمن عن أرقام غير مطبوعة.</p>
       </Feedback>
     </div>
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 3 — السؤال ④ (تقريب) */
+/* ------------------------------------------------------------------ الخطوة 4 — السؤال ③ */
+function StepQuestion3() {
+  const element = findUnit2ExercisesElement('u2-p85-q3')
+  return <div className="u2-stack">
+    <Sheet element={element}>
+      <PlatformNote title="نص غير واضح · توضيح من المنصة">
+        <p>نص السؤال ③ غير واضح بالكامل في الصورة المرفقة. يركز الدرس على ما ظهر من أحرف وأعداد، ويوجه الطالب إلى مراجعة دروس ترتيب الأعداد الطبيعية في الوحدة.</p>
+      </PlatformNote>
+    </Sheet>
+    <div className="u2-task" data-source-id={element.id}>
+      <TaskHead title="ترتيب الأعداد" page={85} />
+      <p className="u2-question"><Rich text={element.prompt} /></p>
+      <p className="u2-guidance">يُكتب العدد الأكبر في المكان المخصص للأكبر، والعدد الأصغر في المكان المخصص للأصغر.</p>
+      <div className="u2-actions"><button type="button" className="u2-button" disabled><Check size={15} aria-hidden="true" /> تحقّق</button></div>
+      <Feedback state="idle" hint="يُرتب الأعداد حسب القواعد المستفادة في دروس الوحدة.">
+        <p>يُسجل الترتيب حسب ما ظهر بوضوح في السؤال؛ لا يُخمن عن أرقام غير مطبوعة.</p>
+      </Feedback>
+    </div>
+  </div>
+}
+
+/* ------------------------------------------------------------------ الخطوة 5 — السؤال ④ (فرق بين عددين) */
 function StepQuestion4() {
   const element = findUnit2ExercisesElement('u2-p85-q4')
   const [answer, setAnswer] = useState('')
@@ -159,7 +208,7 @@ function StepQuestion4() {
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 4 — السؤال ⑤ (الكسور العشرية) */
+/* ------------------------------------------------------------------ الخطوة 6 — السؤال ⑤ (الكسور العشرية) */
 function DecimalBranch({ branch }: { branch: SourceBranch & { page?: number } }) {
   const [answer, setAnswer] = useState('')
   const [checked, setChecked, attempts] = useChecked()
@@ -199,7 +248,7 @@ function StepQuestion5() {
           <div className="u2-actions"><button type="button" className="u2-button" onClick={() => setChecked(true)} disabled={!answer}><Check size={15} aria-hidden="true" /> تحقّق</button></div>
           <Feedback state={checked ? (ok ? 'correct' : 'wrong') : 'idle'} attempts={attempts} hint="نحول الكسور إلى أعداد عشرية أو نستخدم التقليب العرضي، ثم نضع العلامة.">
             <p>{sub.answer}.</p>
-            <p>{sub.id === 'u2-p85-q5-l-a' ? '7×7 = 49 و 6×8 = 48، ف 49 > 48.' : sub.id === 'u2-p85-q5-l-b' ? '3/10 = 0.3 و 0.3 > 0.02.' : sub.id === 'u2-p85-q5-l-c' ? '3/4 = 9/12 و 5 < 9، إذن 5/12 < 3/4.' : sub.id === 'u2-p85-q5-l-d' ? '7 1/2 = 7.5 و 7.65 > 7.5.' : sub.id === 'u2-p85-q5-l-e' ? 'جزء العشر: 2 < 3، إذن 0.217 < 0.317.' : '4÷5 = 0.8، إذن 4/5 = 0.8.'}</p>
+            <p>{sub.id === 'u2-p85-q5-la' ? '7×7 = 49 و 6×8 = 48، ف 49 > 48.' : sub.id === 'u2-p85-q5-lb' ? '3/10 = 0.3 و 0.3 > 0.02.' : sub.id === 'u2-p85-q5-lc' ? '3/4 = 9/12 و 5 < 9، إذن 5/12 < 3/4.' : sub.id === 'u2-p85-q5-ld' ? '7 1/2 = 7.5 و 7.65 > 7.5.' : sub.id === 'u2-p85-q5-le' ? 'جزء العشر: 2 < 3، إذن 0.217 < 0.317.' : '4÷5 = 0.8، إذن 4/5 = 0.8.'}</p>
           </Feedback>
         </div>
       })}
@@ -207,7 +256,35 @@ function StepQuestion5() {
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 5 — السؤال ⑦ */
+/* ------------------------------------------------------------------ الخطوة 7 — السؤال ⑥ (مقارنة كسور/أعداد عشرية) */
+function StepQuestion6() {
+  const element = findUnit2ExercisesElement('u2-p85-q6')
+  return <div className="u2-stack">
+    <Sheet element={element} />
+    {element.branches!.map((branch) => {
+      const [answer, setAnswer] = useState('')
+      const [checked, setChecked, attempts] = useChecked()
+      const ok = answer.trim() === branch.answer
+      return <div key={branch.id} className="u2-task" data-source-id={branch.id}>
+        <TaskHead title={branch.label} page={85} />
+        <p className="u2-question"><Rich text={branch.prompt} /></p>
+        <div className="u2-choice-row">
+          {(['>', '<', '='] as const).map((value) => <label key={value} className={`u2-choice ${toneClass(checked, answer === value, value === branch.answer)}`}>
+            <input type="radio" name={`u2-q6-${branch.id}`} checked={answer === value} onChange={() => { setChecked(false); setAnswer(value) }} />
+            {value}
+          </label>)}
+        </div>
+        <div className="u2-actions"><button type="button" className="u2-button" onClick={() => setChecked(true)} disabled={!answer}><Check size={15} aria-hidden="true" /> تحقّق</button></div>
+        <Feedback state={checked ? (ok ? 'correct' : 'wrong') : 'idle'} attempts={attempts} hint="نحول الكسور إلى أعداد عشرية أو نستخدم التقليب العرضي، ثم نضع العلامة.">
+          <p>{branch.answer}.</p>
+          <p>{branch.id === 'u2-p85-q6-a' ? '7×7 = 49 و 6×8 = 48، ف 49 > 48.' : branch.id === 'u2-p85-q6-b' ? '3/10 = 0.3 و 0.3 > 0.02.' : branch.id === 'u2-p85-q6-c' ? '3/4 = 9/12 و 5 < 9، إذن 5/12 < 3/4.' : branch.id === 'u2-p85-q6-d' ? '7 1/2 = 7.5 و 7.65 > 7.5.' : branch.id === 'u2-p85-q6-e' ? 'جزء العشر: 2 < 3، إذن 0.217 < 0.317.' : '4÷5 = 0.8، إذن 4/5 = 0.8.'}</p>
+        </Feedback>
+      </div>
+    })}
+  </div>
+}
+
+/* ------------------------------------------------------------------ الخطوة 8 — السؤال ⑦ */
 function StepQuestion7() {
   const element = findUnit2ExercisesElement('u2-p86-q7')
   return <div className="u2-stack">
@@ -235,7 +312,7 @@ function StepQuestion7() {
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 6 — السؤال ⑧ */
+/* ------------------------------------------------------------------ الخطوة 9 — السؤال ⑧ */
 function StepQuestion8() {
   const element = findUnit2ExercisesElement('u2-p86-q8')
   return <div className="u2-stack">
@@ -258,7 +335,7 @@ function StepQuestion8() {
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 7 — السؤال ⑨ */
+/* ------------------------------------------------------------------ الخطوة 10 — السؤال ⑨ */
 function StepQuestion9() {
   const element = findUnit2ExercisesElement('u2-p86-q9')
   return <div className="u2-stack">
@@ -272,16 +349,16 @@ function StepQuestion9() {
         <p className="u2-question"><Rich text={branch.prompt} /></p>
         <label className="u2-field">الكسور <input className="u2-input" inputMode="text" value={answer} onChange={(event) => { setChecked(false); setAnswer(event.target.value) }} aria-label={`الكسور للفرع ${branch.label}`} /></label>
         <div className="u2-actions"><button type="button" className="u2-button" onClick={() => setChecked(true)} disabled={!answer.trim()}><Check size={15} aria-hidden="true" /> تحقّق</button></div>
-        <Feedback state={checked ? (ok ? 'correct' : 'wrong') : 'idle'} attempts={attempts} hint="إذا كان البسط أصغر من المقام يظل الكسر عاديًا؛ وإلا يُحول إلى عدد مختلط.">
+        <Feedback state={checked ? (ok ? 'correct' : 'wrong') : 'idle'} attempts={attempts} hint="إذا كان البسط أصغر من المقام يظل الكسر عادياً؛ وإلا يُحول إلى عدد مختلط.">
           <p>{branch.answer}.</p>
-          <p>جميع هذه الكسور فرعية (البسط أقل من المقام)،إذن تبقى كما هي.</p>
+          <p>جميع هذه الكسور فرعية (البسط أقل من المقام)، إذن تبقى كما هي.</p>
         </Feedback>
       </div>
     })}
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 8 — السؤال ⑩ */
+/* ------------------------------------------------------------------ الخطوة 11 — السؤال ⑩ */
 function StepQuestion10() {
   const element = findUnit2ExercisesElement('u2-p86-q10')
   return <div className="u2-stack">
@@ -304,7 +381,7 @@ function StepQuestion10() {
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 9 — السؤال ⑪ (الهندسة) */
+/* ------------------------------------------------------------------ الخطوة 12 — السؤال ⑪ (الهندسة) */
 function GeometryBranch({ branch }: { branch: SourceBranch & { page?: number } }) {
   const [answer, setAnswer] = useState('')
   const [checked, setChecked, attempts] = useChecked()
@@ -315,7 +392,7 @@ function GeometryBranch({ branch }: { branch: SourceBranch & { page?: number } }
     <p className="u2-question"><Rich text={branch.prompt} /></p>
     <ul className="u2-given" aria-label="المعطيات">
       <li>مستطيل ABCD، ومستطيل EFGC داخله في الزاوية اليمنى السفلية.</li>
-      <li><MathExpression>AD = 8cm</MathExpression> و<MathExpression>CG = 2cm</MathExpression>.</li>
+      <li><MathExpression>AD = 8cm</MathExpression> و<MathExpression>CG = 2cm</MathExpression> و<MathExpression>DC = 8cm</MathExpression>.</li>
     </ul>
     <label className="u2-field">الطول بالسنتيمتر <input className="u2-input" inputMode="decimal" value={answer} onChange={(event) => { setChecked(false); setAnswer(event.target.value) }} aria-label={`طول ${branch.label}`} /></label>
     <div className="u2-actions"><button type="button" className="u2-button" onClick={() => setChecked(true)} disabled={!answer.trim()}><Check size={15} aria-hidden="true" /> تحقّق</button></div>
@@ -330,14 +407,14 @@ function StepQuestion11() {
   return <div className="u2-stack">
     <Sheet element={element}>
       <PlatformNote title="رسم توضيحي من المنصة">
-        <p>المستطيل ABCD الكبير، وفي الزاوية اليمنى السفلية مستطيل أصغر EFGC. AD = 8cm (الضلع الرأسي الأيسر)، CG = 2cm (الجزء السفلي من الضلع DC).</p>
+        <p>المستطيل ABCD الكبير، وفي الزاوية اليمنى السفلية مستطيل أصغر EFGC. AD = 8cm (الضلع الرأسي الأيسر)، CG = 2cm (الجزء السفلي من الضلع DC)، DC = 8cm (الضلع السفلي).</p>
       </PlatformNote>
     </Sheet>
     {element.branches!.map((branch) => <GeometryBranch key={branch.id} branch={branch} />)}
   </div>
 }
 
-/* ------------------------------------------------------------------ الخطوة 10 — الخلاصة */
+/* ------------------------------------------------------------------ الخطوة 13 — الخلاصة */
 function StepSummary() {
   return <div className="u2-stack">
     <ul className="u2-summary" data-platform-id="u2-platform-summary">
@@ -370,17 +447,20 @@ export function Unit2ExercisesLesson() {
   const steps: LessonStep[] = useMemo(() => [
     { id: 'u2-intro', title: 'مقدمة: مراجعة الوحدة الثانية', content: <StepIntro /> },
     { id: 'u2-q1', title: 'السؤال ①: الأعداد الطبيعية والكسر العشري', content: <StepQuestion1 /> },
-    { id: 'u2-q4', title: 'السؤال ④: تقريب الأعداد', content: <StepQuestion4 /> },
+    { id: 'u2-q2', title: 'السؤال ②: مقارنة الأعداد الطبيعية', content: <StepQuestion2 /> },
+    { id: 'u2-q3', title: 'السؤال ③: ترتيب الأعداد A, B, C', content: <StepQuestion3 /> },
+    { id: 'u2-q4', title: 'السؤال ④: الفرق بين عددين', content: <StepQuestion4 /> },
     { id: 'u2-q5', title: 'السؤال ⑤: الكسور العشرية الناقصة', content: <StepQuestion5 /> },
-    { id: 'u2-q7', title: 'السؤال ⑦: مقارنة الكسور العشرية', content: <StepQuestion7 /> },
-    { id: 'u2-q8', title: 'السؤال ⑧: قائمة الكسور العشرية', content: <StepQuestion8 /> },
+    { id: 'u2-q6', title: 'السؤال ⑥: مقارنة الكسور العشرية', content: <StepQuestion6 /> },
+    { id: 'u2-q7', title: 'السؤال ⑦: مقارنة الكسور العشرية الناقصة', content: <StepQuestion7 /> },
+    { id: 'u2-q8', title: 'السؤال ⑧: تحويل الكسور العادية إلى أعداد عشرية', content: <StepQuestion8 /> },
     { id: 'u2-q9', title: 'السؤال ⑨: الكسور العادية إلى أعداد مختلطة', content: <StepQuestion9 /> },
-    { id: 'u2-q10', title: 'السؤال ⑩: الأعداد العادية إلى كسور مختلطة', content: <StepQuestion10 /> },
+    { id: 'u2-q10', title: 'السؤال ⑩: الأعداد المختلطة إلى كسور غير فرعية', content: <StepQuestion10 /> },
     { id: 'u2-q11', title: 'السؤال ⑪: الأطوال في شكل مركب', content: <StepQuestion11 /> },
     { id: 'u2-summary', title: 'الخلاصة والاختبار', content: <StepSummary /> },
   ], [])
   return <LessonShell title={lessonTitle} steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-unit2-exercises" />
 }
 
-export const unit2ExercisesStepCount = 10
-export const unit2ExercisesStepIds = ['u2-intro', 'u2-q1', 'u2-q4', 'u2-q5', 'u2-q7', 'u2-q8', 'u2-q9', 'u2-q10', 'u2-q11', 'u2-summary'] as const
+export const unit2ExercisesStepCount = 13
+export const unit2ExercisesStepIds = ['u2-intro', 'u2-q1', 'u2-q2', 'u2-q3', 'u2-q4', 'u2-q5', 'u2-q6', 'u2-q7', 'u2-q8', 'u2-q9', 'u2-q10', 'u2-q11', 'u2-summary'] as const
