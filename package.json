@@ -40,6 +40,7 @@
     "browser-smoke-test": "tsx scripts/browser-smoke-test.tsx",
     "test-area-check": "tsx scripts/test-area-check.ts && tsx scripts/test-area-ui-check.tsx",
     "lesson-square-check": "tsx scripts/lesson-square-check.ts",
+  "lesson-unit2-exercises-check": "tsx scripts/lesson-unit2-exercises-check.ts",
     "lesson-square-coverage": "tsx scripts/lesson-square-check.ts --write-coverage",
     "lesson-square-interaction-check": "tsx scripts/lesson-square-interaction-check.tsx"
   },

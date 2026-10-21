@@ -1,0 +1,315 @@
+/*
+ * الوحدة الثانية · درس «تمرينات الوحدة» (ص 85–86)
+ * كل قاعدة مقسّحة تحت .lesson-shell.lesson-unit2-exercises فقط.
+ */
+.lesson-shell.lesson-unit2-exercises .u2-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.lesson-shell.lesson-unit2-exercises .u2-sheet {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--surface-tint);
+  border-radius: var(--r-md);
+  padding: var(--sp-4);
+  overflow: hidden;
+}
+.lesson-shell.lesson-unit2-exercises .u2-corner {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--navy), var(--gold));
+}
+.lesson-shell.lesson-unit2-exercises .u2-sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-page-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  background: var(--gold-soft);
+  color: var(--navy);
+  font-weight: 600;
+}
+.lesson-shell.lesson-unit2-exercises .u2-page-tag.is-platform {
+  background: var(--surface-tint);
+  color: var(--text-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-section-name {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-quote {
+  font-style: italic;
+  color: var(--text-2);
+  margin: 0 0 var(--sp-3) 0;
+  border-inline-start: 3px solid var(--gold);
+  padding-inline-start: var(--sp-3);
+}
+.lesson-shell.lesson-unit2-exercises .u2-sheet-body {
+  margin-top: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-note {
+  background: var(--bg);
+  border: 1px dashed var(--gold-soft);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3);
+  margin: var(--sp-3) 0;
+  color: var(--text-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-note strong {
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-task {
+  margin: var(--sp-3) 0;
+  padding: var(--sp-3);
+  background: var(--surface-tint);
+  border-radius: var(--r-md);
+}
+.lesson-shell.lesson-unit2-exercises .u2-subtask {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-2);
+  background: var(--surface);
+  border-radius: var(--r-sm);
+}
+.lesson-shell.lesson-unit2-exercises .u2-task-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-question {
+  font-size: 16px;
+  color: var(--text-1);
+  margin: 0 0 var(--sp-3) 0;
+}
+.lesson-shell.lesson-unit2-exercises .u2-given {
+  margin: 0 0 var(--sp-3) 0;
+  padding-inline-start: var(--sp-4);
+  color: var(--text-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-given li {
+  margin-bottom: var(--sp-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-goal-list {
+  margin: 0;
+  padding-inline-start: var(--sp-4);
+  color: var(--text-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-goal-list li {
+  margin-bottom: var(--sp-1);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-goal-list li span {
+  flex-shrink: 0;
+  color: var(--gold-deep);
+  font-weight: 700;
+}
+.lesson-shell.lesson-unit2-exercises .u2-field {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-field span {
+  min-width: 120px;
+  color: var(--text-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-input {
+  flex: 1;
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--surface-tint);
+  border-radius: var(--r-sm);
+  font-size: 16px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.lesson-shell.lesson-unit2-exercises .u2-input.is-right {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 8%, white);
+}
+.lesson-shell.lesson-unit2-exercises .u2-input.is-wrong {
+  border-color: var(--err);
+  background: color-mix(in srgb, var(--err) 8%, white);
+}
+.lesson-shell.lesson-unit2-exercises .u2-choice-row {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-choice-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-choice {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--surface-tint);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--text-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-choice.is-selected {
+  background: var(--gold-soft);
+  border-color: var(--gold);
+}
+.lesson-shell.lesson-unit2-exercises .u2-choice.is-right {
+  background: color-mix(in srgb, var(--ok) 12%, white);
+  border-color: var(--ok);
+  color: var(--navy);
+}
+.lesson-shell.lesson-unit2-exercises .u2-choice.is-wrong {
+  background: color-mix(in srgb, var(--err) 12%, white);
+  border-color: var(--err);
+  color: var(--navy);
+}
+.lesson-shell.lesson-unit2-exercises .u2-actions {
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: flex-start;
+}
+.lesson-shell.lesson-unit2-exercises .u2-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1-5) var(--sp-3);
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lesson-shell.lesson-unit2-exercises .u2-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback {
+  margin-top: var(--sp-2);
+  padding: var(--sp-2-5) var(--sp-3);
+  border-radius: var(--r-sm);
+  font-size: 14px;
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback.is-correct {
+  background: color-mix(in srgb, var(--ok) 10%, white);
+  border: 1px solid var(--ok);
+  color: var(--navy);
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback.is-wrong {
+  background: color-mix(in srgb, var(--err) 10%, white);
+  border: 1px solid var(--err);
+  color: var(--navy);
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-weight: 700;
+  margin-bottom: var(--sp-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback-hint {
+  margin: 0 0 var(--sp-1) 0;
+  color: var(--text-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback-body {
+  color: var(--text-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback-retry {
+  margin: 0;
+  color: var(--text-2);
+  font-style: italic;
+}
+.lesson-shell.lesson-unit2-exercises .u2-feedback-reveal {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 13px;
+}
+.lesson-shell.lesson-unit2-exercises .u2-summary {
+  margin: var(--sp-3) 0;
+  padding: var(--sp-3);
+  background: var(--surface);
+  border-radius: var(--r-md);
+  color: var(--text-1);
+}
+.lesson-shell.lesson-unit2-exercises .u2-summary li {
+  margin-bottom: var(--sp-2);
+  display: flex;
+  gap: var(--sp-2);
+}
+.lesson-shell.lesson-unit2-exercises .u2-summary li strong {
+  color: var(--navy);
+}
+.lesson-shell.lesson-unit2-exercises .u2-test-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1-5) var(--sp-3);
+  background: var(--surface-tint);
+  color: var(--navy);
+  border: 1px solid var(--surface-tint);
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.lesson-shell.lesson-unit2-exercises .u2-test-link.is-secondary {
+  background: var(--bg);
+}
+.lesson-shell.lesson-unit2-exercises .u2-hat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.lesson-shell.lesson-unit2-exercises .u2-hat-mark {
+  font-size: 0.6em;
+}
+.lesson-shell.lesson-unit2-exercises .u2-rich {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.lesson-shell.lesson-unit2-exercises .u2-rich span {
+  display: inline;
+}
+.lesson-shell.lesson-unit2-exercises input {
+  min-height: 44px;
+}
+.lesson-shell.lesson-unit2-exercises :focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lesson-shell.lesson-unit2-exercises * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Floor 13px */
+.lesson-shell.lesson-unit2-exercises,
+.lesson-shell.lesson-unit2-exercises p,
+.lesson-shell.lesson-unit2-exercises li,
+.lesson-shell.lesson-unit2-exercises span,
+.lesson-shell.lesson-unit2-exercises div,
+.lesson-shell.lesson-unit2-exercises label {
+  font-size: clamp(13px, 1rem, 1.1rem);
+}
