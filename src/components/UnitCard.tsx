@@ -1,8 +1,10 @@
 import { ArrowLeft, BookOpen, BookOpenCheck, Check, Clock, LockKeyhole } from 'lucide-react'
+import { unitLessons } from '../content/registry'
 import type { UnitMeta } from '../types'
 
 export function UnitCard({ unit }: { unit: UnitMeta }) {
-  const availableCount = unit.lessons.filter((lesson) => lesson.availability === 'available').length
+  const lessons = unitLessons(unit)
+  const availableCount = lessons.filter((lesson) => lesson.availability === 'available').length
   const ready = availableCount > 0
   return <article className={`unit-card unit-${unit.accent}`}>
     <header className="unit-head">
@@ -12,13 +14,13 @@ export function UnitCard({ unit }: { unit: UnitMeta }) {
         <h3>{unit.title}</h3>
         {unit.description && <p className="unit-description">{unit.description}</p>}
         <div className="unit-meta">
-          <span className="unit-meta-chip is-total">{lessonCountChip(unit.lessons.length)}</span>
+          <span className="unit-meta-chip is-total">{lessonCountChip(lessons.length)}</span>
           <span className="unit-meta-chip">{ready ? `${availableCount} متاحة الآن` : 'قيد الإعداد'}</span>
         </div>
       </div>
     </header>
     <ol className="unit-lesson-grid">
-      {unit.lessons.map((lesson, index) => {
+      {lessons.map((lesson, index) => {
         const available = lesson.availability === 'available'
         return <li key={lesson.id} className={`lesson-tile ${available ? 'is-available' : 'is-coming'}`}>
           <span className="lesson-index" aria-hidden="true">{index + 1}</span>
