@@ -1,315 +1,215 @@
-/*
- * الوحدة الثانية · درس «تمرينات الوحدة» (ص 85–86)
- * كل قاعدة مقسّحة تحت .lesson-shell.lesson-unit2-exercises فقط.
- */
-.lesson-shell.lesson-unit2-exercises .u2-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-4);
-}
-.lesson-shell.lesson-unit2-exercises .u2-sheet {
-  position: relative;
-  background: var(--surface);
-  border: 1px solid var(--surface-tint);
-  border-radius: var(--r-md);
-  padding: var(--sp-4);
-  overflow: hidden;
-}
-.lesson-shell.lesson-unit2-exercises .u2-corner {
-  position: absolute;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  top: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--navy), var(--gold));
-}
-.lesson-shell.lesson-unit2-exercises .u2-sheet-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-page-tag {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: var(--r-full);
-  background: var(--gold-soft);
-  color: var(--navy);
-  font-weight: 600;
-}
-.lesson-shell.lesson-unit2-exercises .u2-page-tag.is-platform {
-  background: var(--surface-tint);
-  color: var(--text-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-section-name {
-  margin: 0;
-  font-size: 16px;
-  color: var(--text-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-quote {
-  font-style: italic;
-  color: var(--text-2);
-  margin: 0 0 var(--sp-3) 0;
-  border-inline-start: 3px solid var(--gold);
-  padding-inline-start: var(--sp-3);
-}
-.lesson-shell.lesson-unit2-exercises .u2-sheet-body {
-  margin-top: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-note {
-  background: var(--bg);
-  border: 1px dashed var(--gold-soft);
-  border-radius: var(--r-sm);
-  padding: var(--sp-3);
-  margin: var(--sp-3) 0;
-  color: var(--text-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-note strong {
-  color: var(--navy);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-task {
-  margin: var(--sp-3) 0;
-  padding: var(--sp-3);
-  background: var(--surface-tint);
-  border-radius: var(--r-md);
-}
-.lesson-shell.lesson-unit2-exercises .u2-subtask {
-  margin: var(--sp-2) 0;
-  padding: var(--sp-2);
-  background: var(--surface);
-  border-radius: var(--r-sm);
-}
-.lesson-shell.lesson-unit2-exercises .u2-task-head {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-question {
-  font-size: 16px;
-  color: var(--text-1);
-  margin: 0 0 var(--sp-3) 0;
-}
-.lesson-shell.lesson-unit2-exercises .u2-given {
-  margin: 0 0 var(--sp-3) 0;
-  padding-inline-start: var(--sp-4);
-  color: var(--text-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-given li {
-  margin-bottom: var(--sp-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-goal-list {
-  margin: 0;
-  padding-inline-start: var(--sp-4);
-  color: var(--text-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-goal-list li {
-  margin-bottom: var(--sp-1);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-goal-list li span {
-  flex-shrink: 0;
-  color: var(--gold-deep);
-  font-weight: 700;
-}
-.lesson-shell.lesson-unit2-exercises .u2-field {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-field span {
-  min-width: 120px;
-  color: var(--text-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-input {
-  flex: 1;
-  padding: var(--sp-1) var(--sp-2);
-  border: 1px solid var(--surface-tint);
-  border-radius: var(--r-sm);
-  font-size: 16px;
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-.lesson-shell.lesson-unit2-exercises .u2-input.is-right {
-  border-color: var(--ok);
-  background: color-mix(in srgb, var(--ok) 8%, white);
-}
-.lesson-shell.lesson-unit2-exercises .u2-input.is-wrong {
-  border-color: var(--err);
-  background: color-mix(in srgb, var(--err) 8%, white);
-}
-.lesson-shell.lesson-unit2-exercises .u2-choice-row {
-  display: flex;
-  gap: var(--sp-2);
-  flex-wrap: wrap;
-  margin-bottom: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-choice-col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-  margin-bottom: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-choice {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-1);
-  padding: var(--sp-1) var(--sp-2);
-  border: 1px solid var(--surface-tint);
-  border-radius: var(--r-sm);
-  cursor: pointer;
-  font-size: 15px;
-  color: var(--text-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-choice.is-selected {
-  background: var(--gold-soft);
-  border-color: var(--gold);
-}
-.lesson-shell.lesson-unit2-exercises .u2-choice.is-right {
-  background: color-mix(in srgb, var(--ok) 12%, white);
-  border-color: var(--ok);
-  color: var(--navy);
-}
-.lesson-shell.lesson-unit2-exercises .u2-choice.is-wrong {
-  background: color-mix(in srgb, var(--err) 12%, white);
-  border-color: var(--err);
-  color: var(--navy);
-}
-.lesson-shell.lesson-unit2-exercises .u2-actions {
-  display: flex;
-  gap: var(--sp-2);
-  justify-content: flex-start;
-}
-.lesson-shell.lesson-unit2-exercises .u2-button {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-1);
-  padding: var(--sp-1-5) var(--sp-3);
-  background: var(--navy);
-  color: #fff;
-  border: none;
-  border-radius: var(--r-sm);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.lesson-shell.lesson-unit2-exercises .u2-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback {
-  margin-top: var(--sp-2);
-  padding: var(--sp-2-5) var(--sp-3);
-  border-radius: var(--r-sm);
-  font-size: 14px;
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback.is-correct {
-  background: color-mix(in srgb, var(--ok) 10%, white);
-  border: 1px solid var(--ok);
-  color: var(--navy);
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback.is-wrong {
-  background: color-mix(in srgb, var(--err) 10%, white);
-  border: 1px solid var(--err);
-  color: var(--navy);
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback-title {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-1);
-  font-weight: 700;
-  margin-bottom: var(--sp-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback-hint {
-  margin: 0 0 var(--sp-1) 0;
-  color: var(--text-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback-body {
-  color: var(--text-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback-retry {
-  margin: 0;
-  color: var(--text-2);
-  font-style: italic;
-}
-.lesson-shell.lesson-unit2-exercises .u2-feedback-reveal {
-  margin: 0;
-  color: var(--text-2);
-  font-size: 13px;
-}
-.lesson-shell.lesson-unit2-exercises .u2-summary {
-  margin: var(--sp-3) 0;
-  padding: var(--sp-3);
-  background: var(--surface);
-  border-radius: var(--r-md);
-  color: var(--text-1);
-}
-.lesson-shell.lesson-unit2-exercises .u2-summary li {
-  margin-bottom: var(--sp-2);
-  display: flex;
-  gap: var(--sp-2);
-}
-.lesson-shell.lesson-unit2-exercises .u2-summary li strong {
-  color: var(--navy);
-}
-.lesson-shell.lesson-unit2-exercises .u2-test-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-1);
-  padding: var(--sp-1-5) var(--sp-3);
-  background: var(--surface-tint);
-  color: var(--navy);
-  border: 1px solid var(--surface-tint);
-  border-radius: var(--r-sm);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-}
-.lesson-shell.lesson-unit2-exercises .u2-test-link.is-secondary {
-  background: var(--bg);
-}
-.lesson-shell.lesson-unit2-exercises .u2-hat {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 2px;
-}
-.lesson-shell.lesson-unit2-exercises .u2-hat-mark {
-  font-size: 0.6em;
-}
-.lesson-shell.lesson-unit2-exercises .u2-rich {
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-.lesson-shell.lesson-unit2-exercises .u2-rich span {
-  display: inline;
-}
-.lesson-shell.lesson-unit2-exercises input {
-  min-height: 44px;
-}
-.lesson-shell.lesson-unit2-exercises :focus-visible {
-  outline: 2px solid var(--navy);
-  outline-offset: 2px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .lesson-shell.lesson-unit2-exercises * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Unit 2 · Review lesson «تمرينات الوحدة الثانية» (ص 85–86) — rebuilt visual identity.
+   Calm summary-studio look: warm paper, slate ink, honey accent, teal for the geometry.
+   Everything is scoped to .lesson-unit2-exercises so no other lesson is touched. */
+
+.lesson-unit2-exercises {
+  --u2e-ink: #24364a;
+  --u2e-ink-soft: #56687c;
+  --u2e-paper: #fffdf7;
+  --u2e-cream: #f7f2e6;
+  --u2e-line: #e4dcc7;
+  --u2e-honey: #9a6b12;
+  --u2e-honey-deep: #7c5410;
+  --u2e-honey-soft: #f7ebcf;
+  --u2e-teal: #1f6f6b;
+  --u2e-teal-soft: #e3f0ee;
+  --u2e-rose: #a8455c;
+  --u2e-rose-soft: #f9e7ec;
+  --u2e-ok: #2e7d4f;
+  --u2e-ok-soft: #e8f4ec;
+  color: var(--u2e-ink);
 }
 
-/* Floor 13px */
-.lesson-shell.lesson-unit2-exercises,
-.lesson-shell.lesson-unit2-exercises p,
-.lesson-shell.lesson-unit2-exercises li,
-.lesson-shell.lesson-unit2-exercises span,
-.lesson-shell.lesson-unit2-exercises div,
-.lesson-shell.lesson-unit2-exercises label {
-  font-size: clamp(13px, 1rem, 1.1rem);
+.lesson-unit2-exercises .lesson-content { color: var(--u2e-ink); }
+.lesson-unit2-exercises .u2e-stack { display: grid; gap: 18px; min-width: 0; }
+.lesson-unit2-exercises .u2e-stack > * { min-width: 0; }
+.lesson-unit2-exercises .u2e-lead { margin: 0; font-size: 1.02rem; line-height: 2.05; }
+.lesson-unit2-exercises .u2e-notation { line-height: 2.1; }
+
+/* ── Notation: vertical fractions, always LTR ── */
+.lesson-unit2-exercises .u2e-frac { display: inline-grid; grid-template-rows: auto auto auto; justify-items: center; vertical-align: middle; direction: ltr; font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1.15; padding: 0 3px; }
+.lesson-unit2-exercises .u2e-frac-rule { display: block; width: 100%; min-width: 1.5em; height: 2px; margin: 2px 0; background: currentColor; border-radius: 2px; }
+.lesson-unit2-exercises .u2e-mixed { display: inline-flex; align-items: center; gap: 4px; direction: ltr; vertical-align: middle; font-variant-numeric: tabular-nums; font-weight: 800; }
+.lesson-unit2-exercises .u2e-mixed-whole { font-size: 1.2em; color: var(--u2e-honey-deep); }
+.lesson-unit2-exercises .u2e-run { font-weight: 700; }
+.lesson-unit2-exercises .u2e-eq { margin: 0 10px; font-weight: 900; color: var(--u2e-honey-deep); }
+.lesson-unit2-exercises .u2e-pair { display: inline-flex; align-items: center; gap: 10px; }
+.lesson-unit2-exercises .u2e-pair-box { display: inline-block; width: 2.1em; height: 1.7em; border: 2px solid var(--u2e-honey); border-radius: 7px; background: var(--u2e-honey-soft); vertical-align: middle; }
+
+/* ── Book source card ── */
+.lesson-unit2-exercises .u2e-sheet { position: relative; padding: 20px 22px; border-radius: 18px; background: var(--u2e-paper); border: 1px solid var(--u2e-line); border-inline-start: 6px solid var(--u2e-honey); box-shadow: 0 6px 18px rgba(36, 54, 74, .06); }
+.lesson-unit2-exercises .u2e-sheet-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+.lesson-unit2-exercises .u2e-page-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px; background: var(--u2e-honey-soft); color: var(--u2e-honey-deep); font-size: .8rem; font-weight: 800; }
+.lesson-unit2-exercises .u2e-page-tag.is-platform { background: var(--u2e-teal-soft); color: var(--u2e-teal); }
+.lesson-unit2-exercises .u2e-section-name { margin: 0; font-size: 1.05rem; color: var(--u2e-ink); }
+.lesson-unit2-exercises .u2e-quote { margin: 0; font-size: 1.06rem; font-weight: 650; line-height: 2.15; }
+.lesson-unit2-exercises .u2e-sheet-body { margin-top: 12px; display: grid; gap: 12px; }
+
+/* ── Concept / worked / mistakes cards ── */
+.lesson-unit2-exercises .u2e-card { padding: 18px 20px; border-radius: 18px; background: var(--u2e-cream); border: 1px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-card-title { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 1.02rem; color: var(--u2e-honey-deep); }
+.lesson-unit2-exercises .u2e-card p { margin: 0 0 10px; line-height: 2.05; }
+.lesson-unit2-exercises .u2e-card p:last-child { margin-bottom: 0; }
+.lesson-unit2-exercises .u2e-rule-list { margin: 0; padding-inline-start: 22px; line-height: 2.1; }
+.lesson-unit2-exercises .u2e-inline-list { margin: 0; padding-inline-start: 20px; line-height: 2; }
+.lesson-unit2-exercises .u2e-note { padding: 13px 16px; border-radius: 13px; background: var(--u2e-teal-soft); border: 1px solid #c9e2de; }
+.lesson-unit2-exercises .u2e-note strong { display: inline-flex; align-items: center; gap: 7px; color: var(--u2e-teal); margin-bottom: 5px; }
+.lesson-unit2-exercises .u2e-note p { margin: 0; line-height: 1.95; }
+.lesson-unit2-exercises .u2e-note ol { margin: 0; padding-inline-start: 20px; line-height: 2; }
+
+.lesson-unit2-exercises .u2e-worked { padding: 18px 20px; border-radius: 18px; background: var(--u2e-paper); border: 1px dashed var(--u2e-honey); }
+.lesson-unit2-exercises .u2e-worked-steps { margin: 0; padding-inline-start: 24px; line-height: 2.15; }
+.lesson-unit2-exercises .u2e-worked-steps li { margin-bottom: 2px; }
+.lesson-unit2-exercises .u2e-quote-inline { margin: 0; padding: 12px 18px; border-radius: 13px; background: var(--u2e-honey-soft); font-weight: 700; line-height: 2; }
+
+.lesson-unit2-exercises .u2e-mistakes { display: grid; gap: 10px; padding: 18px 20px; border-radius: 18px; background: var(--u2e-rose-soft); border: 1px solid #ecd0d8; }
+.lesson-unit2-exercises .u2e-mistakes .u2e-card-title { color: var(--u2e-rose); }
+.lesson-unit2-exercises .u2e-mistake { display: grid; gap: 4px; padding: 12px 14px; border-radius: 12px; background: rgba(255, 255, 255, .75); }
+.lesson-unit2-exercises .u2e-mistake-row { margin: 0; line-height: 1.95; padding-inline-start: 26px; position: relative; }
+.lesson-unit2-exercises .u2e-mistake-row::before { position: absolute; inset-inline-start: 0; top: 0; font-weight: 900; }
+.lesson-unit2-exercises .u2e-mistake-row.is-wrong::before { content: '✗'; color: var(--u2e-rose); }
+.lesson-unit2-exercises .u2e-mistake-row.is-right::before { content: '✓'; color: var(--u2e-ok); }
+.lesson-unit2-exercises .u2e-mistake-why { margin: 0; font-size: .92rem; color: var(--u2e-ink-soft); line-height: 1.9; }
+
+/* ── Tasks, fields, buttons ── */
+.lesson-unit2-exercises .u2e-task { display: grid; gap: 12px; padding: 18px 20px; border-radius: 18px; background: var(--u2e-paper); border: 2px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-task-head { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; color: var(--u2e-ink); }
+.lesson-unit2-exercises .u2e-task-head strong { font-size: 1rem; }
+.lesson-unit2-exercises .u2e-question { margin: 0; font-size: 1.08rem; font-weight: 700; line-height: 2.2; }
+.lesson-unit2-exercises .u2e-guidance { margin: 0; color: var(--u2e-ink-soft); line-height: 1.95; }
+.lesson-unit2-exercises .u2e-guidance.is-strong { color: var(--u2e-ink); font-weight: 700; }
+.lesson-unit2-exercises .u2e-check-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0 0; color: var(--u2e-ink-soft); font-size: .95rem; }
+.lesson-unit2-exercises .u2e-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.lesson-unit2-exercises .u2e-button { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border: none; border-radius: 999px; background: var(--u2e-honey); color: #fff; font-weight: 800; font-size: .95rem; cursor: pointer; transition: background .15s ease, transform .1s ease; }
+.lesson-unit2-exercises .u2e-button:hover:not(:disabled) { background: var(--u2e-honey-deep); }
+.lesson-unit2-exercises .u2e-button:active:not(:disabled) { transform: translateY(1px); }
+.lesson-unit2-exercises .u2e-button:disabled { opacity: .45; cursor: not-allowed; }
+.lesson-unit2-exercises .u2e-button.is-ghost { background: transparent; color: var(--u2e-ink-soft); border: 1.5px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-button.is-ghost:hover:not(:disabled) { background: var(--u2e-cream); color: var(--u2e-ink); }
+.lesson-unit2-exercises .u2e-field { display: inline-flex; flex-direction: column; gap: 5px; font-weight: 700; font-size: .93rem; color: var(--u2e-ink-soft); }
+.lesson-unit2-exercises .u2e-input { min-width: 0; padding: 9px 13px; border: 2px solid var(--u2e-line); border-radius: 11px; background: #fff; color: var(--u2e-ink); font: inherit; font-weight: 800; font-variant-numeric: tabular-nums; direction: ltr; text-align: center; }
+.lesson-unit2-exercises .u2e-input:focus-visible { outline: 2px solid var(--u2e-honey); outline-offset: 1px; border-color: var(--u2e-honey); }
+.lesson-unit2-exercises .u2e-input.is-bare { width: 4.2em; padding: 2px 4px; border: none; border-bottom: none; background: transparent; font-size: inherit; }
+.lesson-unit2-exercises .u2e-input.is-whole { width: 2.6em; font-size: 1.2em; }
+.lesson-unit2-exercises select.u2e-input { direction: rtl; text-align: center; }
+
+.lesson-unit2-exercises .u2e-choice-row { display: flex; flex-wrap: wrap; gap: 9px; }
+.lesson-unit2-exercises .u2e-choice { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 12px; border: 2px solid var(--u2e-line); background: #fff; font-weight: 750; cursor: pointer; transition: border-color .15s ease, background .15s ease; }
+.lesson-unit2-exercises .u2e-choice:has(input:checked) { border-color: var(--u2e-honey); background: var(--u2e-honey-soft); }
+.lesson-unit2-exercises .u2e-choice.is-selected { border-color: var(--u2e-honey); background: var(--u2e-honey-soft); }
+.lesson-unit2-exercises .u2e-choice.is-right { border-color: var(--u2e-ok); background: var(--u2e-ok-soft); }
+.lesson-unit2-exercises .u2e-choice.is-wrong { border-color: var(--u2e-rose); background: var(--u2e-rose-soft); }
+.lesson-unit2-exercises .u2e-choice.is-symbol { padding: 8px 14px; }
+.lesson-unit2-exercises .u2e-choice.is-button { cursor: pointer; font: inherit; }
+.lesson-unit2-exercises .u2e-symbol { font-size: 1.15rem; font-weight: 900; direction: ltr; }
+.lesson-unit2-exercises .u2e-choice input { accent-color: var(--u2e-honey); margin: 0; }
+
+.lesson-unit2-exercises .u2e-feedback { display: grid; gap: 8px; padding: 14px 16px; border-radius: 13px; }
+.lesson-unit2-exercises .u2e-feedback.is-correct { background: var(--u2e-ok-soft); border: 1px solid #bcdcc8; }
+.lesson-unit2-exercises .u2e-feedback.is-wrong { background: var(--u2e-rose-soft); border: 1px solid #ecd0d8; }
+.lesson-unit2-exercises .u2e-feedback-title { display: inline-flex; align-items: center; gap: 7px; font-weight: 900; }
+.lesson-unit2-exercises .u2e-feedback.is-correct .u2e-feedback-title { color: var(--u2e-ok); }
+.lesson-unit2-exercises .u2e-feedback.is-wrong .u2e-feedback-title { color: var(--u2e-rose); }
+.lesson-unit2-exercises .u2e-feedback-hint, .lesson-unit2-exercises .u2e-feedback-retry { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; line-height: 1.95; }
+.lesson-unit2-exercises .u2e-feedback-body { display: grid; gap: 6px; padding-top: 8px; border-top: 1px dashed rgba(36, 54, 74, .2); }
+.lesson-unit2-exercises .u2e-feedback-body p { margin: 0; line-height: 2.05; }
+.lesson-unit2-exercises .u2e-feedback-reveal { font-weight: 800; color: var(--u2e-ink-soft); font-size: .93rem; }
+.lesson-unit2-exercises .u2e-feedback .u2e-worked-steps { padding-inline-start: 20px; }
+
+/* ── Intro map ── */
+.lesson-unit2-exercises .u2e-map { display: grid; gap: 7px; }
+.lesson-unit2-exercises .u2e-map-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 11px; background: #fff; border: 1px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-map-badge { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--u2e-honey-soft); color: var(--u2e-honey-deep); font-weight: 900; }
+.lesson-unit2-exercises .u2e-map-title { font-weight: 700; font-size: .95rem; }
+.lesson-unit2-exercises .u2e-map-lesson { color: var(--u2e-ink-soft); font-size: .85rem; text-align: end; }
+
+/* ── Place-value tables (Q1 & Q2) ── */
+.lesson-unit2-exercises .u2e-pv-scroll { overflow-x: auto; padding-bottom: 4px; }
+.lesson-unit2-exercises .u2e-pv-table, .lesson-unit2-exercises .u2e-cols-table { border-collapse: separate; border-spacing: 4px; margin: 0 auto; }
+.lesson-unit2-exercises .u2e-pv-table th, .lesson-unit2-exercises .u2e-cols-table th { padding: 6px 10px; border-radius: 9px; background: var(--u2e-cream); border: 1px solid var(--u2e-line); font-size: .78rem; font-weight: 800; color: var(--u2e-ink-soft); white-space: nowrap; }
+.lesson-unit2-exercises .u2e-cols-table th.is-diff-head { background: var(--u2e-honey-soft); color: var(--u2e-honey-deep); border-color: var(--u2e-honey); }
+.lesson-unit2-exercises .u2e-pv-cell { width: 3.1em; padding: 9px 2px; border: 2px solid var(--u2e-line); border-radius: 10px; background: #fff; color: var(--u2e-ink); font: inherit; font-weight: 800; font-variant-numeric: tabular-nums; direction: ltr; text-align: center; }
+.lesson-unit2-exercises .u2e-pv-cell:focus-visible { outline: 2px solid var(--u2e-honey); outline-offset: 1px; }
+.lesson-unit2-exercises .u2e-pv-result { padding-inline-start: 10px; font-weight: 800; white-space: nowrap; }
+.lesson-unit2-exercises .u2e-pv-missing { color: var(--u2e-ink-soft); font-size: .82rem; font-weight: 600; }
+.lesson-unit2-exercises .u2e-pv-verbal { margin: 0; padding-inline-start: 22px; line-height: 2.1; }
+.lesson-unit2-exercises .u2e-cols-table .u2e-col-cell { min-width: 2.4em; padding: 9px 6px; border-radius: 9px; background: #fff; border: 1px solid var(--u2e-line); text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; transition: opacity .2s ease, background .2s ease; }
+.lesson-unit2-exercises .u2e-cols-table .u2e-col-cell.is-hidden { opacity: .18; }
+.lesson-unit2-exercises .u2e-cols-table .u2e-col-cell.is-diff { background: var(--u2e-honey-soft); border-color: var(--u2e-honey); box-shadow: 0 0 0 2px var(--u2e-honey-soft); }
+
+.lesson-unit2-exercises .u2e-pv-places { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.lesson-unit2-exercises .u2e-pv-place { display: grid; gap: 2px; justify-items: center; padding: 8px 12px; border-radius: 11px; background: #fff; border: 1px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-pv-place strong { font-size: .85rem; }
+.lesson-unit2-exercises .u2e-pv-place small { color: var(--u2e-ink-soft); font-weight: 700; }
+
+/* ── Ordering by click ── */
+.lesson-unit2-exercises .u2e-order-slots { display: flex; flex-wrap: wrap; gap: 10px; }
+.lesson-unit2-exercises .u2e-order-slot { display: inline-flex; align-items: center; gap: 8px; min-width: 4.6em; min-height: 3.6em; padding: 8px 14px; border-radius: 12px; border: 2px dashed var(--u2e-line); background: var(--u2e-cream); font-weight: 800; }
+.lesson-unit2-exercises .u2e-order-slot small { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--u2e-honey); color: #fff; font-size: .75rem; font-weight: 900; }
+.lesson-unit2-exercises .u2e-order-slot.is-filled { border-style: solid; border-color: var(--u2e-honey); background: #fff; }
+.lesson-unit2-exercises .u2e-order-slot.is-right { border-color: var(--u2e-ok); background: var(--u2e-ok-soft); }
+.lesson-unit2-exercises .u2e-order-slot.is-wrong { border-color: var(--u2e-rose); background: var(--u2e-rose-soft); }
+.lesson-unit2-exercises .u2e-order-empty { color: var(--u2e-ink-soft); font-weight: 900; }
+.lesson-unit2-exercises .u2e-order-cards { display: flex; flex-wrap: wrap; gap: 10px; }
+.lesson-unit2-exercises .u2e-order-card { position: relative; display: inline-grid; place-items: center; min-width: 4.4em; min-height: 4.4em; padding: 10px 14px; border-radius: 14px; border: 2px solid var(--u2e-line); background: #fff; font: inherit; font-weight: 800; cursor: pointer; transition: border-color .15s ease, transform .12s ease, opacity .15s ease; }
+.lesson-unit2-exercises .u2e-order-card:hover { border-color: var(--u2e-honey); transform: translateY(-2px); }
+.lesson-unit2-exercises .u2e-order-card.is-wide { min-width: 7em; }
+.lesson-unit2-exercises .u2e-order-card.is-placed { opacity: .38; border-style: dashed; cursor: default; }
+.lesson-unit2-exercises .u2e-order-card.is-placed:hover { transform: none; border-color: var(--u2e-line); }
+.lesson-unit2-exercises .u2e-order-rank { position: absolute; top: -9px; inset-inline-start: -9px; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--u2e-teal); color: #fff; font-size: .78rem; font-weight: 900; }
+.lesson-unit2-exercises .u2e-sample-chip { display: inline-flex; align-items: center; gap: 8px; }
+.lesson-unit2-exercises .u2e-sample-letter { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--u2e-honey-soft); color: var(--u2e-honey-deep); font-weight: 900; }
+
+/* ── Puzzle / lab layouts ── */
+.lesson-unit2-exercises .u2e-puzzle { display: flex; flex-wrap: wrap; align-items: end; gap: 14px; }
+.lesson-unit2-exercises .u2e-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.lesson-unit2-exercises .u2e-badge { display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 999px; border: 2px solid var(--u2e-line); background: #fff; color: var(--u2e-ink-soft); font-weight: 800; transition: all .15s ease; }
+.lesson-unit2-exercises .u2e-badge.is-on { border-color: var(--u2e-ok); background: var(--u2e-ok-soft); color: var(--u2e-ok); }
+
+.lesson-unit2-exercises .u2e-multiples { display: grid; gap: 8px; }
+.lesson-unit2-exercises .u2e-multiple-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.lesson-unit2-exercises .u2e-multiple-row > strong { font-size: .93rem; }
+.lesson-unit2-exercises .u2e-multiple-row > span { display: flex; flex-wrap: wrap; gap: 6px; }
+.lesson-unit2-exercises .u2e-multiple { display: inline-grid; place-items: center; min-width: 2.6em; padding: 5px 9px; border-radius: 9px; background: var(--u2e-cream); border: 1px solid var(--u2e-line); font-weight: 750; font-variant-numeric: tabular-nums; }
+.lesson-unit2-exercises .u2e-multiple.is-common { background: var(--u2e-honey-soft); border-color: var(--u2e-honey); color: var(--u2e-honey-deep); }
+
+.lesson-unit2-exercises .u2e-strategies { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.lesson-unit2-exercises .u2e-strategy { display: grid; gap: 5px; align-content: start; padding: 12px 14px; border-radius: 13px; background: #fff; border: 1px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-strategy strong { color: var(--u2e-honey-deep); font-size: .95rem; }
+.lesson-unit2-exercises .u2e-strategy p { margin: 0; font-size: .93rem; line-height: 1.95; }
+.lesson-unit2-exercises .u2e-subtask-list { display: grid; gap: 12px; }
+.lesson-unit2-exercises .u2e-subtask { display: grid; gap: 10px; padding: 14px 16px; border-radius: 14px; background: var(--u2e-cream); border: 1px solid var(--u2e-line); }
+
+/* ── Fraction input inside the fraction glyph ── */
+.lesson-unit2-exercises .u2e-frac.is-input .u2e-frac-num { min-width: 3.4em; }
+.lesson-unit2-exercises .u2e-frac.is-input .u2e-frac-rule { background: var(--u2e-ink); }
+.lesson-unit2-exercises .u2e-frac.is-input .u2e-input.is-bare { font-weight: 900; color: var(--u2e-honey-deep); }
+.lesson-unit2-exercises .u2e-frac.is-input .u2e-input.is-bare::placeholder { color: var(--u2e-ink-soft); opacity: .6; }
+
+/* ── Geometry figure (Q11) ── */
+.lesson-unit2-exercises .u2e-figure-wrap { display: grid; gap: 8px; justify-items: center; }
+.lesson-unit2-exercises .u2e-figure { width: min(100%, 480px); height: auto; }
+.lesson-unit2-exercises .u2e-fig-shape { fill: rgba(36, 54, 74, .045); stroke: var(--u2e-ink); stroke-width: 2.4; stroke-linejoin: round; }
+.lesson-unit2-exercises .u2e-fig-square { fill: rgba(31, 111, 107, .09); stroke: var(--u2e-teal); stroke-width: 2.4; stroke-linejoin: round; }
+.lesson-unit2-exercises .u2e-fig-seg { fill: none; stroke: transparent; stroke-width: 11; cursor: pointer; pointer-events: stroke; }
+.lesson-unit2-exercises .u2e-fig-seg.is-active { stroke: var(--u2e-honey); opacity: .28; stroke-linecap: round; stroke-linejoin: round; }
+.lesson-unit2-exercises .u2e-fig-vertex { fill: var(--u2e-ink); }
+.lesson-unit2-exercises .u2e-fig-letter { font-size: 15px; font-weight: 800; fill: var(--u2e-rose); font-family: Georgia, 'Times New Roman', serif; font-style: italic; }
+.lesson-unit2-exercises .u2e-fig-measure { font-size: 13.5px; font-weight: 800; fill: var(--u2e-ink); font-variant-numeric: tabular-nums; }
+.lesson-unit2-exercises .u2e-figure-caption { margin: 0; font-size: .88rem; color: var(--u2e-ink-soft); text-align: center; line-height: 1.9; }
+
+/* ── Summary ── */
+.lesson-unit2-exercises .u2e-summary-table { display: grid; gap: 7px; }
+.lesson-unit2-exercises .u2e-summary-row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 8px 12px; padding: 10px 12px; border-radius: 12px; background: #fff; border: 1px solid var(--u2e-line); }
+.lesson-unit2-exercises .u2e-summary-row > strong { grid-column: 2; font-size: .95rem; }
+.lesson-unit2-exercises .u2e-summary-row > span:last-child { grid-column: 2; color: var(--u2e-ink-soft); font-size: .9rem; line-height: 1.9; }
+.lesson-unit2-exercises .u2e-summary-row .u2e-map-badge { grid-row: 1 / span 2; }
+.lesson-unit2-exercises .u2e-test-link { display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; border-radius: 999px; background: var(--u2e-teal); color: #fff; font-weight: 850; text-decoration: none; transition: background .15s ease; }
+.lesson-unit2-exercises .u2e-test-link:hover { background: #175a56; }
+
+@media (max-width: 640px) {
+  .lesson-unit2-exercises .u2e-sheet, .lesson-unit2-exercises .u2e-card, .lesson-unit2-exercises .u2e-worked, .lesson-unit2-exercises .u2e-task { padding: 15px 14px; }
+  .lesson-unit2-exercises .u2e-map-row { grid-template-columns: auto minmax(0, 1fr); }
+  .lesson-unit2-exercises .u2e-map-lesson { grid-column: 2; text-align: start; }
+  .lesson-unit2-exercises .u2e-summary-row { grid-template-columns: auto minmax(0, 1fr); }
 }
