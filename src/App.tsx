@@ -4,7 +4,7 @@ import { MathExpression } from './components/MathExpression'
 import { UnitCard } from './components/UnitCard'
 import { ComingSoon } from './components/ComingSoon'
 import { InstructorAttribution } from './components/InstructorAttribution'
-import { curriculumRegistry } from './content/registry'
+import { curriculumRegistry, unitLessons } from './content/registry'
 import { lessonComponents } from './content/lessonComponents'
 import { TeacherArea } from './teacher/TeacherArea'
 import { TestArea } from './tests/TestArea'
@@ -60,7 +60,7 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
     const match = window.location.hash.match(/^#(unit-exercise-(?:[1-9]|1[0-2]))$/)
     if (route.unitExercisesOpen && match) document.getElementById(match[1])?.scrollIntoView?.({ block: 'start' })
   }, [route.unitExercisesOpen])
-  const allLessons = useMemo(() => curriculum.flatMap(unit => unit.lessons), [curriculum])
+  const allLessons = useMemo(() => curriculum.flatMap(unitLessons), [curriculum])
   const unitCount = curriculum.length
   const lessonCount = allLessons.length
   const activeLesson = route.lessonId ? allLessons.find(lesson => lesson.id === route.lessonId) : undefined

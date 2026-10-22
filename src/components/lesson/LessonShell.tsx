@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, BookOpen, ChevronLeft, CircleCheck } from 'lucide-react'
-import { curriculumRegistry } from '../../content/registry'
+import { curriculumRegistry, unitLessons } from '../../content/registry'
 import { InstructorAttribution } from '../InstructorAttribution'
 import { LessonOutline } from './LessonOutline'
 import type { LessonShellProps } from './types'
@@ -17,7 +17,7 @@ import type { LessonShellProps } from './types'
  */
 export function LessonShell({ title, steps, activeStep, onStepChange, theme }: LessonShellProps) {
   const step = steps[activeStep]
-  const unit = curriculumRegistry.find(candidate => candidate.lessons.some(lesson => lesson.title === title))
+  const unit = curriculumRegistry.find(candidate => unitLessons(candidate).some(lesson => lesson.title === title))
   const unitTitle = unit?.title ?? 'الوحدة التعليمية'
   const position = activeStep + 1
   const positionPercent = Math.round((position / steps.length) * 100)

@@ -1,4 +1,13 @@
-import type { UnitMeta } from '../types'
+import type { LessonMeta, UnitMeta } from '../types'
+
+/**
+ * Student-facing lesson order: the assessed lesson sequence first, then supplementary review
+ * lessons. Review lessons are real routed lesson pages but are deliberately kept out of
+ * `lessons` so the taught sequence, its lesson tests, and the unit test stay unchanged.
+ */
+export function unitLessons(unit: UnitMeta): readonly LessonMeta[] {
+  return unit.reviewLessons?.length ? [...unit.lessons, ...unit.reviewLessons] : unit.lessons
+}
 
 export const curriculumRegistry: UnitMeta[] = [
   {
@@ -40,6 +49,12 @@ export const curriculumRegistry: UnitMeta[] = [
       { id: 'decimal-parts-three', title: 'الأجزاء العشرية (3)', description: 'كتابة الأجزاء من ألف وقراءتها، وربطها بالأجزاء من عشرة ومئة، ومقارنتها على خط الأعداد.', availability: 'available' },
       { id: 'rectangle', title: 'المستطيل', description: 'تعريف المستطيل بوصفه متوازي أضلاع فيه زاوية قائمة، وخواصه، ورسمه بالمسطرة والمنقلة أو الكوس.', availability: 'available' },
       { id: 'square', title: 'المربّع', description: 'تعريفا المربّع المتكافئان وخواصّه الثلاث ورسمه بالمسطرة والمنقلة أو الكوس، مع تعليل كونه مربّعاً أو ليس مربّعاً وأطوال في شكل مركّب.', availability: 'available' },
+    ],
+    // The existing review lesson is student-visible from the Unit 2 card without joining the ten
+    // assessed lessons: it has no standalone lesson test, and the 60-question unit test blueprint
+    // continues to cover exactly the ten taught lessons.
+    reviewLessons: [
+      { id: 'unit-2-exercises', title: 'تمرينات الوحدة الثانية', description: 'درس مراجعة ختامي يحل تمارين الكتاب ص 85–86 خطوة بخطوة، ويعينك على الاستعداد لاختبار الوحدة.', availability: 'available' },
     ],
   },
 ]

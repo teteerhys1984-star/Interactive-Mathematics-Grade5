@@ -27,6 +27,11 @@ assert.ok(unitTwo, 'unit 2 is registered')
 assert.ok(readFileSync('src/content/lessonComponents.tsx', 'utf8').includes("'unit-2-exercises': Unit2ExercisesLesson"), 'lesson is wired into the shared route map')
 assert.ok(readFileSync('src/main.tsx', 'utf8').includes("import './lesson-unit2-exercises.css'"), 'lesson stylesheet is loaded')
 assert.ok(readFileSync('src/teacher/TeacherArea.tsx', 'utf8').includes("lessonId: 'unit-2-exercises'"), 'teacher area lists the review lesson guide')
+assert.equal(unitTwo.lessons.length, 10, 'the ten assessed Unit 2 lessons stay unchanged')
+assert.ok(!unitTwo.lessons.some((lesson) => lesson.id === lessonIdCheck), 'the review lesson does not enter the assessed lesson sequence')
+assert.deepEqual(unitTwo.reviewLessons?.map((lesson) => lesson.id), [lessonIdCheck], 'the review lesson is registered exactly once in the student Unit 2 list')
+assert.equal(unitTwo.reviewLessons?.[0]?.title, lessonTitle)
+assert.equal(unitTwo.reviewLessons?.[0]?.availability, 'available')
 
 /* ------------------------------------------------------------------ source ledger */
 assert.deepEqual(pages, [85, 86])
