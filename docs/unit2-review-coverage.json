@@ -1,0 +1,427 @@
+{
+  "lessonId": "unit-2-exercises",
+  "title": "تمرينات الوحدة الثانية",
+  "sourcePages": [
+    85,
+    86
+  ],
+  "totals": {
+    "elements": 12,
+    "branches": 38,
+    "anchors": 50,
+    "bookTasks": 11,
+    "teacherTextbookEntries": 50,
+    "teacherPlatformEntries": 7,
+    "confirmed": 50,
+    "partial": 0,
+    "unresolved": 0
+  },
+  "elements": [
+    {
+      "id": "u2-p85-intro",
+      "page": 85,
+      "kind": "content",
+      "sourceStatus": "confirmed",
+      "section": "عنوان صفحتَي التمرينات",
+      "teacherEntryIds": [
+        "t-u2-p85-intro"
+      ],
+      "branches": []
+    },
+    {
+      "id": "u2-p85-q1",
+      "page": 85,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ① · جدول الخانات والصيغة اللفظية",
+      "teacherEntryIds": [
+        "t-u2-p85-q1"
+      ],
+      "branches": [
+        {
+          "id": "u2-p85-q1-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p85-q1-a"
+          ]
+        },
+        {
+          "id": "u2-p85-q1-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p85-q1-b"
+          ]
+        },
+        {
+          "id": "u2-p85-q1-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p85-q1-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p85-q2",
+      "page": 85,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ② · مقارنة كلفة إصلاح بناءين",
+      "teacherEntryIds": [
+        "t-u2-p85-q2"
+      ],
+      "branches": []
+    },
+    {
+      "id": "u2-p85-q3",
+      "page": 85,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ③ · ترتيب عينات الجراثيم (من العلوم)",
+      "teacherEntryIds": [
+        "t-u2-p85-q3"
+      ],
+      "branches": []
+    },
+    {
+      "id": "u2-p85-q4",
+      "page": 85,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ④ · لغز العدد المجهول",
+      "teacherEntryIds": [
+        "t-u2-p85-q4"
+      ],
+      "branches": []
+    },
+    {
+      "id": "u2-p85-q5",
+      "page": 85,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑤ · المضاعف المشترك الأصغر",
+      "teacherEntryIds": [
+        "t-u2-p85-q5"
+      ],
+      "branches": [
+        {
+          "id": "u2-p85-q5-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-a"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-b"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-c"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-d",
+          "label": "د",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-d"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-e",
+          "label": "هـ",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-e"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-f",
+          "label": "و",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-f"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-g",
+          "label": "ز",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-g"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-h",
+          "label": "ح",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-h"
+          ]
+        },
+        {
+          "id": "u2-p85-q5-t",
+          "label": "ط",
+          "teacherEntryIds": [
+            "t-u2-p85-q5-t"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p85-q6",
+      "page": 85,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑥ · رموز المقارنة (يمتد من ص 85 إلى ص 86)",
+      "teacherEntryIds": [
+        "t-u2-p85-q6"
+      ],
+      "branches": [
+        {
+          "id": "u2-p85-q6-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p85-q6-a"
+          ]
+        },
+        {
+          "id": "u2-p85-q6-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p85-q6-b"
+          ]
+        },
+        {
+          "id": "u2-p85-q6-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p85-q6-c"
+          ]
+        },
+        {
+          "id": "u2-p85-q6-d",
+          "label": "د",
+          "teacherEntryIds": [
+            "t-u2-p85-q6-d"
+          ]
+        },
+        {
+          "id": "u2-p85-q6-e",
+          "label": "هـ",
+          "teacherEntryIds": [
+            "t-u2-p85-q6-e"
+          ]
+        },
+        {
+          "id": "u2-p85-q6-f",
+          "label": "و",
+          "teacherEntryIds": [
+            "t-u2-p85-q6-f"
+          ]
+        },
+        {
+          "id": "u2-p86-q6-g",
+          "label": "ز",
+          "teacherEntryIds": [
+            "t-u2-p86-q6-g"
+          ]
+        },
+        {
+          "id": "u2-p86-q6-h",
+          "label": "ح",
+          "teacherEntryIds": [
+            "t-u2-p86-q6-h"
+          ]
+        },
+        {
+          "id": "u2-p86-q6-t",
+          "label": "ط",
+          "teacherEntryIds": [
+            "t-u2-p86-q6-t"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p86-q7",
+      "page": 86,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑦ · ترتيب الكسور تصاعدياً",
+      "teacherEntryIds": [
+        "t-u2-p86-q7"
+      ],
+      "branches": [
+        {
+          "id": "u2-p85-q7-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p85-q7-a"
+          ]
+        },
+        {
+          "id": "u2-p86-q7-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p86-q7-b"
+          ]
+        },
+        {
+          "id": "u2-p86-q7-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p86-q7-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p86-q8",
+      "page": 86,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑧ · ترتيب الكسور تنازلياً",
+      "teacherEntryIds": [
+        "t-u2-p86-q8"
+      ],
+      "branches": [
+        {
+          "id": "u2-p86-q8-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p86-q8-a"
+          ]
+        },
+        {
+          "id": "u2-p86-q8-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p86-q8-b"
+          ]
+        },
+        {
+          "id": "u2-p86-q8-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p86-q8-c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p86-q9",
+      "page": 86,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑨ · من الكسر المركب إلى كسر عادي",
+      "teacherEntryIds": [
+        "t-u2-p86-q9"
+      ],
+      "branches": [
+        {
+          "id": "u2-p86-q9-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p86-q9-a"
+          ]
+        },
+        {
+          "id": "u2-p86-q9-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p86-q9-b"
+          ]
+        },
+        {
+          "id": "u2-p86-q9-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p86-q9-c"
+          ]
+        },
+        {
+          "id": "u2-p86-q9-d",
+          "label": "د",
+          "teacherEntryIds": [
+            "t-u2-p86-q9-d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p86-q10",
+      "page": 86,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑩ · من كسر عادي إلى كسر مركب",
+      "teacherEntryIds": [
+        "t-u2-p86-q10"
+      ],
+      "branches": [
+        {
+          "id": "u2-p86-q10-a",
+          "label": "أ",
+          "teacherEntryIds": [
+            "t-u2-p86-q10-a"
+          ]
+        },
+        {
+          "id": "u2-p86-q10-b",
+          "label": "ب",
+          "teacherEntryIds": [
+            "t-u2-p86-q10-b"
+          ]
+        },
+        {
+          "id": "u2-p86-q10-c",
+          "label": "ج",
+          "teacherEntryIds": [
+            "t-u2-p86-q10-c"
+          ]
+        },
+        {
+          "id": "u2-p86-q10-d",
+          "label": "د",
+          "teacherEntryIds": [
+            "t-u2-p86-q10-d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2-p86-q11",
+      "page": 86,
+      "kind": "exercise",
+      "sourceStatus": "confirmed",
+      "section": "السؤال ⑪ · المستطيل والمربّع: حساب الأطوال",
+      "teacherEntryIds": [
+        "t-u2-p86-q11"
+      ],
+      "branches": [
+        {
+          "id": "u2-p86-q11-a",
+          "label": "DG",
+          "teacherEntryIds": [
+            "t-u2-p86-q11-a"
+          ]
+        },
+        {
+          "id": "u2-p86-q11-b",
+          "label": "AB",
+          "teacherEntryIds": [
+            "t-u2-p86-q11-b"
+          ]
+        },
+        {
+          "id": "u2-p86-q11-c",
+          "label": "CB",
+          "teacherEntryIds": [
+            "t-u2-p86-q11-c"
+          ]
+        }
+      ]
+    }
+  ]
+}
