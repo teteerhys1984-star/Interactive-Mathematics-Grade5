@@ -46,6 +46,8 @@ for (const element of unit2ExercisesSourceElements) {
   for (const field of ['prompt', 'given', 'required', 'rule', 'why', 'answer', 'check'] as const) assert.ok(element[field].trim(), `${element.id} has ${field}`)
   assert.ok(element.steps.length >= 1, `${element.id} has solution steps`)
   for (const branch of element.branches ?? []) {
+    // Question 6 spans two pages: compare question numbers, not parent page prefixes.
+    assert.equal(branch.id.match(/-q(\d+)-/)?.[1], element.id.match(/-q(\d+)$/)?.[1], `${branch.id} matches its parent question`)
     for (const field of ['prompt', 'given', 'required', 'rule', 'why', 'answer', 'check'] as const) assert.ok(branch[field].trim(), `${branch.id} has ${field}`)
     assert.ok(branch.steps.length >= 1, `${branch.id} has solution steps`)
   }
@@ -109,6 +111,7 @@ for (const item of q6Items) {
 /* ⑦ ascending / ⑧ descending groups */
 for (const [groups, direction] of [[q7Groups, 'asc'], [q8Groups, 'desc']] as const) {
   for (const group of groups) {
+    assert.match(group.id, new RegExp(`^u2-p${group.page}-q${direction === 'asc' ? 7 : 8}-[a-z]+$`), `${group.id} matches its own page and ordering question`)
     assert.equal(group.items.length, 4, `${group.id} carries four printed fractions`)
     for (const item of group.items) assert.equal(item.kind, 'fraction', `${group.id} items are plain fractions`)
     const values = group.items.map((item) => valueOf(item))
