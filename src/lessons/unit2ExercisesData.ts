@@ -355,7 +355,7 @@ const ORDER_ASC_WHY = 'الترتيب التصاعدي يبدأ بأصغر كس�
 const ORDER_DESC_WHY = 'الترتيب التنازلي يبدأ بأكبر كسر؛ بعد توحيد المقامات نرتب البسوط من الأكبر إلى الأصغر.'
 
 export const q7Groups: OrderGroup[] = [
-  { id: 'u2-p85-q7-a', label: 'أ', page: 86, items: [frac(7, 8), frac(1, 4), frac(1, 2), frac(1, 8)], commonDenominator: 8, steps: [], pitfall: 'ترتيب الكسور حسب المقام (أكبر مقام يظن أصغر) قبل التوحيد.' },
+  { id: 'u2-p86-q7-a', label: 'أ', page: 86, items: [frac(7, 8), frac(1, 4), frac(1, 2), frac(1, 8)], commonDenominator: 8, steps: [], pitfall: 'ترتيب الكسور حسب المقام (أكبر مقام يظن أصغر) قبل التوحيد.' },
   { id: 'u2-p86-q7-b', label: 'ب', page: 86, items: [frac(5, 6), frac(1, 3), frac(7, 12), frac(3, 4)], commonDenominator: 12, steps: [] },
   { id: 'u2-p86-q7-c', label: 'ج', page: 86, items: [frac(1, 5), frac(3, 4), frac(7, 10), frac(1, 20)], commonDenominator: 20, steps: [] },
 ]

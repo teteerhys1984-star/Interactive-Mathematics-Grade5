@@ -1,9 +1,8 @@
 /**
- * A jsdom + Testing Library interaction smoke test used ONLY for local verification in this
- * sandbox (no real Chromium is reachable here). It renders the real App component tree, clicks
- * through every lesson step exactly like a student would, unlocks Teacher Area, and checks the
- * RTL/LTR boundaries in the actual rendered DOM. Not part of `npm run build`; run manually with
- * `npx tsx scripts/browser-smoke-test.tsx`. jsdom/@testing-library are dev-only, not committed.
+ * A jsdom + Testing Library interaction smoke test (not a real Chromium test).
+ * Renders the real App, navigates lesson steps, unlocks Teacher Area, and checks RTL/LTR
+ * boundaries in the DOM. Runs in quality-check/build, including CI, using devDependencies.
+ * Run independently with `npm run browser-smoke-test`.
  */
 import { JSDOM } from 'jsdom'
 import { createServer } from 'vite'

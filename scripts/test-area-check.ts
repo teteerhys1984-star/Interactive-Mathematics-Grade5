@@ -707,6 +707,33 @@ async function main(): Promise<void> {
   }
 
   // ---------------------------------------------------------------- Unit 2 test audit
+  // Regression: explicit ordinal labels avoid RTL-dependent left/right comparisons.
+  const comparison = unitTwoTest.questions.find((question) => question.id === 'unit-unit-2-test-q01')!
+  assert.ok(comparison?.type === 'single-choice')
+  assert.equal(flattenRich(comparison.prompt), 'أيّ زوج من الأعداد فيه العدد الأول أصغر من العدد الثاني؟')
+  const pairs = comparison.options.map((option) => {
+    const match = /^الأول: ([\d,]+)؛ الثاني: ([\d,]+)$/.exec(flattenRich(option.label))
+    assert.ok(match, `${option.id} explicitly identifies both numbers`)
+    return { id: option.id, first: match[1], second: match[2] }
+  })
+  const numeric = (value: string) => Number(value.replaceAll(',', ''))
+  const correct = pairs.filter((pair) => numeric(pair.first) < numeric(pair.second))
+  assert.equal(correct.length, 1, 'Exactly one pair satisfies the prompt')
+  assert.equal(comparison.answer, correct[0].id, 'The answer key matches the unique correct pair')
+  const { first, second } = correct[0]
+  assert.equal(flattenRich(comparison.solution.finalAnswer), `${first} < ${second}`)
+  const firstDigits = String(numeric(first))
+  const secondDigits = String(numeric(second))
+  const differingIndex = [...firstDigits].findIndex((digit, index) => digit !== secondDigits[index])
+  assert.equal(differingIndex, 2, 'Only the first two places agree')
+  assert.equal(10 ** (firstDigits.length - differingIndex - 1), 10000, 'First difference is tens of thousands')
+  assert.deepEqual([firstDigits[differingIndex], secondDigits[differingIndex]], ['0', '9'])
+  assert.deepEqual(comparison.solution.steps.map(flattenRich), [
+    `في الخيار ب:  ${first}  و ${second}  متساويان في أول منزلتين: الملايين ومئات الألوف.`,
+    'تختلف منزلة عشرات الألوف: صفر في الأول مقابل 9 في الثاني، فالأول أصغر.',
+    'بقية الخيارات فيها العدد الأول أكبر من العدد الثاني.',
+  ], 'The explanation agrees with the independently recomputed place values')
+
   assert.equal(unitTwoTest.type, 'unit')
   assert.equal(unitTwoTest.type === 'unit' ? unitTwoTest.unitId : '', 'unit-2')
   assert.equal(unitTwoTest.questions.length, EXPECTED_UNIT_QUESTION_COUNT, 'The Unit 2 test targets 60 questions.')
