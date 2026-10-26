@@ -16,6 +16,14 @@ import {
   toSvgPoint,
 } from '../src/components/lesson/coordinates'
 import { finalAssessment, lessonOneRequiredSolutionIds, lessonOneTeacherEntries } from '../src/teacher/lesson1'
+import { lessonTwoTeacherEntries } from '../src/teacher/lesson2'
+import { lessonSixTeacherEntries } from '../src/teacher/lesson6'
+import { lessonSevenTeacherEntries } from '../src/teacher/lesson7'
+import { lessonEightTeacherEntries } from '../src/teacher/lesson8'
+import { TeacherLessonView, type TeacherLessonData } from '../src/teacher/TeacherLessonView'
+import { TeacherUnitExercisesView } from '../src/teacher/TeacherUnitExercisesView'
+import { rectangleAllTeacherEntries } from '../src/lessons/rectangleData'
+import { squareAllTeacherEntries } from '../src/lessons/squareData'
 import { isLessonOneFinalAnswerCorrect } from '../src/lessons/CoordinatesLesson'
 
 assertCoordinateConvention()
@@ -146,6 +154,160 @@ for (const span of Array.from(arabicProseParensEl.querySelectorAll('span[dir="lt
   assertBalancedParens(span.textContent ?? '', 'BidiText Arabic prose parenthetical')
   assert.ok(!/[\u0600-\u06FF]/u.test(span.textContent ?? ''), 'Pure Arabic parenthetical must not be marked dir="ltr"')
 }
+
+// 4c. TeacherLessonView & TeacherUnitExercisesView regression: combining hats (\u0302), rays/segments ([BC), [AB]), and ordered pairs
+function assertNoSplitCombiningOrGeometryInDom(root: HTMLElement, context: string) {
+  const doc = root.ownerDocument
+  const walker = doc.createTreeWalker(root, 4 /* NodeFilter.SHOW_TEXT */)
+  let current = walker.nextNode()
+  while (current) {
+    const val = current.nodeValue ?? ''
+    assert.ok(!/^[\u0300-\u036f]/u.test(val), `Detached leading combining mark in ${context} text node: ${JSON.stringify(val)}`)
+    const hatCount = (val.match(/\u0302/gu) ?? []).length
+    const attachedHatCount = (val.match(/[A-Za-z]\u0302/gu) ?? []).length
+    assert.equal(hatCount, attachedHatCount, `Unattached U+0302 in ${context} text node: ${JSON.stringify(val)}`)
+    current = walker.nextNode()
+  }
+  for (const span of Array.from(root.querySelectorAll('span[dir="ltr"]'))) {
+    const txt = span.textContent ?? ''
+    const opens = (txt.match(/[\[(]/g) ?? []).length
+    const closes = (txt.match(/[\])]/g) ?? []).length
+    assert.equal(opens, closes, `Unbalanced bracket/paren delimiter in ${context} LTR span: ${JSON.stringify(txt)}`)
+  }
+  for (const bidiRoot of Array.from(root.querySelectorAll('span[dir="rtl"]'))) {
+    const children = Array.from(bidiRoot.children) as HTMLElement[]
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i]
+      if (child.getAttribute('dir') === 'ltr') continue
+      const txt = child.textContent ?? ''
+      const next = children[i + 1]
+      const prev = children[i - 1]
+      if (next?.getAttribute('dir') === 'ltr' && /^[A-Za-zÂĈÊÎÔÛŴŶẐâĉêîôûŵŷẑ]/u.test(next.textContent ?? '')) {
+        assert.ok(!txt.endsWith('['), `Split opening "[" before LTR vertex run "${next.textContent}" in ${context}: ${bidiRoot.textContent}`)
+      }
+      if (prev?.getAttribute('dir') === 'ltr' && /[A-Za-zÂĈÊÎÔÛŴŶẐâĉêîôûŵŷẑ][\u0300-\u036f]*$/u.test(prev.textContent ?? '')) {
+        assert.ok(!txt.startsWith(']'), `Split closing "]" after LTR vertex run "${prev.textContent}" in ${context}: ${bidiRoot.textContent}`)
+      }
+    }
+  }
+}
+
+const auditedTeacherLessons: TeacherLessonData[] = [
+  { lessonId: 'coordinates', lessonTitle: 'شبكة الإحداثيات', entries: lessonOneTeacherEntries },
+  { lessonId: 'line-graphs', lessonTitle: 'التمثيلات البيانية بالخطوط', entries: lessonTwoTeacherEntries },
+  { lessonId: 'angle-measurement', lessonTitle: 'قياس الزوايا', entries: lessonSixTeacherEntries },
+  { lessonId: 'parallelogram', lessonTitle: 'متوازي الأضلاع', entries: lessonSevenTeacherEntries },
+  { lessonId: 'rhombus', lessonTitle: 'المعيّن', entries: lessonEightTeacherEntries },
+  { lessonId: 'rectangle', lessonTitle: 'المستطيل', entries: rectangleAllTeacherEntries },
+  { lessonId: 'square', lessonTitle: 'المربّع', entries: squareAllTeacherEntries },
+]
+
+const renderedTeacherById = new Map<string, HTMLElement>()
+for (const lesson of auditedTeacherLessons) {
+  const el = renderDom(createElement(TeacherLessonView, { lesson }))
+  assertNoSplitCombiningOrGeometryInDom(el, `TeacherLessonView(${lesson.lessonId})`)
+  renderedTeacherById.set(lesson.lessonId, el)
+}
+const unitExTeacherEl = renderDom(createElement(TeacherUnitExercisesView))
+assertNoSplitCombiningOrGeometryInDom(unitExTeacherEl, 'TeacherUnitExercisesView')
+
+function ltrTokensIn(container: Element | null): string[] {
+  assert.ok(container, 'Expected TeacherLessonView section container to exist')
+  return Array.from(container.querySelectorAll('span[dir="ltr"]')).map((el) => el.textContent ?? '')
+}
+
+// Explicit check of D̂ = 130°, B̂, M̂, P̂, K̂, Ŷ, [BC), [AB], ŜQB, Â, Ĉ in TeacherLessonView reasoning & note
+const rhombusView = renderedTeacherById.get('rhombus')!
+const angleDCard = rhombusView.querySelector('[data-source-id="l8-p37-check3-angle-d"]')!
+const angleDReasoningFinalLi = Array.from(angleDCard.querySelectorAll('ol li')).find((li) => (li.textContent ?? '').includes('D\u0302 = 130°'))
+assert.ok(angleDReasoningFinalLi, 'Expected rhombus l8-p37-check3-angle-d reasoning to include "D̂ = 130°"')
+const angleDFinalLtrSpans = Array.from(angleDReasoningFinalLi.querySelectorAll('span[dir="ltr"]'))
+const dHatSpan = angleDFinalLtrSpans.find((el) => el.textContent === 'D\u0302')
+assert.ok(dHatSpan, 'Expected "D̂" in "D̂ = 130°" to be isolated intact inside a single LTR span')
+assert.equal(dHatSpan.childNodes.length, 1, 'Expected "D̂" span to hold a single text node keeping D and U+0302 attached')
+assert.equal(dHatSpan.firstChild?.nodeValue, 'D\u0302')
+assert.ok(angleDFinalLtrSpans.some((el) => el.textContent === '130°'), 'Expected "130°" in "D̂ = 130°" to be isolated intact')
+assert.ok(ltrTokensIn(angleDCard.querySelector('ol')).includes('B\u0302'), 'Expected rhombus reasoning to keep B̂ intact')
+for (const expectedNoteSym of ['D\u0302', 'B\u0302', 'Â']) {
+  assert.ok(ltrTokensIn(angleDCard.querySelector('.teacher-note')).includes(expectedNoteSym), `Expected rhombus note to keep ${expectedNoteSym} intact`)
+}
+
+const rhombusFinal3Ltr = ltrTokensIn(rhombusView.querySelector('[data-source-id="l8-final-3"] ol'))
+assert.ok(rhombusFinal3Ltr.includes('M\u0302') && rhombusFinal3Ltr.includes('P\u0302'), 'Expected rhombus l8-final-3 reasoning to keep M̂ and P̂ intact')
+const rhombusFinal4Ltr = ltrTokensIn(rhombusView.querySelector('[data-source-id="l8-final-4"] ol'))
+assert.ok(rhombusFinal4Ltr.includes('K\u0302') && rhombusFinal4Ltr.includes('M\u0302'), 'Expected rhombus l8-final-4 reasoning to keep K̂ and M̂ intact')
+
+const squareView = renderedTeacherById.get('square')!
+assert.ok(ltrTokensIn(squareView.querySelector('[data-source-id="t-sq-p84-ex2-z"] ol')).includes('Y\u0302'), 'Expected square reasoning to keep Ŷ intact')
+const sqStep5NoteLtr = ltrTokensIn(squareView.querySelector('[data-source-id="t-sq-p83-step-5"] .teacher-note'))
+for (const sym of ['[AB]', '[AD]', 'D\u0302', 'Ĉ']) {
+  assert.ok(sqStep5NoteLtr.includes(sym), `Expected square note to keep ${sym} intact`)
+}
+
+const rectView = renderedTeacherById.get('rectangle')!
+const rectAngleLabCard = rectView.querySelector('[data-source-id="t-rect-platform-angle-lab"]')!
+for (const sym of ['D\u0302', 'B\u0302', 'Â', 'Ĉ']) {
+  assert.ok(ltrTokensIn(rectAngleLabCard.querySelector('ol')).includes(sym), `Expected rectangle reasoning to keep ${sym} intact`)
+  assert.ok(ltrTokensIn(rectAngleLabCard.querySelector('.teacher-note')).includes(sym), `Expected rectangle note to keep ${sym} intact`)
+}
+for (const sym of ['[AB]', '[DC]']) {
+  assert.ok(ltrTokensIn(rectView.querySelector('[data-source-id="t-rect-p79-construction-step2"] .teacher-note')).includes(sym), `Expected rectangle note to keep ${sym} intact`)
+}
+
+const anglesView = renderedTeacherById.get('angle-measurement')!
+assert.ok(ltrTokensIn(anglesView.querySelector('[data-source-id="l6-p26-draw-steps"] ol')).includes('[BC)'), 'Expected angles reasoning to keep ray [BC) intact in a single LTR span')
+assert.ok(ltrTokensIn(anglesView.querySelector('[data-source-id="l6-p26-draw-example"] ol')).includes('[BC)'), 'Expected angles example reasoning to keep ray [BC) intact')
+const allAnglesLtr = ltrTokensIn(anglesView)
+for (const sym of ['[AB)', '[AC)', 'S\u0302QB', 'K\u0302LM', '∠BAC']) {
+  assert.ok(allAnglesLtr.includes(sym), `Expected angle-measurement TeacherLessonView to keep ${sym} intact`)
+}
+
+// Re-verify ordered pairs inside TeacherLessonView (both real lessons and combined geometry + mixed ordered pairs in reasoning/note)
+const coordsView = renderedTeacherById.get('coordinates')!
+for (const pairToken of ['O(0,0)', '(5,0)', '(0,4)', '(x,y)', '(9,5)', '(5,9)']) {
+  assert.ok(ltrTokensIn(coordsView.querySelector('[data-source-id="source-map"] ol, .teacher-entries')).length > 0)
+  assert.ok(ltrTokensIn(coordsView).includes(pairToken), `Expected coordinates TeacherLessonView to keep ${pairToken} intact`)
+}
+const lineGraphsFridayBdi = Array.from(
+  renderedTeacherById.get('line-graphs')!.querySelectorAll('[data-source-id="lg-p8-example"] span[dir="ltr"] bdi'),
+).map((el) => el.textContent)
+assert.deepEqual(lineGraphsFridayBdi, ['الجمعة', '17'], 'Expected line-graphs TeacherLessonView to keep (الجمعة، 17) isolated in LTR order')
+
+const combinedLessonView = renderDom(
+  createElement(TeacherLessonView, {
+    lesson: {
+      lessonId: 'combined-regression',
+      lessonTitle: 'اختبار تكاملي',
+      entries: [
+        {
+          id: 'combo-1',
+          title: 'رموز هندسية مع أزواج مرتبة مختلطة',
+          prompt: 'قارن [BC) مع الزوج (الجمعة، 17).',
+          answer: 'D̂ = 130° عند (عدد, 0).',
+          source: { type: 'platform' },
+          reasoning: [
+            'الإجابة النهائية: D̂ = 130°، مع B̂ وM̂ وP̂ وK̂ وŶ على الشعاع [BC) والقطعة [AB] والزاوية ∠HUR.',
+            'المحور الأفقي (عدد, 0) والمحور الشاقولي (0, عدد) والزوج (الجمعة، 17) والقالب (الأفقي، الشاقولي) والرمز (x,y).',
+          ],
+          note: 'ملاحظة: في D̂ = 130° وشعاع [BC) والقطعة [AB] يبقى الزوج (الجمعة، 17) والزوج (0, عدد) معزولين دون كسر القبعة.',
+        },
+      ],
+    },
+  }),
+)
+assertNoSplitCombiningOrGeometryInDom(combinedLessonView, 'TeacherLessonView(combined-regression)')
+const comboReasoningLtr = ltrTokensIn(combinedLessonView.querySelector('ol'))
+for (const sym of ['D\u0302', '130°', 'B\u0302', 'M\u0302', 'P\u0302', 'K\u0302', 'Y\u0302', '[BC)', '[AB]', '∠HUR', '(x,y)']) {
+  assert.ok(comboReasoningLtr.includes(sym), `Combined reasoning must keep ${sym} intact`)
+}
+const comboReasoningBdi = Array.from(combinedLessonView.querySelectorAll('ol span[dir="ltr"] bdi')).map((el) => el.textContent)
+assert.deepEqual(comboReasoningBdi, ['عدد', '0', '0', 'عدد', 'الجمعة', '17', 'الأفقي', 'الشاقولي'])
+const comboNoteLtr = ltrTokensIn(combinedLessonView.querySelector('.teacher-note'))
+for (const sym of ['D\u0302', '130°', '[BC)', '[AB]']) {
+  assert.ok(comboNoteLtr.includes(sym), `Combined note must keep ${sym} intact`)
+}
+const comboNoteBdi = Array.from(combinedLessonView.querySelectorAll('.teacher-note span[dir="ltr"] bdi')).map((el) => el.textContent)
+assert.deepEqual(comboNoteBdi, ['الجمعة', '17', '0', 'عدد'])
 
 // 5. Lesson 1 FinalTest answer checker & teacher solution coverage
 assert.equal(isLessonOneFinalAnswerCorrect('final-1', '(3,5)', '3,5'), true)
