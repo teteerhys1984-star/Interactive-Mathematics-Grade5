@@ -72,17 +72,25 @@ async function main() {
     goTo('#unit-exercises/unit-1')
     console.log('PASS Student index: question/page anchors preserve the standalone exercise route.')
 
-    // Q1 matching: all four original branches are represented and validated in order.
+    // Q1 matching: verify (x,y) LTR isolation, reject swapped (4,0)/(0,4), then validate all four pairs in order.
+    const q1 = container.querySelector('#unit-exercise-1')!
+    const q1LtrTokens = Array.from(q1.querySelectorAll('span[dir="ltr"]')).map((el) => el.textContent)
+    assert.ok(q1LtrTokens.includes('(x,y)'), 'Q1 explanation must keep (x,y) intact in a single LTR span')
+    fireEvent.change(container.querySelector('#match-p40-q01-c')!, { target: { value: '(0,4)' } })
+    fireEvent.change(container.querySelector('#match-p40-q01-d')!, { target: { value: '(4,0)' } })
+    fireEvent.click(within(q1).getByRole('button', { name: 'تحقّق من المطابقة' }))
+    assert.ok(within(q1).getByText(/راجع ترتيب/), 'Swapped horizontal/vertical axis matches must be rejected')
+    const q1TemplateBdi = Array.from(q1.querySelectorAll('.unit-exercise-feedback .math-expression bdi')).map((el) => el.textContent)
+    assert.deepEqual(q1TemplateBdi, ['الأفقي', 'الشاقولي'])
     const matches = [
       ['p40-q01-a', '(5,2)'], ['p40-q01-b', '(2,5)'],
       ['p40-q01-c', '(4,0)'], ['p40-q01-d', '(0,4)'],
     ] as const
     // The selects are labelled by the full source sentence, so address them by stable IDs.
     for (const [id, value] of matches) fireEvent.change(container.querySelector(`#match-${id}`)!, { target: { value } })
-    const q1 = container.querySelector('#unit-exercise-1')!
     fireEvent.click(within(q1).getByRole('button', { name: 'تحقّق من المطابقة' }))
     assert.ok(within(q1).getByText(/طابقت العبارات الأربع/))
-    console.log('PASS Q1 matching interaction checks all four coordinate pairs.')
+    console.log('PASS Q1 matching interaction checks (x,y) Bidi order, swapped-axis rejection, and all four coordinate pairs.')
 
     // Q2: click to place A, B and C on the exact lattice points, then enter D.
     for (const [name, x, y] of [['A', 2, 1], ['B', 4, 1], ['C', 1, 3]] as const) {
@@ -91,14 +99,22 @@ async function main() {
       fireEvent.click(target!)
     }
     const dInput = screen.getByLabelText('إحداثيا D للرباعي ABDC')
-    fireEvent.change(dInput, { target: { value: '(3,3)' } })
     const dForm = dInput.closest('form')!
-    fireEvent.click(within(dForm).getByRole('button', { name: 'تحقّق' }))
+    for (const badAnswer of ['33', '(1,3)', 'A(3,3)']) {
+      fireEvent.change(dInput, { target: { value: badAnswer } })
+      fireEvent.click(within(dForm).getByRole('button', { name: 'تحقّق' }))
+      assert.ok(within(dForm).getByText(/ليست مطابقة بعد/), `Q2 must reject invalid or ambiguous coordinate "${badAnswer}"`)
+    }
+    for (const validAnswer of ['D(3,3)', '(3، 3)', '(٣,٣)', '(3,3)']) {
+      fireEvent.change(dInput, { target: { value: validAnswer } })
+      fireEvent.click(within(dForm).getByRole('button', { name: 'تحقّق' }))
+      assert.ok(within(dForm).getByText(/إجابتك صحيحة/), `Q2 must accept equivalent valid coordinate "${validAnswer}"`)
+    }
     const q2 = container.querySelector('#unit-exercise-2')!
     fireEvent.click(within(q2).getByRole('button', { name: 'تحقّق من تمثيل A وB وC' }))
     assert.ok(within(q2).getByText(/النقاط الثلاث في مواضعها الصحيحة/))
     assert.ok(within(dForm).getByText(/إجابتك صحيحة/))
-    console.log('PASS Q2 coordinate plotting, ordered vertices ABDC, and D(3,3) answer check.')
+    console.log('PASS Q2 coordinate plotting, ordered vertices ABDC, and D(3,3) equivalent/ambiguous answer checks.')
 
     // Q3 and Q4: numeric entry and all six missing column-addition digits.
     const arithmeticAnswers = [

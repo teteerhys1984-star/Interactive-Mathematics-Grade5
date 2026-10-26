@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { ArrowLeft, BookOpenCheck, Check, RotateCcw, Ruler } from 'lucide-react'
 import { BidiText } from '../components/BidiText'
 import { MathExpression } from '../components/MathExpression'
+import { isSameOrderedPair, parseOrderedPair, toSvgPoint } from '../components/lesson/coordinates'
 import {
   columnAdditionExercises,
   coordinateMatchOptions,
@@ -28,6 +29,7 @@ function normalizeAnswer(value: string): string {
 }
 
 function answersMatch(value: string, expected: string): boolean {
+  if (parseOrderedPair(expected) !== null) return isSameOrderedPair(value, expected)
   return normalizeAnswer(value) === normalizeAnswer(expected)
 }
 
@@ -117,14 +119,14 @@ function MatchingActivity({ question }: { question: UnitOneBookExercise }) {
       <h3>العمود (A)</h3>
       {question.tasks.map((task) => <div className="matching-source-row" id={`student-task-${task.id}`} key={task.id}>
         <label htmlFor={`match-${task.id}`}><BranchTag branch={task.branch} /><BidiText>{task.sourceText}</BidiText></label>
-        <select id={`match-${task.id}`} value={answers[task.id] ?? ''} onChange={(event) => { setAnswers((previous) => ({ ...previous, [task.id]: event.target.value })); setChecked(false) }}>
+        <select id={`match-${task.id}`} dir="ltr" value={answers[task.id] ?? ''} onChange={(event) => { setAnswers((previous) => ({ ...previous, [task.id]: event.target.value })); setChecked(false) }}>
           <option value="">اختر الثنائية</option>
           {coordinateMatchOptions.map((pair) => <option value={pair} key={pair}>{pair}</option>)}
         </select>
       </div>)}
     </div>
     <button type="button" className="unit-exercise-check-button" onClick={() => setChecked(true)}>تحقّق من المطابقة</button>
-    {checked && <p className={`unit-exercise-feedback ${correct ? 'is-correct' : 'is-retry'}`} role="status">{correct ? 'أحسنت، طابقت العبارات الأربع بالثنائيات الصحيحة.' : 'راجع ترتيب (الأفقي، الشاقولي) في كل عبارة، ثم تحقّق من المطابقة مرة أخرى.'}</p>}
+    {checked && <p className={`unit-exercise-feedback ${correct ? 'is-correct' : 'is-retry'}`} role="status">{correct ? 'أحسنت، طابقت العبارات الأربع بالثنائيات الصحيحة.' : <>راجع ترتيب <MathExpression>(الأفقي، الشاقولي)</MathExpression> في كل عبارة، ثم تحقّق من المطابقة مرة أخرى.</>}</p>}
   </div>
 }
 
@@ -157,8 +159,9 @@ function CoordinatePlane({
   const height = top + yMax * cell + bottom
   const originX = left
   const originY = top + yMax * cell
-  const xPixel = (x: number) => originX + x * cell
-  const yPixel = (y: number) => originY - y * cell
+  const origin = { x: originX, y: originY }
+  const xPixel = (x: number) => toSvgPoint({ x, y: 0 }, origin, cell).cx
+  const yPixel = (y: number) => toSvgPoint({ x: 0, y }, origin, cell).cy
   const interactive = Boolean(onPointChoose && activeName)
   return <div className="unit-exercise-graph-scroll" dir="ltr">
     <svg className="unit-exercise-coordinate-plane" viewBox={`0 0 ${width} ${height}`} role={interactive ? 'group' : 'img'} aria-label={label} direction="ltr" style={{ unicodeBidi: 'isolate' }}>
@@ -190,7 +193,7 @@ function CoordinatePlane({
         </g>
       })}
       {showArabicAxisLabels && <>
-        <text x={width - 3} y={originY + 32} textAnchor="end" className="unit-exercise-axis-label" direction="rtl">المحور الأفقي</text>
+        <text x={width - 6} y={originY + 32} textAnchor="start" className="unit-exercise-axis-label" direction="rtl">المحور الأفقي</text>
         <text x={originX - 4} y={top - 12} textAnchor="end" className="unit-exercise-axis-label" direction="rtl">المحور الشاقولي</text>
       </>}
     </svg>
@@ -218,9 +221,9 @@ function PointPlotActivity({ task }: { task: UnitOneExerciseTask }) {
       {names.map((name) => <button key={name} type="button" aria-pressed={activeName === name} className={activeName === name ? 'is-selected' : ''} onClick={() => setActiveName(name)}>{name}{markers[name] ? <Check size={15} aria-hidden="true" /> : null}</button>)}
     </div>
     <CoordinatePlane xMax={6} yMax={5} markers={markers} activeName={activeName} onPointChoose={plot} label="شبكة إحداثيات من الأصل حتى 6 أفقياً و5 شاقولياً؛ انقر تقاطعاً لتمثيل النقطة المختارة." />
-    <div className="unit-exercise-d-coordinate"><StudentAnswerForm task={task} label="إحداثيا D للرباعي ABDC" placeholder="مثال: (3,3)" expectedAnswer="(3,3)" /></div>
+    <div className="unit-exercise-d-coordinate"><StudentAnswerForm task={task} label="إحداثيا D للرباعي ABDC" placeholder="مثال: (3,3)" /></div>
     <button type="button" className="unit-exercise-check-button" onClick={() => setChecked(true)}>تحقّق من تمثيل A وB وC</button>
-    {checked && <p className={`unit-exercise-feedback ${allCorrect ? 'is-correct' : 'is-retry'}`} role="status">{allCorrect ? 'النقاط الثلاث في مواضعها الصحيحة.' : 'تأكّد من أن ترتيب الزوج (x,y) أفقي ثم شاقولي، وأن كل نقطة على تقاطعها المطلوب.'}</p>}
+    {checked && <p className={`unit-exercise-feedback ${allCorrect ? 'is-correct' : 'is-retry'}`} role="status">{allCorrect ? 'النقاط الثلاث في مواضعها الصحيحة.' : <BidiText>تأكّد من أن ترتيب الزوج (x,y) أفقي ثم شاقولي، وأن كل نقطة على تقاطعها المطلوب.</BidiText>}</p>}
   </div>
 }
 
@@ -471,7 +474,7 @@ function TemperatureGraph() {
         <line x1={left} y1={height - bottom} x2={width - 10} y2={height - bottom} stroke="#222" strokeWidth="2" markerEnd="url(#temp-axis-arrow)" />
         <line x1={left} y1={height - bottom} x2={left} y2={top - 9} stroke="#222" strokeWidth="2" markerEnd="url(#temp-axis-arrow)" />
         <polyline points={data.points.map((point) => `${x(point.x)},${y(point.y)}`).join(' ')} fill="none" stroke="#42477d" strokeWidth="2.5" />
-        <text x={width - 8} y={height - 7} textAnchor="end" className="unit-exercise-svg-axis-label" direction="rtl">الارتفاع عن سطح البحر</text>
+        <text x={width - 8} y={height - 7} textAnchor="start" className="unit-exercise-svg-axis-label" direction="rtl">الارتفاع عن سطح البحر</text>
         <text x={left - 2} y={top - 9} className="unit-exercise-svg-axis-label" direction="rtl">درجة الحرارة</text>
         <title>الرسم معاد بناؤه من الصفحة 42. لا تذكر الصفحة وحدة قياس الارتفاع.</title>
       </svg>
@@ -527,7 +530,7 @@ function LibraryGraph() {
         <line x1={left} y1={height - bottom} x2={width - 8} y2={height - bottom} stroke="#222" strokeWidth="2" markerEnd="url(#library-axis-arrow)" />
         <line x1={left} y1={height - bottom} x2={left} y2={top - 9} stroke="#222" strokeWidth="2" markerEnd="url(#library-axis-arrow)" />
         <polyline points={libraryVisitorData.map((point, index) => `${x(index)},${y(point.visitorsThousands)}`).join(' ')} fill="none" stroke="#42477d" strokeWidth="2.5" />
-        <text x={width - 8} y={height - 8} textAnchor="end" className="unit-exercise-svg-axis-label" direction="rtl">العام</text>
+        <text x={width - 8} y={height - 8} textAnchor="start" className="unit-exercise-svg-axis-label" direction="rtl">العام</text>
         <text x={left - 2} y={top - 8} className="unit-exercise-svg-axis-label" direction="rtl">عدد الزوار بالآلاف</text>
         <title>إعادة رسم مخطط زوار المكتبة للسنوات 2011–2016 من الصفحة 43</title>
       </svg>

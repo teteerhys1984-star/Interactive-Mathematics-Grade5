@@ -90,9 +90,53 @@ async function main() {
   if (screen.queryByRole('dialog', { name: 'خطوات التعلّم' })) fail('Mobile lesson outline did not close after selecting a step')
   console.log('✅ Premium lesson chrome: breadcrumbs, accessible progress, desktop timeline and mobile bottom sheet work')
   let nextBtn = screen.getByRole('button', { name: /التالي/ })
-  for (let i = 0; i < 8; i++) { fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ }) }
+  // Step 2: الفكرة من الصفر -> Step 3: قراءة النقاط (verify (عدد, 0) vs (0, عدد) distinct LTR component order)
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  const defBoxMath = Array.from(document.querySelectorAll('.definition-box .math-expression[dir="ltr"]'))
+  if (defBoxMath.length !== 2) fail(`Expected 2 MathExpression pairs in Lesson 1 definition-box, found ${defBoxMath.length}`)
+  const horizPairParts = Array.from(defBoxMath[0].querySelectorAll('bdi')).map(el => el.textContent)
+  const vertPairParts = Array.from(defBoxMath[1].querySelectorAll('bdi')).map(el => el.textContent)
+  if (horizPairParts.join('|') !== 'عدد|0' || vertPairParts.join('|') !== '0|عدد') {
+    fail(`Lesson 1 axis ordered-pair Bidi order broken: got [${horizPairParts.join(',')}] and [${vertPairParts.join(',')}]`)
+  }
+  // Step 4: ضع النقطة -> Step 5: تحقق من فهمك (grid classification for (0,0), (5,0), (0,4))
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  const gridHits = document.querySelectorAll('.grid-hit')
+  if (gridHits.length !== 49) fail(`Expected 49 interactive grid points (0..6 × 0..6), found ${gridHits.length}`)
+  // Index in 7x7 (x outer, y inner): (0,0)->0, (5,0)->35, (0,4)->4
+  fireEvent.click(gridHits[0] as Element)
+  if (!screen.getByText(/نقطة الأصل/)) fail('Lesson 1 grid did not classify (0,0) as origin')
+  fireEvent.click(gridHits[5 * 7 + 0] as Element)
+  if (!screen.getByText(/تقع على المحور الأفقي/)) fail('Lesson 1 grid did not classify (5,0) on horizontal axis')
+  fireEvent.click(gridHits[0 * 7 + 4] as Element)
+  if (!screen.getByText(/تقع على المحور الشاقولي/)) fail('Lesson 1 grid did not classify (0,4) on vertical axis')
+  // Step 6: تدريب موجّه -> Step 7: تطبيق وتفكير -> Step 8: الخلاصة -> Step 9: الاختبار الختامي
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  const guidedInput = screen.getByLabelText('العدد الأول')
+  fireEvent.change(guidedInput, { target: { value: '٤' } })
+  fireEvent.click(screen.getByRole('button', { name: 'تحقق' }))
+  if (!screen.getByText(/أحسنت\. تحركنا أولاً 4 وحدات أفقياً/)) fail('Lesson 1 GuidedStep rejected Arabic-Indic digit ٤')
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  fireEvent.click(screen.getByRole('button', { name: '(0, 6)' }))
+  if (!screen.getByText(/فتقع على المحور الشاقولي/)) fail('Lesson 1 PracticeStep did not explain that (0, 6) lies on vertical axis')
+  fireEvent.click(screen.getByRole('button', { name: '(6, 0)' }))
+  if (!screen.getByText(/لأن العدد الثاني يساوي صفراً، فالنقطة تقع على المحور الأفقي/)) fail('Lesson 1 PracticeStep did not accept (6, 0) on horizontal axis')
+  fireEvent.click(nextBtn); nextBtn = screen.getByRole('button', { name: /التالي/ })
+  fireEvent.click(nextBtn)
   if (!screen.getByText('اختبار ختامي')) fail('Lesson 1 final test step did not render')
-  console.log('✅ Lesson 1 (شبكة الإحداثيات) steps navigate end-to-end and Lesson 1 is unaffected')
+  const finalInputs = Array.from(document.querySelectorAll<HTMLInputElement>('.final-test .test-question input'))
+  if (finalInputs.length !== 4 || finalInputs[0].getAttribute('dir') !== 'ltr' || finalInputs[1].getAttribute('dir') !== 'ltr') {
+    fail('Lesson 1 FinalTest coordinate inputs must have dir="ltr"')
+  }
+  fireEvent.change(finalInputs[0], { target: { value: '(3، 5)' } })
+  fireEvent.change(finalInputs[1], { target: { value: '(0, 6)' } })
+  fireEvent.change(finalInputs[2], { target: { value: '٨ وحدات' } })
+  fireEvent.change(finalInputs[3], { target: { value: 'الأفقي ثم الشاقولي' } })
+  fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
+  if (!screen.getByText('نتيجتك: 4 / 4')) fail('Lesson 1 FinalTest rejected valid formatted coordinate answers')
+  console.log('✅ Lesson 1 (شبكة الإحداثيات) steps, Bidi ordered pairs, axis classification, and FinalTest grading verified')
 
   // ---- Lesson 2: open and verify every step ----
   goTo('#lesson/line-graphs')
@@ -129,7 +173,9 @@ async function main() {
   if (mathSpans.length === 0) fail('No isolated LTR math spans found on the worked-example step')
   const badMath = Array.from(mathSpans).find(node => (node as HTMLElement).style.direction !== 'ltr')
   if (badMath) fail('A math-expression span is missing direction:ltr inline style')
-  console.log(`✅ Bidi check: ${mathSpans.length} isolated LTR math-expression spans found, each with direction:ltr`)
+  const fridayBdi = Array.from(document.querySelectorAll('span[dir="ltr"] bdi')).map(node => node.textContent)
+  if (fridayBdi.join('|') !== 'الجمعة|17') fail(`Expected Lesson 2 (الجمعة، 17) pair to isolate الجمعة then 17 in LTR, got [${fridayBdi.join(',')}]`)
+  console.log(`✅ Bidi check: ${mathSpans.length} isolated LTR math-expression spans found, and (الجمعة، 17) pair isolated cleanly`)
 
   // Step 5: interactive chart reading
   clickNext()
