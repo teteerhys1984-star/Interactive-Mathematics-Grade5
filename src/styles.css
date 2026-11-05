@@ -625,6 +625,8 @@ footer { border-top: 1px solid var(--border); padding: 28px 0 }
 /* ===================== استجابة الشاشات ===================== */
 @media (max-width: 1020px) {
   .header-attribution { display: none }
+  .main-nav { gap: 18px; font-size: .875rem }
+  .main-nav a { white-space: nowrap }
   .hero { gap: 32px }
   .hero-visual { width: 44%; max-width: 420px }
   .about-panel { gap: 40px; padding: 38px 40px }
