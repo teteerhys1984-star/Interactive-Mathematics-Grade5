@@ -121,7 +121,7 @@ function TestsTab({ tests, issues, curriculum }: {
         <p className="independent-eyebrow">قسم دائم · تقييم شامل مستقل</p>
         <h1 id="independent-tests-title" className="independent-title">اختبارات مستقلة</h1>
         <p className="independent-lead">
-          اختبارات شاملة من ثلاثين سؤالاً لكل اختبار، تغطّي الدروس المحددة لها بالتساوي.
+          اختبارات شاملة من ثلاثين سؤالاً لكل اختبار، تغطّي الدروس المحددة لها تغطية شاملة وفق توزيع مناسب لمحتواها.
           تُعرض الأسئلة في تبويب الاختبارات، وتبقى الحلول التفصيلية في تبويب مستقل لا يختلط بغيره.
         </p>
       </div>
