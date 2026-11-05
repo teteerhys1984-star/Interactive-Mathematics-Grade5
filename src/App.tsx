@@ -11,6 +11,8 @@ import { TestArea } from './tests/TestArea'
 import { UnitOneExercisesPage } from './exercises/UnitOneExercisesPage'
 import { lessonTitle as unit2ExercisesLessonTitle } from './lessons/unit2ExercisesData'
 import { parseTestAreaRoute } from './tests/routing'
+import { IndependentTestsArea } from './independent-tests/IndependentTestsArea'
+import { parseIndependentTestsRoute } from './independent-tests/routing'
 import type { TestRegistrySnapshot } from './tests/registry'
 import type { UnitMeta } from './types'
 
@@ -28,6 +30,7 @@ function readRoute() {
     teacherLessonId: teacherMatch?.[1] ?? null,
     unitExercisesOpen: hash === '#unit-exercises/unit-1' || /^#unit-exercise-(?:[1-9]|1[0-2])$/.test(hash),
     testRoute,
+    independentTestsRoute: parseIndependentTestsRoute(hash),
   }
 }
 
@@ -69,6 +72,8 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
 
   if (route.testRoute) return <TestArea route={route.testRoute} registry={injectedTestRegistry} curriculum={curriculum} />
 
+  if (route.independentTestsRoute) return <IndependentTestsArea route={route.independentTestsRoute} curriculum={curriculum} />
+
   if (route.teacherOpen) return <div className="app-shell lesson-page teacher-page">
     <header className="topbar"><a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a><nav className="main-nav" aria-label="التنقل الرئيسي"><a className="active" href="#teacher">منطقة المدرس</a><a href="#top">الرئيسية</a></nav><InstructorAttribution className="header-attribution" /></header>
     <main><TeacherArea initialLessonId={route.teacherLessonId} /></main>
@@ -91,7 +96,7 @@ function App({ testRegistry: injectedTestRegistry, curriculum = curriculumRegist
     <header className="topbar">
       <a className="brand" href="#top" aria-label="العودة إلى الرئيسية"><span className="brand-mark"><Sparkles size={18} /></span><span>رياضياتي</span></a>
       <nav className={menuOpen ? 'main-nav is-open' : 'main-nav'} aria-label="التنقل الرئيسي">
-        <a className="active" href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#units" onClick={() => setMenuOpen(false)}>الوحدات</a><a href="#tests" onClick={() => setMenuOpen(false)}>الاختبارات</a><a href="#about" onClick={() => setMenuOpen(false)}>عن المنصة</a>
+        <a className="active" href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#units" onClick={() => setMenuOpen(false)}>الوحدات</a><a href="#tests" onClick={() => setMenuOpen(false)}>الاختبارات</a><a href="#independent-tests" onClick={() => setMenuOpen(false)}>اختبارات مستقلة</a><a href="#about" onClick={() => setMenuOpen(false)}>عن المنصة</a>
       </nav>
       <InstructorAttribution className="header-attribution" /><a className="teacher-access-link" href="#teacher"><LockKeyhole size={15} /> مساحة المدرس</a><div className="header-actions"><button className="menu-button" aria-label={menuOpen ? 'إغلاق القائمة' : 'فتح القائمة'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
     </header>
