@@ -3,6 +3,7 @@ import {
   INDEPENDENT_QUESTION_STYLES,
   INDEPENDENT_TEST_QUESTION_COUNT,
   type IndependentChoiceOption,
+  type IndependentFigure,
   type IndependentQuestion,
   type IndependentQuestionLevel,
   type IndependentQuestionStyle,
@@ -45,6 +46,7 @@ export interface IndependentQuestionDraft {
   level: IndependentQuestionLevel
   prompt: RichContent
   table?: IndependentTable
+  figure?: IndependentFigure
   options?: readonly IndependentChoiceOption[]
   solution: IndependentSolutionDraft
 }
@@ -153,6 +155,7 @@ export function defineIndependentTest(input: IndependentTestInput): IndependentT
       level: draft.level,
       prompt: [...draft.prompt],
       ...(draft.table ? { table: draft.table } : {}),
+      ...(draft.figure ? { figure: draft.figure } : {}),
       ...(draft.options ? { options: draft.options.map((option) => ({ id: option.id, label: [...option.label] })) } : {}),
     })
 

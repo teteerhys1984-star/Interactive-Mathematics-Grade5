@@ -9,6 +9,8 @@ interface LineChartProps {
   selectedIndex?: number | null
   onSelect?: (index: number) => void
   ariaLabel: string
+  /** Smaller chart for narrow question cards; labels stay legible instead of shrinking a desktop chart. */
+  compact?: boolean
 }
 
 const isNumericLabel = (label: string) => /^-?\d+(\.\d+)?$/.test(label)
@@ -19,12 +21,12 @@ function AxisNumber({ x, y, anchor, children }: { x: number; y: number; anchor: 
 }
 
 /** Reusable line-graph (تمثيل بياني بالخطوط) used across every "time vs. data" activity in this lesson. */
-export function LineChart({ series, readExampleIndex, interactive = false, selectedIndex, onSelect, ariaLabel }: LineChartProps) {
+export function LineChart({ series, readExampleIndex, interactive = false, selectedIndex, onSelect, ariaLabel, compact = false }: LineChartProps) {
   const uid = useId().replace(/[:]/g, '')
   const { labels, values, yMin, yMax, yStep, xAxisLabel, yAxisLabel } = series
-  const width = 560
-  const height = 320
-  const margin = { top: 20, right: 26, bottom: 46, left: 46 }
+  const width = compact ? 420 : 560
+  const height = compact ? 270 : 320
+  const margin = compact ? { top: 18, right: 18, bottom: 44, left: 42 } : { top: 20, right: 26, bottom: 46, left: 46 }
   const layout: ChartLayout = { originX: margin.left, originY: height - margin.bottom, plotWidth: width - margin.left - margin.right, plotHeight: height - margin.top - margin.bottom, count: labels.length, yMin, yMax }
   const ySteps: number[] = []
   for (let v = yMin; v <= yMax + 1e-9; v += yStep) ySteps.push(Math.round(v * 100) / 100)
@@ -32,7 +34,7 @@ export function LineChart({ series, readExampleIndex, interactive = false, selec
   const path = points.map(p => `${p.x},${p.y}`).join(' ')
   const readPoint = readExampleIndex !== undefined ? points[readExampleIndex] : undefined
   return <div className="line-chart-wrap">
-    <svg className="line-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={ariaLabel} direction="ltr" style={{ unicodeBidi: 'isolate' }}>
+    <svg className={`line-chart${compact ? ' is-compact' : ''}`} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={ariaLabel} direction="ltr" style={{ unicodeBidi: 'isolate' }}>
       <defs>
         <marker id={`lc-arrow-${uid}`} markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#29465d" /></marker>
         <marker id={`lc-guide-${uid}`} markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="var(--coral)" /></marker>
@@ -41,9 +43,12 @@ export function LineChart({ series, readExampleIndex, interactive = false, selec
       <line x1={layout.originX} y1={layout.originY} x2={layout.originX + layout.plotWidth + 14} y2={layout.originY} stroke="#29465d" strokeWidth="2" markerEnd={`url(#lc-arrow-${uid})`} />
       <line x1={layout.originX} y1={layout.originY} x2={layout.originX} y2={margin.top - 10} stroke="#29465d" strokeWidth="2" markerEnd={`url(#lc-arrow-${uid})`} />
       {ySteps.map(step => <AxisNumber key={`y-${step}`} x={layout.originX - 10} y={yPixel(step, layout) + 4} anchor="end">{String(step)}</AxisNumber>)}
-      {labels.map((label, index) => isNumericLabel(label)
-        ? <AxisNumber key={`x-${label}-${index}`} x={xPixel(index, layout)} y={layout.originY + 20} anchor="middle">{label}</AxisNumber>
-        : <text key={`x-${label}-${index}`} x={xPixel(index, layout)} y={layout.originY + 20} textAnchor="middle" className="grid-number">{label}</text>)}
+      {labels.map((label, index) => {
+        const anchor = index === 0 ? 'start' : index === labels.length - 1 ? 'end' : 'middle'
+        return isNumericLabel(label)
+          ? <AxisNumber key={`x-${label}-${index}`} x={xPixel(index, layout)} y={layout.originY + 20} anchor={anchor}>{label}</AxisNumber>
+          : <text key={`x-${label}-${index}`} x={xPixel(index, layout)} y={layout.originY + 20} textAnchor={anchor} className="grid-number">{label}</text>
+      })}
       <text x={layout.originX + layout.plotWidth} y={layout.originY + 40} textAnchor="end" className="axis-label">{xAxisLabel}</text>
       <text x={layout.originX - 8} y={margin.top - 12} textAnchor="start" className="axis-label">{yAxisLabel}</text>
       {readPoint && <g className="line-chart-guide">

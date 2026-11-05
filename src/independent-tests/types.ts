@@ -1,3 +1,5 @@
+import type { CoordinateGridPoint } from '../components/lesson/CoordinatesGrid'
+import type { LineChartSeries } from '../components/lesson/lineChart'
 import type { RichContent } from '../tests/types'
 
 /**
@@ -39,6 +41,14 @@ export interface IndependentChoiceOption {
   label: RichContent
 }
 
+/** Static, accessible figures. They carry geometry only, never an answer label. */
+export type IndependentFigure =
+  | { kind: 'line-chart'; series: LineChartSeries; readExampleIndex?: number; ariaLabel: string }
+  | { kind: 'coordinate-grid'; points: readonly CoordinateGridPoint[]; ariaLabel: string }
+  | { kind: 'angle'; shape: 'acute' | 'right' | 'obtuse' | 'straight'; degree?: number; label?: string; ariaLabel: string }
+  | { kind: 'protractor'; degree: number; ariaLabel: string }
+  | { kind: 'number-line'; min: number; max: number; step: number; midpoint?: number; target: number; ariaLabel: string }
+
 export interface IndependentTable {
   caption?: RichContent
   columns: readonly RichContent[]
@@ -53,6 +63,7 @@ export interface IndependentQuestion {
   level: IndependentQuestionLevel
   prompt: RichContent
   table?: IndependentTable
+  figure?: IndependentFigure
   options?: readonly IndependentChoiceOption[]
 }
 

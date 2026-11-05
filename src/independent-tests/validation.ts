@@ -87,6 +87,42 @@ function isTableShape(value: unknown): boolean {
   return value.caption === undefined || isRichContentShape(value.caption)
 }
 
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value)
+}
+
+function isFigureShape(value: unknown): boolean {
+  if (!isRecord(value) || typeof value.ariaLabel !== 'string' || !value.ariaLabel.trim()) return false
+  switch (value.kind) {
+    case 'line-chart': {
+      const series = value.series
+      if (!isRecord(series) || !isStringArray(series.labels) || !Array.isArray(series.values)) return false
+      if (!series.labels.length || series.values.length !== series.labels.length) return false
+      if (!series.values.every(isFiniteNumber) || !isFiniteNumber(series.yMin) || !isFiniteNumber(series.yMax) || !isFiniteNumber(series.yStep)) return false
+      if (typeof series.xAxisLabel !== 'string' || typeof series.yAxisLabel !== 'string') return false
+      return value.readExampleIndex === undefined || Number.isSafeInteger(value.readExampleIndex)
+    }
+    case 'coordinate-grid':
+      return Array.isArray(value.points) && value.points.length > 0 && value.points.every((entry) => (
+        isRecord(entry) && typeof entry.label === 'string' && isRecord(entry.point)
+        && isFiniteNumber(entry.point.x) && isFiniteNumber(entry.point.y)
+      ))
+    case 'angle':
+      return ['acute', 'right', 'obtuse', 'straight'].includes(String(value.shape))
+        && (value.degree === undefined || isFiniteNumber(value.degree))
+        && (value.label === undefined || typeof value.label === 'string')
+    case 'protractor':
+      return isFiniteNumber(value.degree) && value.degree >= 0 && value.degree <= 180
+    case 'number-line':
+      return isFiniteNumber(value.min) && isFiniteNumber(value.max) && isFiniteNumber(value.step)
+        && isFiniteNumber(value.target) && value.min < value.max && value.step > 0
+        && (value.midpoint === undefined || isFiniteNumber(value.midpoint))
+        && value.target >= value.min && value.target <= value.max
+    default:
+      return false
+  }
+}
+
 function isStyle(value: unknown): value is IndependentQuestionStyle {
   return typeof value === 'string' && (INDEPENDENT_QUESTION_STYLES as readonly string[]).includes(value)
 }
@@ -104,6 +140,7 @@ function isQuestionShape(value: unknown): value is IndependentQuestion {
   if (!isStyle(value.style) || !isLevel(value.level)) return false
   if (!isRichContentShape(value.prompt)) return false
   if (value.table !== undefined && !isTableShape(value.table)) return false
+  if (value.figure !== undefined && !isFigureShape(value.figure)) return false
   if (value.style === 'multiple-choice') {
     if (!Array.isArray(value.options) || value.options.length < 3 || value.options.length > 5) return false
     if (!value.options.every(isChoiceOptionShape)) return false

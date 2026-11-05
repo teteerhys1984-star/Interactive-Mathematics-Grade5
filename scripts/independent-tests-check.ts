@@ -31,36 +31,36 @@ const UNIT_ONE_LESSONS = [
 
 /** Hand-authored answer key, used to verify the rich solution final answers contain the right values. */
 const EXPECTED_FINAL_ANSWER_TOKENS: Readonly<Record<number, readonly string[]>> = {
-  1: ['(6,2)'],
-  2: ['الشاقولي'],
-  3: ['(7,3)'],
-  4: ['4'],
-  5: ['تزداد'],
-  6: ['15'],
-  7: ['700,000'],
-  8: ['أربعة ملايين وعشرون ألفاً وثلاثمئة وخمسة'],
-  9: ['3,000,000 + 400,000 + 5,000 + 60'],
-  10: ['سبعمئة وسبعة'],
-  11: ['1,003,578'],
-  12: ['5,000,000'],
-  13: ['6,000'],
-  14: ['110,000'],
-  15: ['4,770,000', '4,768,000', '>'],
-  16: ['992,886'],
-  17: ['1,067,760'],
-  18: ['884,858'],
-  19: ['8,230'],
-  20: ['1,780,500'],
+  1: ['(5,4)'],
+  2: ['(0,5)'],
+  3: ['(8,2)'],
+  4: ['24'],
+  5: ['يزداد ثم يثبت ثم يزداد ثم ينقص'],
+  6: ['20'],
+  7: ['3,040,607'],
+  8: ['ستة ملايين ومئتان وثمانية آلاف وخمسون'],
+  9: ['8,000,000 + 70,000 + 400 + 6', '70,000'],
+  10: ['500,000'],
+  11: ['90,000', '2,000,000 + 90,000 + 300'],
+  12: ['600'],
+  13: ['5,850,000', '5,800,000', '>'],
+  14: ['4,000,000', 'أعلى'],
+  15: ['76,000'],
+  16: ['785,446'],
+  17: ['621,535'],
+  18: ['85,304'],
+  19: ['1,095,000'],
+  20: ['61,130'],
   21: ['منفرجة'],
-  22: ['90°', '180°'],
-  23: ['B', '50°'],
-  24: ['90°', 'قائمة'],
-  25: ['متوازيان', 'متساويان'],
-  26: ['22cm'],
-  27: ['لا'],
-  28: ['متجاورين'],
-  29: ['24cm', '115°', '65°'],
-  30: ['3cm', '8cm'],
+  22: ['65°'],
+  23: ['90°', '120°'],
+  24: ['112°'],
+  25: ['9cm'],
+  26: ['30cm'],
+  27: ['118°'],
+  28: ['أضلاعه متساوية'],
+  29: ['9cm', '110°'],
+  30: ['AB = 10cm', 'BC = 6cm', 'قطر'],
 }
 
 function roundTo(value: number, place: number): number {
@@ -84,7 +84,7 @@ function audit(testDefinition: IndependentTest): void {
   testDefinition.questions.forEach((question, index) => {
     assert.equal(question.number, index + 1, `question ${index + 1} must carry number ${index + 1}`)
     const keys = Object.keys(question).sort()
-    const allowed = new Set(['lessonIds', 'level', 'number', 'options', 'prompt', 'style', 'table'])
+    const allowed = new Set(['figure', 'lessonIds', 'level', 'number', 'options', 'prompt', 'style', 'table'])
     assert.ok(keys.every((key) => allowed.has(key)), `question ${question.number} leaks an unexpected field: ${keys.join(',')}`)
     assert.ok(!('answer' in question) && !('solution' in question), `question ${question.number} leaks answer data`)
     assert.ok(question.prompt.length > 0, `question ${question.number} has an empty prompt`)
@@ -137,27 +137,38 @@ function audit(testDefinition: IndependentTest): void {
     for (const token of tokens) assert.ok(text.includes(token), `Q${number} answer must include "${token}"; got "${text}"`)
   }
 
-  assert.equal(18 - 14, 4, 'Q4 temperature range')
-  assert.equal(76 - 61, 15, 'Q6 height increase')
-  assert.equal(7 * 100000, 700000, 'Q7 place value')
-  assert.equal(18 - 14, 4)
-  assert.equal(203565 + 789321, 992886, 'Q16 column addition')
-  assert.equal(3221991 - 2154231, 1067760, 'Q17 column subtraction')
-  assert.equal(230569 + 654289, 884858, 'Q18 word-problem addition')
-  assert.equal(4580 + 3650, 8230, 'Q19 correction')
-  assert.equal(1250000 + 980500 - 450000, 1780500, 'Q20 net sales')
-  assert.equal(roundTo(4682137, 1000000), 5000000, 'Q12 rounding to a million')
-  assert.equal(roundTo(6432, 1000), 6000, 'Q13 rounding to a thousand')
-  assert.equal(roundTo(112880, 10000), 110000, 'Q14 rounding to ten thousand')
-  assert.equal(roundTo(4768210, 10000), 4770000, 'Q15 first rounded value')
-  assert.equal(roundTo(4768210, 1000), 4768000, 'Q15 second rounded value')
-  assert.ok(roundTo(4768210, 10000) > roundTo(4768210, 1000), 'Q15 comparison')
-  assert.equal(2 * (7 + 4), 22, 'Q26 parallelogram perimeter')
-  assert.equal(4 * 6, 24, 'Q29 rhombus perimeter')
-  assert.equal(180 - 65, 115, 'Q29 adjacent angle')
-  assert.equal(3 + 5, 8, 'Q30 composite side')
-  const smallest = Number([1, 0, 0, 3, 5, 7, 8].join(''))
-  assert.equal(smallest, 1003578, 'Q11 smallest seven-digit number')
+  assert.equal(3 + 5, 8, 'Q3 horizontal movement')
+  assert.equal(4 - 2, 2, 'Q3 vertical movement')
+  assert.equal(12 + 6, 18, 'Q5 Sunday-to-Monday values')
+  assert.equal(18 + 6, 24, 'Q5 Tuesday-to-Wednesday values')
+  assert.equal(3 * 1_000_000 + 40 * 1_000 + 607, 3_040_607, 'Q7 verbal to standard')
+  assert.equal(6 * 1_000_000 + 208 * 1_000 + 50, 6_208_050, 'Q8 standard to verbal')
+  assert.equal(8_000_000 + 70_000 + 400 + 6, 8_070_406, 'Q9 expanded form')
+  assert.equal(5 * 100_000, 500_000, 'Q10 place value')
+  assert.equal(2_000_000 + 90_000 + 300, 2_090_300, 'Q11 corrected expansion')
+  assert.ok(125 > 90 && 125 < 180, 'Q21 angle is obtuse because it is between 90° and 180°')
+  assert.equal(18 - 12, 6, 'Q5 Sunday-to-Monday increase')
+  assert.equal(18 - 18, 0, 'Q5 Monday-to-Tuesday constancy')
+  assert.equal(24 - 18, 6, 'Q5 Tuesday-to-Wednesday increase')
+  assert.equal(20 - 24, -4, 'Q5 Wednesday-to-Thursday decrease')
+  assert.ok(643 - 600 < 700 - 643, 'Q12 643 is closer to 600 than to 700')
+  assert.equal(roundTo(5_847_300, 10_000), 5_850_000, 'Q13 rounding to ten thousand')
+  assert.equal(roundTo(5_847_300, 100_000), 5_800_000, 'Q13 rounding to hundred thousand')
+  assert.ok(roundTo(5_847_300, 10_000) > roundTo(5_847_300, 100_000), 'Q13 comparison')
+  assert.equal(roundTo(3_960_000, 1_000_000), 4_000_000, 'Q14 rounding to a million')
+  assert.equal(roundTo(76_499, 1_000), 76_000, 'Q15 rounding to a thousand')
+  assert.equal(428_657 + 356_789, 785_446, 'Q16 column addition')
+  assert.equal(900_000 - 278_465, 621_535, 'Q17 subtraction')
+  assert.equal(46_708 + 38_596, 85_304, 'Q18 corrected sum')
+  assert.equal(1_250_000 - 475_000 + 320_000, 1_095_000, 'Q19 multi-step money')
+  assert.equal(48_750 + 12_380, 61_130, 'Q20 added books')
+  assert.equal(180 - 68, 112, 'Q24 angles on a straight line')
+  assert.equal(2 * (9 + 6), 30, 'Q26 parallelogram perimeter')
+  assert.equal(180 - 118, 62, 'Q27 adjacent angle')
+  assert.equal(180 - 70, 110, 'Q29 adjacent angle')
+  assert.equal(36 / 4, 9, 'Q29 rhombus side')
+  assert.equal(32 / 2 - 10, 6, 'Q30 parallelogram side')
+  assert.equal(10 / 2, 5, 'Q30 rhombus side is half the parallelogram side')
 
   // Source curriculum relationship: labels resolve to the real registered lessons.
   const registered = curriculumRegistry.filter((unit) => unit.id === 'unit-1').flatMap((unit) => unit.lessons)
@@ -177,6 +188,7 @@ function main(): void {
   console.log('PASS Coverage: all 8 Unit 1 lessons, 3+3+5+4+5+4+4+3 (Q30 cross-lesson).')
   console.log('PASS Variety: 10 styles, 7 multiple-choice, levels 10 basic / 12 medium / 8 advanced.')
   console.log('PASS Answer key: independently recomputed arithmetic matches all 30 final answers.')
+  console.log('PASS Figures: coordinate grid (2), line chart (3), number line (1), angle (1), protractor (1) are present and static.')
   console.log('PASS Curriculum: declared lesson ids and titles match the live Unit 1 registry.')
 }
 

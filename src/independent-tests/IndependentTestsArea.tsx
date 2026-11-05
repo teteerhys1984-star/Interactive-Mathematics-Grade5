@@ -3,6 +3,7 @@ import { ArrowLeft, BookOpenCheck, ClipboardList, FileQuestion, ListChecks, Menu
 import { InstructorAttribution } from '../components/InstructorAttribution'
 import { curriculumRegistry, unitLessons } from '../content/registry'
 import { RichContentView } from '../tests/RichContentView'
+import { IndependentFigureView } from './IndependentFigure'
 import { independentTestsRegistry } from './registry'
 import {
   independentLevelLabel,
@@ -242,6 +243,7 @@ function QuestionCard({ question, testNumber }: { question: IndependentQuestion;
       </header>
       <div className="independent-question-prompt"><RichContentView content={question.prompt} /></div>
       {question.table && <IndependentTableView table={question.table} />}
+      {question.figure && <IndependentFigureView figure={question.figure} />}
       {question.options
         ? <OptionList options={question.options} />
         : <ResponseArea kind={responseKind} />}
@@ -390,6 +392,7 @@ function SolutionsDetail({ test, curriculum }: { test: IndependentTest; curricul
               <span className="independent-solution-label">نص السؤال / مرجعه</span>
               <div className="independent-question-prompt"><RichContentView content={question.prompt} /></div>
               {question.table && <IndependentTableView table={question.table} />}
+              {question.figure && <IndependentFigureView figure={question.figure} />}
               {question.options && <OptionList options={question.options} />}
               <ul className="independent-chip-list independent-chip-list--small">
                 {question.lessonIds.map((lessonId) => <li key={lessonId}>{getLessonTitles([lessonId], curriculum)[0] ?? lessonId}</li>)}

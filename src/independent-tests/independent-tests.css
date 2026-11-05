@@ -750,5 +750,99 @@
   .independent-tests-page { background: #fff; }
   .independent-container { width: 100%; padding: 0; }
   .independent-question-card,
-  .independent-solution-card { break-inside: avoid; box-shadow: none; }
+  .independent-solution-card,
+  .independent-figure { break-inside: avoid; box-shadow: none; }
+}
+
+/* Static question figures: accurate SVG geometry only, never answer labels. */
+.independent-figure {
+  display: grid;
+  place-items: center;
+  margin: 2px 0;
+  padding: 10px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: #f8fbfd;
+  overflow-x: auto;
+}
+.independent-figure .line-chart.is-compact,
+.independent-figure .coordinate-grid,
+.independent-figure .l6-protractor-svg.is-compact {
+  min-width: 0;
+  width: 100%;
+  max-width: 430px;
+}
+.independent-figure .l6-angle-svg {
+  width: min(100%, 220px);
+}
+.independent-figure .coordinate-grid-wrap,
+.independent-figure .line-chart-wrap {
+  width: 100%;
+  padding: 0;
+}
+.independent-figure .l6-protractor-svg.is-compact {
+  max-width: 400px;
+}
+.independent-number-line {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+.independent-number-line-axis {
+  stroke: #29465d;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.independent-number-line-arrow {
+  fill: #29465d;
+}
+.independent-number-line-tick {
+  stroke: #8195a8;
+  stroke-width: 1.5;
+}
+.independent-number-line-tick.is-major {
+  stroke: #29465d;
+  stroke-width: 2.4;
+}
+.independent-number-line-label {
+  fill: #29465d;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+.independent-number-line-target {
+  fill: #d97706;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+.independent-number-line-target-label {
+  fill: #9a5200;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+@media (max-width: 560px) {
+  .independent-figure { padding: 8px 2px; }
+  .independent-figure .l6-protractor-svg.is-compact { max-width: 100%; }
+  .independent-number-line-label,
+  .independent-number-line-target-label { font-size: 15px; }
+}
+@media (max-width: 560px) {
+  .independent-figure .line-chart.is-compact .grid-number,
+  .independent-figure .line-chart.is-compact .axis-label { font-size: 14px; }
+  .independent-figure .coordinate-grid .grid-number { font-size: 13px; }
+  .independent-figure .coordinate-grid .axis-label { font-size: 12px; }
+  .independent-number-line-label,
+  .independent-number-line-target-label { font-size: 20px; }
+}
+
+.independent-figure .line-chart.is-compact .axis-label { display: none; }
+.independent-figure .coordinate-grid .origin-label { display: none; }
+.independent-figure-caption {
+  margin: 0;
+  color: var(--text-3);
+  font-size: .8rem;
+  font-weight: 700;
+  text-align: center;
 }

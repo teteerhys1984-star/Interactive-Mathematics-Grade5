@@ -94,23 +94,31 @@ async function main() {
     const questionNumbers = Array.from(container.querySelectorAll('.independent-question-number')).map((node) => node.textContent?.trim())
     assert.deepEqual(questionNumbers, Array.from({ length: 30 }, (_, index) => `السؤال ${index + 1}`), 'questions must be numbered 1–30 in order')
     assert.equal(container.querySelectorAll('.independent-options').length, 7, 'seven multiple-choice questions')
-    assert.equal(container.querySelectorAll('.independent-answer-space').length, 4, 'four fill-in-the-blank questions')
+    assert.equal(container.querySelectorAll('.independent-answer-space').length, 7, 'seven fill-in-the-blank questions')
     assert.equal(container.querySelectorAll('.independent-compare').length, 1, 'one comparison question')
     assert.equal(container.querySelectorAll('.independent-draw-grid').length, 1, 'one drawing question')
-    assert.equal(container.querySelectorAll('.independent-workspace').length, 17, 'seventeen written-work questions')
-    assert.equal(container.querySelectorAll('.independent-table').length, 2, 'two table-reading questions')
+    assert.equal(container.querySelectorAll('.independent-workspace').length, 14, 'fourteen written-work questions')
+    assert.equal(container.querySelectorAll('.independent-table').length, 1, 'one table-reading question')
     assert.equal(container.querySelectorAll('.independent-question-card .independent-options li').length, 28, 'seven questions with four options each')
+    assert.equal(container.querySelectorAll('.independent-figure').length, 8, 'eight questions carry a static figure')
+    assert.equal(container.querySelectorAll('[data-figure-kind="line-chart"]').length, 3, 'three line-chart figures')
+    assert.equal(container.querySelectorAll('[data-figure-kind="coordinate-grid"]').length, 2, 'two coordinate-grid figures')
+    assert.equal(container.querySelectorAll('[data-figure-kind="number-line"]').length, 1, 'one number-line figure')
+    assert.equal(container.querySelectorAll('[data-figure-kind="angle"]').length, 1, 'one angle figure')
+    assert.equal(container.querySelectorAll('[data-figure-kind="protractor"]').length, 1, 'one protractor figure')
+    assert.equal(container.querySelectorAll('.independent-figure-caption').length, 3, 'line charts carry an axis caption')
 
     const testPageText = container.textContent ?? ''
-    for (const answerOnly of ['992,886', '1,067,760', '884,858', '1,780,500', '8,230', '110,000']) {
+    for (const answerOnly of ['785,446', '621,535', '85,304', '1,095,000', '61,130', '112°', '110°', '76,000', '5,850,000', '4,000,000', '30cm']) {
       assert.ok(!testPageText.includes(answerOnly), `answer key "${answerOnly}" leaked into the test page`)
     }
     assert.ok(testPageText.includes('لا تظهر أي إجابة أو حل في صفحة الاختبار'))
-    console.log('PASS Test page: 30 ordered questions, 7 MCQ / 4 blanks / 1 comparison / 1 drawing / 17 work areas, zero solutions.')
+    console.log('PASS Test page: 30 ordered questions, 7 MCQ / 7 blanks / 1 comparison / 1 drawing / 14 work areas, zero solutions.')
 
     // Re-read the same questions to be sure the answer keys are not in the DOM under another route.
     assert.ok(container.querySelector('#independent-question-1-1'))
     assert.ok(container.querySelector('#independent-question-1-30'))
+    console.log('PASS Figures: 8 static figures (3 line charts, 2 coordinate grids, 1 number line, 1 angle, 1 protractor) rendered without answer labels.')
     console.log('PASS Answer isolation: no solution cards, answer labels, or numeric answer keys on the test route.')
 
     // ---- Solutions tab: solutions are visible immediately, grouped by test number ----
@@ -146,10 +154,10 @@ async function main() {
       assert.ok(text.includes('خطوات الحل'), `solution ${index + 1} is missing solution steps`)
       assert.ok(text.includes('لماذا وصلنا إلى هذه النتيجة؟'), `solution ${index + 1} is missing the reasoning`)
     }
-    assert.ok((solutionCards[15].textContent ?? '').includes('992,886'), 'Q16 solution shows the correct sum')
-    assert.ok((solutionCards[18].textContent ?? '').includes('8,230'), 'Q19 solution shows the corrected sum')
-    assert.ok((solutionCards[29].textContent ?? '').includes('8cm'), 'Q30 solution shows the composite side')
-    assert.ok((solutionCards[23].textContent ?? '').includes('∠BMC = 90°'))
+    assert.ok((solutionCards[15].textContent ?? '').includes('785,446'), 'Q16 solution shows the correct sum')
+    assert.ok((solutionCards[18].textContent ?? '').includes('1,095,000'), 'Q19 solution shows the final amount')
+    assert.ok((solutionCards[29].textContent ?? '').includes('6cm'), 'Q30 solution shows the shorter side')
+    assert.ok((solutionCards[23].textContent ?? '').includes('112°'), 'Q24 solution shows the supplementary angle')
     console.log('PASS Detailed solutions: 30 answers, 30 ideas, 30 step lists, 30 reasons, all paired with Q1–Q30.')
 
     // ---- Existing surfaces remain intact ----

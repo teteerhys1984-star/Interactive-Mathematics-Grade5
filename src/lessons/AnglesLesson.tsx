@@ -12,14 +12,14 @@ function BookCoverageMarkers() {
   return <div className="l6-coverage-markers" aria-label="فهرس عناصر صفحات الدرس">{lessonSixBookElements.map(element => <span key={element.id} data-source-id={element.id}>{element.title}</span>)}</div>
 }
 
-function AngleDiagram({ kind, degree, label }: { kind: 'acute' | 'right' | 'obtuse' | 'straight'; degree?: number; label?: string }) {
+export function AngleDiagram({ kind, degree, label, ariaLabel }: { kind: 'acute' | 'right' | 'obtuse' | 'straight'; degree?: number; label?: string; ariaLabel?: string }) {
   const d = degree ?? (kind === 'acute' ? 40 : kind === 'right' ? 90 : kind === 'obtuse' ? 125 : 180)
   const cx = 84; const cy = 78; const r = 57
   const end = (angle: number) => ({ x: cx + r * Math.cos(-angle * Math.PI / 180), y: cy + r * Math.sin(-angle * Math.PI / 180) })
   const p = end(d)
   const large = d > 180 ? 1 : 0
   const path = kind === 'straight' ? `M ${cx - r} ${cy} A ${r} ${r} 0 0 0 ${cx + r} ${cy}` : `M ${cx + r} ${cy} A ${r} ${r} 0 ${large} 0 ${p.x} ${p.y}`
-  return <svg className="l6-angle-svg" viewBox="0 0 168 112" role="img" aria-label={label ?? `زاوية ${kind}`} direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>
+  return <svg className="l6-angle-svg" viewBox="0 0 168 112" role="img" aria-label={ariaLabel ?? label ?? `زاوية ${kind}`} direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>
     <line x1={cx} y1={cy} x2={cx + r} y2={cy} className="l6-ray l6-ray-base" />
     <line x1={cx} y1={cy} x2={kind === 'straight' ? cx - r : p.x} y2={kind === 'straight' ? cy : p.y} className="l6-ray" />
     <path d={path} className="l6-angle-arc" />
@@ -51,16 +51,16 @@ function InsideOutsideDiagram() {
   </svg>
 }
 
-function ProtractorSvg({ degree = 35, compact = false }: { degree?: number; compact?: boolean }) {
+export function ProtractorSvg({ degree = 35, compact = false, ariaLabel, singleScale = false }: { degree?: number; compact?: boolean; ariaLabel?: string; singleScale?: boolean }) {
   const width = compact ? 360 : 620; const height = compact ? 180 : 300; const cx = width / 2; const cy = height - 30; const radius = Math.min(width * .43, height - 55)
   const point = (angle: number, r = radius) => ({ x: cx + r * Math.cos(angle * Math.PI / 180), y: cy - r * Math.sin(angle * Math.PI / 180) })
   const ray = point(degree, radius * .96)
   const ticks = Array.from({ length: 19 }, (_, i) => i * 10)
-  return <svg className={`l6-protractor-svg ${compact ? 'is-compact' : ''}`} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`منقلة تفاعلية، القياس ${degree} درجة`} direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>
+  return <svg className={`l6-protractor-svg ${compact ? 'is-compact' : ''}`} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={ariaLabel ?? `منقلة تفاعلية، القياس ${degree} درجة`} direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>
     <path d={`M ${cx - radius} ${cy} A ${radius} ${radius} 0 0 1 ${cx + radius} ${cy}`} className="l6-protractor-shell" />
     <path d={`M ${cx - radius * .72} ${cy} A ${radius * .72} ${radius * .72} 0 0 1 ${cx + radius * .72} ${cy}`} className="l6-protractor-inner" />
     {ticks.map(value => { const a = point(value, radius); const b = point(value, value % 30 === 0 ? radius - 16 : radius - 9); return <line key={value} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className={value % 30 === 0 ? 'l6-protractor-major' : 'l6-protractor-tick'} /> })}
-    {ticks.filter(value => value % 30 === 0).map(value => { const outer = point(value, radius - 30); const inner = point(180 - value, radius - 47); return <g key={`labels-${value}`} className="l6-protractor-labels"><text x={outer.x} y={outer.y} textAnchor="middle" className="l6-protractor-outer-number">{value}</text><text x={inner.x} y={inner.y} textAnchor="middle" className="l6-protractor-inner-number">{value}</text></g> })}
+    {ticks.filter(value => value % 30 === 0).map(value => { const outer = point(value, radius - 30); const inner = point(180 - value, radius - 47); return <g key={`labels-${value}`} className="l6-protractor-labels"><text x={outer.x} y={outer.y} textAnchor="middle" className="l6-protractor-outer-number">{value}</text>{!singleScale && <text x={inner.x} y={inner.y} textAnchor="middle" className="l6-protractor-inner-number">{value}</text>}</g> })}
     <line x1={cx - radius} y1={cy} x2={cx + radius} y2={cy} className="l6-protractor-baseline" />
     <line x1={cx} y1={cy} x2={ray.x} y2={ray.y} className="l6-protractor-ray" />
     <path d={`M ${cx + radius * .26} ${cy} A ${radius * .26} ${radius * .26} 0 0 0 ${point(degree, radius * .26).x} ${point(degree, radius * .26).y}`} className="l6-protractor-angle" />
