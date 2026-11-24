@@ -272,10 +272,13 @@ async function main(): Promise<void> {
   fireEvent.click(muradRevealBtn)
   assert.ok(screen.getByText(/أُهمل الرقم/))
 
-  // Step 11 (الاختبار الختامي): verify malformed/wrong answers score 0 / 7 and all 7 correct answers score 7 / 7
-  while (!nextButton().disabled) {
+  // Step 11 (الاختبار الختامي): verify malformed/wrong answers score 0 / 7 and all 7 correct answers score 7 / 7.
+  // «دفتر الطالب» is the step AFTER the assessment, so the walk stops as soon as the assessment is on
+  // screen instead of running to the last step (scripts/notebook-check.tsx audits that final step).
+  while (!document.querySelector('.final-test') && !nextButton().disabled) {
     fireEvent.click(nextButton())
   }
+  assert.ok(document.querySelector('.final-test'), 'the final assessment step is not reachable with التالي')
   const finalInputs = Array.from(document.querySelectorAll('.final-test .test-question input')) as HTMLInputElement[]
   assert.equal(finalInputs.length, 5, 'Final assessment must have 5 text/numeric inputs and 2 choice questions')
 

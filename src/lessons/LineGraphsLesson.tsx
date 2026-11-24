@@ -8,6 +8,8 @@ import type { LessonStep } from '../components/lesson/types'
 import { LineChart } from '../components/lesson/LineChart'
 import { damascusWeek, idealInfantHeight, studentCountByYear, libraryVisitorsWeek, infantHeightTableMonths, infantHeightTableHeaders, studentCountTableYears } from './lineGraphsData'
 import { finalAssessment2 } from '../teacher/lesson2'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { lineGraphsNotebook } from '../notebook/entries/lineGraphs'
 
 /** Renders the textbook's Damascus-temperature table exactly as printed (page 7). */
 function TemperatureTable() {
@@ -215,6 +217,7 @@ export function LineGraphsLesson() {
     { id: 'mistakes', title: 'اكتشف الخطأ', content: <MistakesStep /> },
     { id: 'recap', title: 'الخلاصة', content: <RecapStep /> },
     { id: 'test', title: 'الاختبار الختامي', content: <FinalTest /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={lineGraphsNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title="التمثيلات البيانية بالخطوط" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} />

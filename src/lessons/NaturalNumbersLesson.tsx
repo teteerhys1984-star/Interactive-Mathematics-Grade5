@@ -5,6 +5,8 @@ import { BidiText } from '../components/BidiText'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { naturalNumbersNotebook } from '../notebook/entries/naturalNumbers'
 import {
   evaluateFinalQuestion3,
   finalAssessment3,
@@ -172,7 +174,8 @@ function ChoiceTask({
   )
 }
 
-function PlaceTable({
+/** The textbook place-value table (جدول الخانات). Exported so «دفتر الطالب» reuses the exact same table. */
+export function PlaceTable({
   digits = ['2', '4', '1', '3', '1', '5', '5'],
   values = ['2,000,000', '400,000', '10,000', '3,000', '100', '50', '5'],
 }: {
@@ -955,6 +958,7 @@ export function NaturalNumbersLesson() {
     { id: 'mistakes', title: 'اكتشف الخطأ', content: <Mistakes /> },
     { id: 'recap', title: 'الخلاصة', content: <Recap /> },
     { id: 'final', title: 'الاختبار الختامي', content: <Final /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={naturalNumbersNotebook()} /> },
   ]
   const [active, setActive] = useState(0)
   return <LessonShell title="الأعداد الطبيعية" steps={steps} activeStep={active} onStepChange={setActive} />

@@ -32,6 +32,50 @@ async function main() {
 
   const goTo = (hash: string) => { act(() => { window.location.hash = hash; window.dispatchEvent(new window.Event('hashchange')) }) }
 
+  // The shell's own navigation buttons, selected by class: several lessons have activity controls
+  // that are also called «التالي», so an accessible-name query would be ambiguous.
+  const shellNext = () => document.querySelector('.lesson-navigation .lesson-nav-button.is-next') as HTMLButtonElement
+  const shellPrevious = () => document.querySelector('.lesson-navigation .lesson-nav-button.is-previous') as HTMLButtonElement
+
+  /**
+   * Walks forward until the lesson's own final assessment is on screen. Every Unit 1 lesson now ends
+   * with «دفتر الطالب» AFTER its assessment, so a `while (!next.disabled)` walk no longer stops there.
+   */
+  const walkToFinalTest = (guardLimit = 40) => {
+    let guard = 0
+    while (!document.querySelector('[class*="final-test"]') && !shellNext().disabled && guard < guardLimit) {
+      fireEvent.click(shellNext())
+      guard++
+    }
+    if (!document.querySelector('[class*="final-test"]')) fail('walking with التالي never reached the lesson final assessment')
+    return guard
+  }
+
+  /**
+   * Asserts the step now on screen is this lesson's student notebook: a static, print-only reference
+   * page (no form control, exactly one button, all authored blocks rendered).
+   */
+  const expectNotebook = (lessonId: string, label: string) => {
+    const notebook = document.querySelector<HTMLElement>(`.student-notebook[data-notebook="${lessonId}"]`)
+    if (!notebook) fail(`${label}: the last step is not «دفتر الطالب» for "${lessonId}"`)
+    const blocks = notebook!.querySelectorAll('[data-notebook-block]')
+    if (blocks.length < 15) fail(`${label}: the student notebook rendered only ${blocks.length} copyable blocks`)
+    if (notebook!.querySelectorAll('input, select, textarea, [contenteditable]').length !== 0) fail(`${label}: the student notebook must stay a static reference (no form control)`)
+    const buttons = notebook!.querySelectorAll('button')
+    if (buttons.length !== 1 || !buttons[0]!.classList.contains('nb-print')) fail(`${label}: the student notebook must expose exactly one control (print)`)
+    if (!notebook!.textContent!.includes('انقل ما يأتي في دفترك كما هو')) fail(`${label}: the student notebook is missing its copy-it-into-your-notebook instruction`)
+    if (document.querySelector('.lesson-step-panel')?.getAttribute('data-step-id') !== 'notebook') fail(`${label}: the lesson shell is not on the "notebook" step`)
+    console.log(`✅ ${label} «دفتر الطالب»: ${blocks.length} copyable blocks, ${notebook!.querySelectorAll('table.nb-table').length} tables, ${notebook!.querySelectorAll('[data-notebook-section]').length} sections, print-only`)
+  }
+
+  /** One more step after the assessment must be the student notebook — and it must be the last one. */
+  const openNotebookStep = (lessonId: string, label: string) => {
+    if (shellNext().disabled) fail(`${label}: there is no step after the final assessment (expected «دفتر الطالب»)`)
+    fireEvent.click(shellNext())
+    expectNotebook(lessonId, label)
+    if (!shellNext().disabled) fail(`${label}: «دفتر الطالب» must be the last step of the lesson`)
+  }
+
   render(<App />)
   console.log('✅ App mounted at Home (#top)')
 
@@ -81,7 +125,7 @@ async function main() {
   const lessonBreadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
   if (!within(lessonBreadcrumbs).getByText('الوحدة الأولى') || !within(lessonBreadcrumbs).getByText('انطلاقة الدرس')) fail('Premium lesson breadcrumbs are incomplete')
   const lessonProgress = screen.getByRole('progressbar', { name: 'موقعك في الدرس' })
-  if (lessonProgress.getAttribute('aria-valuenow') !== '1' || lessonProgress.getAttribute('aria-valuemax') !== '9') fail('Premium lesson position indicator has incorrect values')
+  if (lessonProgress.getAttribute('aria-valuenow') !== '1' || lessonProgress.getAttribute('aria-valuemax') !== '10') fail('Premium lesson position indicator has incorrect values')
   const outlineTrigger = screen.getByRole('button', { name: /مسار الدرس.*انطلاقة الدرس/ })
   fireEvent.click(outlineTrigger)
   const outlineDialog = screen.getByRole('dialog', { name: 'خطوات التعلّم' })
@@ -136,7 +180,8 @@ async function main() {
   fireEvent.change(finalInputs[3], { target: { value: 'الأفقي ثم الشاقولي' } })
   fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
   if (!screen.getByText('نتيجتك: 4 / 4')) fail('Lesson 1 FinalTest rejected valid formatted coordinate answers')
-  console.log('✅ Lesson 1 (شبكة الإحداثيات) steps, Bidi ordered pairs, axis classification, and FinalTest grading verified')
+  openNotebookStep('coordinates', 'Lesson 1')
+  console.log('✅ Lesson 1 (شبكة الإحداثيات) steps, Bidi ordered pairs, axis classification, FinalTest grading and the student notebook verified')
 
   // ---- Lesson 2: open and verify every step ----
   goTo('#lesson/line-graphs')
@@ -220,12 +265,14 @@ async function main() {
   if (!screen.getByText(/نتيجتك:/)) fail('Final test result did not render after submit')
   console.log('✅ Step 10 (الاختبار الختامي): new final test submits and shows a score')
 
+  // Step 11: دفتر الطالب — the copyable summary of the lesson, after the assessment.
+  openNotebookStep('line-graphs', 'Lesson 2')
+  console.log('✅ Step 11 (دفتر الطالب): the notebook step is last, static and print-only')
+
   // ---- Lesson 3: legacy final test still renders its questions and scores a correct response ----
   goTo('#lesson/natural-numbers')
   if (!screen.getByRole('heading', { name: 'الأعداد الطبيعية' })) fail('Lesson 3 route did not open')
-  let l3Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
-  let l3Guard = 0
-  while (!l3Next.disabled && l3Guard < 30) { fireEvent.click(l3Next); l3Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; l3Guard++ }
+  walkToFinalTest(30)
   if (!screen.getByText(/اختبار ختامي جديد/)) fail('Lesson 3 existing final test did not render')
   if (document.querySelectorAll('.final-test .test-question').length !== 7) fail('Lesson 3 existing final-test question count changed')
   const l3CorrectInput = screen.getByText(/ما قيمة الرقم 7 في العدد 5,728,041/).closest('label')?.querySelector('input')
@@ -233,14 +280,13 @@ async function main() {
   fireEvent.change(l3CorrectInput, { target: { value: '700000' } })
   fireEvent.click(screen.getByText('عرض النتيجة'))
   if (!screen.getByText(/نتيجتك: 1 \/ 7/)) fail('Lesson 3 existing final-test scoring did not preserve a correct answer')
-  console.log('✅ Lesson 3 existing final test renders seven questions and scores a correct answer')
+  openNotebookStep('natural-numbers', 'Lesson 3')
+  console.log('✅ Lesson 3 existing final test renders seven questions, scores a correct answer, and is followed by «دفتر الطالب»')
 
   // ---- Lesson 4: legacy final test still renders its questions and scores a correct response ----
   goTo('#lesson/rounding-natural-numbers')
   if (!screen.getByRole('heading', { name: 'تقريب الأعداد الطبيعية', level: 1 })) fail('Lesson 4 route did not open')
-  let l4Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
-  let l4Guard = 0
-  while (!l4Next.disabled && l4Guard < 20) { fireEvent.click(l4Next); l4Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; l4Guard++ }
+  walkToFinalTest(20)
   if (!screen.getByText(/اختبار شامل جديد/)) fail('Lesson 4 existing final test did not render')
   if (document.querySelectorAll('.final-test .test-question').length !== 5) fail('Lesson 4 existing final-test question count changed')
   const l4CorrectInput = screen.getByText(/قرّب 4,682,137 إلى أقرب مليون/).closest('label')?.querySelector('input')
@@ -248,7 +294,8 @@ async function main() {
   fireEvent.change(l4CorrectInput, { target: { value: '5,000,000' } })
   fireEvent.click(screen.getByText('عرض النتيجة'))
   if (!screen.getByText(/نتيجتك: 1 \/ 5/)) fail('Lesson 4 existing final-test scoring did not preserve a correct answer')
-  console.log('✅ Lesson 4 existing final test renders five questions and scores a correct answer')
+  openNotebookStep('rounding-natural-numbers', 'Lesson 4')
+  console.log('✅ Lesson 4 existing final test renders five questions, scores a correct answer, and is followed by «دفتر الطالب»')
 
   // ---- Lesson 5: open, walk every step, exercise interactions ----
   goTo('#lesson/adding-subtracting-natural-numbers')
@@ -261,13 +308,12 @@ async function main() {
   fireEvent.change(warmA, { target: { value: '300' } })
   if (!screen.getByText(/أجبت بشكل صحيح عن/)) fail('Lesson 5 warm-up grid missing progress')
   // Click through the remaining steps to the final test.
-  let l5Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
-  let guard = 0
-  while (!l5Next.disabled && guard < 40) { fireEvent.click(l5Next); l5Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; guard++ }
+  const l5Walked = walkToFinalTest(40)
   if (!screen.getByText(/اختبار ختامي جديد/)) fail('Lesson 5 final test step did not render')
   fireEvent.click(screen.getByText('عرض النتيجة'))
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 5 final test did not produce a score')
-  console.log(`✅ Lesson 5 (جمع الأعداد الطبيعيّة وطرحها): all steps navigate and the new final test scores (${guard + 2} steps walked)`)
+  openNotebookStep('adding-subtracting-natural-numbers', 'Lesson 5')
+  console.log(`✅ Lesson 5 (جمع الأعداد الطبيعيّة وطرحها): all steps navigate, the new final test scores and the notebook step is last (${l5Walked + 3} steps walked)`)
 
   // ---- Lesson 6: angles, protractor interaction, all steps, and final test ----
   goTo('#lesson/angle-measurement')
@@ -285,13 +331,12 @@ async function main() {
   fireEvent.click(screen.getByRole('button', { name: 'التالي' }))
   if (!screen.getAllByText(/35°/).length) fail('Lesson 6 35-degree worked example missing')
   // Walk the remaining sequential steps to the final test.
-  let l6Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement
-  let l6Guard = 0
-  while (!l6Next.disabled && l6Guard < 20) { fireEvent.click(l6Next); l6Next = screen.getByRole('button', { name: 'التالي' }) as HTMLButtonElement; l6Guard++ }
+  const l6Walked = walkToFinalTest(20)
   if (!screen.getByText(/اختبار جديد/)) fail('Lesson 6 final test step did not render')
   fireEvent.click(screen.getByRole('button', { name: 'عرض النتيجة' }))
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 6 final test did not produce a score')
-  console.log(`✅ Lesson 6 (قياس الزوايا): protractor interaction, zoom, sequential navigation, and final test passed (${l6Guard + 5} steps walked)`)
+  openNotebookStep('angle-measurement', 'Lesson 6')
+  console.log(`✅ Lesson 6 (قياس الزوايا): protractor interaction, zoom, sequential navigation, final test and the notebook step passed (${l6Walked + 6} steps walked)`)
 
 
   // ---- Lesson 7: parallelograms — every step, figures, zoom, activities, final test ----
@@ -330,6 +375,7 @@ async function main() {
     ['تدرّب ⑤', /متوازيا الأضلاع فيهما/],
     ['الخلاصة', /خلاصة الدرس السابع/],
     ['الاختبار النهائي', /اختبار ختامي جديد من إعداد المنصة/],
+    ['دفتر الطالب', /انقل ما يأتي في دفترك كما هو/],
   ]
   for (const [phase, pattern] of expectedPhases) {
     fireEvent.click(l7Next())
@@ -353,18 +399,21 @@ async function main() {
       if (!screen.getAllByText(/ممتاز: هنا يكون/).length) fail('Lesson 7 fourth-vertex activity feedback missing')
     }
   }
-  if (!l7Next().disabled) fail('Lesson 7 did not end on the final step')
+  if (!l7Next().disabled) fail('Lesson 7 did not end on the last step («دفتر الطالب»)')
+  expectNotebook('parallelogram', 'Lesson 7')
   // Sequential navigation backwards + outline jump.
-  fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
-  if (!screen.getAllByText(/خلاصة الدرس السابع/).length) fail('Lesson 7 "السابق" did not go back one step')
+  fireEvent.click(shellPrevious())
+  if (!screen.getAllByText(/اختبار ختامي جديد من إعداد المنصة/).length) fail('Lesson 7 "السابق" did not go back from the notebook to the final test')
+  fireEvent.click(shellPrevious())
+  if (!screen.getAllByText(/خلاصة الدرس السابع/).length) fail('Lesson 7 "السابق" did not go back one more step to الخلاصة')
   fireEvent.click(screen.getByRole('button', { name: /انطلاقة الدرس/ }))
   if (!screen.getAllByText(/نرى في حياتنا اليوميّة/).length) fail('Lesson 7 outline jump did not work')
-  if (!screen.getByText('الخطوة 1 من 15')) fail('Lesson 7 progress indicator missing or wrong')
-  // Final test scores.
-  for (const [phase] of expectedPhases) { void phase; fireEvent.click(l7Next()) }
+  if (!screen.getByText('الخطوة 1 من 16')) fail('Lesson 7 progress indicator missing or wrong')
+  // Final test scores: the assessment is the step BEFORE the notebook, so stop one phase early.
+  for (const [phase] of expectedPhases) { if (phase === 'دفتر الطالب') break; fireEvent.click(l7Next()) }
   fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 7 final test did not produce a score')
-  console.log(`✅ Lesson 7 (متوازي الأضلاع): ${expectedPhases.length + 1} sequential steps, outline + previous/next, lab, construction player, blanks, vertex activity and final test all pass`)
+  console.log(`✅ Lesson 7 (متوازي الأضلاع): ${expectedPhases.length + 1} sequential steps ending with «دفتر الطالب», outline + previous/next, lab, construction player, blanks, vertex activity and final test all pass`)
 
   // ---- Lesson 8: the rhombus — every step, figures, activities, final test ----
   goTo('#lesson/rhombus')
@@ -388,6 +437,7 @@ async function main() {
     ['أخطاء وتحقّق', /صحيحة أم خاطئة؟/],
     ['الخلاصة', /خلاصة الدرس الثامن/],
     ['الاختبار النهائي', /اختبار ختامي جديد من إعداد المنصّة/],
+    ['دفتر الطالب', /انقل ما يأتي في دفترك كما هو/],
   ]
   for (const [phase, pattern] of l8Phases) {
     fireEvent.click(l8Next())
@@ -426,10 +476,14 @@ async function main() {
       if (!screen.getAllByText(/اختيار صحيح/).length) fail('Lesson 8 fourth-vertex activity feedback missing')
     }
   }
-  if (!l8Next().disabled) fail('Lesson 8 did not end on the final step')
+  if (!l8Next().disabled) fail('Lesson 8 did not end on the last step («دفتر الطالب»)')
+  expectNotebook('rhombus', 'Lesson 8')
+  // Back to the assessment: it is the step right before the notebook.
+  fireEvent.click(shellPrevious())
+  if (!screen.getAllByText(/اختبار ختامي جديد من إعداد المنصّة/).length) fail('Lesson 8 "السابق" did not go back from the notebook to the final test')
   fireEvent.click(screen.getByRole('button', { name: /عرض النتيجة/ }))
   if (!screen.getByText(/نتيجتك:/)) fail('Lesson 8 final test did not produce a score')
-  console.log(`✅ Lesson 8 (المعيّن): ${l8Phases.length + 1} sequential steps, rhombus lab, detector, construction player, blanks, vertex activity and final test all pass`)
+  console.log(`✅ Lesson 8 (المعيّن): ${l8Phases.length + 1} sequential steps ending with «دفتر الطالب», rhombus lab, detector, construction player, blanks, vertex activity and final test all pass`)
 
   // ---- Unit 2, Lesson 1: discovery, source-task checking, comparison lab, sorting and LTR input ----
   goTo('#lesson/compare-order-natural-numbers')
