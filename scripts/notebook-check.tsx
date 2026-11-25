@@ -213,6 +213,20 @@ for (const { entry, doc } of docs) {
     if (!table.parentElement?.classList.contains('nb-table-scroll')) {
       fail(`${entry.id}: a copyable table is not inside .nb-table-scroll, so it would overflow a phone`)
     }
+    // A row label is written once in its own column. A cell that restates it and then adds to it
+    // («الزاوية الحادة» → «الزاوية الحادة أصغر من 90°») reads as a copy error, so it is rejected.
+    // A cell that merely EQUALS the label is left alone: rounding 232698 to the ones place really
+    // does return 232698, and that row carries a caption saying so.
+    for (const row of Array.from(table.querySelectorAll('tbody tr'))) {
+      const cells = Array.from(row.querySelectorAll('th, td'))
+        .map(cell => (cell.textContent ?? '').replace(/\s+/g, ' ').trim())
+      const [label, ...rest] = cells
+      for (const cell of rest) {
+        if (label && cell.length > label.length && cell.startsWith(label)) {
+          fail(`${entry.id}: table row «${label}» is restated by its own cell «${cell.slice(0, 50)}»`)
+        }
+      }
+    }
   }
   for (const figure of Array.from(root!.querySelectorAll('figure.nb-figure'))) {
     if (!figure.querySelector(':scope > .nb-figure-body')) {

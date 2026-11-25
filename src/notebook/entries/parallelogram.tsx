@@ -36,6 +36,12 @@ const bookDefinition = (id: string, term: string): string => {
   return printed.startsWith(`${term}:`) ? printed.slice(term.length + 1).trim() : printed
 }
 
+/** The «القياس» column keeps the measure only — the angle name already heads the row. */
+const measureColumn = (value: string, label: string): string => {
+  const lead = `${label} = `
+  return value.startsWith(lead) ? value.slice(lead.length).trim() : value
+}
+
 /** Latin/mathematical runs (AB ∥ DC, ∠A = 70°, 2 × (a + b)) stay in their natural LTR order. */
 const math = (value: string, key: string) => <MathExpression key={key}>{value}</MathExpression>
 
@@ -377,8 +383,8 @@ export function parallelogramNotebook(): NotebookDoc {
             kind: 'table', id: 'l7-table-ex5', title: 'تدرّب ⑤ — الفرع (ب): قياس الزاويتين',
             headers: ['الزاوية', 'القياس', 'التعليل'],
             rows: [
-              ['∠CDE', math(answer('l7-p35-ex5-b-cde'), 'ex5-cde'), reasoning('l7-p35-ex5-b-cde').join(' ')],
-              ['∠DCB', math(answer('l7-p35-ex5-b-dcb'), 'ex5-dcb'), reasoning('l7-p35-ex5-b-dcb').join(' ')],
+              ['∠CDE', math(measureColumn(answer('l7-p35-ex5-b-cde'), '∠CDE'), 'ex5-cde'), reasoning('l7-p35-ex5-b-cde').join(' ')],
+              ['∠DCB', math(measureColumn(answer('l7-p35-ex5-b-dcb'), '∠DCB'), 'ex5-dcb'), reasoning('l7-p35-ex5-b-dcb').join(' ')],
             ],
             caption: 'استراتيجية الشكلين المتجاورين: حدّد الضلع المشترك ← انقل المعلومة إليه ← ثم انقلها إلى الشكل الثاني. وللزوايا اسأل أولاً: في أي متوازي أضلاع تقع هذه الزاوية؟',
           },

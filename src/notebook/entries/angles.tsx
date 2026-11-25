@@ -43,6 +43,14 @@ const measureOf = (id: string): string => {
  * The same measure, keeping the book's own qualifier when the value is *read off a drawing*
  * («60° تقريباً كما تُقاس من الرسم»). Such a number must never look like exact printed data.
  */
+/** The «القياس» column keeps the measure only — the type name already heads the row. */
+const measureColumn = (id: string): string => {
+  const term = element(id).title
+  const printed = answer(id)
+  const withoutLead = printed.startsWith('قياس ') ? printed.slice('قياس '.length) : printed
+  return withoutLead.startsWith(term) ? withoutLead.slice(term.length).trim() : printed
+}
+
 const measuredLabel = (id: string): string => {
   const value = measureOf(id)
   const printed = answer(id)
@@ -183,7 +191,7 @@ export function anglesNotebook(): NotebookDoc {
             kind: 'table', id: 'l6-table-types', title: 'جدول تصنيف الزوايا (ص 27)',
             headers: ['النوع', 'القياس', 'كيف نعرفها؟', 'ملاحظة'],
             rows: ['l6-p27-acute-definition', 'l6-p27-right-definition', 'l6-p27-obtuse-definition', 'l6-p27-straight-definition']
-              .map(id => [element(id).title, answer(id), reasoning(id)[0], reasoning(id)[1]]),
+              .map(id => [element(id).title, measureColumn(id), reasoning(id)[0], reasoning(id)[1]]),
             caption: 'الحدّان اللذان نقارن بهما دائماً هما 90° و180°.',
           },
           {
