@@ -1,7 +1,8 @@
 /**
- * «دفتر الطالب» audit — the notebook step of every shipped Unit 1 lesson.
+ * «دفتر الطالب» audit — the notebook step of every shipped Unit 1 and Unit 2 lesson.
  *
- * This check does not trust the authored documents. For each of the eight notebooks it
+ * This check does not trust the authored documents. For each of the nineteen notebooks (eight Unit 1
+ * lessons, the ten Unit 2 lessons and the Unit 2 review lesson) it
  *  • proves the doc agrees with `curriculumRegistry` (lesson id, title, unit, textbook pages, theme);
  *  • proves every section and block id is unique, stable and lesson-prefixed, and that the whole
  *    document actually reached the DOM (`data-notebook-block` per authored block);
@@ -17,8 +18,10 @@
  *  • proves the mixed Arabic/Latin text is bidi-isolated: a leaf holding Latin letters or a geometric
  *    symbol must live inside `BidiText`/`MathExpression`/an LTR-isolated SVG, never in bare RTL prose;
  *  • renders the REAL lesson and walks its outline to the last step, proving the notebook is wired as
- *    the final step, that the step before it is still the lesson's own assessment, and that the
- *    progress bar reports the new step count.
+ *    the final step, that the step before it still renders the lesson's own recap or assessment, and
+ *    that the progress bar reports the new step count. A Unit 1 lesson must still end on an
+ *    interactive assessment; a Unit 2 lesson may end on its recap/summary, which only carries the
+ *    link to the lesson's standalone test.
  *
  * Run independently with `npm run notebook-check`; it is part of `quality-check` and therefore `build`.
  */
@@ -38,31 +41,68 @@ const { additionSubtractionNotebook } = await import('../src/notebook/entries/ad
 const { anglesNotebook } = await import('../src/notebook/entries/angles')
 const { parallelogramNotebook } = await import('../src/notebook/entries/parallelogram')
 const { rhombusNotebook } = await import('../src/notebook/entries/rhombus')
+const { compareNotebook } = await import('../src/notebook/entries/u2l1Compare')
+const { multiplyNotebook } = await import('../src/notebook/entries/u2l2Multiply')
+const { lcmNotebook } = await import('../src/notebook/entries/u2l3Lcm')
+const { fractionsOneNotebook } = await import('../src/notebook/entries/u2l4FractionsOne')
+const { fractionsTwoNotebook } = await import('../src/notebook/entries/u2l5FractionsTwo')
+const { tenthsNotebook } = await import('../src/notebook/entries/u2l6Tenths')
+const { hundredthsNotebook } = await import('../src/notebook/entries/u2l7Hundredths')
+const { thousandthsNotebook } = await import('../src/notebook/entries/u2l8Thousandths')
+const { rectangleNotebook } = await import('../src/notebook/entries/u2l9Rectangle')
+const { squareNotebook } = await import('../src/notebook/entries/u2l10Square')
+const { unit2ExercisesNotebook } = await import('../src/notebook/entries/u2revExercises')
 
 import type { NotebookBlock, NotebookDoc } from '../src/notebook/types'
 
 /** lesson id → its notebook factory, the lesson file that must wire it, and the expected step count. */
 const plan: Array<{
   id: string
+  unitId: 'unit-1' | 'unit-2'
   prefix: string
   file: string
   steps: number
   theme?: string
   make: () => NotebookDoc
 }> = [
-  { id: 'coordinates', prefix: 'l1', file: 'src/lessons/CoordinatesLesson.tsx', steps: 10, make: coordinatesNotebook },
-  { id: 'line-graphs', prefix: 'l2', file: 'src/lessons/LineGraphsLesson.tsx', steps: 11, make: lineGraphsNotebook },
-  { id: 'natural-numbers', prefix: 'l3', file: 'src/lessons/NaturalNumbersLesson.tsx', steps: 12, make: naturalNumbersNotebook },
-  { id: 'rounding-natural-numbers', prefix: 'l4', file: 'src/lessons/RoundingLesson.tsx', steps: 6, theme: 'lesson-four', make: roundingNotebook },
-  { id: 'adding-subtracting-natural-numbers', prefix: 'l5', file: 'src/lessons/AdditionSubtractionLesson.tsx', steps: 15, theme: 'lesson-five', make: additionSubtractionNotebook },
-  { id: 'angle-measurement', prefix: 'l6', file: 'src/lessons/AnglesLesson.tsx', steps: 14, theme: 'lesson-six', make: anglesNotebook },
-  { id: 'parallelogram', prefix: 'l7', file: 'src/lessons/ParallelogramLesson.tsx', steps: 16, theme: 'lesson-seven', make: parallelogramNotebook },
-  { id: 'rhombus', prefix: 'l8', file: 'src/lessons/RhombusLesson.tsx', steps: 15, theme: 'lesson-eight', make: rhombusNotebook },
+  { id: 'coordinates', unitId: 'unit-1', prefix: 'l1', file: 'src/lessons/CoordinatesLesson.tsx', steps: 10, make: coordinatesNotebook },
+  { id: 'line-graphs', unitId: 'unit-1', prefix: 'l2', file: 'src/lessons/LineGraphsLesson.tsx', steps: 11, make: lineGraphsNotebook },
+  { id: 'natural-numbers', unitId: 'unit-1', prefix: 'l3', file: 'src/lessons/NaturalNumbersLesson.tsx', steps: 12, make: naturalNumbersNotebook },
+  { id: 'rounding-natural-numbers', unitId: 'unit-1', prefix: 'l4', file: 'src/lessons/RoundingLesson.tsx', steps: 6, theme: 'lesson-four', make: roundingNotebook },
+  { id: 'adding-subtracting-natural-numbers', unitId: 'unit-1', prefix: 'l5', file: 'src/lessons/AdditionSubtractionLesson.tsx', steps: 15, theme: 'lesson-five', make: additionSubtractionNotebook },
+  { id: 'angle-measurement', unitId: 'unit-1', prefix: 'l6', file: 'src/lessons/AnglesLesson.tsx', steps: 14, theme: 'lesson-six', make: anglesNotebook },
+  { id: 'parallelogram', unitId: 'unit-1', prefix: 'l7', file: 'src/lessons/ParallelogramLesson.tsx', steps: 16, theme: 'lesson-seven', make: parallelogramNotebook },
+  { id: 'rhombus', unitId: 'unit-1', prefix: 'l8', file: 'src/lessons/RhombusLesson.tsx', steps: 15, theme: 'lesson-eight', make: rhombusNotebook },
+  { id: 'compare-order-natural-numbers', unitId: 'unit-2', prefix: 'u2l1', file: 'src/lessons/ComparingNaturalNumbersLesson.tsx', steps: 12, theme: 'lesson-nine', make: compareNotebook },
+  { id: 'multiply-natural-numbers', unitId: 'unit-2', prefix: 'u2l2', file: 'src/lessons/MultiplyNaturalNumbersLesson.tsx', steps: 13, theme: 'lesson-ten', make: multiplyNotebook },
+  { id: 'least-common-multiple', unitId: 'unit-2', prefix: 'u2l3', file: 'src/lessons/LeastCommonMultipleLesson.tsx', steps: 11, theme: 'lesson-eleven', make: lcmNotebook },
+  { id: 'fractions-one', unitId: 'unit-2', prefix: 'u2l4', file: 'src/lessons/FractionsOneLesson.tsx', steps: 11, theme: 'lesson-twelve', make: fractionsOneNotebook },
+  { id: 'fractions-two', unitId: 'unit-2', prefix: 'u2l5', file: 'src/lessons/FractionsTwoLesson.tsx', steps: 9, theme: 'l25-lesson', make: fractionsTwoNotebook },
+  { id: 'tenths-one', unitId: 'unit-2', prefix: 'u2l6', file: 'src/lessons/TenthsOneLesson.tsx', steps: 8, theme: 'l6-tenths-one', make: tenthsNotebook },
+  { id: 'decimal-parts-two', unitId: 'unit-2', prefix: 'u2l7', file: 'src/lessons/DecimalPartsTwoLesson.tsx', steps: 10, theme: 'l7-decimal-two', make: hundredthsNotebook },
+  { id: 'decimal-parts-three', unitId: 'unit-2', prefix: 'u2l8', file: 'src/lessons/DecimalPartsThreeLesson.tsx', steps: 9, theme: 'lesson-decimal-three', make: thousandthsNotebook },
+  { id: 'rectangle', unitId: 'unit-2', prefix: 'u2l9', file: 'src/lessons/RectangleLesson.tsx', steps: 14, theme: 'lesson-rectangle', make: rectangleNotebook },
+  { id: 'square', unitId: 'unit-2', prefix: 'u2l10', file: 'src/lessons/SquareLesson.tsx', steps: 15, theme: 'lesson-square', make: squareNotebook },
+  { id: 'unit-2-exercises', unitId: 'unit-2', prefix: 'u2rev', file: 'src/lessons/Unit2ExercisesLesson.tsx', steps: 14, theme: 'lesson-unit2-exercises', make: unit2ExercisesNotebook },
 ]
 
-const unitOne = curriculumRegistry.find(unit => unit.id === 'unit-1')
-if (!unitOne) fail('unit-1 is missing from the curriculum registry')
-if (unitOne!.lessons.length !== plan.length) fail(`expected ${plan.length} Unit 1 lessons, found ${unitOne!.lessons.length}`)
+const unitById = new Map(curriculumRegistry.map(unit => [unit.id, unit]))
+const unitOf = (entry: { unitId: string }) => {
+  const unit = unitById.get(entry.unitId)
+  if (!unit) fail(`${entry.unitId} is missing from the curriculum registry`)
+  return unit
+}
+/** The lesson (taught or review) a notebook belongs to, inside its own unit. */
+const lessonOf = (entry: { id: string; unitId: string }) => {
+  const unit = unitOf(entry)
+  return [...unit.lessons, ...(unit.reviewLessons ?? [])].find(candidate => candidate.id === entry.id)
+}
+for (const unit of curriculumRegistry) {
+  const expected = plan.filter(entry => entry.unitId === unit.id).length
+  if (expected === 0) continue
+  const shipped = unit.lessons.length + (unit.reviewLessons?.length ?? 0)
+  if (shipped !== expected) fail(`expected ${expected} ${unit.title} notebooks, the registry ships ${shipped} lessons`)
+}
 
 const docs = plan.map(entry => ({ entry, doc: entry.make() }))
 
@@ -89,11 +129,12 @@ const APPROXIMATE_BLOCKS: Record<string, readonly string[]> = {
 const APPROXIMATE_MARK = /تقريب|قراءة من الرسم/u
 
 for (const { entry, doc } of docs) {
-  const lesson = unitOne!.lessons.find(candidate => candidate.id === entry.id)
+  const lesson = lessonOf(entry)
+  const unit = unitOf(entry)
   if (!lesson) fail(`no registry lesson for notebook "${entry.id}"`)
   if (doc.lessonId !== entry.id) fail(`${entry.id}: doc.lessonId is "${doc.lessonId}"`)
   if (doc.lessonTitle !== lesson!.title) fail(`${entry.id}: doc.lessonTitle "${doc.lessonTitle}" ≠ registry title "${lesson!.title}"`)
-  if (doc.unit !== unitOne!.title) fail(`${entry.id}: doc.unit "${doc.unit}" ≠ registry unit "${unitOne!.title}"`)
+  if (doc.unit !== unit.title) fail(`${entry.id}: doc.unit "${doc.unit}" ≠ registry unit "${unit.title}"`)
   if (!/^ص \d+–\d+$/u.test(doc.pages)) fail(`${entry.id}: doc.pages "${doc.pages}" is not a «ص N–M» textbook range`)
   if (doc.theme !== entry.theme) fail(`${entry.id}: doc.theme "${doc.theme ?? ''}" ≠ lesson shell theme "${entry.theme ?? ''}"`)
   if (doc.sections.length < 5) fail(`${entry.id}: a notebook needs at least 5 sections, found ${doc.sections.length}`)
@@ -311,10 +352,15 @@ for (const { entry } of docs) {
   const progress = container.querySelector('[role="progressbar"]')
   if (progress?.getAttribute('aria-valuemax') !== String(entry.steps)) fail(`${entry.id}: progress bar reports ${progress?.getAttribute('aria-valuemax')} steps, expected ${entry.steps}`)
 
-  // The assessment must survive: it stays the step immediately before the notebook.
+  // The assessment must survive: it stays the step immediately before the notebook. Unit 1 steps end
+  // on an interactive assessment; a Unit 2 lesson ends on its own recap/summary, which may only carry
+  // the link to the lesson's standalone test, so it is required to render real content instead.
   fireEvent.click(outline[outline.length - 2]!)
   const assessment = container.querySelector('.lesson-content')
-  if (!assessment || assessment.querySelectorAll('input, button').length === 0) {
+  if (!assessment || (assessment.textContent ?? '').trim().length === 0) {
+    fail(`${entry.id}: the step before the notebook renders no lesson content`)
+  }
+  if (entry.unitId === 'unit-1' && assessment.querySelectorAll('input, button').length === 0) {
     fail(`${entry.id}: the step before the notebook no longer looks like the lesson assessment (no controls rendered)`)
   }
 
@@ -407,7 +453,7 @@ for (const [context, body] of [['base', base], ['phone', mobile], ['tablet', tab
 dom.window.close()
 
 console.log(
-  `Notebook check passed: ${docs.length} lesson notebooks («دفتر الطالب») wired as the final step of every Unit 1 lesson, ` +
+  `Notebook check passed: ${docs.length} lesson notebooks («دفتر الطالب») wired as the final step of every shipped Unit 1 and Unit 2 lesson, ` +
   `${sectionCount} sections and ${blockCount} copyable blocks (${[...kindTotals.entries()].map(([kind, count]) => `${kind} ${count}`).join(', ')}), ` +
   `${figures} accessible figures, ${tables} copyable tables, ${printButtons} print controls and no form control.\n` +
   `Section purposes: ${recordSections} «يُدوَّن في الدفتر» and ${practiceSections} «حلول وتدرّبات», with every definition/rule/procedure in a record section.\n` +

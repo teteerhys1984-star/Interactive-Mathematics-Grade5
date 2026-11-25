@@ -39,7 +39,7 @@ async function main() {
     assert.ok(within(breadcrumbs).getByText('الوحدة الثانية'), 'unit title resolves from the curriculum registry')
     const progress = screen.getByRole('progressbar', { name: 'موقعك في الدرس' })
     const stepCount = Number(progress.getAttribute('aria-valuemax'))
-    assert.equal(stepCount, 9, 'lesson has nine ordered steps')
+    assert.equal(stepCount, 10, 'lesson has ten ordered steps')
 
     const panel = () => document.querySelector('.lesson-step-panel') as HTMLElement
     const next = () => fireEvent.click(screen.getByRole('button', { name: /التالي/ }))

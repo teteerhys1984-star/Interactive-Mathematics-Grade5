@@ -5,6 +5,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { fractionsTwoNotebook } from '../notebook/entries/u2l5FractionsTwo'
 import {
   checkClassifyItems, checkToImproperItems, checkToMixedItems, classifyFraction, classifyItems, cakeShare,
   divideWithRemainder, exerciseThreeItems, exerciseTwoItems, formatFraction, isAcceptedFraction,
@@ -546,6 +548,7 @@ const steps: LessonStep[] = [
   { id: 'practice', title: 'تدريبات الكتاب', content: <PracticeStep /> },
   { id: 'applications', title: 'تطبيقات وتفكير', content: <ApplicationsStep /> },
   { id: 'summary', title: 'الملخص والتحدي', content: <SummaryStep /> },
+  { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={fractionsTwoNotebook()} /> },
 ]
 
 export function FractionsTwoLesson() {

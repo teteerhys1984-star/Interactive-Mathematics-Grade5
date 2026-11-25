@@ -40,7 +40,7 @@ async function main() {
     assert.ok(screen.getByRole('heading', { name: 'الأجزاء العشرية (1)', level: 1 }), 'lesson route renders')
     const breadcrumbs = screen.getByRole('navigation', { name: 'مسار الدرس' })
     assert.ok(within(breadcrumbs).getByText('الوحدة الثانية'), 'unit title resolves from the curriculum registry')
-    assert.equal(screen.getByRole('progressbar', { name: 'موقعك في الدرس' }).getAttribute('aria-valuemax'), '7')
+    assert.equal(screen.getByRole('progressbar', { name: 'موقعك في الدرس' }).getAttribute('aria-valuemax'), '8')
 
     const seenAnchors = new Set<string>()
     const observedSteps: string[] = []
@@ -54,7 +54,7 @@ async function main() {
       assert.ok(within(task!).getByRole('status').textContent?.includes('صحيح'), `${id} comparison grades correctly`)
     }
 
-    for (let stepIndex = 0; stepIndex < 7; stepIndex += 1) {
+    for (let stepIndex = 0; stepIndex < 8; stepIndex += 1) {
       const current = panel()
       assert.ok(current, `step ${stepIndex + 1} panel exists`)
       observedSteps.push(current.getAttribute('data-step-id') ?? '')
@@ -199,16 +199,20 @@ async function main() {
         assert.ok(matchFeedback.includes('لم تكن مرسومة في المصدر'), 'computed matches are labelled as mathematical inference')
       }
 
-      if (stepIndex < 6) next()
+      if (stepIndex < 7) next()
     }
 
-    assert.equal(new Set(observedSteps).size, 7, 'all seven lesson steps are reachable')
+    assert.equal(new Set(observedSteps).size, 8, 'all eight lesson steps are reachable')
     const requiredIds = flattenCoverageIds()
     const missingIds = requiredIds.filter((id) => !seenAnchors.has(id))
     assert.deepEqual(missingIds, [], 'each source block and branch has a visible source anchor in the real lesson')
-    assert.equal(panel().querySelectorAll('.l6-fraction[dir="ltr"]').length > 0, true, 'lesson fractions are visually separated and LTR')
-    assert.equal(panel().querySelectorAll('.math-expression[dir="ltr"]').length > 0, true, 'decimal notation is isolated from Arabic RTL prose')
-    console.log(`✅ Student lesson: all 7 steps, ${requiredIds.length} source/branch anchors, number line/table, shading, comparisons, and matching checked.`)
+    // The final step is the student notebook, which prints fractions and decimals with its own
+    // isolated classes; the teaching steps keep the lesson's .l6-fraction / .math-expression pair.
+    assert.equal(panel().querySelectorAll('.nb-frac[dir="ltr"], .nb-math-run[dir="ltr"]').length > 0, true, 'notebook fractions and decimals are visually separated and LTR')
+    fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
+    assert.ok(panel().querySelectorAll('.l6-fraction[dir="ltr"]').length > 0, 'lesson fractions are visually separated and LTR')
+    assert.ok(panel().querySelectorAll('.math-expression[dir="ltr"]').length > 0, 'decimal notation is isolated from Arabic RTL prose')
+    console.log(`✅ Student lesson: all 8 steps, ${requiredIds.length} source/branch anchors, number line/table, shading, comparisons, and matching checked.`)
 
     navigate('#tests/solutions/lesson-tenths-one-test/1')
     assert.ok(screen.getByRole('heading', { name: 'الحلول غير متاحة قبل التسليم' }), 'test solutions remain locked before submission')

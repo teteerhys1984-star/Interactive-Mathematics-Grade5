@@ -44,7 +44,7 @@ async function main() {
       assert.ok(within(task).getByRole('status').textContent?.includes('صحيح'), `${lower} < ${value} < ${upper}`)
     }
     const stepCount = Number(document.querySelector('.lesson-progress-track')?.getAttribute('aria-valuemax'))
-    assert.equal(stepCount, 8, 'lesson is divided into eight navigable steps')
+    assert.equal(stepCount, 9, 'lesson is divided into nine navigable steps')
 
     for (let stepIndex = 0; stepIndex < stepCount; stepIndex += 1) {
       panel().querySelectorAll<HTMLElement>('[data-source-id]').forEach((node) => seen.add(node.dataset.sourceId ?? ''))

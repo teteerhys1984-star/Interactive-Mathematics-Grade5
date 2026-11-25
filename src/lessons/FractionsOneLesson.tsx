@@ -8,6 +8,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { fractionsOneNotebook } from '../notebook/entries/u2l4FractionsOne'
 import {
   fractionsOneBookElementById,
   fractionsOneQuestionGroups,
@@ -602,6 +604,7 @@ export function FractionsOneLesson() {
     { id: 'applications', title: 'تطبيقات المسافة والنتائج والوقود', content: <ApplicationsStep /> },
     { id: 'labs', title: 'مختبر المحاذاة', content: <PlatformLabsStep /> },
     { id: 'recap', title: 'الخلاصة والتحدي الختامي', content: <RecapStep /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={fractionsOneNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title="الكسور (1)" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-twelve" />

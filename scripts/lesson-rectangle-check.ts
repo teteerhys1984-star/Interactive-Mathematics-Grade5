@@ -116,7 +116,7 @@ assert.ok(studentSource.includes('#tests/run/lesson-rectangle-test'), 'student c
 assert.ok(studentSource.includes('شرح إضافي من المنصة') && studentSource.includes('نشاط من إعداد المنصة'), 'platform additions are labelled in the student view')
 assert.ok(studentSource.includes('theme="lesson-rectangle"'), 'lesson uses its own shell theme')
 assert.ok(!/className="[^"]*\bl[0-9]+-/u.test(studentSource), 'lesson does not reuse other lessons’ class prefixes')
-assert.ok(studentSource.includes('rectangleStepCount = 13'), 'lesson declares its thirteen short steps')
+assert.ok(studentSource.includes('rectangleStepCount = 14'), 'lesson declares its fourteen short steps')
 const css = readFileSync('src/lesson-rectangle.css', 'utf8')
 const unscoped = css.split('\n').filter((line) => /^[.#a-z]/iu.test(line) && !line.startsWith('.lesson-shell.lesson-rectangle') && !line.startsWith('.lesson-rectangle'))
 assert.deepEqual(unscoped, [], 'every stylesheet rule is scoped under .lesson-rectangle')

@@ -131,7 +131,7 @@ assert.ok(studentSource.includes('#tests/run/lesson-square-test') && studentSour
 assert.ok(studentSource.includes('شرح إضافي من المنصة') && studentSource.includes('نشاط من إعداد المنصة'), 'platform additions are labelled in the student view')
 assert.ok(studentSource.includes('theme="lesson-square"'), 'lesson uses its own shell theme')
 assert.ok(!/className="[^"]*\bl[0-9]+-/u.test(studentSource), 'lesson does not reuse other lessons’ class prefixes')
-assert.ok(studentSource.includes('squareStepCount = 14'), 'lesson declares its fourteen short steps')
+assert.ok(studentSource.includes('squareStepCount = 15'), 'lesson declares its fifteen short steps')
 assert.ok(!studentSource.includes('rect-') && !studentSource.includes('lesson-rectangle'), 'lesson does not reuse Lesson 9 identifiers')
 const css = readFileSync('src/lesson-square.css', 'utf8')
 const unscoped = css.split('\n').filter((line) => /^[.#a-z]/iu.test(line) && !line.startsWith('.lesson-shell.lesson-square') && !line.startsWith('.lesson-square'))

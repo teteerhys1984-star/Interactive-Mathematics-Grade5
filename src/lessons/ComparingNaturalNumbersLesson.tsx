@@ -5,6 +5,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { compareNotebook } from '../notebook/entries/u2l1Compare'
 import {
   compareNaturalNumbersBookElements,
   compareNaturalNumbersBookTasks,
@@ -669,6 +671,7 @@ export function ComparingNaturalNumbersLesson() {
     { id: 'practice-areas', title: 'تطبيق: مساحات المحافظات', content: <PracticeAreasStep /> },
     { id: 'platform-lab', title: 'مختبر المنصة', content: <PlatformLabStep /> },
     { id: 'recap', title: 'الخلاصة والاستعداد', content: <LessonRecap /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={compareNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title="مقارنة الأعداد الطبيعية وترتيبها" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-nine" />

@@ -4,6 +4,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { tenthsNotebook } from '../notebook/entries/u2l6Tenths'
 import {
   compareRationalValues, decimalForTenths, fractionForTenths, isAcceptedVerbalTenths, isDecimalEquivalentToTenths,
   isEquivalentToTenths, isNaturalValue, isStrictlyBetweenTenths, isTenthsFractionInput, lessonTitle,
@@ -534,6 +536,7 @@ const steps: LessonStep[] = [
   { id: 'practice-p64', title: 'تمارين المقارنة · ص64', content: <PracticePage64Step /> },
   { id: 'practice-p65-3-5', title: 'تطبيقات · ص65 (3–5)', content: <PracticePage65FirstStep /> },
   { id: 'practice-p65-6-8', title: 'تحدي الأعداد والمطابقة · ص65 (6–8)', content: <PracticePage65LastStep /> },
+  { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={tenthsNotebook()} /> },
 ]
 
 export function TenthsOneLesson() {

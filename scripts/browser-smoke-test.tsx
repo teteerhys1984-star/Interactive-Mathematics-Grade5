@@ -757,6 +757,33 @@ async function main() {
   }
   console.log(`✅ Lesson-shell regression on all ${lessonRoutes.length} available lessons: position stays separate from completion, and the outline dialog traps focus, closes on Escape and restores focus (${lessonRoutes.length} lessons checked)`)
 
+  // ---- Every Unit 2 lesson ends with its «دفتر الطالب» notebook step ----
+  // Unit 2 lessons were extended with the student notebook after the Unit 1 roll-out, so each one is
+  // opened, jumped to its last step through the outline, and checked for a static, print-only sheet.
+  const unitTwoNotebooks: Array<[string, string]> = [
+    ['compare-order-natural-numbers', 'Unit 2 Lesson 1'],
+    ['multiply-natural-numbers', 'Unit 2 Lesson 2'],
+    ['least-common-multiple', 'Unit 2 Lesson 3'],
+    ['fractions-one', 'Unit 2 Lesson 4'],
+    ['fractions-two', 'Unit 2 Lesson 5'],
+    ['tenths-one', 'Unit 2 Lesson 6'],
+    ['decimal-parts-two', 'Unit 2 Lesson 7'],
+    ['decimal-parts-three', 'Unit 2 Lesson 8'],
+    ['rectangle', 'Unit 2 Lesson 9'],
+    ['square', 'Unit 2 Lesson 10'],
+    ['unit-2-exercises', 'Unit 2 review'],
+  ]
+  for (const [lessonId, label] of unitTwoNotebooks) {
+    goTo(`#lesson/${lessonId}`)
+    fireEvent.click(screen.getByRole('button', { name: /^مسار الدرس/ }))
+    const sheetSteps = Array.from(screen.getByRole('dialog', { name: 'خطوات التعلّم' }).querySelectorAll('.lesson-outline-list.is-mobile button')) as HTMLElement[]
+    if (sheetSteps.length < 6) fail(`${label}: the outline lists only ${sheetSteps.length} steps`)
+    fireEvent.click(sheetSteps[sheetSteps.length - 1]!)
+    expectNotebook(lessonId, label)
+    if (!shellNext().disabled) fail(`${label}: «دفتر الطالب» must be the last step of the lesson`)
+  }
+  console.log(`✅ Unit 2 notebooks: all ${unitTwoNotebooks.length} lessons end with a static, print-only «دفتر الطالب»`)
+
   // ---- Teacher Area: gate + all lessons + page metadata ----
   goTo('#teacher')
   if (!screen.getByText('دخول Teacher Area')) fail('Teacher password gate did not render')
