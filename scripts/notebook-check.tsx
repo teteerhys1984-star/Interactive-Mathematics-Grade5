@@ -7,6 +7,13 @@
  *    document actually reached the DOM (`data-notebook-block` per authored block);
  *  • proves the notebook stayed a static reference: no form control, no lesson widget, exactly one
  *    button (print), no `data-source-id` marker that could collide with a lesson coverage ledger;
+ *  • proves every section declares a purpose, that the purpose badge reached the DOM, and that no
+ *    definition/rule/procedure is buried in a «حلول وتدرّبات» section (item 4 of the review);
+ *  • proves a value read off a drawing says it is approximate, and that no year range runs backwards;
+ *  • audits `src/lesson-notebook.css` for the phone, desktop and print contexts, since this sandbox
+ *    has no browser to measure a real viewport (every `nb-*` class the renderer emits must be styled,
+ *    the mobile breakpoint must re-pad the sheet, and print must hide the button and never split a
+ *    block across pages);
  *  • proves the mixed Arabic/Latin text is bidi-isolated: a leaf holding Latin letters or a geometric
  *    symbol must live inside `BidiText`/`MathExpression`/an LTR-isolated SVG, never in bare RTL prose;
  *  • renders the REAL lesson and walks its outline to the last step, proving the notebook is wired as
@@ -62,7 +69,24 @@ const docs = plan.map(entry => ({ entry, doc: entry.make() }))
 /* ------------------------------------------- 2. static shape of every doc */
 let blockCount = 0
 let sectionCount = 0
+let recordSections = 0
+let practiceSections = 0
 const kindTotals = new Map<string, number>()
+
+/** Block kinds that carry curriculum content the student must write down, never a solved exercise. */
+const COPYABLE_KINDS = new Set(['definition', 'rule', 'steps'])
+
+/**
+ * Blocks whose numbers are *read off a drawing* instead of being printed in the book. Each one must
+ * say so in the rendered page, so an approximate reading never looks like exact printed data.
+ */
+const APPROXIMATE_BLOCKS: Record<string, readonly string[]> = {
+  coordinates: ['l1-table-gates'],
+  'line-graphs': ['l2-table-height', 'l2-table-students', 'l2-ex-height-table', 'l2-note-approximate'],
+  'angle-measurement': ['l6-table-colored', 'l6-table-triangle', 'l6-table-applications', 'l6-note-approximate'],
+  parallelogram: ['l7-table-ex3', 'l7-ex-l7-p35-ex3-d'],
+}
+const APPROXIMATE_MARK = /تقريب|قراءة من الرسم/u
 
 for (const { entry, doc } of docs) {
   const lesson = unitOne!.lessons.find(candidate => candidate.id === entry.id)
@@ -81,6 +105,20 @@ for (const { entry, doc } of docs) {
     if (!section.id.startsWith(`${entry.prefix}-`)) fail(`${entry.id}: section id "${section.id}" must start with "${entry.prefix}-"`)
     ids.add(section.id)
     if (section.blocks.length === 0) fail(`${entry.id}: section "${section.id}" has no blocks`)
+    if (section.purpose !== 'record' && section.purpose !== 'practice') {
+      fail(`${entry.id}: section "${section.id}" must declare purpose "record" or "practice" (found "${String(section.purpose)}")`)
+    }
+    if (section.purpose === 'record') recordSections += 1
+    else practiceSections += 1
+    // A curriculum definition, rule or procedure is what the student writes down; it may never be
+    // filed under the solved-exercise badge, where a student would skip it.
+    if (section.purpose === 'practice') {
+      for (const block of section.blocks as NotebookBlock[]) {
+        if (COPYABLE_KINDS.has(block.kind)) {
+          fail(`${entry.id}: "${block.id}" is a ${block.kind} but sits in the practice section "${section.id}" — move it to a «يُدوَّن في الدفتر» section`)
+        }
+      }
+    }
     for (const block of section.blocks as NotebookBlock[]) {
       if (ids.has(block.id)) fail(`${entry.id}: duplicate block id "${block.id}"`)
       if (!block.id.startsWith(`${entry.prefix}-`)) fail(`${entry.id}: block id "${block.id}" must start with "${entry.prefix}-"`)
@@ -130,6 +168,7 @@ const ISOLATED_CONTEXT = '.math-expression, [dir="ltr"], svg, bdi' as const
 let printButtons = 0
 let figures = 0
 let tables = 0
+const notebookClasses = new Set<string>()
 
 for (const { entry, doc } of docs) {
   const { container } = render(React.createElement(StudentNotebook, { doc }))
@@ -168,7 +207,18 @@ for (const { entry, doc } of docs) {
     }
     if (svg.closest('button, a, label')) fail(`${entry.id}: a figure is wrapped in an interactive element`)
   }
-  tables += root!.querySelectorAll('table.nb-table').length
+  const renderedTables = root!.querySelectorAll('table.nb-table')
+  tables += renderedTables.length
+  for (const table of Array.from(renderedTables)) {
+    if (!table.parentElement?.classList.contains('nb-table-scroll')) {
+      fail(`${entry.id}: a copyable table is not inside .nb-table-scroll, so it would overflow a phone`)
+    }
+  }
+  for (const figure of Array.from(root!.querySelectorAll('figure.nb-figure'))) {
+    if (!figure.querySelector(':scope > .nb-figure-body')) {
+      fail(`${entry.id}: a figure block is not inside .nb-figure-body, so it cannot scroll on a phone`)
+    }
+  }
 
   // Bidi: every TEXT NODE carrying Latin letters or ∠ must be isolated, otherwise RTL prose reorders
   // it. Text nodes (not elements) are walked, so a <li> holding both prose and a <MathExpression> is
@@ -192,6 +242,41 @@ for (const { entry, doc } of docs) {
   const prose = (root!.textContent ?? '')
   for (const banned of ['TODO', 'FIXME', 'lorem', 'undefined', '[object Object]', 'NaN']) {
     if (prose.includes(banned)) fail(`${entry.id}: notebook prose contains "${banned}"`)
+  }
+
+  // The purpose badge must reach the DOM with the wording a student reads on the sheet.
+  for (const section of doc.sections) {
+    const node = root!.querySelector<HTMLElement>(`[data-notebook-section="${section.id}"]`)
+    if (node?.getAttribute('data-notebook-purpose') !== section.purpose) {
+      fail(`${entry.id}: section "${section.id}" did not render its purpose attribute`)
+    }
+    const badge = node?.querySelector('.nb-purpose')
+    const expected = section.purpose === 'record' ? 'يُدوَّن في الدفتر' : 'حلول وتدرّبات'
+    if (badge?.textContent?.trim() !== expected) {
+      fail(`${entry.id}: section "${section.id}" badge reads "${badge?.textContent?.trim() ?? ''}", expected "${expected}"`)
+    }
+  }
+
+  // A period written backwards («2015 – 2006») is a transcription error, not a convention.
+  for (const [, from, to] of prose.matchAll(/(\d{4})\s*[–-]\s*(\d{4})/gu)) {
+    if (Number(from) > Number(to)) fail(`${entry.id}: the year range ${from}–${to} runs backwards`)
+  }
+
+  // Approximate readings must be labelled as approximate where they are printed.
+  for (const id of APPROXIMATE_BLOCKS[entry.id] ?? []) {
+    const block = root!.querySelector<HTMLElement>(`[data-notebook-block="${id}"]`)
+    if (!block) fail(`${entry.id}: expected approximate-reading block "${id}" is missing`)
+    if (!APPROXIMATE_MARK.test(block!.textContent ?? '')) {
+      fail(`${entry.id}: "${id}" carries values read off a drawing but never says they are approximate`)
+    }
+  }
+
+  // Every class of the notebook's own vocabulary must be styled somewhere in lesson-notebook.css.
+  for (const element of Array.from(root!.querySelectorAll<HTMLElement>('[class]'))) {
+    // getAttribute, not .className: an SVG element's className is an SVGAnimatedString
+    for (const token of (element.getAttribute('class') ?? '').split(/\s+/u)) {
+      if (token.startsWith('nb-') || token === 'student-notebook') notebookClasses.add(token)
+    }
   }
 
   cleanup()
@@ -229,12 +314,90 @@ for (const { entry } of docs) {
   cleanup()
 }
 
+/* ------------------------- 5. phone, desktop and print CSS -------------------------
+ * No browser exists in this sandbox (no Chromium/Firefox binary and the Playwright/Puppeteer
+ * download hosts are unreachable), so the three viewing contexts are audited statically instead:
+ * the stylesheet must style every class the renderer emits, re-pad the sheet on a phone, and
+ * print the sheet alone without splitting a block across pages. This is a static audit, not a
+ * measured layout pass — see the report that ships with this change.
+ */
+const css = readFileSync('src/lesson-notebook.css', 'utf8')
+
+/** Splits the stylesheet into its base rules and the rules inside each @media block. */
+function mediaBlocks(source: string): Array<{ query: string; body: string }> {
+  const blocks: Array<{ query: string; body: string }> = []
+  const pattern = /@media([^{]+)\{/gu
+  for (const match of source.matchAll(pattern)) {
+    let depth = 1
+    let index = match.index! + match[0].length
+    while (index < source.length && depth > 0) {
+      if (source[index] === '{') depth += 1
+      else if (source[index] === '}') depth -= 1
+      index += 1
+    }
+    blocks.push({ query: match[1]!.trim(), body: source.slice(match.index! + match[0].length, index - 1) })
+  }
+  return blocks
+}
+const media = mediaBlocks(css)
+const base = css.replace(/@media[^{]+\{/gu, '@media {').split('@media {')[0]!
+const mobile = media.filter(block => /max-width:\s*760px/u.test(block.query)).map(block => block.body).join('\n')
+const tablet = media.filter(block => /max-width:\s*900px/u.test(block.query)).map(block => block.body).join('\n')
+const print = media.filter(block => /\bprint\b/u.test(block.query)).map(block => block.body).join('\n')
+if (!mobile) fail('lesson-notebook.css has no @media (max-width: 760px) phone block for the notebook')
+if (!tablet) fail('lesson-notebook.css has no @media (max-width: 900px) tablet block for the notebook')
+if (!print) fail('lesson-notebook.css has no @media print block for the notebook')
+
+const unstyled = [...notebookClasses].filter(name => !css.includes(`.${name}`))
+if (unstyled.length) fail(`notebook classes are rendered but never styled: ${unstyled.join(', ')}`)
+
+for (const [context, body] of [['phone', mobile], ['tablet', tablet], ['print', print]] as const) {
+  if (!body.includes('.student-notebook')) fail(`the ${context} context does not restyle the notebook sheet itself`)
+}
+for (const selector of ['.nb-print', '.nb-section-title', '.nb-purpose', '.nb-table th, .nb-table td']) {
+  if (!mobile.includes(selector)) fail(`the phone block does not adapt ${selector}`)
+}
+if (!/\.nb-print\s*\{[^}]*width:\s*100%/u.test(mobile)) fail('the print control must span the phone width (a 44px-high full-width target)')
+if (!/\.nb-print\s*\{[^}]*min-height:\s*44px/u.test(base)) fail('the print control must keep a 44px touch target')
+// A reused lesson figure keeps its lesson min-width unless the notebook cancels it explicitly.
+if (!/min-width:\s*0/u.test(css)) fail('reused lesson figures need a min-width: 0 override inside the notebook sheet')
+for (const container of ['.nb-figure-body', '.nb-table-scroll', '.nb-example-figure']) {
+  if (!new RegExp(`${container.replace('.', '\\.')}\\s*\\{[^}]*overflow-x:\\s*auto`, 'u').test(css)) {
+    fail(`${container} must scroll horizontally on a phone (overflow-x: auto)`)
+  }
+}
+if (!/\.nb-table-scroll/u.test(css)) fail('copyable tables need their own scroll container on a phone')
+
+if (!/\.nb-print\s*\{[^}]*display:\s*none/u.test(print)) fail('print must hide the print button')
+if (!/break-inside:\s*avoid/u.test(print) || !/page-break-inside:\s*avoid/u.test(print)) {
+  fail('print must keep a block on one page (break-inside and page-break-inside)')
+}
+for (const block of ['.nb-definition', '.nb-rule', '.nb-steps', '.nb-example', '.nb-figure', '.nb-table-block', '.nb-note']) {
+  const rule = print.match(new RegExp(`${block.replace(/[.]/gu, '\\.')}(?=[^{]*\\{[^}]*break-inside)`, 'u'))
+  if (!rule && !print.includes(block)) fail(`print rules do not cover ${block}`)
+}
+if (!/:has\(\.student-notebook\)/u.test(print)) fail('print must drop the lesson chrome around the notebook sheet')
+if (!/overflow:\s*visible/u.test(print)) fail('print must release the scroll containers so figures are not clipped')
+
+// The 13px floor of the design system also holds on a phone; print sizes are in points on purpose.
+for (const [context, body] of [['base', base], ['phone', mobile], ['tablet', tablet]] as const) {
+  for (const declaration of body.matchAll(/font-size:\s*([^;}]+)/gu)) {
+    const sizes = [...declaration[1]!.matchAll(/(\d*\.?\d+)(rem|px)/gu)]
+      .map(match => Number(match[1]) * (match[2] === 'rem' ? 16 : 1))
+    if (sizes.length && Math.min(...sizes) < 13) {
+      fail(`the ${context} notebook CSS sets a font below the 13px floor: font-size: ${declaration[1]!.trim()}`)
+    }
+  }
+}
+
 dom.window.close()
 
 console.log(
   `Notebook check passed: ${docs.length} lesson notebooks («دفتر الطالب») wired as the final step of every Unit 1 lesson, ` +
   `${sectionCount} sections and ${blockCount} copyable blocks (${[...kindTotals.entries()].map(([kind, count]) => `${kind} ${count}`).join(', ')}), ` +
   `${figures} accessible figures, ${tables} copyable tables, ${printButtons} print controls and no form control.\n` +
+  `Section purposes: ${recordSections} «يُدوَّن في الدفتر» and ${practiceSections} «حلول وتدرّبات», with every definition/rule/procedure in a record section.\n` +
+  `Layout: ${notebookClasses.size} notebook classes styled for desktop, tablet (≤900px), phone (≤760px) and print; no screen font below 13px.\n` +
   `Step counts now: ${stepCounts.join('، ')}.`,
 )
 process.exit(0)

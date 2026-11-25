@@ -3,17 +3,25 @@ import type { ReactNode } from 'react'
 /**
  * «دفتر الطالب» — the student notebook schema.
  *
- * The notebook is the content a student copies into their school notebook after finishing a
- * lesson, so they can review later without re-watching the whole explanation. It is authored
- * data (one `NotebookDoc` per lesson in `src/notebook/entries/`), rendered by the shared
- * `StudentNotebook` component, and audited by `scripts/notebook-check.tsx`.
+ * The notebook is the student's own written record of a lesson: everything they are expected to
+ * put down in their school notebook after the lesson has been explained, plus the book's solved
+ * exercises to compare their work against. It does not replace the lesson or the teacher's
+ * explanation — it records what the student learned. It is authored data (one `NotebookDoc` per
+ * lesson in `src/notebook/entries/`), rendered by the shared `StudentNotebook` component, and
+ * audited by `scripts/notebook-check.tsx`.
  *
  * Design rules for authors:
  *  • Every block carries a stable `id` (rendered as `data-notebook-block`) so checks can prove
  *    the whole document reached the DOM, and so future units extend the system without changes.
+ *  • Every section declares its `purpose`: `record` for what the student writes down (a
+ *    definition, a rule, a procedure, a figure or table to copy) and `practice` for solved book
+ *    exercises and extra worked examples. Definitions, rules and procedures must never sit in a
+ *    `practice` section — the check enforces that no curriculum item is buried among solutions.
  *  • Content comes from the textbook via the lesson's own data/teacher modules; figures reuse
  *    the platform's existing components (CoordinatesGrid, LineChart, GeoFigure, ColumnOperation…)
  *    instead of a parallel drawing system.
+ *  • Any value that is *read off a drawing* rather than printed in the book must say so
+ *    («قراءة تقريبية من الرسم»), so it never looks like exact printed data.
  *  • The notebook is a static reference: no inputs, no grading, and exactly one button (print).
  */
 
@@ -79,9 +87,20 @@ export type NotebookBlock =
   | NotebookTableBlock
   | NotebookNoteBlock
 
+/**
+ * Why a section exists in the notebook.
+ *  • `record`  — «يُدوَّن في الدفتر»: the student copies it verbatim (definition, rule, procedure,
+ *    figure, table, caution). Every curriculum definition/rule/skill lives in a `record` section.
+ *  • `practice` — «حلول وتدرّبات»: the book's solved exercises and extra worked examples, kept for
+ *    comparing with the student's own attempt; the teacher decides what is copied from it.
+ */
+export type NotebookSectionPurpose = 'record' | 'practice'
+
 export interface NotebookSection {
   id: string
   title: ReactNode
+  /** Defaults to `record`; declared explicitly in every Unit 1 section. */
+  purpose?: NotebookSectionPurpose
   blocks: NotebookBlock[]
 }
 

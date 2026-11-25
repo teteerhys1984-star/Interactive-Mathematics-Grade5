@@ -22,6 +22,7 @@ export function coordinatesNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l1-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
@@ -48,6 +49,7 @@ export function coordinatesNotebook(): NotebookDoc {
       },
       {
         id: 'l1-rules',
+        purpose: 'record',
         title: 'القواعد',
         blocks: [
           {
@@ -70,30 +72,32 @@ export function coordinatesNotebook(): NotebookDoc {
       },
       {
         id: 'l1-read-steps',
-        title: 'مهارة ①: كيف نقرأ الزوج المرتب؟',
+        purpose: 'record',
+        title: 'المهارات بخطوات مرتّبة',
         blocks: [
           {
-            kind: 'steps', id: 'l1-steps-read', title: 'خطوات قراءة إحداثيات نقطة معطاة على الشبكة',
+            kind: 'steps', id: 'l1-steps-read', title: 'مهارة ①: قراءة إحداثيات نقطة ممثّلة على الشبكة',
             steps: [
-              <>نبدأ من نقطة الأصل <MathExpression>O(0,0)</MathExpression>.</>,
-              <>نقرأ العدد الأول؛ إنه الإحداثي <MathExpression>X</MathExpression>، فنمشي أفقياً إلى اليمين.</>,
-              <>نقرأ العدد الثاني؛ إنه الإحداثي <MathExpression>Y</MathExpression>، فنصعد شاقولياً.</>,
-              <>يلتقي المساران عند النقطة المطلوبة. فمثلاً <MathExpression>A(5,9)</MathExpression> تعني <MathExpression>5</MathExpression> وحدات أفقياً و<MathExpression>9</MathExpression> وحدات شاقولياً.</>,
+              <>ننطلق من النقطة المرسومة نفسها، لا من مبدأ الإحداثيات <MathExpression>O(0,0)</MathExpression>.</>,
+              <>نقرأ العدد الأفقي أولاً من التدريج السفلي للمحور <MathExpression>X</MathExpression>: إنه الإحداثي الأول.</>,
+              <>نقرأ العدد الشاقولي من التدريج الجانبي للمحور <MathExpression>Y</MathExpression>: إنه الإحداثي الثاني.</>,
+              <>نكتب الثنائية بالترتيب <MathExpression>(x,y)</MathExpression> بجانب اسم النقطة؛ فمثلاً النقطة <MathExpression>C</MathExpression> الواقعة عند <MathExpression>5</MathExpression> وحدات أفقياً ووحدة واحدة شاقولياً تُكتب <MathExpression>C(5,1)</MathExpression>.</>,
             ],
           },
           {
-            kind: 'steps', id: 'l1-steps-plot', title: 'مهارة ②: خطوات تمثيل نقطة على الشبكة',
+            kind: 'steps', id: 'l1-steps-plot', title: 'مهارة ②: تمثيل نقطة من ثنائيتها على الشبكة',
             steps: [
-              <>نبدأ من مبدأ الإحداثيات <MathExpression>O(0,0)</MathExpression>.</>,
-              <>نتحرك بعدد الوحدات المساوي للعدد الأول على المحور الأفقي (إلى اليمين).</>,
-              <>نتحرك بعدد الوحدات المساوي للعدد الثاني على المحور الشاقولي (إلى الأعلى).</>,
-              <>نضع النقطة عند التقاطع الذي وصلنا إليه، ونكتب اسمها أو ثنائيتها بجانبها.</>,
+              <>نبدأ من مبدأ الإحداثيات <MathExpression>O(0,0)</MathExpression> دائماً.</>,
+              <>نقرأ العدد الأول؛ إنه الإحداثي <MathExpression>X</MathExpression>، فنتحرك بعدد الوحدات المساوي له على المحور الأفقي (إلى اليمين).</>,
+              <>نقرأ العدد الثاني؛ إنه الإحداثي <MathExpression>Y</MathExpression>، فنتحرك بعدد الوحدات المساوي له على المحور الشاقولي (إلى الأعلى).</>,
+              <>نضع النقطة عند التقاطع الذي وصلنا إليه، ونكتب اسمها أو ثنائيتها بجانبها. فمثلاً <MathExpression>A(5,9)</MathExpression> تعني <MathExpression>5</MathExpression> وحدات أفقياً ثم <MathExpression>9</MathExpression> وحدات شاقولياً.</>,
             ],
           },
         ],
       },
       {
         id: 'l1-map',
+        purpose: 'record',
         title: 'جدول مواقع من خريطة دمشق القديمة',
         blocks: [
           {
@@ -107,12 +111,13 @@ export function coordinatesNotebook(): NotebookDoc {
               ['باب الجابية', <MathExpression key="v4">(0,4)</MathExpression>, 'لا نتحرك إلى اليمين، بل 4 وحدات إلى الأعلى (على المحور الشاقولي)'],
               ['الجامع الأموي', <MathExpression key="v5">(3,4)</MathExpression>, '3 وحدات إلى اليمين ثم 4 وحدات إلى الأعلى'],
             ],
-            caption: 'خريطة الأبواب السبعة موجودة في الكتاب ص 3، ولم تُعَد رسمها تقريبياً في المنصة؛ اعتمد الكتاب عند مراجعة هذه المواقع.',
+            caption: 'خريطة الأبواب السبعة مطبوعة في الكتاب ص 3 ولم يُعَد رسمُها في المنصّة. الثنائيات (7,3) و(7,1) و(5,0) و(0,4) مكتوبة في نصّ الكتاب نفسه، أمّا إحداثيا الجامع الأموي (3,4) فقراءة تقريبية من خريطة الكتاب؛ لذلك اعتمد الرسم الورقي عند مراجعة هذه المواقع.',
           },
         ],
       },
       {
         id: 'l1-examples',
+        purpose: 'practice',
         title: 'أمثلة محلولة',
         blocks: [
           {
@@ -176,6 +181,7 @@ export function coordinatesNotebook(): NotebookDoc {
       },
       {
         id: 'l1-warnings',
+        purpose: 'record',
         title: 'تنبيهات وأخطاء شائعة',
         blocks: [
           {

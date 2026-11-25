@@ -4,9 +4,11 @@ import { BidiText } from '../components/BidiText'
 import type { NotebookBlock, NotebookDoc, NotebookSection } from './types'
 
 /**
- * Renders one authored `NotebookDoc` as the last step of a lesson: the page a student copies into
- * their school notebook. The notebook is a static reference — it never adds inputs, never grades,
- * and exposes exactly one control (print), so it cannot interfere with lesson activities or tests.
+ * Renders one authored `NotebookDoc` as the last step of a lesson: the student's written record of
+ * that lesson — what they put down in their school notebook after the explanation, with the book's
+ * solved exercises kept apart from it by a per-section purpose badge. The notebook records learning;
+ * it never replaces the lesson. It is a static reference — it never adds inputs, never grades, and
+ * exposes exactly one control (print), so it cannot interfere with lesson activities or tests.
  *
  * Plain strings pass through `BidiText`, which keeps Arabic prose RTL while isolating Latin runs,
  * ordered pairs and geometric symbols (∠BAC, D̂, [AB], 130°) in their natural LTR order.
@@ -122,9 +124,16 @@ function Block({ block }: { block: NotebookBlock }) {
 }
 
 function Section({ section, index }: { section: NotebookSection; index: number }) {
+  const purpose = section.purpose ?? 'record'
   return (
-    <li className="nb-section" data-notebook-section={section.id}>
-      <h3 className="nb-section-title"><span className="nb-section-number" aria-hidden="true">{index + 1}</span>{text(section.title)}</h3>
+    <li className="nb-section" data-notebook-section={section.id} data-notebook-purpose={purpose}>
+      <h3 className="nb-section-title">
+        <span className="nb-section-number" aria-hidden="true">{index + 1}</span>
+        <span className="nb-section-heading">{text(section.title)}</span>
+        <span className={`nb-purpose nb-purpose-${purpose}`}>
+          {purpose === 'record' ? 'يُدوَّن في الدفتر' : 'حلول وتدرّبات'}
+        </span>
+      </h3>
       <div className="nb-section-body">{section.blocks.map(block => <Block key={block.id} block={block} />)}</div>
     </li>
   )
@@ -138,8 +147,10 @@ export function StudentNotebook({ doc }: { doc: NotebookDoc }) {
         <h3 className="nb-title">{doc.lessonTitle}</h3>
         <p className="nb-meta">{doc.unit} · {doc.pages}</p>
         <p className="nb-instruction">
-          انقل ما يأتي في دفترك كما هو: التعريفات والقواعد والخطوات والأمثلة المحلولة والرسوم.
-          هذه الصفحة هي مرجعك للمراجعة، وتغنيك عن إعادة الدرس من البداية.
+          هذا الدفتر <strong>سجلّك</strong> لما تعلّمته في الدرس: تكتب فيه ما يجب تدوينه بعد الشرح،
+          ثم تعود إليه عند المراجعة. وهو لا يستبدل شرح المعلّم ولا الدرس نفسه، ولا يغني عنهما.
+          انقل الأقسام الموسومة بـ<strong>«يُدوَّن في الدفتر»</strong> كما هي (التعريفات، القواعد، الخطوات، الرسوم والجداول)،
+          واستعمل الأقسام الموسومة بـ<strong>«حلول وتدرّبات»</strong> لمقارنة حلّك بحلّ الكتاب، ودوّن منها ما يطلبه مدرّسك.
         </p>
         <button type="button" className="nb-print" onClick={() => { if (typeof window !== 'undefined' && typeof window.print === 'function') window.print() }}>
           <Printer size={17} aria-hidden="true" /> اطبع صفحة الدفتر

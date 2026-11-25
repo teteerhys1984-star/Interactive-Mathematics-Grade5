@@ -39,6 +39,20 @@ const measureOf = (id: string): string => {
   if (!match) throw new Error(`no degree measure in the answer of ${id}: ${answer(id)}`)
   return match[0]
 }
+/**
+ * The same measure, keeping the book's own qualifier when the value is *read off a drawing*
+ * («60° تقريباً كما تُقاس من الرسم»). Such a number must never look like exact printed data.
+ */
+const measuredLabel = (id: string): string => {
+  const value = measureOf(id)
+  const printed = answer(id)
+  const approximate = printed.includes('تقريباً')
+  const readOff = printed.includes('كما تُقاس من الرسم')
+  if (approximate && readOff) return `${value} تقريباً (قراءة من الرسم)`
+  if (approximate) return `${value} تقريباً`
+  if (readOff) return `${value} (قراءة من الرسم)`
+  return value
+}
 const degree = (value: string, key: string) => <MathExpression key={key}>{value}</MathExpression>
 const angleName = (value: string, key: string) => <MathExpression key={key}>{value}</MathExpression>
 
@@ -55,7 +69,7 @@ const exampleFrom = (id: string, title: string, figure?: ReactNode, verification
 })
 
 /** «الزاوية / القياس» rows for a group of printed drill items. */
-const measureRows = (ids: readonly string[]) => ids.map(id => [element(id).title, degree(measureOf(id), `${id}-measure`)])
+const measureRows = (ids: readonly string[]) => ids.map(id => [element(id).title, degree(measuredLabel(id), `${id}-measure`)])
 
 export function anglesNotebook(): NotebookDoc {
   return {
@@ -67,6 +81,7 @@ export function anglesNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l6-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
@@ -149,6 +164,7 @@ export function anglesNotebook(): NotebookDoc {
       },
       {
         id: 'l6-types',
+        purpose: 'record',
         title: 'أنواع الزوايا',
         blocks: [
           {
@@ -194,6 +210,7 @@ export function anglesNotebook(): NotebookDoc {
       },
       {
         id: 'l6-rules',
+        purpose: 'record',
         title: 'القواعد والخواصّ',
         blocks: [
           {
@@ -205,8 +222,8 @@ export function anglesNotebook(): NotebookDoc {
             text: 'إذا كان الضلع الأساسي إلى اليمين نبدأ من الصفر الموجود يميناً، وإذا كان إلى اليسار نبدأ من الصفر الموجود يساراً. وقراءة التدريج الآخر تعطي قياساً مكمّلاً إلى 180° وقد تكون خاطئة.',
           },
           {
-            kind: 'rule', id: 'l6-rule-length', title: 'خاصة طول الضلعين',
-            text: answer('l6-p26-aerial'),
+            kind: 'rule', id: 'l6-rule-length', title: 'خاصة طول الضلعين: هل يتغيّر القياس إذا طال الضلعان؟',
+            text: mixed('الجواب كما في الكتاب: ', answer('l6-p26-aerial')),
           },
           {
             kind: 'rule', id: 'l6-rule-adjacent', title: 'خاصة الزاويتين المتجاورتين',
@@ -224,6 +241,7 @@ export function anglesNotebook(): NotebookDoc {
       },
       {
         id: 'l6-skills',
+        purpose: 'record',
         title: 'المهارات بخطوات مرتّبة',
         blocks: [
           {
@@ -255,6 +273,7 @@ export function anglesNotebook(): NotebookDoc {
       },
       {
         id: 'l6-measure-examples',
+        purpose: 'practice',
         title: 'أمثلة محلولة: القياس (ص 25 و26)',
         blocks: [
           exampleFrom('l6-p25-angle-35', 'مثال ② — قياس الزاوية A (ص 25)', (
@@ -264,7 +283,7 @@ export function anglesNotebook(): NotebookDoc {
             </>
           ), 'نكتب القياس بالصورة Â = 35°، والزاوية حادة لأن قياسها أصغر من 90°.'),
           exampleFrom('l6-p25-example-straight', 'مثال ③ — الزاوية ŜQB (ص 25)', <AngleDiagram kind="straight" label="∠SQB" ariaLabel="زاوية مستقيمة اسمها SQB" />),
-          exampleFrom('l6-p25-example-right', 'مثال ④ — الزاوية K̂LM (ص 25)', <AngleDiagram kind="right" label="∠KLM" ariaLabel="زاوية قائمة اسمها KLM" />),
+          exampleFrom('l6-p25-example-right', 'مثال ④ — الزاوية K̂LM في شكل ص 25 (قائمة)', <AngleDiagram kind="right" label="∠KLM" ariaLabel="زاوية قائمة اسمها KLM" />),
           exampleFrom('l6-p25-example-obtuse', 'مثال ⑤ — الزاوية F̂GK (ص 25)', <AngleDiagram kind="obtuse" degree={120} label="∠FGK" ariaLabel="زاوية منفرجة قياسها 120 درجة اسمها FGK" />),
           {
             kind: 'table', id: 'l6-table-checks', title: 'تحقّق من فهمك (ص 26): قياس خمس زوايا بالمنقلة',
@@ -276,7 +295,7 @@ export function anglesNotebook(): NotebookDoc {
               ['L̂SU', degree(measureOf('l6-p26-check-lsu'), 'c-lsu'), 'مستقيمة (ضلعان متعاكسان)'],
               ['F̂DE', degree(measureOf('l6-p26-check-fde'), 'c-fde'), 'منفرجة (بين 90° و180°)'],
             ],
-            caption: 'في كل زاوية: ابدأ من الصفر الذي يطابق ضلع البداية، ثم اقرأ التدريج الذي يحدده الضلع الآخر.',
+            caption: 'هذه الزوايا الخمس هي أشكال ص 26، وهي غير أشكال ص 25: فالاسم K̂LM يتكرّر في الصفحتين بقياسين مختلفين (90° في مثال ص 25 و50° في تحقّق ص 26) لأنّ لكلّ شكل رسمه الخاص. اقرأ الشكل المطلوب لا الاسم وحده. وفي كل زاوية: ابدأ من الصفر الذي يطابق ضلع البداية، ثم اقرأ التدريج الذي يحدده الضلع الآخر.',
           },
           {
             kind: 'figure', id: 'l6-figure-gallery',
@@ -295,6 +314,7 @@ export function anglesNotebook(): NotebookDoc {
       },
       {
         id: 'l6-draw-examples',
+        purpose: 'practice',
         title: 'أمثلة محلولة: الرسم (ص 26 و27)',
         blocks: [
           exampleFrom('l6-p26-draw-example', 'مثال ⑥ — رسم زاوية قياسها 50° (ص 26)', (
@@ -335,6 +355,7 @@ export function anglesNotebook(): NotebookDoc {
       },
       {
         id: 'l6-drills',
+        purpose: 'practice',
         title: 'تدرّبات الكتاب المحلولة (ص 28–30)',
         blocks: [
           {
@@ -424,8 +445,8 @@ export function anglesNotebook(): NotebookDoc {
             kind: 'table', id: 'l6-table-applications', title: 'تطبيقات من الحياة (ص 30)',
             headers: ['التطبيق', 'الجواب'],
             rows: [
-              ['انحراف الطائرة عن مسارها', degree(measureOf('l6-p30-plane'), 'ap-plane')],
-              ['سرب الأوز المهاجرة', degree(measureOf('l6-p30-birds'), 'ap-birds')],
+              ['انحراف الطائرة عن مسارها', degree(measuredLabel('l6-p30-plane'), 'ap-plane')],
+              ['سرب الأوز المهاجرة', degree(measuredLabel('l6-p30-birds'), 'ap-birds')],
               ['الزاوية 1 في إطار الدراجة', answer('l6-p30-bike-1')],
               ['الزاوية 2 في إطار الدراجة', answer('l6-p30-bike-2')],
               ['الزاوية 3 في إطار الدراجة', answer('l6-p30-bike-3')],
@@ -438,12 +459,13 @@ export function anglesNotebook(): NotebookDoc {
           exampleFrom('l6-p27-hanger', 'مثال ⑧ — تطبيق: زوايا علاقة الملابس (ص 27)'),
           {
             kind: 'note', id: 'l6-note-approximate', tone: 'tip',
-            text: 'بعض قياسات ص 29 و30 كتبها الكتاب بعبارة «تقريباً» أو «كما تُقاس من الرسم»؛ فالقياس الدقيق يحتاج منك أن تضع المنقلة على الرسم نفسه وتقرأ التدريج الصحيح.',
+            text: 'كل قياس موسوم بـ«تقريباً» أو بـ«(قراءة من الرسم)» في جداول ص 29 و30 ليس رقماً مطبوعاً في الكتاب: الكتاب نفسه قيّده بعبارة «تقريباً كما تُقاس من الرسم». لذلك انقل القيد مع القياس في دفترك، وضع المنقلة على الرسم نفسه واقرأ التدريج الصحيح لتتأكّد منه.',
           },
         ],
       },
       {
         id: 'l6-warnings',
+        purpose: 'record',
         title: 'أخطاء شائعة وتنبيهات',
         blocks: [
           {

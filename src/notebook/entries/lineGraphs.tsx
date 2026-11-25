@@ -35,11 +35,12 @@ export function lineGraphsNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l2-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
             kind: 'definition', id: 'l2-def-linegraph', term: 'التمثيل البياني بالخطوط',
-            text: 'لتسهل قراءة بيانات متغيّرة بمرور الزمن نرسم شبكة إحداثية، ونضع عادةً المحور الأفقي للزمن والمحور الشاقولي للبيانات التي ندرسها، ثمّ نمثّل النقاط في الشبكة، ونصل بينها، ونسمّي هذا التمثيل البياني بالخطوط.',
+            text: 'لتسهل قراءة بيانات متغيّرة بمرور الزمن نرسم شبكة إحداثية، ونضع عادةً المحور الأفقي للزمن والمحور الشاقولي للبيانات التي ندرسها، ثمّ نمثل النقاط في الشبكة، ونصل بينها، ونسمّي هذا التمثيل البياني بالخطوط.',
             source: 'الكتاب · ص 7 (صندوق «تعلّم») — يُحفظ كما هو',
           },
           {
@@ -49,7 +50,7 @@ export function lineGraphsNotebook(): NotebookDoc {
           },
           {
             kind: 'definition', id: 'l2-def-point', term: 'النقطة على التمثيل البياني',
-            text: <>كل نقطة على الرسم تمثّل زوجاً مرتباً: القيمة الأولى زمن والثانية بيانة. مثال من الكتاب: النقطة فوق يوم الجمعة تمثّل الزوج المرتّب <MathExpression>(الجمعة، 17)</MathExpression>، أي إنّ درجة الحرارة يوم الجمعة هي <MathExpression>17</MathExpression>.</>,
+            text: <>كل نقطة على الرسم تمثّل زوجاً مرتباً: القيمة الأولى زمن على المحور الأفقي، والثانية قيمة البيانات المدروسة على المحور الشاقولي. مثال من الكتاب: النقطة فوق يوم الجمعة تمثّل الزوج المرتّب <MathExpression>(الجمعة، 17)</MathExpression>، أي إنّ درجة الحرارة يوم الجمعة هي <MathExpression>17</MathExpression>.</>,
             source: 'الكتاب · ص 8',
           },
           {
@@ -60,6 +61,7 @@ export function lineGraphsNotebook(): NotebookDoc {
       },
       {
         id: 'l2-rules',
+        purpose: 'record',
         title: 'قواعد قراءة اتجاه التغيّر',
         blocks: [
           {
@@ -68,7 +70,7 @@ export function lineGraphsNotebook(): NotebookDoc {
           },
           {
             kind: 'rule', id: 'l2-rule-repeat', title: 'تكرار القيمة الواحدة',
-            text: <>قد تشترك أكثر من فترة زمنية في القيمة نفسها. في تمثيل درجات الحرارة تتكرر القيمة <MathExpression>16</MathExpression> يومي الأحد والسبت، وتتكرر القيمة <MathExpression>18</MathExpression> يومي الأربعاء والخميس؛ فالخط الأفقي عند قيمة واحدة يمكن أن يقطع الرسم في أكثر من نقطة.</>,
+            text: <>قد تشترك أكثر من فترة زمنية في القيمة نفسها. في تمثيل درجات الحرارة تتكرر القيمة <MathExpression>16</MathExpression> يومي الثلاثاء والسبت، وتتكرر القيمة <MathExpression>18</MathExpression> يومي الأربعاء والخميس؛ فالخط الأفقي عند قيمة واحدة يمكن أن يقطع الرسم في أكثر من نقطة.</>,
           },
           {
             kind: 'rule', id: 'l2-rule-between', title: 'ما بين النقطتين',
@@ -78,6 +80,7 @@ export function lineGraphsNotebook(): NotebookDoc {
       },
       {
         id: 'l2-skills',
+        purpose: 'record',
         title: 'المهارات بخطوات مرتّبة',
         blocks: [
           {
@@ -85,21 +88,21 @@ export function lineGraphsNotebook(): NotebookDoc {
             steps: [
               'نرسم محورين متعامدين: الأفقي للزمن (الأيام، الأشهر، الأعوام…) والشاقولي للبيانات المدروسة (الحرارة، الطول، العدد…).',
               'نكتب عنواناً واضحاً لكل محور، وعنواناً عاماً للتمثيل نفسه.',
-              'نستعمل الجدول لنضع نقطة فوق كل قيمة زمن، على ارتفاع يساوي البيانة المقابلة لها.',
+              'نستعمل الجدول لنضع نقطة فوق كل قيمة زمن، على ارتفاع يساوي قيمة البيانات المقابلة لها.',
               'نصل بين النقاط المتتالية بقطع مستقيمة، فنحصل على التمثيل البياني بالخطوط.',
             ],
           },
           {
-            kind: 'steps', id: 'l2-steps-read', title: 'مهارة ②: قراءة قيمة من التمثيل (من الزمن إلى البيانة)',
+            kind: 'steps', id: 'l2-steps-read', title: 'مهارة ②: قراءة قيمة من التمثيل (من الزمن إلى البيانات)',
             steps: [
               'نقف على الزمن المطلوب (اليوم أو الشهر أو العام) على المحور الأفقي.',
               'نصعد شاقولياً حتى النقطة الواقعة فوقه مباشرة، وليس حتى أي خط آخر.',
               'نقرأ القيمة المقابلة تماماً على المحور الشاقولي.',
-              <>نكتب النتيجة زوجاً مرتباً (زمن، بيانة)، مثل <MathExpression>(الجمعة، 17)</MathExpression>.</>,
+              <>نكتب النتيجة زوجاً مرتباً (زمن، قيمة البيانات)، مثل <MathExpression>(الجمعة، 17)</MathExpression>.</>,
             ],
           },
           {
-            kind: 'steps', id: 'l2-steps-find-time', title: 'مهارة ③: إيجاد الزمن المقابل لقيمة معطاة (من البيانة إلى الزمن)',
+            kind: 'steps', id: 'l2-steps-find-time', title: 'مهارة ③: إيجاد الزمن المقابل لقيمة معطاة (من البيانات إلى الزمن)',
             steps: [
               'نبحث على المحور الشاقولي عن القيمة المعطاة.',
               'نتحرك منها أفقياً حتى نلتقي بنقطة الرسم.',
@@ -110,6 +113,7 @@ export function lineGraphsNotebook(): NotebookDoc {
       },
       {
         id: 'l2-damascus',
+        purpose: 'record',
         title: 'مثال الكتاب ①: درجات الحرارة في دمشق (ص 7–8)',
         blocks: [
           {
@@ -125,7 +129,7 @@ export function lineGraphsNotebook(): NotebookDoc {
             labels: [
               <>المحور الأفقي: اليوم — والمحور الشاقولي: درجة الحرارة.</>,
               <>أعلى قيمة <MathExpression>18</MathExpression> يومي الأربعاء والخميس، وأدنى قيمة <MathExpression>14</MathExpression> يوم الإثنين.</>,
-              <>القيمة <MathExpression>16</MathExpression> تتكرر يومي الأحد والسبت، والقيمة <MathExpression>17</MathExpression> يوم الجمعة.</>,
+              <>القيمة <MathExpression>16</MathExpression> تتكرر يومي الثلاثاء والسبت، والقيمة <MathExpression>17</MathExpression> يوم الجمعة.</>,
             ],
           },
           {
@@ -158,13 +162,14 @@ export function lineGraphsNotebook(): NotebookDoc {
       },
       {
         id: 'l2-height',
+        purpose: 'practice',
         title: 'مثال الكتاب ②: الطول المثالي للطفل في العام الأول (ص 8–9)',
         blocks: [
           {
             kind: 'figure', id: 'l2-figure-height',
             title: 'الطول المثالي للطفل بالسنتيمتر في العام الأول',
             figure: <LineChart series={idealInfantHeight} ariaLabel="تمثيل بياني بالخطوط للطول المثالي للطفل خلال أشهر العام الأول من عمره" />,
-            caption: 'رسم لدى طبيب الأطفال، والمطلوب قراءة الأطوال منه وإكمال الجدول.',
+            caption: 'الرسم المعروض لدى طبيب الأطفال في الكتاب (ص 8)، والمطلوب قراءة الأطوال منه قراءة تقريبية وإكمال الجدول.',
             labels: [
               'المحور الأفقي: عمر الرضيع بالأشهر (من 0 إلى 12) — والمحور الشاقولي: الطول بالسنتيمتر.',
               <>المنحنى صاعد طوال العام، أي إنّ الطول يزداد مع تقدّم العمر.</>,
@@ -178,13 +183,14 @@ export function lineGraphsNotebook(): NotebookDoc {
               'نصعد شاقولياً حتى نقطة الرسم، ثم نقرأ الطول المقابل على المحور الشاقولي.',
               'نكتب القيمة في خانة الشهر نفسه من الجدول، وننتقل إلى الشهر التالي حتى تكتمل الخانات السبع.',
             ],
-            answer: 'القيم السبع مرتّبة في الجدول الآتي، من الولادة حتى عمر عام.',
+            answer: 'القيم السبع مرتّبة في الجدول الآتي، من الولادة حتى عمر عام، وكلّها قراءة تقريبية من الرسم.',
             verification: 'نتحقق بترتيب القيم: يجب أن تزداد تدريجياً من الولادة حتى عمر عام، لأنّ المنحنى صاعد.',
           },
           {
-            kind: 'table', id: 'l2-table-height', title: 'الجدول المكتمل (الطول بالسنتيمتر)',
+            kind: 'table', id: 'l2-table-height', title: 'الجدول المكتمل — الطول بالسنتيمتر (قيم تقريبية)',
             headers: infantHeightTableHeaders,
-            rows: [['الطول', ...heightValues.map((value, index) => number(value, `h-${index}`))]],
+            rows: [['الطول تقريباً', ...heightValues.map((value, index) => number(value, `h-${index}`))]],
+            caption: 'لا يطبع الكتاب جدولاً لهذا الرسم: كل قيمة هنا قراءة تقريبية من منحنى ص 8–9، وليست رقماً مطبوعاً في الكتاب.',
           },
           {
             kind: 'example', id: 'l2-ex-height-birth', title: 'ب) طول الطفل عند الولادة (ص 9)',
@@ -204,22 +210,23 @@ export function lineGraphsNotebook(): NotebookDoc {
               <>نطرح: <MathExpression>76 − 72 = 4</MathExpression> سم.</>,
               <>فرق صغير مثل <MathExpression>4</MathExpression> سم من أصل <MathExpression>76</MathExpression> سم يُعدّ قريباً وليس بعيداً عن المعدل الطبيعي.</>,
             ],
-            answer: <>نعم، الفرق <MathExpression>4</MathExpression> سم فقط، لذلك طول <MathExpression>72cm</MathExpression> قريب جداً من الطول المثالي.</>,
+            answer: <>نعم، الفرق نحو <MathExpression>4</MathExpression> سم فقط، لذلك طول <MathExpression>72cm</MathExpression> قريب جداً من الطول المثالي.</>,
             verification: <>نتحقق من اتجاه الرسم: المنحنى صاعد، وطول <MathExpression>72</MathExpression> سم يقع أسفل النقطة الأخيرة بقليل، فهو في المدى نفسه.</>,
           },
           {
             kind: 'note', id: 'l2-note-approximate', tone: 'warning',
-            text: 'الرسمان البيانيان في ص 8–9 (الطول المثالي، وعدد طلاب الصف الخامس) لا يرافقهما جدول أرقام مطبوع في الكتاب؛ فالقيم المكتوبة هنا قراءة دقيقة قدر الإمكان من مسار الخط نفسه، وتُستعمل بثبات في الرسم وفي الإجابة معاً. يُفضّل مطابقتها مع نسخة الكتاب الورقية عند المراجعة الصفّية.',
+            text: 'تنبيه على كل القيم الآتية من الرسم: الرسمان البيانيان في ص 8–9 (الطول المثالي، وعدد طلاب الصف الخامس) لا يرافقهما جدول أرقام مطبوع في الكتاب. لذلك كل عدد في جدوليهما وفي حلّيهما قراءة تقريبية من مسار الخط نفسه، وليست بياناً مطبوعاً في الكتاب، وهي تُستعمل بثبات في الرسم وفي الإجابة معاً. دوّن في دفترك أنّها تقريبية، وطابقها مع نسخة الكتاب الورقية عند المراجعة الصفّية.',
           },
         ],
       },
       {
         id: 'l2-students',
+        purpose: 'practice',
         title: 'مثال الكتاب ③: عدد طلاب الصف الخامس (ص 9)',
         blocks: [
           {
             kind: 'figure', id: 'l2-figure-students',
-            title: <>تطوّر عدد طلاب الصف الخامس في إحدى المدارس خلال الفترة <MathExpression>2015 – 2006</MathExpression></>,
+            title: <>تطوّر عدد طلاب الصف الخامس في إحدى المدارس خلال الفترة <MathExpression>2006 – 2015</MathExpression></>,
             figure: <LineChart series={studentCountByYear} readExampleIndex={studentCountByYear.labels.indexOf('2007')} ariaLabel="تمثيل بياني بالخطوط لعدد طلاب الصف الخامس بين عامي 2006 و2015، مع سهمَي قراءة يحدّدان عام 2007" />,
             caption: 'السهمان يبيّنان طريقة إيجاد العام الذي كان فيه عدد الطلاب 70.',
             labels: [
@@ -228,10 +235,10 @@ export function lineGraphsNotebook(): NotebookDoc {
             ],
           },
           {
-            kind: 'table', id: 'l2-table-students', title: 'أ) الجدول المكتمل الموافق للتمثيل البياني',
+            kind: 'table', id: 'l2-table-students', title: 'أ) الجدول المكتمل الموافق للتمثيل البياني (قيم تقريبية)',
             headers: ['العام', ...studentCountTableYears.map(String)],
             rows: [['عدد الطلاب', ...studentValues.map((value, index) => number(value, `s-${index}`))]],
-            caption: 'القيم مقروءة من الرسم البياني (انظر التنبيه في القسم السابق).',
+            caption: 'أعمدة الجدول مرتّبة كما وردت في الكتاب (من 2015 إلى 2006) لا ترتيباً زمنياً؛ فراجع كل عام على المحور الأفقي على حدة. وكل القيم تقريبية مقروءة من الرسم البياني (انظر التنبيه في القسم السابق).',
           },
           {
             kind: 'example', id: 'l2-ex-students-trend', title: 'ب) هل عدد الطلاب يزداد أم يتناقص؟ (ص 9)',
@@ -258,6 +265,7 @@ export function lineGraphsNotebook(): NotebookDoc {
       },
       {
         id: 'l2-mistakes',
+        purpose: 'record',
         title: 'أخطاء شائعة وتنبيهات',
         blocks: [
           {

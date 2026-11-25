@@ -30,6 +30,12 @@ const prompt = (id: string): string => element(id).prompt
 const answer = (id: string): string => element(id).answer
 const reasoning = (id: string): readonly string[] => element(id).reasoning
 
+/** Drops the «X:» lead-in of a book definition when X is already shown as the term chip. */
+const bookDefinition = (id: string, term: string): string => {
+  const printed = answer(id)
+  return printed.startsWith(`${term}:`) ? printed.slice(term.length + 1).trim() : printed
+}
+
 /** Latin/mathematical runs (AB ∥ DC, ∠A = 70°, 2 × (a + b)) stay in their natural LTR order. */
 const math = (value: string, key: string) => <MathExpression key={key}>{value}</MathExpression>
 
@@ -58,6 +64,7 @@ export function parallelogramNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l7-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
@@ -66,7 +73,7 @@ export function parallelogramNotebook(): NotebookDoc {
           },
           {
             kind: 'definition', id: 'l7-def-parallelogram', term: 'متوازي الأضلاع',
-            text: answer('l7-p32-definition'),
+            text: bookDefinition('l7-p32-definition', 'متوازي الأضلاع'),
             source: 'الكتاب · ص 32 (تعلّم ①)',
           },
           {
@@ -89,7 +96,7 @@ export function parallelogramNotebook(): NotebookDoc {
           },
           {
             kind: 'definition', id: 'l7-def-diagonal', term: 'قطر متوازي الأضلاع',
-            text: answer('l7-p32-diagonal'),
+            text: bookDefinition('l7-p32-diagonal', 'قطر متوازي الأضلاع'),
             source: 'الكتاب · ص 32 (تعلّم ①)',
           },
           {
@@ -107,6 +114,7 @@ export function parallelogramNotebook(): NotebookDoc {
       },
       {
         id: 'l7-recognize',
+        purpose: 'record',
         title: 'كيف أميّز متوازي الأضلاع؟',
         blocks: [
           {
@@ -137,7 +145,7 @@ export function parallelogramNotebook(): NotebookDoc {
               ['(4) QROP', math(answer('l7-p31-a-fig4'), 'f4'), 'نعم — المستطيل حالة خاصة'],
               ['(5) SVUT', math(answer('l7-p31-a-fig5'), 'f5'), 'نعم — المعيّن حالة خاصة'],
             ],
-            caption: answer('l7-p31-b'),
+            caption: mixed('جواب الفرع (ب) — الأشكال التي فيها كلّ ضلعين متقابلين متوازيان: ', answer('l7-p31-b')),
           },
           {
             kind: 'example', id: 'l7-ex-launch-b', title: 'مثال ① — انطلاقة نشطة (ب) (ص 31)',
@@ -167,12 +175,13 @@ export function parallelogramNotebook(): NotebookDoc {
           },
           {
             kind: 'text', id: 'l7-text-life',
-            text: mixed(prompt('l7-p31-intro'), ' ', answer('l7-p31-intro')),
+            text: mixed('صورة الكتاب (ص 31) غير معروضة في المنصّة، ونصّ النشاط كما طُبع: ', prompt('l7-p31-intro'), ' الجواب: ', answer('l7-p31-intro')),
           },
         ],
       },
       {
         id: 'l7-properties',
+        purpose: 'record',
         title: 'خاصتا متوازي الأضلاع',
         blocks: [
           {
@@ -241,12 +250,13 @@ export function parallelogramNotebook(): NotebookDoc {
       },
       {
         id: 'l7-construction',
+        purpose: 'record',
         title: 'رسم متوازي الأضلاع بالمسطرة والمنقلة',
         blocks: [
           {
-            kind: 'steps', id: 'l7-steps-draw', title: 'الخطوات الخمس (ص 34) — مثال الكتاب XYZW',
+            kind: 'steps', id: 'l7-steps-draw',
+            title: mixed('الخطوات الخمس (ص 34) — مثال الكتاب: ', `${prompt('l7-p34-draw-step1').split(':')[0]}.`),
             steps: [
-              mixed('معطيات مثال الكتاب: ', `${prompt('l7-p34-draw-step1').split(':')[0]}.`),
               answer('l7-p34-draw-step1'),
               answer('l7-p34-draw-step2'),
               answer('l7-p34-draw-step3'),
@@ -282,6 +292,7 @@ export function parallelogramNotebook(): NotebookDoc {
       },
       {
         id: 'l7-perimeter',
+        purpose: 'record',
         title: 'محيط متوازي الأضلاع وسلسلة الرباعيات',
         blocks: [
           {
@@ -289,7 +300,7 @@ export function parallelogramNotebook(): NotebookDoc {
             text: <>المحيط <MathExpression>= AB + BC + CD + DA</MathExpression>، وبما أن <MathExpression>CD = AB</MathExpression> و<MathExpression>DA = BC</MathExpression> فإن المحيط <MathExpression>= 2 × (AB + BC)</MathExpression>؛ أي ضعف مجموع ضلعين متجاورين.</>,
           },
           exampleFrom('l7-p35-ex3-d', 'مثال ④ — حساب المحيط (ص 35 · تدرّب ③ د)', <Fig35Ex3 />,
-            'نتحقق بجمع الأطوال الأربعة واحداً واحداً: 4 + 3 + 4 + 3 = 14cm، وهي النتيجة نفسها التي يعطيها القانون.'),
+            'نتحقق بجمع الأطوال الأربعة واحداً واحداً: 4 + 3 + 4 + 3 = 14cm، وهي النتيجة نفسها التي يعطيها القانون. انتبه: الكتاب لا يطبع أطوالاً على هذا الشكل بل يطلب قياسها بالمسطرة، والطولان 4cm و3cm هنا قياسان تقريبيان من الشكل المعاد رسمه في المنصّة بمقياس مطابق، لا رقمان مطبوعان في الكتاب.'),
           {
             kind: 'figure', id: 'l7-figure-chain',
             title: 'سلسلة الرباعيات: من العام إلى الخاص',
@@ -305,6 +316,7 @@ export function parallelogramNotebook(): NotebookDoc {
       },
       {
         id: 'l7-practice',
+        purpose: 'practice',
         title: 'تدرّبات الكتاب المحلولة (ص 35)',
         blocks: [
           {
@@ -334,7 +346,7 @@ export function parallelogramNotebook(): NotebookDoc {
               ['ج', prompt('l7-p35-ex3-c'), math(answer('l7-p35-ex3-c'), 'ex3c')],
               ['د', prompt('l7-p35-ex3-d'), math(answer('l7-p35-ex3-d'), 'ex3d')],
             ],
-            caption: reasoning('l7-p35-ex3-c').join(' '),
+            caption: mixed(reasoning('l7-p35-ex3-c').join(' '), ' الأطوال 4cm و3cm المستعملة في الفرعين (ج) و(د) قياسات تقريبية من الشكل المعاد رسمه في المنصّة؛ فالكتاب لا يطبع أرقاماً على هذا الشكل ويطلب قياسها بالمسطرة.'),
           },
           {
             kind: 'figure', id: 'l7-figure-ex4',
@@ -374,6 +386,7 @@ export function parallelogramNotebook(): NotebookDoc {
       },
       {
         id: 'l7-pitfalls',
+        purpose: 'record',
         title: 'أخطاء شائعة (من الكتاب ومن حلّ كل بند)',
         blocks: [
           {

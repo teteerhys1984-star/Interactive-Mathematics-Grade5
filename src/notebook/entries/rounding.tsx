@@ -41,6 +41,7 @@ export function roundingNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l4-rule',
+        purpose: 'record',
         title: 'المفردات والقاعدة',
         blocks: [
           {
@@ -79,6 +80,7 @@ export function roundingNotebook(): NotebookDoc {
       },
       {
         id: 'l4-skills',
+        purpose: 'record',
         title: 'المهارات بخطوات مرتّبة',
         blocks: [
           {
@@ -110,6 +112,7 @@ export function roundingNotebook(): NotebookDoc {
       },
       {
         id: 'l4-examples',
+        purpose: 'practice',
         title: 'أمثلة محلولة من الكتاب (ص 15)',
         blocks: [
           {
@@ -157,12 +160,13 @@ export function roundingNotebook(): NotebookDoc {
               'نصفر العشرات والآحاد، فلا يبقى العدد كما هو ولا ينقص.',
             ],
             answer: <><MathExpression>{key('r4-p15-a3-1390')}</MathExpression></>,
-            verification: <>التقريب يعطي دائماً عدداً من مضاعفات المنزلة المطلوبة؛ فـ<MathExpression>1399</MathExpression> ليس من مضاعفات المئة، و<MathExpression>1300</MathExpression> ينقص العدد بدل تقريبه.</>,
+            verification: <>التقريب يعطي دائماً عدداً من مضاعفات المنزلة المطلوبة؛ فـ<MathExpression>1399</MathExpression> ليس من مضاعفات المئة أصلاً، و<MathExpression>1300</MathExpression> مضاعف للمئة لكنه الأبعد: الفرق <MathExpression>1390 − 1300 = 90</MathExpression> بينما الفرق <MathExpression>1400 − 1390 = 10</MathExpression>.</>,
           },
         ],
       },
       {
         id: 'l4-worked',
+        purpose: 'practice',
         title: 'أمثلة محلولة (ص 16 و17)',
         blocks: [
           {
@@ -213,6 +217,7 @@ export function roundingNotebook(): NotebookDoc {
       },
       {
         id: 'l4-drills',
+        purpose: 'practice',
         title: 'تدرّبات الكتاب مع نواتجها (ص 17 و18)',
         blocks: [
           {
@@ -232,7 +237,7 @@ export function roundingNotebook(): NotebookDoc {
             caption: task('r4-p17-practice-2-5856375').prompt,
             labels: [
               <>العدد <MathExpression>5856375</MathExpression> يقع بين <MathExpression>5856000</MathExpression> و<MathExpression>5857000</MathExpression>، وهو أقرب إلى <MathExpression>5856000</MathExpression>.</>,
-              <>الناتج: <MathExpression>{key('r4-p17-practice-2-5856375')}</MathExpression> إلى أقرب ألف، لأنّ رقم المئات <MathExpression>3</MathExpression> أقل من <MathExpression>5</MathExpression>.</>,
+              <>الناتج: تقريب <MathExpression>5856375</MathExpression> إلى أقرب ألف هو <MathExpression>{key('r4-p17-practice-2-5856375')}</MathExpression>، لأنّ رقم المئات <MathExpression>3</MathExpression> أقل من <MathExpression>5</MathExpression>.</>,
             ],
           },
           {
@@ -298,9 +303,9 @@ export function roundingNotebook(): NotebookDoc {
             kind: 'example', id: 'l4-ex-secret', title: 'الرقم السري 4 — مثال تفكير (ص 18)',
             question: task('r4-p18-practice-4-digit-code').prompt,
             solution: [
-              <>لكي يقرَّب العدد إلى <MathExpression>5000</MathExpression> يجب أن يبدأ بالرقم <MathExpression>5</MathExpression> في خانة الألوف.</>,
-              <>ويجب أن يكون رقم المئات أقل من <MathExpression>5</MathExpression> حتى نبقي الألوف كما هي؛ فالرقمان المتاحان لذلك هما <MathExpression>1</MathExpression> فقط.</>,
-              <>نضع <MathExpression>1</MathExpression> في المئات، ثم نرتب <MathExpression>6</MathExpression> و<MathExpression>7</MathExpression> في العشرات والآحاد بحريتين.</>,
+              <>لكي يُقرَّب العدد إلى <MathExpression>5000</MathExpression> يجب أن يبدأ بالرقم <MathExpression>5</MathExpression> في خانة الألوف.</>,
+              <>ويجب أن يكون رقم المئات أقل من <MathExpression>5</MathExpression> حتى نبقي الألوف كما هي؛ والرقم المتاح لذلك من الأرقام المعطاة هو <MathExpression>1</MathExpression> وحده.</>,
+              <>نضع <MathExpression>1</MathExpression> في المئات، ثم نرتّب <MathExpression>6</MathExpression> و<MathExpression>7</MathExpression> في العشرات والآحاد بأيّ ترتيب.</>,
             ],
             answer: <><MathExpression>{key('r4-p18-practice-4-digit-code')}</MathExpression> (كلاهما صحيح).</>,
             verification: <>نتحقق بالقاعدة: في <MathExpression>5167</MathExpression> و<MathExpression>5176</MathExpression> رقم المئات <MathExpression>1</MathExpression> أقل من <MathExpression>5</MathExpression>، فنُبقي <MathExpression>5</MathExpression> في الألوف ونصفر ما بعدها.</>,
@@ -328,6 +333,7 @@ export function roundingNotebook(): NotebookDoc {
       },
       {
         id: 'l4-warnings',
+        purpose: 'record',
         title: 'تنبيهات وأخطاء شائعة',
         blocks: [
           {
@@ -344,7 +350,7 @@ export function roundingNotebook(): NotebookDoc {
           },
           {
             kind: 'note', id: 'l4-warn-carry', tone: 'warning',
-            text: <>قد تنتقل الزيادة إلى أكثر من خانة: <MathExpression>2999700</MathExpression> إلى أقرب ألف يصبح <MathExpression>3000000</MathExpression>؛ لأنّ زيادة <MathExpression>999</MathExpression> ألفاً تحمل إلى خانة الملايين.</>,
+            text: <>قد تنتقل الزيادة إلى أكثر من خانة: <MathExpression>2999700</MathExpression> إلى أقرب ألف يصبح <MathExpression>3000000</MathExpression>؛ لأنّ <MathExpression>999</MathExpression> ألفاً + ألف واحد = مليون، فالزيادة تحمل إلى خانة الملايين.</>,
           },
           {
             kind: 'note', id: 'l4-note-ones', tone: 'tip',
@@ -352,7 +358,7 @@ export function roundingNotebook(): NotebookDoc {
           },
           {
             kind: 'note', id: 'l4-tip-check', tone: 'tip',
-            text: 'تحقّق من جوابك بشرطين: أن يكون الناتج من مضاعفات المنزلة المطلوبة (ينتهي بعدد الأصفار المناسب)، وأن يكون الفرق بينه وبين العدد الأصلي أقل من نصف قيمة تلك المنزلة.',
+            text: 'تحقّق من جوابك بشرطين: أن يكون الناتج من مضاعفات المنزلة المطلوبة (ينتهي بعدد الأصفار المناسب)، وأن يكون الفرق بينه وبين العدد الأصلي نصف قيمة تلك المنزلة على الأكثر (وعند النصف بالضبط نزيد).',
           },
         ],
       },

@@ -22,6 +22,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l3-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
@@ -58,6 +59,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
       },
       {
         id: 'l3-tables',
+        purpose: 'record',
         title: 'الجداول المطلوبة: جدول الخانات',
         blocks: [
           {
@@ -67,7 +69,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
             caption: 'يُنقل الجدول كما هو: حلقة الملايين خانة واحدة، وحلقة الألوف ثلاث خانات، وحلقة الوحدات ثلاث خانات.',
             labels: [
               <>أسماء الخانات من اليسار: الملايين، مئات الألوف، عشرات الألوف، آحاد الألوف، المئات، العشرات، الآحاد.</>,
-              <>تجزئة العدد إلى حلقات من اليمين: <MathExpression>2 | 413 | 155</MathExpression>.</>,
+              <>تجزئة العدد إلى حلقات (نبدأ من اليمين): <MathExpression>155</MathExpression> ثم <MathExpression>413</MathExpression> ثم <MathExpression>2</MathExpression>، وتُكتب <MathExpression>2 | 413 | 155</MathExpression>.</>,
             ],
           },
           {
@@ -84,6 +86,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
       },
       {
         id: 'l3-rules',
+        purpose: 'record',
         title: 'القواعد والخواصّ',
         blocks: [
           {
@@ -106,6 +109,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
       },
       {
         id: 'l3-skills',
+        purpose: 'record',
         title: 'المهارات بخطوات مرتّبة',
         blocks: [
           {
@@ -113,7 +117,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
             steps: [
               'نجزّئ العدد من اليمين كل ثلاث خانات إلى حلقات.',
               'نقرأ من اليسار: حلقة الملايين أولاً، ثم حلقة الألوف، ثم حلقة الوحدات، ونذكر اسم كل حلقة بعد أرقامها.',
-              'نقرأ أصفار الحلقة ضمنها؛ فالحلقة 002 تُقرأ «اثنان»، والحلقة 200 في الألوف تُقرأ «مئتا ألف».',
+              'لا ننطق الأصفار الحافظة داخل الحلقة؛ فالحلقة 002 تُقرأ «اثنان»، والحلقة 200 في حلقة الألوف تُقرأ «مئتا ألف».',
             ],
           },
           {
@@ -145,13 +149,14 @@ export function naturalNumbersNotebook(): NotebookDoc {
       },
       {
         id: 'l3-examples',
+        purpose: 'practice',
         title: 'أمثلة محلولة',
         blocks: [
           {
             kind: 'example', id: 'l3-ex-banknote', title: 'مثال ① — قراءة العدد وتفكيكه بالحلقات (ص 11)',
             question: <>العدد <MathExpression>2,413,155</MathExpression> يدل على نمرة الورقة النقدية وهو مكتوب بالصيغة العددية (القياسية). اقرؤه بالصيغة اللفظية واكتبه بالصيغة التفصيلية.</>,
             solution: [
-              <>نجزّئ العدد من اليسار باستعمال الحلقات: <MathExpression>2 | 413 | 155</MathExpression>، أي <MathExpression>2</MathExpression> مليوناً و<MathExpression>413</MathExpression> ألفاً و<MathExpression>155</MathExpression>.</>,
+              <>نجزّئ العدد من اليمين باستعمال الحلقات: <MathExpression>155</MathExpression> ثم <MathExpression>413</MathExpression> ثم <MathExpression>2</MathExpression>، فتُكتب التجزئة <MathExpression>2 | 413 | 155</MathExpression>، أي <MathExpression>2</MathExpression> مليوناً و<MathExpression>413</MathExpression> ألفاً و<MathExpression>155</MathExpression>.</>,
               'نقرأ كل حلقة بالكلمات مع اسم الحلقة.',
               <>لكل رقم نكتب قيمة خانته: <MathExpression>2,000,000</MathExpression> و<MathExpression>400,000</MathExpression> و<MathExpression>10,000</MathExpression> و<MathExpression>3,000</MathExpression> و<MathExpression>100</MathExpression> و<MathExpression>50</MathExpression> و<MathExpression>5</MathExpression>.</>,
             ],
@@ -167,7 +172,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
               <>إذن قيمة الرقم <MathExpression>4</MathExpression> هي: <MathExpression>4 × 100,000 = 400,000</MathExpression>.</>,
             ],
             answer: <><MathExpression>400,000</MathExpression></>,
-            verification: 'الرقم 4 يقع داخل حلقة الألوف وأمامه خمس خانات، وهذا يوافق خانة مئات الألوف.',
+            verification: 'الرقم 4 يقع داخل حلقة الألوف، وإلى يمينه خمس خانات، وهذا يوافق خانة مئات الألوف.',
           },
           {
             kind: 'example', id: 'l3-ex-wordform', title: 'مثال ③ — من الصيغة اللفظية إلى الصيغة العددية (ص 11)',
@@ -261,6 +266,7 @@ export function naturalNumbersNotebook(): NotebookDoc {
       },
       {
         id: 'l3-warnings',
+        purpose: 'record',
         title: 'أخطاء شائعة وتنبيهات',
         blocks: [
           {

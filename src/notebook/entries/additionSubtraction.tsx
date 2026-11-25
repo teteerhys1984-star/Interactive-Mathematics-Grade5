@@ -64,6 +64,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l5-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
@@ -100,6 +101,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-rules',
+        purpose: 'record',
         title: 'القواعد',
         blocks: [
           {
@@ -122,6 +124,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-skills',
+        purpose: 'record',
         title: 'المهارات بخطوات مرتّبة',
         blocks: [
           {
@@ -158,6 +161,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-demos',
+        purpose: 'record',
         title: 'مثالان مصغّران: الحمل والاستلاف',
         blocks: [
           {
@@ -186,6 +190,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-book-examples',
+        purpose: 'practice',
         title: 'أمثلة الكتاب المحلولة (ص 19–21)',
         blocks: [
           {
@@ -265,6 +270,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-checks',
+        purpose: 'practice',
         title: 'تحقّق من فهمك (ص 21 و22)',
         blocks: [
           {
@@ -292,6 +298,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-drills',
+        purpose: 'practice',
         title: 'تدرّب ① (ص 22): اثنتا عشرة عملية',
         blocks: [
           {
@@ -304,6 +311,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-applications',
+        purpose: 'practice',
         title: 'تطبيقات واقعية (ص 22 · تدرّب ②③)',
         blocks: applicationProblems.flatMap(problem => [
           {
@@ -323,7 +331,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
                 'نضع الكتلة الأكبر (المطروح منه) في الأعلى والأصغر (المطروح) تحته.',
                 'نطرح من الآحاد مع الاستلاف عند الحاجة، ثم نتحقّق بالجمع العكسي.',
               ],
-            answer: <>{problem.operator === '+' ? 'عدد المنشورات التي طبعتها المؤسّسة' : 'مقدار الزيادة في الكتلة'} <MathExpression>{result(problem)}</MathExpression> {problem.operator === '+' ? 'منشوراً.' : 'طنّاً.'}.</>,
+            answer: <>{problem.operator === '+' ? 'عدد المنشورات التي طبعتها المؤسّسة' : 'مقدار الزيادة في الكتلة'} <MathExpression>{result(problem)}</MathExpression> {problem.operator === '+' ? 'منشوراً.' : 'طنّاً.'}</>,
             verification: problem.operator === '+'
               ? <>بإعادة الجمع بترتيب آخر يبقى المجموع <MathExpression>{result(problem)}</MathExpression>.</>
               : <><MathExpression>{fmt(problem.operands[1])} + {result(problem)} = {fmt(problem.operands[0])}</MathExpression> ✓</>,
@@ -332,9 +340,12 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-puzzles',
+        purpose: 'practice',
         title: 'تدرّب ④ (ص 22): ضع الأعداد المناسبة في □',
         blocks: fillPuzzles.flatMap(puzzle => {
           const item: CalcItem = { id: `nb-${puzzle.id}`, label: puzzle.label, operands: puzzle.rows.map(row => row.value), operator: puzzle.operator }
+          /** Only the rows that actually hide digits, so the «و»/«،» separators join real items. */
+          const hiddenRows = puzzle.rows.filter(row => row.hidden.length > 0)
           return [
             {
               kind: 'example' as const,
@@ -358,7 +369,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
               figure: <ColumnOperation item={item} />,
               solution: [
                 'نبدأ دائماً من خانة الآحاد، ونستعمل الحمل أو الاستلاف لاكتشاف بقيّة الأرقام.',
-                <>الأرقام المفقودة في الصفوف هي: {puzzle.rows.map((row, index) => row.hidden.length ? <span key={row.value}>{index > 0 ? 'و' : ''}<MathExpression>{hiddenDigits(row)}</MathExpression></span> : null)}.</>,
+                <>الأرقام المفقودة في {puzzle.operator === '+' ? 'العدد الثاني' : 'المطروح'} هي: {hiddenRows.map((row, position) => <span key={row.value}>{position === 0 ? '' : position === hiddenRows.length - 1 ? ' و' : '، '}<MathExpression>{hiddenDigits(row)}</MathExpression></span>)}.</>,
                 <>الأرقام المفقودة في الناتج هي: <MathExpression>{hiddenDigits(puzzle.result)}</MathExpression>.</>,
                 <>العملية الكاملة: <MathExpression>{itemExpression(item)} = {result(item)}</MathExpression>.</>,
               ],
@@ -372,6 +383,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
       },
       {
         id: 'l5-mistake',
+        purpose: 'practice',
         title: 'اكتشف الخطأ',
         blocks: [
           {
@@ -380,17 +392,18 @@ export function additionSubtractionNotebook(): NotebookDoc {
             figure: <ColumnOperation item={mistakeWork} />,
             solution: [
               <>في خانة العشرات: <MathExpression>8 + 5 = 13</MathExpression>، نكتب <MathExpression>3</MathExpression> ونحمل <MathExpression>1</MathExpression> إلى المئات.</>,
-              <>الطالب أهمل الحمل، فنقص الناتج <MathExpression>100</MathExpression>، فظهر <MathExpression>7,130</MathExpression> بدل الناتج الصحيح.</>,
-              <>في المئات: <MathExpression>5 + 6 = 11</MathExpression> ومع الحمل <MathExpression>1</MathExpression> تصبح <MathExpression>12</MathExpression>، نكتب <MathExpression>2</MathExpression> ونحمل <MathExpression>1</MathExpression> إلى الألوف.</>,
-              <>في الألوف: <MathExpression>4 + 3 = 7</MathExpression> ومع الحمل <MathExpression>1</MathExpression> تصبح <MathExpression>8</MathExpression>.</>,
+              <>الطالب أهمل هذا الحمل: فكتب في المئات <MathExpression>5 + 6 = 11</MathExpression> أي <MathExpression>1</MathExpression> بلا حمل، وأهمل معها حمل المئات إلى الألوف؛ فظهر <MathExpression>7,130</MathExpression> بدل الناتج الصحيح.</>,
+              <>والصواب في المئات: <MathExpression>5 + 6 = 11</MathExpression> ومع الحمل <MathExpression>1</MathExpression> تصبح <MathExpression>12</MathExpression>، نكتب <MathExpression>2</MathExpression> ونحمل <MathExpression>1</MathExpression> إلى الألوف.</>,
+              <>وفي الألوف: <MathExpression>4 + 3 = 7</MathExpression> ومع الحمل <MathExpression>1</MathExpression> تصبح <MathExpression>8</MathExpression>، فيكون الناتج <MathExpression>{result(mistakeWork)}</MathExpression>.</>,
             ],
-            answer: <>الخطأ هو نسيان حمل <MathExpression>1</MathExpression> من خانة العشرات إلى المئات، والناتج الصحيح <MathExpression>{result(mistakeWork)}</MathExpression>.</>,
-            verification: <>بإعادة الجمع من الأعلى إلى الأسفل نحصل على <MathExpression>{result(mistakeWork)}</MathExpression> أيضاً.</>,
+            answer: <>الخطأ هو نسيان حمل <MathExpression>1</MathExpression> من خانة العشرات إلى المئات (وما تبعه من حمل المئات إلى الألوف)، والناتج الصحيح <MathExpression>{result(mistakeWork)}</MathExpression>.</>,
+            verification: <>إهمال الحملَين معاً ينقص الناتج <MathExpression>1,100</MathExpression>: مئة في خانة المئات وألف في خانة الألوف، و<MathExpression>8,230 − 7,130 = 1,100</MathExpression>. وبإعادة الجمع من الأعلى إلى الأسفل نحصل على <MathExpression>{result(mistakeWork)}</MathExpression>.</>,
           },
         ],
       },
       {
         id: 'l5-warnings',
+        purpose: 'record',
         title: 'تنبيهات وأخطاء شائعة',
         blocks: [
           {
@@ -399,7 +412,7 @@ export function additionSubtractionNotebook(): NotebookDoc {
           },
           {
             kind: 'note', id: 'l5-warn-borrow', tone: 'warning',
-            text: <>في الطرح: لا تطرح الرقم الأصغر من الأكبر داخل الخانة الواحدة (مثل قول <MathExpression>3 − 8 = 5</MathExpression>)؛ الصواب أن نستلف <MathExpression>10</MathExpression> من الخانة المجاورة.</>,
+            text: <>في الطرح: إذا كان الرقم العلوي أصغر من السفلي في الخانة نفسها (<MathExpression>3</MathExpression> في الأعلى و<MathExpression>8</MathExpression> في الأسفل) فلا تعكس العملية فتحسب <MathExpression>8 − 3 = 5</MathExpression>؛ الصواب أن نستلف <MathExpression>10</MathExpression> من الخانة المجاورة على اليسار فتصبح <MathExpression>13 − 8 = 5</MathExpression>، وأن ننقص الخانة التي استلفنا منها واحداً.</>,
           },
           {
             kind: 'note', id: 'l5-tip-length', tone: 'tip',

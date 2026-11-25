@@ -70,17 +70,27 @@
 .nb-sections { list-style: none; margin: 0; padding: 0; display: grid; gap: 30px; counter-reset: nb-section }
 .nb-section { break-inside: auto }
 .nb-section-title {
-  display: flex; align-items: center; gap: 11px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 11px;
   margin: 0 0 14px; padding-bottom: 8px;
   border-bottom: 1px dashed var(--border-strong);
   font-size: 1.25rem; font-weight: 800; color: var(--nb-ink); line-height: 1.6;
 }
+.nb-section-heading { flex: 1 1 auto; min-width: 0 }
 .nb-section-number {
   flex: none; display: grid; place-items: center;
   width: 32px; height: 32px; border-radius: var(--r-full);
   background: var(--nb-gold-soft); color: var(--nb-gold);
   font-size: 1rem; font-weight: 800; font-family: 'DM Mono', monospace;
 }
+/* ---- section purpose: what the student writes vs. what they compare ---- */
+.nb-purpose {
+  flex: none; display: inline-flex; align-items: center;
+  padding: 2px 12px; border-radius: var(--r-full);
+  font-size: .875rem; font-weight: 800; line-height: 1.9; white-space: nowrap;
+}
+.nb-purpose-record { background: var(--nb-accent-soft); color: var(--nb-accent); border: 1px solid #ccd8e6 }
+.nb-purpose-practice { background: var(--nb-gold-soft); color: var(--nb-gold); border: 1px solid var(--border-strong) }
+
 .nb-section-body { display: grid; gap: 16px }
 
 /* ---- generic blocks ----------------------------------------------------- */
@@ -128,7 +138,7 @@
   background: var(--bg-soft); border-radius: var(--r-sm);
   line-height: 2; color: var(--nb-ink); font-weight: 600;
 }
-.nb-example-figure { margin: 4px 0 12px }
+.nb-example-figure { margin: 4px 0 12px; overflow-x: auto }
 .nb-solution-label { margin: 0 0 6px; font-size: .9375rem; font-weight: 800; color: var(--nb-gold) }
 .nb-solution { margin-bottom: 14px }
 .nb-answer, .nb-verification {
@@ -152,7 +162,7 @@
 .nb-figure-caption strong { display: block; color: var(--nb-ink); font-size: 1rem }
 .nb-labels { list-style: none; margin: 14px 0 0; padding: 14px 0 0; border-top: 1px dashed var(--border-strong); display: grid; gap: 8px }
 .nb-labels li { display: flex; align-items: flex-start; gap: 8px; font-size: 1rem; line-height: 1.9 }
-.nb-labels li::before { content: '◆'; flex: none; color: var(--gold); font-size: .75rem; line-height: 2.5 }
+.nb-labels li::before { content: '◆'; flex: none; color: var(--gold); font-size: .8125rem; line-height: 2.4 }
 
 /* table to copy */
 .nb-table-block { background: #fff; border: 1px solid var(--border-strong); padding: 16px 18px }
@@ -219,8 +229,10 @@
   .nb-instruction { font-size: .9375rem }
   .nb-print { width: 100%; justify-content: center }
   .nb-sections { gap: 24px }
-  .nb-section-title { font-size: 1.125rem; gap: 9px }
+  .nb-section-title { font-size: 1.125rem; gap: 8px 9px }
   .nb-section-number { width: 28px; height: 28px; font-size: .9375rem }
+  /* the badge never shrinks; when the heading is long it simply wraps to the next line */
+  .nb-purpose { font-size: .8125rem; padding: 1px 10px; line-height: 1.8 }
   .nb-block-title { font-size: 1rem }
   .nb-definition, .nb-rule, .nb-steps, .nb-example, .nb-figure, .nb-table-block { padding: 14px }
   .nb-term { display: block; width: max-content; margin-bottom: 6px }
@@ -250,6 +262,7 @@
   .nb-section { break-inside: auto }
   .nb-section + .nb-section { margin-top: 14pt }
   .nb-section-title { font-size: 13pt; break-after: avoid; page-break-after: avoid }
+  .nb-purpose { background: #fff; color: #000; border: .75pt solid #000; font-size: 9.5pt }
   .nb-section-body { display: block }
   .nb-section-body > * + * { margin-top: 9pt }
 
@@ -269,6 +282,7 @@
   .student-notebook .coordinate-grid-wrap,
   .student-notebook .line-chart-wrap,
   .student-notebook .nb-table-scroll,
+  .student-notebook .nb-example-figure,
   .student-notebook .nb-figure-body { overflow: visible; display: block }
   .student-notebook svg { max-width: 100%; height: auto }
   .student-notebook .coordinate-grid,

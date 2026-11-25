@@ -33,6 +33,10 @@ const given = (id: string): string => element(id).given
 const verification = (id: string): string => element(id).verification
 const reasoning = (id: string): readonly string[] => element(id).reasoning
 
+/** Drops the «X:» lead-in of a book definition when X is already shown as the term chip. */
+const bookDefinition = (value: string, term: string): string =>
+  value.startsWith(`${term}:`) ? value.slice(term.length + 1).trim() : value
+
 /** Latin/mathematical runs (AB = BC, ∠ABC = 45°, 4 × a) stay in their natural LTR order. */
 const math = (value: string, key: string) => <MathExpression key={key}>{value}</MathExpression>
 
@@ -58,6 +62,7 @@ export function rhombusNotebook(): NotebookDoc {
     sections: [
       {
         id: 'l8-terms',
+        purpose: 'record',
         title: 'المفردات والتعريفات',
         blocks: [
           {
@@ -66,7 +71,7 @@ export function rhombusNotebook(): NotebookDoc {
           },
           {
             kind: 'definition', id: 'l8-def-rhombus', term: 'المعيّن',
-            text: prompt('l8-p36-definition'),
+            text: bookDefinition(prompt('l8-p36-definition'), 'المعيّن'),
             source: 'الكتاب · ص 36 (تعلّم ①)',
           },
           {
@@ -108,6 +113,7 @@ export function rhombusNotebook(): NotebookDoc {
       },
       {
         id: 'l8-recognize',
+        purpose: 'record',
         title: 'كيف أميّز المعيّن؟',
         blocks: [
           {
@@ -168,6 +174,7 @@ export function rhombusNotebook(): NotebookDoc {
       },
       {
         id: 'l8-properties',
+        purpose: 'record',
         title: 'خواصّ المعيّن ومحيطه',
         blocks: [
           {
@@ -178,9 +185,9 @@ export function rhombusNotebook(): NotebookDoc {
             kind: 'table', id: 'l8-table-properties', title: 'جدول الخواصّ: موروث ومضاف',
             headers: ['الخاصة', 'من أين جاءت؟', 'كيف أستعملها؟'],
             rows: [
-              ['كل ضلعين متقابلين متوازيان', reasoning('l8-p37-properties')[0], 'أبحث عن زوجَي الأسهم على الرسم قبل أي شيء آخر.'],
-              ['كل زاويتين متقابلتين متساويتان في القياس', reasoning('l8-p37-properties')[1], 'إذا عرفت زاوية واحدة عرفت الزاوية المقابلة لها، والمجاورة تُكملها إلى 180°.'],
-              ['الأضلاع الأربعة متساوية في الطول', reasoning('l8-p37-properties')[2], 'طول واحد معلوم يكفي لمعرفة الأطوال الأربعة كلها.'],
+              ['كل ضلعين متقابلين متوازيان', 'موروثة من متوازي الأضلاع: هي الخاصّة الأولى فيه.', 'أبحث عن زوجَي الأسهم على الرسم قبل أي شيء آخر.'],
+              ['كل زاويتين متقابلتين متساويتان في القياس', 'موروثة من متوازي الأضلاع: هي الخاصّة الثانية فيه.', 'إذا عرفت زاوية واحدة عرفت الزاوية المقابلة لها، والمجاورة تُكملها إلى 180°.'],
+              ['الأضلاع الأربعة متساوية في الطول', 'مضافة بتعريف المعيّن (تساوي ضلعين متجاورين)، وهي التي تميّزه عن باقي متوازيات الأضلاع.', 'طول واحد معلوم يكفي لمعرفة الأطوال الأربعة كلها.'],
             ],
           },
           {
@@ -209,6 +216,7 @@ export function rhombusNotebook(): NotebookDoc {
       },
       {
         id: 'l8-construction',
+        purpose: 'record',
         title: 'رسم المعيّن بالمسطرة والمنقلة',
         blocks: [
           {
@@ -263,6 +271,7 @@ export function rhombusNotebook(): NotebookDoc {
       },
       {
         id: 'l8-practice',
+        purpose: 'practice',
         title: 'تدرّبات الكتاب المحلولة (ص 39)',
         blocks: [
           {
@@ -336,6 +345,7 @@ export function rhombusNotebook(): NotebookDoc {
       },
       {
         id: 'l8-pitfalls',
+        purpose: 'record',
         title: 'أخطاء شائعة وتنبيهات',
         blocks: [
           {

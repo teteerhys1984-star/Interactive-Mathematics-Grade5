@@ -63,7 +63,17 @@ async function main() {
     if (notebook!.querySelectorAll('input, select, textarea, [contenteditable]').length !== 0) fail(`${label}: the student notebook must stay a static reference (no form control)`)
     const buttons = notebook!.querySelectorAll('button')
     if (buttons.length !== 1 || !buttons[0]!.classList.contains('nb-print')) fail(`${label}: the student notebook must expose exactly one control (print)`)
-    if (!notebook!.textContent!.includes('انقل ما يأتي في دفترك كما هو')) fail(`${label}: the student notebook is missing its copy-it-into-your-notebook instruction`)
+    if (!notebook!.textContent!.includes('سجلّك لما تعلّمته في الدرس')) fail(`${label}: the student notebook is missing its «your record of the lesson» instruction`)
+    if (notebook!.textContent!.includes('تغنيك عن إعادة الدرس')) fail(`${label}: the notebook must not claim to replace the lesson`)
+    const sections = notebook!.querySelectorAll('[data-notebook-section]')
+    const badges = notebook!.querySelectorAll('.nb-purpose')
+    if (badges.length !== sections.length) fail(`${label}: ${sections.length} sections but ${badges.length} purpose badges`)
+    for (const section of Array.from(sections)) {
+      const purpose = section.getAttribute('data-notebook-purpose')
+      const badge = section.querySelector('.nb-purpose')?.textContent?.trim()
+      if (purpose !== 'record' && purpose !== 'practice') fail(`${label}: a section has no valid purpose`)
+      if (badge !== (purpose === 'record' ? 'يُدوَّن في الدفتر' : 'حلول وتدرّبات')) fail(`${label}: section badge "${badge}" does not match purpose "${purpose}"`)
+    }
     if (document.querySelector('.lesson-step-panel')?.getAttribute('data-step-id') !== 'notebook') fail(`${label}: the lesson shell is not on the "notebook" step`)
     console.log(`✅ ${label} «دفتر الطالب»: ${blocks.length} copyable blocks, ${notebook!.querySelectorAll('table.nb-table').length} tables, ${notebook!.querySelectorAll('[data-notebook-section]').length} sections, print-only`)
   }
@@ -375,7 +385,7 @@ async function main() {
     ['تدرّب ⑤', /متوازيا الأضلاع فيهما/],
     ['الخلاصة', /خلاصة الدرس السابع/],
     ['الاختبار النهائي', /اختبار ختامي جديد من إعداد المنصة/],
-    ['دفتر الطالب', /انقل ما يأتي في دفترك كما هو/],
+    ['دفتر الطالب', /لما تعلّمته في الدرس/], // getAllByText matches one element's own text nodes: «سجلّك» sits in a <strong>
   ]
   for (const [phase, pattern] of expectedPhases) {
     fireEvent.click(l7Next())
@@ -437,7 +447,7 @@ async function main() {
     ['أخطاء وتحقّق', /صحيحة أم خاطئة؟/],
     ['الخلاصة', /خلاصة الدرس الثامن/],
     ['الاختبار النهائي', /اختبار ختامي جديد من إعداد المنصّة/],
-    ['دفتر الطالب', /انقل ما يأتي في دفترك كما هو/],
+    ['دفتر الطالب', /لما تعلّمته في الدرس/], // getAllByText matches one element's own text nodes: «سجلّك» sits in a <strong>
   ]
   for (const [phase, pattern] of l8Phases) {
     fireEvent.click(l8Next())
