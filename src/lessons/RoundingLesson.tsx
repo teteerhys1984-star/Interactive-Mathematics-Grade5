@@ -5,6 +5,8 @@ import { MathExpression } from '../components/MathExpression'
 import { SourceCard } from '../components/lesson/SourceCard'
 import { LessonShell } from '../components/lesson/LessonShell'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { roundingNotebook } from '../notebook/entries/rounding'
 import { roundingBookFacts, roundingBookTasks, type RoundingBookTask } from './roundingData'
 import {
   finalAssessment4,
@@ -14,7 +16,11 @@ import {
 
 type Feedback = { kind: 'correct' | 'incorrect' | 'empty'; message: string }
 
-function ProportionalNumberLine({ task }: { task: RoundingBookTask }) {
+/**
+ * The textbook's proportional number line, drawn to scale from the printed labels/ticks.
+ * Exported so «دفتر الطالب» reuses the exact same figure instead of redrawing it.
+ */
+export function ProportionalNumberLine({ task }: { task: RoundingBookTask }) {
   const labels = task.lineLabels
   const lineRange = task.lineRange
   const targetValue = Number(task.lineTargetValue)
@@ -228,6 +234,7 @@ export function RoundingLesson() {
   const steps: LessonStep[] = [
     ...pages.map(page => ({ id: `rounding-page-${page}`, title: `محتوى الكتاب · ص ${page}`, content: <SourcePage page={page} /> })),
     { id: 'rounding-platform-assessment', title: 'اختبار إضافي من إعداد المنصة', content: <AdditionalAssessment /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={roundingNotebook()} /> },
   ]
   const [active, setActive] = useState(0)
   return <LessonShell title="تقريب الأعداد الطبيعية" steps={steps} activeStep={active} onStepChange={setActive} theme="lesson-four" />

@@ -13,6 +13,8 @@ import {
   type CalcItem, type FillPuzzle,
 } from './additionSubtractionData'
 import { finalAssessment5 } from '../teacher/lesson5'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { additionSubtractionNotebook } from '../notebook/entries/additionSubtraction'
 
 const norm = (value: string) => value.replace(/[\s,،_]/g, '')
 
@@ -516,6 +518,7 @@ export function AdditionSubtractionLesson() {
     { id: 'puzzles', title: 'تحدٍّ: ألغاز الأرقام', content: <PuzzleStep /> },
     { id: 'recap', title: 'الخلاصة', content: <RecapStep /> },
     { id: 'final', title: 'الاختبار الختامي', content: <FinalTestStep /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={additionSubtractionNotebook()} /> },
   ], [])
   const [active, setActive] = useState(0)
   return <LessonShell title="جمع الأعداد الطبيعيّة وطرحها" steps={steps} activeStep={active} onStepChange={setActive} theme="lesson-five" />

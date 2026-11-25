@@ -5,6 +5,8 @@ import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
 import { finalAssessment6, lessonSixBookElements } from './anglesData'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { anglesNotebook } from '../notebook/entries/angles'
 
 const BookElement = ({ id, page, children, label = 'من الكتاب' }: { id: string; page: number; children: ReactNode; label?: string }) => <div className="l6-book-element" data-source-id={id}><SourceCard label={`${label} — ص ${page}`}>{children}</SourceCard></div>
 
@@ -28,7 +30,8 @@ export function AngleDiagram({ kind, degree, label, ariaLabel }: { kind: 'acute'
   </svg>
 }
 
-function RayDiagram() {
+/** Textbook figure: نصف المستقيم [AB) وضلعا الزاوية (ص 23–24). Exported for «دفتر الطالب». */
+export function RayDiagram() {
   return <svg className="l6-concept-svg" viewBox="0 0 420 165" role="img" aria-label="نصف المستقيم AB وزاوية بين نصفَي مستقيمين" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>
     <line x1="78" y1="122" x2="218" y2="42" className="l6-concept-ray" />
     <line x1="78" y1="122" x2="330" y2="122" className="l6-concept-ray l6-concept-ray-second" />
@@ -39,7 +42,8 @@ function RayDiagram() {
   </svg>
 }
 
-function InsideOutsideDiagram() {
+/** Textbook figure: النقطة X داخل الزاوية Q والنقطة B خارجها (ص 24). Exported for «دفتر الطالب». */
+export function InsideOutsideDiagram() {
   return <svg className="l6-concept-svg" viewBox="0 0 500 210" role="img" aria-label="نقطة داخل زاوية ونقطة خارجها" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>
     <path d="M 86 158 L 250 42 L 428 158 Z" className="l6-wedge" />
     <path d="M 86 158 L 428 158" className="l6-angle-base" />
@@ -104,24 +108,28 @@ function DrawAngleActivity() {
   return <div className="l6-draw-layout"><div className="l6-draw-board"><svg viewBox="0 0 290 190" role="img" aria-label="رسم زاوية ABC مقدارها 50 درجة" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><line x1="55" y1="150" x2="260" y2="150" className="l6-draw-base" /><line x1="55" y1="150" x2={55 + 150 * Math.cos(-selected * Math.PI / 180)} y2={150 + 150 * Math.sin(-selected * Math.PI / 180)} className="l6-draw-ray" /><path d={`M 93 150 A 38 38 0 0 0 ${55 + 38 * Math.cos(-selected * Math.PI / 180)} ${150 + 38 * Math.sin(-selected * Math.PI / 180)}`} className="l6-angle-arc" /><text x="42" y="170" className="l6-svg-point">B</text><text x="263" y="170" className="l6-svg-point">C</text><text x={55 + 160 * Math.cos(-selected * Math.PI / 180)} y={150 + 160 * Math.sin(-selected * Math.PI / 180)} className="l6-svg-point">A</text></svg></div><div className="l6-draw-controls"><strong>حدّد موضع A على <MathExpression>{selected}°</MathExpression></strong><input aria-label="زاوية الرسم" type="range" min="10" max="170" value={selected} onChange={event => setSelected(Number(event.target.value))} /><p>الخطوات: ارسم BC، ضع المركز عند B، طابق الصفر مع BC، عيّن A عند 50°، ثم صل B وA.</p></div></div>
 }
 
-function AngleWheel() {
+/** Textbook figure: أشعة الزوايا حول الرأس Q (ص 28–29). Exported for «دفتر الطالب». */
+export function AngleWheel() {
   const rays = [0, 45, 90, 120, 135, 180]
   return <svg className="l6-wheel-svg" viewBox="0 0 500 255" role="img" aria-label="أشعة الزوايا حول الرأس Q" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><line x1="45" y1="210" x2="455" y2="210" className="l6-wheel-base" />{rays.map((angle, index) => { const x = 250 + 165 * Math.cos(-angle * Math.PI / 180); const y = 210 + 165 * Math.sin(-angle * Math.PI / 180); const names = ['A', 'X', 'B', 'C', 'Y', 'Z']; return <g key={angle}><line x1="250" y1="210" x2={x} y2={y} className="l6-wheel-ray" /><text x={x + (x > 260 ? 7 : -18)} y={y + (y > 195 ? 16 : 0)} className="l6-svg-point">{names[index]}</text></g> })}<circle cx="250" cy="210" r="6" className="l6-vertex-dot" /><text x="241" y="236" className="l6-svg-point">Q</text><path d="M 250 210 A 75 75 0 0 0 250 135" className="l6-right-mark" /><text x="275" y="148" className="l6-protractor-inner-number">90°</text></svg>
 }
 
-function GeometryFigures() {
+/** Textbook figures: الزوايا الملوّنة في مثلثين ومستطيل (ص 29). Exported for «دفتر الطالب». */
+export function GeometryFigures() {
   return <div className="l6-geometry-grid">
-    <div className="l6-geo-card"><svg viewBox="0 0 180 125" role="img" aria-label="مثلث بزاويتين ملونتين" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 20 100 L 90 32 L 160 100 Z" className="l6-geo-line" /><path d="M 20 100 L 45 100 A 25 25 0 0 0 40.5 85.5 Z" className="l6-geo-blue" /><path d="M 160 100 L 135 100 A 25 25 0 0 1 139.5 85.5 Z" className="l6-geo-green" /><text x="12" y="116" className="l6-svg-point">J</text><text x="155" y="116" className="l6-svg-point">I</text><text x="88" y="25" className="l6-svg-point">H</text></svg><span>∠J = 35° ، ∠I = 35°</span></div>
-    <div className="l6-geo-card"><svg viewBox="0 0 180 160" role="img" aria-label="مثلث بزاوية ملونة عند F" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 25 135 L 90 22 L 158 135 Z" className="l6-geo-line" /><path d="M 25 135 L 53 135 A 28 28 0 0 0 39 111 Z" className="l6-geo-blue" /><text x="18" y="151" className="l6-svg-point">F</text><text x="153" y="151" className="l6-svg-point">G</text><text x="87" y="19" className="l6-svg-point">E</text></svg><span>∠F = 60°</span></div>
-    <div className="l6-geo-card"><svg viewBox="0 0 180 125" role="img" aria-label="زاوية قائمة في مستطيل" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><rect x="35" y="20" width="110" height="80" className="l6-geo-line" /><path d="M 35 100 L 35 74 A 26 26 0 0 1 61 100 Z" className="l6-geo-blue" /><text x="28" y="116" className="l6-svg-point">D</text><text x="28" y="17" className="l6-svg-point">A</text><text x="141" y="17" className="l6-svg-point">B</text><text x="141" y="116" className="l6-svg-point">C</text></svg><span>∠D = 90°</span></div>
+    <div className="l6-geo-card"><svg viewBox="0 0 180 125" role="img" aria-label="مثلث بزاويتين ملونتين" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 20 100 L 90 32 L 160 100 Z" className="l6-geo-line" /><path d="M 20 100 L 45 100 A 25 25 0 0 0 40.5 85.5 Z" className="l6-geo-blue" /><path d="M 160 100 L 135 100 A 25 25 0 0 1 139.5 85.5 Z" className="l6-geo-green" /><text x="12" y="116" className="l6-svg-point">J</text><text x="155" y="116" className="l6-svg-point">I</text><text x="88" y="25" className="l6-svg-point">H</text></svg><span className="l6-geo-values"><MathExpression>∠J = 35° ، ∠I = 35°</MathExpression></span></div>
+    <div className="l6-geo-card"><svg viewBox="0 0 180 160" role="img" aria-label="مثلث بزاوية ملونة عند F" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 25 135 L 90 22 L 158 135 Z" className="l6-geo-line" /><path d="M 25 135 L 53 135 A 28 28 0 0 0 39 111 Z" className="l6-geo-blue" /><text x="18" y="151" className="l6-svg-point">F</text><text x="153" y="151" className="l6-svg-point">G</text><text x="87" y="19" className="l6-svg-point">E</text></svg><span className="l6-geo-values"><MathExpression>∠F = 60°</MathExpression></span></div>
+    <div className="l6-geo-card"><svg viewBox="0 0 180 125" role="img" aria-label="زاوية قائمة في مستطيل" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><rect x="35" y="20" width="110" height="80" className="l6-geo-line" /><path d="M 35 100 L 35 74 A 26 26 0 0 1 61 100 Z" className="l6-geo-blue" /><text x="28" y="116" className="l6-svg-point">D</text><text x="28" y="17" className="l6-svg-point">A</text><text x="141" y="17" className="l6-svg-point">B</text><text x="141" y="116" className="l6-svg-point">C</text></svg><span className="l6-geo-values"><MathExpression>∠D = 90°</MathExpression></span></div>
   </div>
 }
 
-function TriangleAndCircleFigures() {
-  return <div className="l6-figure-pair"><div className="l6-triangle-figure"><svg viewBox="0 0 250 190" role="img" aria-label="مثلث ABC قائم عند B" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 55 25 L 55 160 L 133 160 Z" className="l6-geo-line" /><rect x="55" y="142" width="18" height="18" className="l6-right-square" /><text x="45" y="20" className="l6-svg-point">A</text><text x="40" y="178" className="l6-svg-point">B</text><text x="136" y="178" className="l6-svg-point">C</text></svg><p>∠B = 90°، ∠CAB = 30°، ∠BCA = 60°</p></div><div className="l6-circle-figure"><svg viewBox="0 0 300 185" role="img" aria-label="نصف دائرة قطرها BC ونقطتا M وN" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 35 145 A 115 115 0 0 1 265 145" className="l6-arc" /><line x1="35" y1="145" x2="265" y2="145" className="l6-geo-line" /><line x1="35" y1="145" x2="178" y2="75" className="l6-chord red" /><line x1="178" y1="75" x2="265" y2="145" className="l6-chord red" /><line x1="35" y1="145" x2="218" y2="65" className="l6-chord green" /><line x1="218" y1="65" x2="265" y2="145" className="l6-chord green" /><circle cx="150" cy="145" r="5" className="l6-vertex-dot" /><text x="26" y="166" className="l6-svg-point">B</text><text x="264" y="166" className="l6-svg-point">C</text><text x="145" y="166" className="l6-svg-point">O</text><text x="171" y="68" className="l6-svg-point">N</text><text x="208" y="60" className="l6-svg-point">M</text></svg><p>∠BMC = 90°، ∠CNB = 90°، ∠BOC = 180°</p></div></div>
+/** Textbook figures: المثلث القائم ABC ونصف الدائرة بقطرها BC (ص 29). Exported for «دفتر الطالب». */
+export function TriangleAndCircleFigures() {
+  return <div className="l6-figure-pair"><div className="l6-triangle-figure"><svg viewBox="0 0 250 190" role="img" aria-label="مثلث ABC قائم عند B" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 55 25 L 55 160 L 133 160 Z" className="l6-geo-line" /><rect x="55" y="142" width="18" height="18" className="l6-right-square" /><text x="45" y="20" className="l6-svg-point">A</text><text x="40" y="178" className="l6-svg-point">B</text><text x="136" y="178" className="l6-svg-point">C</text></svg><p><MathExpression>∠B = 90°، ∠CAB = 30°، ∠BCA = 60°</MathExpression></p></div><div className="l6-circle-figure"><svg viewBox="0 0 300 185" role="img" aria-label="نصف دائرة قطرها BC ونقطتا M وN" direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><path d="M 35 145 A 115 115 0 0 1 265 145" className="l6-arc" /><line x1="35" y1="145" x2="265" y2="145" className="l6-geo-line" /><line x1="35" y1="145" x2="178" y2="75" className="l6-chord red" /><line x1="178" y1="75" x2="265" y2="145" className="l6-chord red" /><line x1="35" y1="145" x2="218" y2="65" className="l6-chord green" /><line x1="218" y1="65" x2="265" y2="145" className="l6-chord green" /><circle cx="150" cy="145" r="5" className="l6-vertex-dot" /><text x="26" y="166" className="l6-svg-point">B</text><text x="264" y="166" className="l6-svg-point">C</text><text x="145" y="166" className="l6-svg-point">O</text><text x="171" y="68" className="l6-svg-point">N</text><text x="208" y="60" className="l6-svg-point">M</text></svg><p><MathExpression>∠BMC = 90°، ∠CNB = 90°، ∠BOC = 180°</MathExpression></p></div></div>
 }
 
-function SquareFigure({ colored = false }: { colored?: boolean }) {
+/** Textbook figure: المربع ABCD وقطره AC (ص 29–30). Exported for «دفتر الطالب». */
+export function SquareFigure({ colored = false }: { colored?: boolean }) {
   return <svg className="l6-square-svg" viewBox="0 0 250 190" role="img" aria-label={colored ? 'مربع ABCD وقطره AC وزاويتان ملونتان' : 'مربع ABCD'} direction="ltr" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}><rect x="58" y="25" width="130" height="130" className="l6-geo-line" /><text x="50" y="19" className="l6-svg-point">A</text><text x="190" y="19" className="l6-svg-point">B</text><text x="190" y="174" className="l6-svg-point">C</text><text x="50" y="174" className="l6-svg-point">D</text><path d="M 58 25 L 188 155" className="l6-diagonal" />{colored && <><path d="M 58 25 L 58 55 A 30 30 0 0 1 79 46 Z" className="l6-geo-blue" /><path d="M 188 155 L 188 125 A 30 30 0 0 0 167 134 Z" className="l6-geo-green" /></>}<path d="M 58 155 L 75 155 L 75 138" className="l6-right-square" /></svg>
 }
 
@@ -204,6 +212,7 @@ export function AnglesLesson() {
     { id: 'applications', title: 'تطبيقات الدرس', content: <ApplicationsStep /> },
     { id: 'recap', title: 'الخلاصة', content: <RecapStep /> },
     { id: 'test', title: 'الاختبار النهائي', content: <FinalTest /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={anglesNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <><LessonShell title="قياس الزوايا" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-six" /><BookCoverageMarkers /></>

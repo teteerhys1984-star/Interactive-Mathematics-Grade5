@@ -1,0 +1,323 @@
+/* ==========================================================================
+   دفتر الطالب — Student Notebook sheet (shared by every lesson, Unit 1 →)
+   A deliberately different surface from the lesson cards: warm notebook paper with a
+   margin rule, so a student instantly recognises "this is what I copy into my notebook".
+   Built only from the global premium tokens in styles.css (no per-lesson theme needed),
+   every text/surface pair keeps WCAG AA (>= 4.5:1) and no font is smaller than 13px.
+   The sheet is static: one control only (print), so it never interferes with activities.
+   ========================================================================== */
+
+.student-notebook {
+  --nb-paper: #fffdf8;
+  --nb-paper-deep: #fbf6ea;
+  --nb-margin-line: #e0b4aa;
+  --nb-ink: var(--text-1);
+  --nb-body: var(--text-2);
+  --nb-accent: var(--navy);
+  --nb-accent-soft: var(--navy-soft);
+  --nb-gold: var(--gold-deep);
+  --nb-gold-soft: var(--gold-soft);
+
+  position: relative;
+  background: var(--nb-paper);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-md);
+  padding: 30px 34px 38px;
+  padding-inline-start: 66px;
+  color: var(--nb-body);
+  font-size: 1.0625rem;
+  line-height: 2;
+  animation: nb-sheet-in .3s ease-out;
+}
+
+/* the red margin rule of a school notebook (start edge in RTL = right) */
+.student-notebook::before {
+  content: '';
+  position: absolute;
+  inset-block: 16px;
+  inset-inline-start: 42px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--nb-margin-line);
+}
+
+@keyframes nb-sheet-in { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+
+/* ---- sheet header ------------------------------------------------------- */
+.nb-head { position: relative; padding-bottom: 18px; border-bottom: 2px solid var(--gold); margin-bottom: 26px }
+.nb-head-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--nb-accent); color: #fff;
+  border-radius: var(--r-full); padding: 5px 15px;
+  font-size: .9375rem; font-weight: 800; margin: 0 0 10px;
+}
+.nb-title { margin: 0; font-size: clamp(1.4rem, 3.4vw, 1.9rem); color: var(--nb-ink); line-height: 1.5 }
+.nb-meta { margin: 4px 0 0; font-size: .9375rem; font-weight: 700; color: var(--nb-gold) }
+.nb-instruction { margin: 12px 0 0; font-size: 1rem; line-height: 1.95; color: var(--nb-body); max-width: 74ch }
+.nb-print {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; margin-top: 16px; padding: 10px 20px;
+  background: var(--nb-paper-deep); color: var(--nb-accent);
+  border: 1.5px solid var(--nb-accent); border-radius: var(--r-md);
+  font: inherit; font-size: 1rem; font-weight: 800; cursor: pointer;
+  transition: background var(--tr), transform var(--tr);
+}
+.nb-print:hover { background: var(--nb-accent-soft) }
+.nb-print:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px }
+
+/* ---- sections ----------------------------------------------------------- */
+.nb-sections { list-style: none; margin: 0; padding: 0; display: grid; gap: 30px; counter-reset: nb-section }
+.nb-section { break-inside: auto }
+.nb-section-title {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 11px;
+  margin: 0 0 14px; padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border-strong);
+  font-size: 1.25rem; font-weight: 800; color: var(--nb-ink); line-height: 1.6;
+}
+.nb-section-heading { flex: 1 1 auto; min-width: 0 }
+.nb-section-number {
+  flex: none; display: grid; place-items: center;
+  width: 32px; height: 32px; border-radius: var(--r-full);
+  background: var(--nb-gold-soft); color: var(--nb-gold);
+  font-size: 1rem; font-weight: 800; font-family: 'DM Mono', monospace;
+}
+/* ---- section purpose: what the student writes vs. what they compare ---- */
+.nb-purpose {
+  flex: none; display: inline-flex; align-items: center;
+  padding: 2px 12px; border-radius: var(--r-full);
+  font-size: .875rem; font-weight: 800; line-height: 1.9; white-space: nowrap;
+}
+.nb-purpose-record { background: var(--nb-accent-soft); color: var(--nb-accent); border: 1px solid #ccd8e6 }
+.nb-purpose-practice { background: var(--nb-gold-soft); color: var(--nb-gold); border: 1px solid var(--border-strong) }
+
+.nb-section-body { display: grid; gap: 16px }
+
+/* ---- generic blocks ----------------------------------------------------- */
+.nb-block { border-radius: var(--r-md); }
+.nb-text { margin: 0; line-height: 2.05; max-width: 78ch }
+.nb-block-title { margin: 0 0 8px; font-size: 1.0625rem; font-weight: 800; color: var(--nb-ink); line-height: 1.7 }
+.nb-source { display: block; margin-top: 8px; font-size: .875rem; font-weight: 700; color: var(--nb-gold) }
+
+.nb-ordered { margin: 0; padding-inline-start: 26px; display: grid; gap: 9px; line-height: 2 }
+.nb-ordered li { margin: 0; padding-inline-start: 4px }
+.nb-ordered li::marker { color: var(--nb-accent); font-weight: 800; font-family: 'DM Mono', monospace }
+
+/* definition — the exact wording a student must copy */
+.nb-definition {
+  background: var(--nb-accent-soft);
+  border: 1px solid #ccd8e6;
+  border-inline-start: 5px solid var(--nb-accent);
+  padding: 16px 20px;
+}
+.nb-definition-line { margin: 0; line-height: 2.05 }
+.nb-term {
+  display: inline-block; background: var(--nb-accent); color: #fff;
+  border-radius: var(--r-full); padding: 2px 14px; margin-inline-end: 10px;
+  font-size: .9375rem; font-weight: 800; line-height: 1.9;
+}
+.nb-definition-text { color: var(--nb-ink); font-weight: 600 }
+
+/* rule / property — conditions of use included in the same statement */
+.nb-rule {
+  background: var(--nb-gold-soft);
+  border: 1px dashed var(--gold);
+  padding: 15px 20px;
+}
+.nb-rule .nb-block-title { color: var(--nb-gold) }
+.nb-rule-text { line-height: 2.05; color: var(--nb-ink) }
+
+/* procedure */
+.nb-steps { background: #fff; border: 1px solid var(--border-strong); padding: 16px 20px }
+
+/* worked example */
+.nb-example { background: #fff; border: 1px solid var(--border-strong); box-shadow: var(--sh-sm); padding: 18px 20px 20px }
+.nb-example .nb-block-title { color: var(--nb-accent) }
+.nb-question {
+  margin: 0 0 12px; padding: 12px 16px;
+  background: var(--bg-soft); border-radius: var(--r-sm);
+  line-height: 2; color: var(--nb-ink); font-weight: 600;
+}
+.nb-example-figure { margin: 4px 0 12px; overflow-x: auto }
+.nb-solution-label { margin: 0 0 6px; font-size: .9375rem; font-weight: 800; color: var(--nb-gold) }
+.nb-solution { margin-bottom: 14px }
+.nb-answer, .nb-verification {
+  display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap;
+  margin: 0; padding: 11px 15px; border-radius: var(--r-sm); line-height: 1.95;
+}
+.nb-answer { background: var(--ok-soft); color: #1d5541; border: 1px solid #c5dfd3 }
+.nb-answer + .nb-verification { margin-top: 10px }
+.nb-verification { background: var(--nb-accent-soft); color: #24405f; border: 1px solid #ccd8e6 }
+.nb-answer-tag, .nb-verification-tag {
+  flex: none; background: #fff; border-radius: var(--r-full);
+  padding: 1px 12px; font-size: .875rem; font-weight: 800;
+}
+.nb-answer-tag { color: #1d5541; border: 1px solid #b9d6c7 }
+.nb-verification-tag { color: var(--nb-accent); border: 1px solid #c3d2e4 }
+
+/* figure to copy */
+.nb-figure { margin: 0; background: #fff; border: 1px solid var(--border-strong); padding: 16px 18px }
+.nb-figure-body { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap }
+.nb-figure-caption { margin-top: 12px; text-align: center; font-size: .9375rem; line-height: 1.9; color: var(--nb-body) }
+.nb-figure-caption strong { display: block; color: var(--nb-ink); font-size: 1rem }
+.nb-labels { list-style: none; margin: 14px 0 0; padding: 14px 0 0; border-top: 1px dashed var(--border-strong); display: grid; gap: 8px }
+.nb-labels li { display: flex; align-items: flex-start; gap: 8px; font-size: 1rem; line-height: 1.9 }
+.nb-labels li::before { content: '◆'; flex: none; color: var(--gold); font-size: .8125rem; line-height: 2.4 }
+
+/* table to copy */
+.nb-table-block { background: #fff; border: 1px solid var(--border-strong); padding: 16px 18px }
+.nb-table-scroll { overflow-x: auto }
+.nb-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+.nb-table th, .nb-table td {
+  border: 1px solid var(--border-strong); padding: 10px 12px;
+  text-align: center; font-size: 1rem; line-height: 1.8; color: var(--nb-ink);
+}
+.nb-table thead th { background: var(--nb-accent-soft); color: var(--nb-accent); font-weight: 800 }
+.nb-table tbody th { background: var(--nb-paper-deep); font-weight: 700 }
+.nb-table td { font-weight: 600 }
+.nb-table-caption { margin: 10px 0 0; font-size: .9375rem; line-height: 1.85; color: var(--nb-body) }
+
+/* warnings and tips */
+.nb-note { display: flex; align-items: flex-start; gap: 11px; padding: 14px 18px; border-radius: var(--r-md) }
+.nb-note p { margin: 0; line-height: 1.95 }
+.nb-note svg { flex: none; margin-top: 6px }
+.nb-note-warning { background: var(--err-soft); border: 1px solid #eecdc5; border-inline-start: 5px solid var(--err); color: var(--nb-ink) }
+.nb-note-warning svg { color: var(--err) }
+.nb-note-warning strong { color: #8c3a29 }
+.nb-note-tip { background: var(--nb-accent-soft); border: 1px solid #ccd8e6; border-inline-start: 5px solid var(--nb-accent); color: var(--nb-ink) }
+.nb-note-tip svg { color: var(--nb-accent) }
+
+/* ---- reused figure components, sized for copying -------------------------
+   The notebook reuses the lessons' own drawings (GeoFigure, CoordinatesGrid, LineChart,
+   ColumnOperation, and the Lesson 6/8 figures), so their sizes are adapted here instead of
+   being re-implemented: wide figures scroll inside the sheet rather than breaking it, and
+   figure labels are lifted to a readable size on paper. ---------------------------------- */
+.student-notebook svg.l7-geo { width: min(100%, 400px); height: auto; margin: 6px auto }
+.student-notebook .coordinate-grid { width: min(100%, 520px) }
+.student-notebook .line-chart { width: min(100%, 600px) }
+.student-notebook .col-op-grid { margin: 8px auto }
+.student-notebook .math-expression { color: var(--nb-ink); font-weight: 700 }
+
+/* Lesson 6 figures (قياس الزوايا) */
+.nb-figure-body { overflow-x: auto }
+.student-notebook .l6-angle-svg { width: min(100%, 200px) }
+.student-notebook .l6-concept-svg { width: min(100%, 460px) }
+.student-notebook .l6-protractor-svg { min-width: 0; width: min(100%, 460px) }
+.student-notebook .l6-protractor-svg.is-compact { min-width: 0; width: min(100%, 330px) }
+.student-notebook .l6-wheel-svg { width: min(100%, 480px) }
+.student-notebook .l6-square-svg { width: min(100%, 300px) }
+.student-notebook .l6-geometry-grid { width: 100%; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) }
+.student-notebook .l6-figure-pair { width: 100%; grid-template-columns: 1fr }
+.student-notebook .l6-geo-card span { font-size: .9375rem }
+.student-notebook .l6-triangle-figure p,
+.student-notebook .l6-circle-figure p { font-size: .9375rem }
+
+/* Lesson 8 composite figure (تدرّب ③ — المعيّن ومتوازي الأضلاع) */
+.student-notebook .l8-composite { width: min(100%, 420px) }
+
+/* ---- tablet ------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .student-notebook { padding: 26px 22px 30px; padding-inline-start: 52px; font-size: 1rem }
+  .student-notebook::before { inset-inline-start: 32px }
+}
+
+/* ---- mobile ------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .student-notebook { padding: 20px 15px 26px; padding-inline-start: 34px; border-radius: var(--r-md); line-height: 1.95 }
+  .student-notebook::before { inset-inline-start: 18px; inset-block: 10px }
+  .nb-head { padding-bottom: 14px; margin-bottom: 20px }
+  .nb-instruction { font-size: .9375rem }
+  .nb-print { width: 100%; justify-content: center }
+  .nb-sections { gap: 24px }
+  .nb-section-title { font-size: 1.125rem; gap: 8px 9px }
+  .nb-section-number { width: 28px; height: 28px; font-size: .9375rem }
+  /* the badge never shrinks; when the heading is long it simply wraps to the next line */
+  .nb-purpose { font-size: .8125rem; padding: 1px 10px; line-height: 1.8 }
+  .nb-block-title { font-size: 1rem }
+  .nb-definition, .nb-rule, .nb-steps, .nb-example, .nb-figure, .nb-table-block { padding: 14px }
+  .nb-term { display: block; width: max-content; margin-bottom: 6px }
+  .nb-ordered { padding-inline-start: 20px; gap: 8px }
+  .nb-figure-body { gap: 12px }
+  .nb-table th, .nb-table td { padding: 8px 6px; font-size: .9375rem }
+  .student-notebook svg.l7-geo { width: min(100%, 320px) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-notebook { animation: none }
+  .nb-print { transition: none }
+}
+
+/* ---- print: the sheet alone, nothing clipped ---------------------------- */
+@media print {
+  .student-notebook {
+    background: #fff; border: 0; box-shadow: none; border-radius: 0;
+    padding: 0; font-size: 11.5pt; line-height: 1.75; color: #000;
+  }
+  .student-notebook::before { display: none }
+  .nb-print { display: none }
+  .nb-head { border-bottom-width: 1.5pt; margin-bottom: 14pt }
+  .nb-head-tag { background: #fff; color: #000; border: 1pt solid #000 }
+  .nb-instruction { font-size: 10pt }
+  .nb-sections { gap: 14pt; display: block }
+  .nb-section { break-inside: auto }
+  .nb-section + .nb-section { margin-top: 14pt }
+  .nb-section-title { font-size: 13pt; break-after: avoid; page-break-after: avoid }
+  .nb-purpose { background: #fff; color: #000; border: .75pt solid #000; font-size: 9.5pt }
+  .nb-section-body { display: block }
+  .nb-section-body > * + * { margin-top: 9pt }
+
+  /* never split a definition, rule, example, figure, table or note across pages */
+  .nb-definition, .nb-rule, .nb-steps, .nb-example, .nb-figure, .nb-table-block, .nb-note, .nb-text {
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .nb-definition, .nb-rule, .nb-steps, .nb-example, .nb-figure, .nb-table-block, .nb-note {
+    border: 1pt solid #6b7785; background: #fff;
+  }
+  .nb-answer, .nb-verification, .nb-question { border: .75pt solid #6b7785; background: #fff }
+  .nb-term, .nb-answer-tag, .nb-verification-tag { background: #fff; color: #000; border: .75pt solid #000 }
+  .nb-table th, .nb-table td { border-color: #4a5560; font-size: 10.5pt }
+  .nb-table thead th, .nb-table tbody th { background: #f0f0f0 }
+
+  /* figures scale to the page instead of being cut by their scroll containers */
+  .student-notebook .coordinate-grid-wrap,
+  .student-notebook .line-chart-wrap,
+  .student-notebook .nb-table-scroll,
+  .student-notebook .nb-example-figure,
+  .student-notebook .nb-figure-body { overflow: visible; display: block }
+  .student-notebook svg { max-width: 100%; height: auto }
+  .student-notebook .coordinate-grid,
+  .student-notebook .line-chart { min-width: 0; width: min(100%, 150mm); margin: 0 auto }
+  .student-notebook svg.l7-geo { width: min(100%, 85mm); margin: 4pt auto }
+  .nb-figure-body > * { break-inside: avoid; page-break-inside: avoid }
+  .nb-labels { break-inside: avoid; page-break-inside: avoid }
+}
+
+/* when the notebook sheet is what the student prints, drop the app/lesson chrome
+   so the sheet uses the whole page (`:has` is ignored by older engines — the sheet
+   still prints correctly, just with the chrome around it). */
+@media print {
+  .lesson-page:has(.student-notebook) .topbar,
+  .lesson-page:has(.student-notebook) footer,
+  .lesson-page:has(.student-notebook) .lesson-journey-header,
+  .lesson-page:has(.student-notebook) .lesson-outline,
+  .lesson-page:has(.student-notebook) .lesson-navigation,
+  .lesson-page:has(.student-notebook) .lesson-section-header { display: none }
+  .lesson-page:has(.student-notebook) main { padding: 0 }
+  .lesson-page:has(.student-notebook) .lesson-shell { display: block; max-width: none; padding: 0 }
+  .lesson-page:has(.student-notebook) .lesson-experience-body,
+  .lesson-page:has(.student-notebook) .lesson-main,
+  .lesson-page:has(.student-notebook) .lesson-step-panel,
+  .lesson-page:has(.student-notebook) .lesson-content { display: block; max-width: none; padding: 0; margin: 0; overflow: visible; animation: none }
+}
+
+/* the book's "put the missing digits in □" skeleton, written as a column operation */
+.nb-column-skeleton {
+  display: block; direction: ltr; unicode-bidi: isolate;
+  margin: 12px auto; width: max-content; max-width: 100%;
+  padding: 12px 20px; background: var(--bg-soft);
+  border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+  font-family: 'DM Mono', monospace; font-size: 1.125rem; line-height: 2;
+  letter-spacing: .12em; color: var(--nb-ink); text-align: left;
+}
+@media (max-width: 760px) { .nb-column-skeleton { font-size: 1rem; padding: 10px 14px; letter-spacing: .06em } }
+@media print { .nb-column-skeleton { background: #fff; border-color: #4a5560; font-size: 12pt } }

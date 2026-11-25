@@ -8,6 +8,8 @@ import type { LessonStep } from '../components/lesson/types'
 import { LineChart } from '../components/lesson/LineChart'
 import { damascusWeek, idealInfantHeight, studentCountByYear, libraryVisitorsWeek, infantHeightTableMonths, infantHeightTableHeaders, studentCountTableYears } from './lineGraphsData'
 import { finalAssessment2 } from '../teacher/lesson2'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { lineGraphsNotebook } from '../notebook/entries/lineGraphs'
 
 /** Renders the textbook's Damascus-temperature table exactly as printed (page 7). */
 function TemperatureTable() {
@@ -65,7 +67,7 @@ function ConceptStep() {
       <ol className="numbered-explanation">
         <li>نرسم محورين متعامدين: الأفقي للزمن (الأيام، الأشهر، الأعوام…) والشاقولي للبيانات المدروسة (الحرارة، الطول، العدد…).</li>
         <li>نكتب عنواناً واضحاً لكل محور، وعنواناً عاماً للتمثيل نفسه.</li>
-        <li>نستعمل الجدول لنضع نقطة فوق كل قيمة زمن، على ارتفاع يساوي البيانة المقابلة لها.</li>
+        <li>نستعمل الجدول لنضع نقطة فوق كل قيمة زمن، على ارتفاع يساوي قيمة البيانات المقابلة لها.</li>
         <li>نصل بين النقاط المتتالية بقطع مستقيمة، فنحصل على التمثيل البياني بالخطوط.</li>
       </ol>
     </span></div>
@@ -136,7 +138,7 @@ function StudentsPracticeStep() {
   const [trendChoice, setTrendChoice] = useState<string | null>(null)
   return <div className="grid-practice">
     <div className="step-banner"><TrendingUp size={20} /><span>تدرّب</span></div>
-    <SourceCard label="من الكتاب — ص 9"><p>يبيّن التمثيل البياني الآتي تطوّر عدد طلاب الصف الخامس في إحدى المدارس خلال الفترة <MathExpression>2015 – 2006</MathExpression>:</p></SourceCard>
+    <SourceCard label="من الكتاب — ص 9"><p>يبيّن التمثيل البياني الآتي تطوّر عدد طلاب الصف الخامس في إحدى المدارس خلال الفترة <MathExpression>2006 – 2015</MathExpression>:</p></SourceCard>
     <LineChart series={studentCountByYear} ariaLabel="تمثيل بياني لعدد طلاب الصف الخامس بين عامي 2006 و2015" />
     <SourceCard label="من الكتاب — ص 9">
       <p>والمطلوب:</p>
@@ -175,7 +177,7 @@ function RecapStep() {
     <h3>خلاصة التمثيل البياني بالخطوط</h3>
     <ul>
       <li>نستعمله لعرض بيانات تتغيّر بمرور الزمن: المحور الأفقي للزمن، والمحور الشاقولي للبيانات.</li>
-      <li>كل نقطة على الرسم تمثّل زوجاً مرتباً مثل <BidiText>(الجمعة، 17)</BidiText>: القيمة الأولى زمن، والثانية بيانة.</li>
+      <li>كل نقطة على الرسم تمثّل زوجاً مرتباً مثل <BidiText>(الجمعة، 17)</BidiText>: القيمة الأولى زمن على المحور الأفقي، والثانية قيمة البيانات المدروسة على المحور الشاقولي.</li>
       <li>نصل بين النقاط المتتالية بخطوط مستقيمة لنرى بوضوح اتجاه التغيّر: تزايد، تناقص، أو ثبات.</li>
       <li>لقراءة قيمة يوم معيّن: نقف عليه على المحور الأفقي، نصعد إلى النقطة، ثم نقرأ القيمة من المحور الشاقولي.</li>
       <li>الخط بين نقطتين يوضّح الاتجاه فقط، ولا يعني وجود بيانات حقيقية بين القيمتين.</li>
@@ -215,6 +217,7 @@ export function LineGraphsLesson() {
     { id: 'mistakes', title: 'اكتشف الخطأ', content: <MistakesStep /> },
     { id: 'recap', title: 'الخلاصة', content: <RecapStep /> },
     { id: 'test', title: 'الاختبار الختامي', content: <FinalTest /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={lineGraphsNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title="التمثيلات البيانية بالخطوط" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} />

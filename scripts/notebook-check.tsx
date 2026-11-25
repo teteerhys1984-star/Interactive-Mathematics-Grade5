@@ -1,0 +1,417 @@
+/**
+ * «دفتر الطالب» audit — the notebook step of every shipped Unit 1 lesson.
+ *
+ * This check does not trust the authored documents. For each of the eight notebooks it
+ *  • proves the doc agrees with `curriculumRegistry` (lesson id, title, unit, textbook pages, theme);
+ *  • proves every section and block id is unique, stable and lesson-prefixed, and that the whole
+ *    document actually reached the DOM (`data-notebook-block` per authored block);
+ *  • proves the notebook stayed a static reference: no form control, no lesson widget, exactly one
+ *    button (print), no `data-source-id` marker that could collide with a lesson coverage ledger;
+ *  • proves every section declares a purpose, that the purpose badge reached the DOM, and that no
+ *    definition/rule/procedure is buried in a «حلول وتدرّبات» section (item 4 of the review);
+ *  • proves a value read off a drawing says it is approximate, and that no year range runs backwards;
+ *  • audits `src/lesson-notebook.css` for the phone, desktop and print contexts, since this sandbox
+ *    has no browser to measure a real viewport (every `nb-*` class the renderer emits must be styled,
+ *    the mobile breakpoint must re-pad the sheet, and print must hide the button and never split a
+ *    block across pages);
+ *  • proves the mixed Arabic/Latin text is bidi-isolated: a leaf holding Latin letters or a geometric
+ *    symbol must live inside `BidiText`/`MathExpression`/an LTR-isolated SVG, never in bare RTL prose;
+ *  • renders the REAL lesson and walks its outline to the last step, proving the notebook is wired as
+ *    the final step, that the step before it is still the lesson's own assessment, and that the
+ *    progress bar reports the new step count.
+ *
+ * Run independently with `npm run notebook-check`; it is part of `quality-check` and therefore `build`.
+ */
+import { readFileSync } from 'node:fs'
+import { JSDOM } from 'jsdom'
+
+const fail = (message: string): never => { throw new Error(`Notebook check failed: ${message}`) }
+
+/* ------------------------------------------------------- 1. authored data */
+const { curriculumRegistry } = await import('../src/content/registry')
+const { lessonComponents } = await import('../src/content/lessonComponents')
+const { coordinatesNotebook } = await import('../src/notebook/entries/coordinates')
+const { lineGraphsNotebook } = await import('../src/notebook/entries/lineGraphs')
+const { naturalNumbersNotebook } = await import('../src/notebook/entries/naturalNumbers')
+const { roundingNotebook } = await import('../src/notebook/entries/rounding')
+const { additionSubtractionNotebook } = await import('../src/notebook/entries/additionSubtraction')
+const { anglesNotebook } = await import('../src/notebook/entries/angles')
+const { parallelogramNotebook } = await import('../src/notebook/entries/parallelogram')
+const { rhombusNotebook } = await import('../src/notebook/entries/rhombus')
+
+import type { NotebookBlock, NotebookDoc } from '../src/notebook/types'
+
+/** lesson id → its notebook factory, the lesson file that must wire it, and the expected step count. */
+const plan: Array<{
+  id: string
+  prefix: string
+  file: string
+  steps: number
+  theme?: string
+  make: () => NotebookDoc
+}> = [
+  { id: 'coordinates', prefix: 'l1', file: 'src/lessons/CoordinatesLesson.tsx', steps: 10, make: coordinatesNotebook },
+  { id: 'line-graphs', prefix: 'l2', file: 'src/lessons/LineGraphsLesson.tsx', steps: 11, make: lineGraphsNotebook },
+  { id: 'natural-numbers', prefix: 'l3', file: 'src/lessons/NaturalNumbersLesson.tsx', steps: 12, make: naturalNumbersNotebook },
+  { id: 'rounding-natural-numbers', prefix: 'l4', file: 'src/lessons/RoundingLesson.tsx', steps: 6, theme: 'lesson-four', make: roundingNotebook },
+  { id: 'adding-subtracting-natural-numbers', prefix: 'l5', file: 'src/lessons/AdditionSubtractionLesson.tsx', steps: 15, theme: 'lesson-five', make: additionSubtractionNotebook },
+  { id: 'angle-measurement', prefix: 'l6', file: 'src/lessons/AnglesLesson.tsx', steps: 14, theme: 'lesson-six', make: anglesNotebook },
+  { id: 'parallelogram', prefix: 'l7', file: 'src/lessons/ParallelogramLesson.tsx', steps: 16, theme: 'lesson-seven', make: parallelogramNotebook },
+  { id: 'rhombus', prefix: 'l8', file: 'src/lessons/RhombusLesson.tsx', steps: 15, theme: 'lesson-eight', make: rhombusNotebook },
+]
+
+const unitOne = curriculumRegistry.find(unit => unit.id === 'unit-1')
+if (!unitOne) fail('unit-1 is missing from the curriculum registry')
+if (unitOne!.lessons.length !== plan.length) fail(`expected ${plan.length} Unit 1 lessons, found ${unitOne!.lessons.length}`)
+
+const docs = plan.map(entry => ({ entry, doc: entry.make() }))
+
+/* ------------------------------------------- 2. static shape of every doc */
+let blockCount = 0
+let sectionCount = 0
+let recordSections = 0
+let practiceSections = 0
+const kindTotals = new Map<string, number>()
+
+/** Block kinds that carry curriculum content the student must write down, never a solved exercise. */
+const COPYABLE_KINDS = new Set(['definition', 'rule', 'steps'])
+
+/**
+ * Blocks whose numbers are *read off a drawing* instead of being printed in the book. Each one must
+ * say so in the rendered page, so an approximate reading never looks like exact printed data.
+ */
+const APPROXIMATE_BLOCKS: Record<string, readonly string[]> = {
+  coordinates: ['l1-table-gates'],
+  'line-graphs': ['l2-table-height', 'l2-table-students', 'l2-ex-height-table', 'l2-note-approximate'],
+  'angle-measurement': ['l6-table-colored', 'l6-table-triangle', 'l6-table-applications', 'l6-note-approximate'],
+  parallelogram: ['l7-table-ex3', 'l7-ex-l7-p35-ex3-d'],
+}
+const APPROXIMATE_MARK = /تقريب|قراءة من الرسم/u
+
+for (const { entry, doc } of docs) {
+  const lesson = unitOne!.lessons.find(candidate => candidate.id === entry.id)
+  if (!lesson) fail(`no registry lesson for notebook "${entry.id}"`)
+  if (doc.lessonId !== entry.id) fail(`${entry.id}: doc.lessonId is "${doc.lessonId}"`)
+  if (doc.lessonTitle !== lesson!.title) fail(`${entry.id}: doc.lessonTitle "${doc.lessonTitle}" ≠ registry title "${lesson!.title}"`)
+  if (doc.unit !== unitOne!.title) fail(`${entry.id}: doc.unit "${doc.unit}" ≠ registry unit "${unitOne!.title}"`)
+  if (!/^ص \d+–\d+$/u.test(doc.pages)) fail(`${entry.id}: doc.pages "${doc.pages}" is not a «ص N–M» textbook range`)
+  if (doc.theme !== entry.theme) fail(`${entry.id}: doc.theme "${doc.theme ?? ''}" ≠ lesson shell theme "${entry.theme ?? ''}"`)
+  if (doc.sections.length < 5) fail(`${entry.id}: a notebook needs at least 5 sections, found ${doc.sections.length}`)
+
+  const ids = new Set<string>()
+  const kinds = new Set<string>()
+  for (const section of doc.sections) {
+    if (ids.has(section.id)) fail(`${entry.id}: duplicate section id "${section.id}"`)
+    if (!section.id.startsWith(`${entry.prefix}-`)) fail(`${entry.id}: section id "${section.id}" must start with "${entry.prefix}-"`)
+    ids.add(section.id)
+    if (section.blocks.length === 0) fail(`${entry.id}: section "${section.id}" has no blocks`)
+    if (section.purpose !== 'record' && section.purpose !== 'practice') {
+      fail(`${entry.id}: section "${section.id}" must declare purpose "record" or "practice" (found "${String(section.purpose)}")`)
+    }
+    if (section.purpose === 'record') recordSections += 1
+    else practiceSections += 1
+    // A curriculum definition, rule or procedure is what the student writes down; it may never be
+    // filed under the solved-exercise badge, where a student would skip it.
+    if (section.purpose === 'practice') {
+      for (const block of section.blocks as NotebookBlock[]) {
+        if (COPYABLE_KINDS.has(block.kind)) {
+          fail(`${entry.id}: "${block.id}" is a ${block.kind} but sits in the practice section "${section.id}" — move it to a «يُدوَّن في الدفتر» section`)
+        }
+      }
+    }
+    for (const block of section.blocks as NotebookBlock[]) {
+      if (ids.has(block.id)) fail(`${entry.id}: duplicate block id "${block.id}"`)
+      if (!block.id.startsWith(`${entry.prefix}-`)) fail(`${entry.id}: block id "${block.id}" must start with "${entry.prefix}-"`)
+      ids.add(block.id)
+      kinds.add(block.kind)
+      kindTotals.set(block.kind, (kindTotals.get(block.kind) ?? 0) + 1)
+      blockCount += 1
+    }
+  }
+  sectionCount += doc.sections.length
+
+  // A notebook the student copies must carry definitions, rules, procedures, worked examples and cautions.
+  for (const required of ['definition', 'rule', 'steps', 'example', 'note']) {
+    if (!kinds.has(required)) fail(`${entry.id}: no "${required}" block — the notebook is missing a copyable ${required}`)
+  }
+  if (!kinds.has('table') && !kinds.has('figure')) fail(`${entry.id}: no table and no figure — nothing to copy as a drawing or a table`)
+
+  // The lesson file must wire the notebook as its own final step, with the shared renderer.
+  const source = readFileSync(entry.file, 'utf8')
+  if (!source.includes(`{ id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={`)) {
+    fail(`${entry.file} does not wire the notebook step through <StudentNotebook doc={...} />`)
+  }
+  if (!source.includes(`from '../notebook/entries/`)) fail(`${entry.file} does not import its notebook document`)
+}
+
+/* ------------------------------------------------------- 3. jsdom harness */
+const dom = new JSDOM('<!doctype html><html lang="ar" dir="rtl"><body><div id="root"></div></body></html>', { url: 'http://localhost/#top', pretendToBeVisual: true })
+const { window } = dom
+Object.assign(globalThis, {
+  window, document: window.document, sessionStorage: window.sessionStorage, localStorage: window.localStorage,
+  HTMLElement: window.HTMLElement, SVGElement: window.SVGElement, Node: window.Node,
+  getComputedStyle: window.getComputedStyle, requestAnimationFrame: (cb: FrameRequestCallback) => setTimeout(() => cb(Date.now()), 0),
+})
+Object.defineProperty(globalThis, 'navigator', { value: window.navigator, configurable: true })
+;(globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true
+
+const React = await import('react')
+const { render, fireEvent, cleanup } = await import('@testing-library/react')
+const { StudentNotebook } = await import('../src/notebook/StudentNotebook')
+
+/** Markup that would turn the static notebook back into an activity, or collide with a lesson ledger. */
+const FORBIDDEN = ['.grid-hit', '.final-test', '.test-question', '.l8-blanks', '[data-source-id]', '.lesson-outline', '.l7-reveal', '.l7-task', 'form'] as const
+/** A leaf holding Latin letters or a geometric symbol must sit in an isolated LTR context. */
+const NEEDS_ISOLATION = /[A-Za-z∠]/u
+const ISOLATED_CONTEXT = '.math-expression, [dir="ltr"], svg, bdi' as const
+
+let printButtons = 0
+let figures = 0
+let tables = 0
+const notebookClasses = new Set<string>()
+
+for (const { entry, doc } of docs) {
+  const { container } = render(React.createElement(StudentNotebook, { doc }))
+  const root = container.querySelector<HTMLElement>('.student-notebook')
+  if (!root) fail(`${entry.id}: <StudentNotebook> rendered no .student-notebook root`)
+  if (root!.getAttribute('data-notebook') !== entry.id) fail(`${entry.id}: notebook root is not labelled with its lesson id`)
+  if (root!.getAttribute('dir') !== 'rtl') fail(`${entry.id}: notebook root must be dir="rtl"`)
+  if (entry.theme && !root!.classList.contains(entry.theme)) fail(`${entry.id}: notebook root must repeat the "${entry.theme}" theme class`)
+
+  const rendered = root!.querySelectorAll('[data-notebook-block]')
+  const authored = doc.sections.reduce((sum, section) => sum + section.blocks.length, 0)
+  if (rendered.length !== authored) fail(`${entry.id}: rendered ${rendered.length} blocks but ${authored} were authored`)
+  if (root!.querySelectorAll('[data-notebook-section]').length !== doc.sections.length) fail(`${entry.id}: a section did not reach the DOM`)
+
+  const controls = root!.querySelectorAll('input, select, textarea, [contenteditable]')
+  if (controls.length !== 0) fail(`${entry.id}: the notebook must stay a static reference, found ${controls.length} form control(s)`)
+  const buttons = root!.querySelectorAll('button')
+  if (buttons.length !== 1) fail(`${entry.id}: expected exactly one button (print), found ${buttons.length}`)
+  if (!buttons[0]!.classList.contains('nb-print')) fail(`${entry.id}: the only notebook button must be the print control`)
+  printButtons += 1
+
+  for (const selector of FORBIDDEN) {
+    const found = root!.querySelectorAll(selector)
+    if (found.length !== 0) fail(`${entry.id}: forbidden lesson markup "${selector}" (${found.length}) inside the notebook`)
+  }
+
+  const empty = Array.from(rendered).filter(node => (node.textContent ?? '').trim().length === 0)
+  if (empty.length) fail(`${entry.id}: ${empty.length} block(s) rendered empty: ${empty.map(node => node.getAttribute('data-notebook-block')).join(', ')}`)
+
+  // Every figure must be described for assistive technology, and no drawing may be interactive.
+  for (const svg of Array.from(root!.querySelectorAll('svg'))) {
+    if (svg.getAttribute('aria-hidden') === 'true') continue // decorative icons (lucide) are hidden on purpose
+    figures += 1
+    if (!svg.getAttribute('aria-label') && !svg.querySelector('title')) {
+      fail(`${entry.id}: a drawn figure has no accessible name (aria-label): ${svg.getAttribute('class') ?? svg.outerHTML.slice(0, 80)}`)
+    }
+    if (svg.closest('button, a, label')) fail(`${entry.id}: a figure is wrapped in an interactive element`)
+  }
+  const renderedTables = root!.querySelectorAll('table.nb-table')
+  tables += renderedTables.length
+  for (const table of Array.from(renderedTables)) {
+    if (!table.parentElement?.classList.contains('nb-table-scroll')) {
+      fail(`${entry.id}: a copyable table is not inside .nb-table-scroll, so it would overflow a phone`)
+    }
+    // A row label is written once in its own column. A cell that restates it and then adds to it
+    // («الزاوية الحادة» → «الزاوية الحادة أصغر من 90°») reads as a copy error, so it is rejected.
+    // A cell that merely EQUALS the label is left alone: rounding 232698 to the ones place really
+    // does return 232698, and that row carries a caption saying so.
+    for (const row of Array.from(table.querySelectorAll('tbody tr'))) {
+      const cells = Array.from(row.querySelectorAll('th, td'))
+        .map(cell => (cell.textContent ?? '').replace(/\s+/g, ' ').trim())
+      const [label, ...rest] = cells
+      for (const cell of rest) {
+        if (label && cell.length > label.length && cell.startsWith(label)) {
+          fail(`${entry.id}: table row «${label}» is restated by its own cell «${cell.slice(0, 50)}»`)
+        }
+      }
+    }
+  }
+  for (const figure of Array.from(root!.querySelectorAll('figure.nb-figure'))) {
+    if (!figure.querySelector(':scope > .nb-figure-body')) {
+      fail(`${entry.id}: a figure block is not inside .nb-figure-body, so it cannot scroll on a phone`)
+    }
+  }
+
+  // Bidi: every TEXT NODE carrying Latin letters or ∠ must be isolated, otherwise RTL prose reorders
+  // it. Text nodes (not elements) are walked, so a <li> holding both prose and a <MathExpression> is
+  // still audited for its bare prose part.
+  const walker = window.document.createTreeWalker(root!, 4 /* NodeFilter.SHOW_TEXT */)
+  const loose: string[] = []
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const value = node.textContent ?? ''
+    if (!NEEDS_ISOLATION.test(value)) continue
+    const parent = node.parentElement
+    if (!parent || parent.closest(ISOLATED_CONTEXT)) continue
+    const block = parent.closest('[data-notebook-block]')?.getAttribute('data-notebook-block')
+      ?? parent.closest('[data-notebook-section]')?.getAttribute('data-notebook-section') ?? '?'
+    loose.push(`    ${block} <${parent.tagName.toLowerCase()}${parent.className ? `.${parent.className}` : ''}> ${JSON.stringify(value.trim().slice(0, 90))}`)
+  }
+  if (loose.length) {
+    fail(`${entry.id}: ${loose.length} text node(s) carry Latin or geometric characters outside an isolated LTR context — route them through BidiText/MathExpression (use mixed()):\n${loose.slice(0, 12).join('\n')}`)
+  }
+
+  // No placeholder or untranslated leftovers.
+  const prose = (root!.textContent ?? '')
+  for (const banned of ['TODO', 'FIXME', 'lorem', 'undefined', '[object Object]', 'NaN']) {
+    if (prose.includes(banned)) fail(`${entry.id}: notebook prose contains "${banned}"`)
+  }
+
+  // The purpose badge must reach the DOM with the wording a student reads on the sheet.
+  for (const section of doc.sections) {
+    const node = root!.querySelector<HTMLElement>(`[data-notebook-section="${section.id}"]`)
+    if (node?.getAttribute('data-notebook-purpose') !== section.purpose) {
+      fail(`${entry.id}: section "${section.id}" did not render its purpose attribute`)
+    }
+    const badge = node?.querySelector('.nb-purpose')
+    const expected = section.purpose === 'record' ? 'يُدوَّن في الدفتر' : 'حلول وتدرّبات'
+    if (badge?.textContent?.trim() !== expected) {
+      fail(`${entry.id}: section "${section.id}" badge reads "${badge?.textContent?.trim() ?? ''}", expected "${expected}"`)
+    }
+  }
+
+  // A period written backwards («2015 – 2006») is a transcription error, not a convention.
+  for (const [, from, to] of prose.matchAll(/(\d{4})\s*[–-]\s*(\d{4})/gu)) {
+    if (Number(from) > Number(to)) fail(`${entry.id}: the year range ${from}–${to} runs backwards`)
+  }
+
+  // Approximate readings must be labelled as approximate where they are printed.
+  for (const id of APPROXIMATE_BLOCKS[entry.id] ?? []) {
+    const block = root!.querySelector<HTMLElement>(`[data-notebook-block="${id}"]`)
+    if (!block) fail(`${entry.id}: expected approximate-reading block "${id}" is missing`)
+    if (!APPROXIMATE_MARK.test(block!.textContent ?? '')) {
+      fail(`${entry.id}: "${id}" carries values read off a drawing but never says they are approximate`)
+    }
+  }
+
+  // Every class of the notebook's own vocabulary must be styled somewhere in lesson-notebook.css.
+  for (const element of Array.from(root!.querySelectorAll<HTMLElement>('[class]'))) {
+    // getAttribute, not .className: an SVG element's className is an SVGAnimatedString
+    for (const token of (element.getAttribute('class') ?? '').split(/\s+/u)) {
+      if (token.startsWith('nb-') || token === 'student-notebook') notebookClasses.add(token)
+    }
+  }
+
+  cleanup()
+}
+
+/* --------------------------------- 4. the notebook is the lesson's last step */
+const stepCounts: string[] = []
+for (const { entry } of docs) {
+  const Lesson = lessonComponents[entry.id]
+  if (!Lesson) fail(`${entry.id}: no routed lesson component in lessonComponents`)
+  const { container } = render(React.createElement(Lesson))
+  // The desktop timeline holds exactly one button per step; the mobile trigger is not a step.
+  const outline = Array.from(container.querySelectorAll<HTMLButtonElement>('.lesson-outline-list.is-desktop > li > button'))
+  if (outline.length !== entry.steps) fail(`${entry.id}: expected ${entry.steps} lesson steps (including «دفتر الطالب»), found ${outline.length}`)
+  if (!outline[outline.length - 1]!.textContent!.includes('دفتر الطالب')) fail(`${entry.id}: the last lesson step is not «دفتر الطالب»`)
+  if (!outline[outline.length - 1]!.textContent!.includes(`الخطوة ${entry.steps}`)) fail(`${entry.id}: the notebook is not numbered as step ${entry.steps} in the outline`)
+
+  const progress = container.querySelector('[role="progressbar"]')
+  if (progress?.getAttribute('aria-valuemax') !== String(entry.steps)) fail(`${entry.id}: progress bar reports ${progress?.getAttribute('aria-valuemax')} steps, expected ${entry.steps}`)
+
+  // The assessment must survive: it stays the step immediately before the notebook.
+  fireEvent.click(outline[outline.length - 2]!)
+  const assessment = container.querySelector('.lesson-content')
+  if (!assessment || assessment.querySelectorAll('input, button').length === 0) {
+    fail(`${entry.id}: the step before the notebook no longer looks like the lesson assessment (no controls rendered)`)
+  }
+
+  fireEvent.click(outline[outline.length - 1]!)
+  const notebookRoot = container.querySelector<HTMLElement>(`.student-notebook[data-notebook="${entry.id}"]`)
+  if (!notebookRoot) fail(`${entry.id}: clicking the last step did not render the notebook for this lesson`)
+  if (container.querySelectorAll('.student-notebook').length !== 1) fail(`${entry.id}: more than one notebook rendered inside the lesson`)
+  const stepId = container.querySelector('[data-step-id]')?.getAttribute('data-step-id')
+  if (stepId !== 'notebook') fail(`${entry.id}: the lesson shell is not on the "notebook" step (found "${stepId}")`)
+  stepCounts.push(`${entry.prefix}=${outline.length}`)
+  cleanup()
+}
+
+/* ------------------------- 5. phone, desktop and print CSS -------------------------
+ * No browser exists in this sandbox (no Chromium/Firefox binary and the Playwright/Puppeteer
+ * download hosts are unreachable), so the three viewing contexts are audited statically instead:
+ * the stylesheet must style every class the renderer emits, re-pad the sheet on a phone, and
+ * print the sheet alone without splitting a block across pages. This is a static audit, not a
+ * measured layout pass — see the report that ships with this change.
+ */
+const css = readFileSync('src/lesson-notebook.css', 'utf8')
+
+/** Splits the stylesheet into its base rules and the rules inside each @media block. */
+function mediaBlocks(source: string): Array<{ query: string; body: string }> {
+  const blocks: Array<{ query: string; body: string }> = []
+  const pattern = /@media([^{]+)\{/gu
+  for (const match of source.matchAll(pattern)) {
+    let depth = 1
+    let index = match.index! + match[0].length
+    while (index < source.length && depth > 0) {
+      if (source[index] === '{') depth += 1
+      else if (source[index] === '}') depth -= 1
+      index += 1
+    }
+    blocks.push({ query: match[1]!.trim(), body: source.slice(match.index! + match[0].length, index - 1) })
+  }
+  return blocks
+}
+const media = mediaBlocks(css)
+const base = css.replace(/@media[^{]+\{/gu, '@media {').split('@media {')[0]!
+const mobile = media.filter(block => /max-width:\s*760px/u.test(block.query)).map(block => block.body).join('\n')
+const tablet = media.filter(block => /max-width:\s*900px/u.test(block.query)).map(block => block.body).join('\n')
+const print = media.filter(block => /\bprint\b/u.test(block.query)).map(block => block.body).join('\n')
+if (!mobile) fail('lesson-notebook.css has no @media (max-width: 760px) phone block for the notebook')
+if (!tablet) fail('lesson-notebook.css has no @media (max-width: 900px) tablet block for the notebook')
+if (!print) fail('lesson-notebook.css has no @media print block for the notebook')
+
+const unstyled = [...notebookClasses].filter(name => !css.includes(`.${name}`))
+if (unstyled.length) fail(`notebook classes are rendered but never styled: ${unstyled.join(', ')}`)
+
+for (const [context, body] of [['phone', mobile], ['tablet', tablet], ['print', print]] as const) {
+  if (!body.includes('.student-notebook')) fail(`the ${context} context does not restyle the notebook sheet itself`)
+}
+for (const selector of ['.nb-print', '.nb-section-title', '.nb-purpose', '.nb-table th, .nb-table td']) {
+  if (!mobile.includes(selector)) fail(`the phone block does not adapt ${selector}`)
+}
+if (!/\.nb-print\s*\{[^}]*width:\s*100%/u.test(mobile)) fail('the print control must span the phone width (a 44px-high full-width target)')
+if (!/\.nb-print\s*\{[^}]*min-height:\s*44px/u.test(base)) fail('the print control must keep a 44px touch target')
+// A reused lesson figure keeps its lesson min-width unless the notebook cancels it explicitly.
+if (!/min-width:\s*0/u.test(css)) fail('reused lesson figures need a min-width: 0 override inside the notebook sheet')
+for (const container of ['.nb-figure-body', '.nb-table-scroll', '.nb-example-figure']) {
+  if (!new RegExp(`${container.replace('.', '\\.')}\\s*\\{[^}]*overflow-x:\\s*auto`, 'u').test(css)) {
+    fail(`${container} must scroll horizontally on a phone (overflow-x: auto)`)
+  }
+}
+if (!/\.nb-table-scroll/u.test(css)) fail('copyable tables need their own scroll container on a phone')
+
+if (!/\.nb-print\s*\{[^}]*display:\s*none/u.test(print)) fail('print must hide the print button')
+if (!/break-inside:\s*avoid/u.test(print) || !/page-break-inside:\s*avoid/u.test(print)) {
+  fail('print must keep a block on one page (break-inside and page-break-inside)')
+}
+for (const block of ['.nb-definition', '.nb-rule', '.nb-steps', '.nb-example', '.nb-figure', '.nb-table-block', '.nb-note']) {
+  const rule = print.match(new RegExp(`${block.replace(/[.]/gu, '\\.')}(?=[^{]*\\{[^}]*break-inside)`, 'u'))
+  if (!rule && !print.includes(block)) fail(`print rules do not cover ${block}`)
+}
+if (!/:has\(\.student-notebook\)/u.test(print)) fail('print must drop the lesson chrome around the notebook sheet')
+if (!/overflow:\s*visible/u.test(print)) fail('print must release the scroll containers so figures are not clipped')
+
+// The 13px floor of the design system also holds on a phone; print sizes are in points on purpose.
+for (const [context, body] of [['base', base], ['phone', mobile], ['tablet', tablet]] as const) {
+  for (const declaration of body.matchAll(/font-size:\s*([^;}]+)/gu)) {
+    const sizes = [...declaration[1]!.matchAll(/(\d*\.?\d+)(rem|px)/gu)]
+      .map(match => Number(match[1]) * (match[2] === 'rem' ? 16 : 1))
+    if (sizes.length && Math.min(...sizes) < 13) {
+      fail(`the ${context} notebook CSS sets a font below the 13px floor: font-size: ${declaration[1]!.trim()}`)
+    }
+  }
+}
+
+dom.window.close()
+
+console.log(
+  `Notebook check passed: ${docs.length} lesson notebooks («دفتر الطالب») wired as the final step of every Unit 1 lesson, ` +
+  `${sectionCount} sections and ${blockCount} copyable blocks (${[...kindTotals.entries()].map(([kind, count]) => `${kind} ${count}`).join(', ')}), ` +
+  `${figures} accessible figures, ${tables} copyable tables, ${printButtons} print controls and no form control.\n` +
+  `Section purposes: ${recordSections} «يُدوَّن في الدفتر» and ${practiceSections} «حلول وتدرّبات», with every definition/rule/procedure in a record section.\n` +
+  `Layout: ${notebookClasses.size} notebook classes styled for desktop, tablet (≤900px), phone (≤760px) and print; no screen font below 13px.\n` +
+  `Step counts now: ${stepCounts.join('، ')}.`,
+)
+process.exit(0)

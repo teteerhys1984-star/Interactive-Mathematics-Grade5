@@ -10,6 +10,8 @@ import { SourceCard } from '../components/lesson/SourceCard'
 import { GeoFigure, FigureFrame, type Pt } from '../components/lesson/GeoFigure'
 import type { LessonStep } from '../components/lesson/types'
 import { finalAssessment7, lessonSevenBookElements } from './parallelogramData'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { parallelogramNotebook } from '../notebook/entries/parallelogram'
 
 /* ------------------------------------------------------------------ ledger */
 
@@ -66,7 +68,7 @@ function BookCoverageMarkers() {
 const P = (x: number, y: number): Pt => ({ x, y })
 
 /** صفحة 31 — الشكل (1): ABCD متوازي أضلاع. */
-const Fig31One = () => (
+export const Fig31One = () => (
   <GeoFigure
     ariaLabel="الشكل 1: متوازي الأضلاع ABCD، الضلعان AB و DC متوازيان والضلعان AD و BC متوازيان"
     width={280} height={205}
@@ -80,7 +82,7 @@ const Fig31One = () => (
 )
 
 /** صفحة 31 — الشكل (2): EFGH بلا توازٍ. */
-const Fig31Two = () => (
+export const Fig31Two = () => (
   <GeoFigure
     ariaLabel="الشكل 2: الشكل الرباعي EFGH وليس فيه ضلعان متوازيان"
     width={280} height={205}
@@ -90,7 +92,7 @@ const Fig31Two = () => (
 )
 
 /** صفحة 31 — الشكل (3): شبه المنحرف MNKI. */
-const Fig31Three = () => (
+export const Fig31Three = () => (
   <GeoFigure
     ariaLabel="الشكل 3: الشكل الرباعي MNKI وفيه NK يوازي MI فقط"
     width={280} height={205}
@@ -101,7 +103,7 @@ const Fig31Three = () => (
 )
 
 /** صفحة 31 — الشكل (4): المستطيل QROP. */
-const Fig31Four = () => (
+export const Fig31Four = () => (
   <GeoFigure
     ariaLabel="الشكل 4: المستطيل QROP وفيه RO يوازي QP و RQ يوازي OP وزاوية قائمة عند O"
     width={280} height={205}
@@ -116,7 +118,7 @@ const Fig31Four = () => (
 )
 
 /** صفحة 31 — الشكل (5): المعيّن SVUT. */
-const Fig31Five = () => (
+export const Fig31Five = () => (
   <GeoFigure
     ariaLabel="الشكل 5: المعيّن SVUT وفيه VS يوازي UT و ST يوازي VU"
     width={280} height={205}
@@ -130,7 +132,7 @@ const Fig31Five = () => (
 )
 
 /** صفحة 32 — متوازي الأضلاع ABCD (مع أو بدون القطرين). */
-const Fig32Main = ({ diagonals = false }: { diagonals?: boolean }) => (
+export const Fig32Main = ({ diagonals = false }: { diagonals?: boolean }) => (
   <GeoFigure
     ariaLabel={diagonals ? 'متوازي الأضلاع ABCD مرسوم فيه القطران AC و BD' : 'متوازي الأضلاع ABCD'}
     width={290} height={200}
@@ -145,7 +147,7 @@ const Fig32Main = ({ diagonals = false }: { diagonals?: boolean }) => (
 )
 
 /** صفحة 32 — تحقق ① الشكل (1). */
-const Fig32Check1A = () => (
+export const Fig32Check1A = () => (
   <GeoFigure
     ariaLabel="الشكل 1: الرباعي BADC وفيه BA يوازي CD و BC يوازي AD"
     width={300} height={190}
@@ -159,7 +161,7 @@ const Fig32Check1A = () => (
 )
 
 /** صفحة 32 — تحقق ① الشكل (2). */
-const Fig32Check1B = () => (
+export const Fig32Check1B = () => (
   <GeoFigure
     ariaLabel="الشكل 2: المستطيل HEFG وفيه HE يوازي GF و HG يوازي EF"
     width={300} height={190}
@@ -173,7 +175,7 @@ const Fig32Check1B = () => (
 )
 
 /** صفحة 32 — تحقق ② الشكل (1): مثلث. */
-const Fig32Check2A = () => (
+export const Fig32Check2A = () => (
   <GeoFigure
     ariaLabel="الشكل 1: المثلث ABC"
     width={280} height={190}
@@ -183,7 +185,7 @@ const Fig32Check2A = () => (
 )
 
 /** صفحة 32 — تحقق ② الشكل (2): شبه منحرف FEGH. */
-const Fig32Check2B = () => (
+export const Fig32Check2B = () => (
   <GeoFigure
     ariaLabel="الشكل 2: شبه المنحرف FEHG وفيه FE يوازي GH فقط"
     width={280} height={190}
@@ -194,7 +196,7 @@ const Fig32Check2B = () => (
 )
 
 /** صفحة 32 — تحقق ② الشكل (3): رباعي MNKI بلا توازٍ. */
-const Fig32Check2C = () => (
+export const Fig32Check2C = () => (
   <GeoFigure
     ariaLabel="الشكل 3: الرباعي NKIM وليس فيه ضلعان متوازيان"
     width={280} height={190}
@@ -204,7 +206,7 @@ const Fig32Check2C = () => (
 )
 
 /** صفحة 33 — بطاقة النموذج الملوّنة مع خط القص. */
-const ModelCard = ({ stage }: { stage: 0 | 1 | 2 }) => {
+export const ModelCard = ({ stage }: { stage: 0 | 1 | 2 }) => {
   const pts = { A: P(95, 45), B: P(240, 45), C: P(200, 145), D: P(55, 145) }
   return (
     <GeoFigure
@@ -229,7 +231,7 @@ const ModelCard = ({ stage }: { stage: 0 | 1 | 2 }) => {
 }
 
 /** صفحة 33 — «لنعمل معاً»: الزاوية A تساوي 60°. */
-const Fig33Together = () => (
+export const Fig33Together = () => (
   <GeoFigure
     ariaLabel="متوازي الأضلاع DABC وقياس الزاوية A هو 60 درجة"
     width={300} height={195}
@@ -240,7 +242,7 @@ const Fig33Together = () => (
 )
 
 /** صفحة 33 — «تحقّق من فهمك»: ABCD بقياسات 3cm، 2cm، 70°، 110°. */
-const Fig33Check = () => (
+export const Fig33Check = () => (
   <GeoFigure
     ariaLabel="متوازي الأضلاع ABCD، الضلع AB يساوي 3 سنتيمتر والضلع BC يساوي 2 سنتيمتر والزاوية A تساوي 70 درجة والزاوية B تساوي 110 درجة"
     width={310} height={200}
@@ -287,7 +289,7 @@ function MiniProtractor({ degree = 120 }: { degree?: number }) {
 /** صفحة 34 — الأشكال المرافقة للخطوات الخمس. */
 const constructionPts = { X: P(265, 152), Y: P(110, 152), Z: P(52, 51), W: P(207, 51) }
 
-function ConstructionFigure({ step }: { step: 1 | 2 | 3 | 4 | 5 }) {
+export function ConstructionFigure({ step }: { step: 1 | 2 | 3 | 4 | 5 }) {
   if (step === 2) return <MiniProtractor />
   if (step === 1) {
     return (
@@ -323,7 +325,7 @@ function ConstructionFigure({ step }: { step: 1 | 2 | 3 | 4 | 5 }) {
 }
 
 /** صفحة 35 — تدرّب ①: متوازي الأضلاع WXYZ. */
-const Fig35Ex1 = () => (
+export const Fig35Ex1 = () => (
   <GeoFigure
     ariaLabel="متوازي الأضلاع WXYZ، الضلع WZ يساوي 5 سنتيمتر والضلع ZY يساوي 2 سنتيمتر والزاوية W تساوي 110 درجة والزاوية Z تساوي 70 درجة"
     width={320} height={195}
@@ -338,7 +340,7 @@ const Fig35Ex1 = () => (
 )
 
 /** صفحة 35 — تدرّب ⑤: متوازيا الأضلاع ABCD و DCFE. */
-const Fig35Ex5 = () => {
+export const Fig35Ex5 = () => {
   const p = { A: P(90, 38), B: P(250, 38), C: P(201, 96), D: P(41, 96), E: P(90, 154), F: P(250, 154) }
   const line = (a: Pt, b: Pt, cls = 'l7-geo-edge') => <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} className={cls} />
   const label = (name: string, at: Pt, dx: number, dy: number) => <text x={at.x + dx} y={at.y + dy} className="l7-geo-point" textAnchor="middle">{name}</text>
@@ -922,6 +924,45 @@ function ConstructionStep() {
   )
 }
 
+/* Figures of ص 34 «تحقّق من فهمك» and ص 35 «تدرّب ③», lifted to named components so the
+   lesson and «دفتر الطالب» render the very same geometry (never a second, drifting copy). */
+
+/** صفحة 34 — تحقّق: متوازي الأضلاع ABCD حيث DC = 4cm و AD = 2cm و ∠ADC = 125°. */
+export const Fig34CheckDraw = () => (
+  <GeoFigure
+    ariaLabel="متوازي الأضلاع ABCD حيث DC يساوي 4 سنتيمتر و AD يساوي 2 سنتيمتر والزاوية ADC تساوي 125 درجة"
+    width={320} height={190}
+    pts={{ D: P(80, 150), C: P(224, 150), B: P(183, 91), A: P(39, 91) }}
+    order={['A', 'B', 'C', 'D']}
+    sides={[{ side: ['D', 'C'], label: '4cm' }, { side: ['A', 'D'], label: '2cm' }]}
+    angles={[{ at: 'D', from: 'C', to: 'A', label: '125°', tone: 'rose', radius: 28 }]}
+    marks={[{ side: ['C', 'D'], count: 1 }, { side: ['B', 'A'], count: 1 }]}
+  />
+)
+
+/** صفحة 34 — تحقّق: القطر [BD] في متوازي الأضلاع ABCD. */
+export const Fig34CheckBD = () => (
+  <GeoFigure
+    ariaLabel="متوازي الأضلاع ABCD مرسوم فيه القطر BD"
+    width={320} height={190}
+    pts={{ D: P(80, 150), C: P(224, 150), B: P(183, 91), A: P(39, 91) }}
+    order={['A', 'B', 'C', 'D']}
+    diagonals={[['B', 'D']]}
+  />
+)
+
+/** صفحة 35 — تدرّب ③(ج): ABCD بعد تعيين الرأس D مع أطوال أضلاعه. */
+export const Fig35Ex3 = () => (
+  <GeoFigure
+    ariaLabel="متوازي الأضلاع ABCD بعد تعيين الرأس D، الضلع AB يساوي 4 سنتيمتر والضلع BC يساوي 3 سنتيمتر"
+    width={330} height={215}
+    pts={{ A: P(240, 47), B: P(70, 45), C: P(105, 170), D: P(275, 172) }}
+    order={['A', 'B', 'C', 'D']}
+    sides={[{ side: ['B', 'A'], label: '4cm' }, { side: ['B', 'C'], label: '3cm' }, { side: ['C', 'D'], label: '4cm' }, { side: ['A', 'D'], label: '3cm' }]}
+    marks={[{ side: ['B', 'A'], count: 1 }, { side: ['C', 'D'], count: 1 }, { side: ['B', 'C'], count: 2, tone: 'red' }, { side: ['A', 'D'], count: 2, tone: 'red' }]}
+  />
+)
+
 function ConstructionCheckStep() {
   return (
     <div className="l7-step-content">
@@ -932,26 +973,12 @@ function ConstructionCheckStep() {
 
       <BookTask id="l7-p34-check-draw">
         <FigureFrame title="الرسم المطلوب (مقياس مطابق للمعطيات)" zoomable caption="الزاوية 125° رأسها D بين الضلعين [DA] و[DC].">
-          <GeoFigure
-            ariaLabel="متوازي الأضلاع ABCD حيث DC يساوي 4 سنتيمتر و AD يساوي 2 سنتيمتر والزاوية ADC تساوي 125 درجة"
-            width={320} height={190}
-            pts={{ D: P(80, 150), C: P(224, 150), B: P(183, 91), A: P(39, 91) }}
-            order={['A', 'B', 'C', 'D']}
-            sides={[{ side: ['D', 'C'], label: '4cm' }, { side: ['A', 'D'], label: '2cm' }]}
-            angles={[{ at: 'D', from: 'C', to: 'A', label: '125°', tone: 'rose', radius: 28 }]}
-            marks={[{ side: ['C', 'D'], count: 1 }, { side: ['B', 'A'], count: 1 }]}
-          />
+          <Fig34CheckDraw />
         </FigureFrame>
       </BookTask>
 
       <BookTask id="l7-p34-check-bd">
-        <GeoFigure
-          ariaLabel="متوازي الأضلاع ABCD مرسوم فيه القطر BD"
-          width={320} height={190}
-          pts={{ D: P(80, 150), C: P(224, 150), B: P(183, 91), A: P(39, 91) }}
-          order={['A', 'B', 'C', 'D']}
-          diagonals={[['B', 'D']]}
-        />
+        <Fig34CheckBD />
       </BookTask>
     </div>
   )
@@ -1006,14 +1033,7 @@ function Practice3Step() {
       <BookTask id="l7-p35-ex3-b" />
       <BookTask id="l7-p35-ex3-c">
         <FigureFrame title="الشكل بعد تعيين D وتسجيل الأطوال" zoomable caption="الكتاب لا يطبع أرقاماً على هذا الشكل؛ الطالب يقيس بالمسطرة. القياسات هنا مطابقة لمقياس الرسم المعروض.">
-          <GeoFigure
-            ariaLabel="متوازي الأضلاع ABCD بعد تعيين الرأس D، الضلع AB يساوي 4 سنتيمتر والضلع BC يساوي 3 سنتيمتر"
-            width={330} height={215}
-            pts={{ A: P(240, 47), B: P(70, 45), C: P(105, 170), D: P(275, 172) }}
-            order={['A', 'B', 'C', 'D']}
-            sides={[{ side: ['B', 'A'], label: '4cm' }, { side: ['B', 'C'], label: '3cm' }, { side: ['C', 'D'], label: '4cm' }, { side: ['A', 'D'], label: '3cm' }]}
-            marks={[{ side: ['B', 'A'], count: 1 }, { side: ['C', 'D'], count: 1 }, { side: ['B', 'C'], count: 2, tone: 'red' }, { side: ['A', 'D'], count: 2, tone: 'red' }]}
-          />
+          <Fig35Ex3 />
         </FigureFrame>
       </BookTask>
       <BookTask id="l7-p35-ex3-d" />
@@ -1026,7 +1046,8 @@ function Practice3Step() {
   )
 }
 
-const ex4Cases = {
+/** معطيات حالات تدرّب ④ (ص 35) ورسم كل حالة وملاحظتها التحريرية. */
+export const ex4Cases = {
   a: {
     pts: { A: P(108, 72), B: P(60, 155), C: P(220, 155), D: P(268, 72) } as Record<string, Pt>,
     sides: [{ side: ['B', 'C'] as [string, string], label: '5cm' }, { side: ['B', 'A'] as [string, string], label: '3cm' }],
@@ -1053,22 +1074,32 @@ const ex4Cases = {
   },
 }
 
-function Ex4Figure({ variant }: { variant: keyof typeof ex4Cases }) {
+/**
+ * صفحة 35 — تدرّب ④: رسم حالة من الحالات الأربع بلا إطار. منفصل عن `Ex4Figure` حتى يستطيع
+ * «دفتر الطالب» عرض الرسم نفسه من دون زرّ التكبير (الدفتر صفحة ثابتة للطباعة).
+ */
+export function Ex4Geo({ variant }: { variant: keyof typeof ex4Cases }) {
   const item = ex4Cases[variant]
   return (
-    <FigureFrame caption={item.note} zoomable>
-      <GeoFigure
-        ariaLabel="رسم متوازي الأضلاع ABCD حسب معطيات الحالة"
-        width={310} height={205}
-        pts={item.pts}
-        order={['A', 'B', 'C', 'D']}
-        sides={item.sides}
-        angles={item.angle ? [{ ...item.angle, tone: 'rose' as const, radius: 26 }] : []}
-        marks={[
-          { side: ['B', 'A'], count: 1 }, { side: ['C', 'D'], count: 1 },
-          { side: ['C', 'B'], count: 2, tone: 'red' }, { side: ['D', 'A'], count: 2, tone: 'red' },
-        ]}
-      />
+    <GeoFigure
+      ariaLabel="رسم متوازي الأضلاع ABCD حسب معطيات الحالة"
+      width={310} height={205}
+      pts={item.pts}
+      order={['A', 'B', 'C', 'D']}
+      sides={item.sides}
+      angles={item.angle ? [{ ...item.angle, tone: 'rose' as const, radius: 26 }] : []}
+      marks={[
+        { side: ['B', 'A'], count: 1 }, { side: ['C', 'D'], count: 1 },
+        { side: ['C', 'B'], count: 2, tone: 'red' }, { side: ['D', 'A'], count: 2, tone: 'red' },
+      ]}
+    />
+  )
+}
+
+function Ex4Figure({ variant }: { variant: keyof typeof ex4Cases }) {
+  return (
+    <FigureFrame caption={ex4Cases[variant].note} zoomable>
+      <Ex4Geo variant={variant} />
     </FigureFrame>
   )
 }
@@ -1205,6 +1236,7 @@ export function ParallelogramLesson() {
     { id: 'practice-5', title: 'تدرّب ⑤', content: <Practice5Step /> },
     { id: 'recap', title: 'الخلاصة', content: <RecapStep /> },
     { id: 'test', title: 'الاختبار النهائي', content: <FinalTest /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={parallelogramNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return (

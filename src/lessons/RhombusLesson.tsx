@@ -9,6 +9,8 @@ import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import { GeoFigure, FigureFrame, type Pt } from '../components/lesson/GeoFigure'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { rhombusNotebook } from '../notebook/entries/rhombus'
 import { finalAssessment8, lessonEightBookElements } from './rhombusData'
 
 /* ------------------------------------------------------------------ ledger */
@@ -79,7 +81,7 @@ function BookCoverageMarkers() {
 const P = (x: number, y: number): Pt => ({ x, y })
 
 /** مدخل الدرس — إعادة بناء مبسّطة لشبكة الصورة: عيون معيّنة متكرّرة. */
-function MeshFigure() {
+export function MeshFigure() {
   const cells: Array<{ cx: number; cy: number }> = [
     { cx: 80, cy: 95 }, { cx: 160, cy: 95 }, { cx: 240, cy: 95 },
     { cx: 120, cy: 155 }, { cx: 200, cy: 155 },
@@ -100,7 +102,7 @@ function MeshFigure() {
 }
 
 /** صفحة 36 — انطلاقة نشطة، الشكل (1): شبه منحرف. */
-const Fig36Start1 = () => (
+export const Fig36Start1 = () => (
   <GeoFigure
     ariaLabel="الشكل 1: شبه منحرف، الضلعان العلوي والسفلي متوازيان فقط"
     width={290} height={200}
@@ -112,7 +114,7 @@ const Fig36Start1 = () => (
 )
 
 /** صفحة 36 — انطلاقة نشطة، الشكل (2): معيّن مرتفع. */
-const Fig36Start2 = () => (
+export const Fig36Start2 = () => (
   <GeoFigure
     ariaLabel="الشكل 2: شكل رباعي كل ضلعين متقابلين فيه متوازيان وأضلاعه متساوية"
     width={290} height={200}
@@ -127,7 +129,7 @@ const Fig36Start2 = () => (
 )
 
 /** صفحة 36 — انطلاقة نشطة، الشكل (3): مستطيل. */
-const Fig36Start3 = () => (
+export const Fig36Start3 = () => (
   <GeoFigure
     ariaLabel="الشكل 3: مستطيل، الضلعان العلوي والسفلي متوازيان والضلعان الجانبيان متوازيان"
     width={290} height={200}
@@ -142,7 +144,7 @@ const Fig36Start3 = () => (
 )
 
 /** صفحة 36 — انطلاقة نشطة، الشكل (4): معيّن عريض. */
-const Fig36Start4 = () => (
+export const Fig36Start4 = () => (
   <GeoFigure
     ariaLabel="الشكل 4: شكل رباعي عريض كل ضلعين متقابلين فيه متوازيان وأضلاعه متساوية"
     width={290} height={200}
@@ -157,7 +159,7 @@ const Fig36Start4 = () => (
 )
 
 /** صفحة 36 — رسم بطاقة التعريف: معيّن بعلامتَي تساوٍ على ضلعين متجاورين. */
-const Fig36Definition = () => (
+export const Fig36Definition = () => (
   <GeoFigure
     ariaLabel="معيّن عليه علامتا تساوٍ على ضلعين متجاورين"
     width={260} height={210}
@@ -173,7 +175,7 @@ const Fig36Definition = () => (
 )
 
 /** صفحة 36 — مثال الكتاب: ABCD مع AB = BC = 3cm. */
-const Fig36Example = () => (
+export const Fig36Example = () => (
   <GeoFigure
     ariaLabel="متوازي الأضلاع ABCD، الضلع AB يساوي 3 سنتيمتر والضلع BC يساوي 3 سنتيمتر"
     width={290} height={215}
@@ -188,7 +190,7 @@ const Fig36Example = () => (
 )
 
 /** صفحة 37 — تحقّق ①، الشكل (1): معيّن بأسهم توازٍ. */
-const Fig37Check1A = () => (
+export const Fig37Check1A = () => (
   <GeoFigure
     ariaLabel="شكل رباعي كل ضلعين متقابلين فيه متوازيان، والقياس يبيّن تساوي أضلاعه"
     width={270} height={210}
@@ -203,7 +205,7 @@ const Fig37Check1A = () => (
 )
 
 /** صفحة 37 — تحقّق ①، الشكل (2): مربّع. */
-const Fig37Check1B = () => (
+export const Fig37Check1B = () => (
   <GeoFigure
     ariaLabel="مربّع: أضلاعه الأربعة متساوية وزواياه قائمة"
     width={270} height={210}
@@ -215,7 +217,7 @@ const Fig37Check1B = () => (
 )
 
 /** صفحة 37 — تحقّق ②، الشكل (1): متوازي أضلاع 3cm و2cm. */
-const Fig37Check2A = () => (
+export const Fig37Check2A = () => (
   <GeoFigure
     ariaLabel="متوازي أضلاع ضلعه العلوي 3 سنتيمتر وضلعه الجانبي 2 سنتيمتر"
     width={270} height={185}
@@ -231,7 +233,7 @@ const Fig37Check2A = () => (
 )
 
 /** صفحة 37 — تحقّق ②، الشكل (2): شبه منحرف 2cm و2cm. */
-const Fig37Check2B = () => (
+export const Fig37Check2B = () => (
   <GeoFigure
     ariaLabel="شبه منحرف ضلعه العلوي 2 سنتيمتر وضلعه الجانبي 2 سنتيمتر، وفيه زوج واحد من الأضلاع المتوازية"
     width={270} height={190}
@@ -244,7 +246,7 @@ const Fig37Check2B = () => (
 )
 
 /** صفحة 37 — تحقّق ②، الشكل (3): دالية بعلامات تساوٍ. */
-const Fig37Check2C = () => (
+export const Fig37Check2C = () => (
   <GeoFigure
     ariaLabel="شكل رباعي فيه ضلعان متجاوران طويلان متساويان وضلعان متجاوران قصيران متساويان، ولا يوجد فيه ضلعان متوازيان"
     width={300} height={200}
@@ -259,7 +261,7 @@ const Fig37Check2C = () => (
 )
 
 /** صفحة 37 — تحقّق ③: المعيّن ABCD مع AB = 5cm والزاويتان 50° و130°. */
-const Fig37Rhombus = () => (
+export const Fig37Rhombus = () => (
   <GeoFigure
     ariaLabel="المعيّن ABCD، الضلع AB يساوي 5 سنتيمتر، الزاوية A تساوي 50 درجة والزاوية B تساوي 130 درجة"
     width={300} height={200}
@@ -278,7 +280,7 @@ const Fig37Rhombus = () => (
 )
 
 /** صفحة 38 — منقلة مصغّرة لإنشاء الزاوية 45° عند الرأس B. */
-function MiniProtractor8({ degree = 45 }: { degree?: number }) {
+export function MiniProtractor8({ degree = 45 }: { degree?: number }) {
   const cx = 160
   const cy = 150
   const r = 105
@@ -317,7 +319,7 @@ function MiniProtractor8({ degree = 45 }: { degree?: number }) {
 /** صفحة 38 — رؤوس المعيّن المرسوم: ضلع 3cm وزاوية 45° عند B. */
 const drawPts = { A: P(140, 185), B: P(290, 185), C: P(183.9, 78.9), D: P(33.9, 78.9) }
 
-function ConstructionFigure8({ step }: { step: 1 | 2 | 3 | 4 | 5 }) {
+export function ConstructionFigure8({ step }: { step: 1 | 2 | 3 | 4 | 5 }) {
   if (step === 2) return <MiniProtractor8 />
   if (step === 1) {
     return (
@@ -356,7 +358,7 @@ function ConstructionFigure8({ step }: { step: 1 | 2 | 3 | 4 | 5 }) {
 }
 
 /** صفحة 39 — تحقّق من فهمك: المعيّن XYZW بضلع 4cm وزاوية 120° عند Y. */
-const Fig39CheckDraw = () => (
+export const Fig39CheckDraw = () => (
   <GeoFigure
     ariaLabel="المعيّن XYZW، أضلاعه 4 سنتيمتر والزاوية عند Y تساوي 120 درجة"
     width={320} height={205}
@@ -466,7 +468,7 @@ const ex1Shapes = {
   },
 } as const
 
-function Fig39Ex1({ variant }: { variant: keyof typeof ex1Shapes }) {
+export function Fig39Ex1({ variant }: { variant: keyof typeof ex1Shapes }) {
   const shape = ex1Shapes[variant]
   return (
     <GeoFigure
@@ -482,8 +484,14 @@ function Fig39Ex1({ variant }: { variant: keyof typeof ex1Shapes }) {
   )
 }
 
+/**
+ * صفحة 39 — تدرّب ②: موضع الرأس الرابع W كما حدّده الحلّ (نظيرة Y بالنسبة إلى منتصف [XZ]).
+ * يُستعمل في نشاط «الرأس الرابع» وفي «دفتر الطالب» حتى يبقى الحلّ واحداً في المكانين.
+ */
+export const ex2SolvedW: Pt = P(250, 120)
+
 /** صفحة 39 — تدرّب ②: الخطّ المفتوح Z–Y–X مع إمكان إظهار الرأس W. */
-function Fig39Ex2({ w }: { w?: Pt }) {
+export function Fig39Ex2({ w }: { w?: Pt }) {
   const pts: Record<string, Pt> = { Z: P(160, 35), Y: P(70, 120), X: P(160, 205) }
   if (w) pts.W = w
   return (
@@ -506,7 +514,7 @@ function Fig39Ex2({ w }: { w?: Pt }) {
 }
 
 /** صفحة 39 — تدرّب ③: الشكل المركّب AFED (معيّن) و FBCE (متوازي أضلاع). */
-function Fig39Ex3({ showLengths = false }: { showLengths?: boolean }) {
+export function Fig39Ex3({ showLengths = false }: { showLengths?: boolean }) {
   const p = { A: P(70, 50), F: P(148, 50), B: P(278, 50), D: P(45.4, 124), E: P(123.4, 124), C: P(253.4, 124) }
   const line = (a: Pt, b: Pt, cls = 'l7-geo-edge') => <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} className={cls} />
   return (
@@ -1411,7 +1419,7 @@ function Practice2Step() {
 
       <FourthVertexActivity8 />
 
-      <BookTask id="l8-p39-ex2-a"><Fig39Ex2 w={P(250, 120)} /></BookTask>
+      <BookTask id="l8-p39-ex2-a"><Fig39Ex2 w={ex2SolvedW} /></BookTask>
       <BookTask id="l8-p39-ex2-b" />
     </div>
   )
@@ -1551,6 +1559,7 @@ export function RhombusLesson() {
     { id: 'mistakes', title: 'أخطاء وتحقّق', content: <MistakesStep /> },
     { id: 'recap', title: 'الخلاصة', content: <RecapStep /> },
     { id: 'test', title: 'الاختبار النهائي', content: <FinalTest /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={rhombusNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return (

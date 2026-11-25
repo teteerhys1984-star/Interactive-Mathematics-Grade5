@@ -18,6 +18,7 @@
     "lesson-6-check": "tsx scripts/lesson-6-check.ts",
     "lesson-7-check": "tsx scripts/lesson-7-check.ts",
     "lesson-8-check": "tsx scripts/lesson-8-check.ts",
+    "notebook-check": "tsx scripts/notebook-check.tsx",
     "lesson-9-coverage-check": "tsx scripts/lesson-9-coverage-check.tsx",
     "lesson-10-coverage-check": "tsx scripts/lesson-10-coverage-check.tsx",
     "lesson-11-coverage-check": "tsx scripts/lesson-11-coverage-check.tsx",
@@ -46,7 +47,7 @@
     "unit-2-exercises-ui-check": "tsx scripts/unit-2-exercises-ui-check.tsx",
     "lesson-square-coverage": "tsx scripts/lesson-square-check.ts --write-coverage",
     "lesson-square-interaction-check": "tsx scripts/lesson-square-interaction-check.tsx",
-    "quality-check": "npm run coordinate-check && npm run content-check && npm run design-check && npm run line-graphs-check && npm run lesson-3-check && npm run lesson-4-check && npm run lesson-5-check && npm run lesson-6-check && npm run lesson-7-check && npm run lesson-8-check && npm run lesson-fractions-two-interaction-check && npm run unit-1-check && npm run browser-smoke-test && npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-unit2-exercises-check && npm run unit-2-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && npm run lesson-decimal-parts-two-check && npm run lesson-decimal-parts-two-interaction-check && npm run lesson-decimal-parts-three-check && npm run lesson-decimal-parts-three-interaction-check && npm run lesson-rectangle-check && npm run lesson-rectangle-interaction-check && npm run lesson-square-check && npm run lesson-square-interaction-check && npm run independent-tests-check && npm run independent-tests-ui-check && npm run typecheck"
+    "quality-check": "npm run coordinate-check && npm run content-check && npm run design-check && npm run line-graphs-check && npm run lesson-3-check && npm run lesson-4-check && npm run lesson-5-check && npm run lesson-6-check && npm run lesson-7-check && npm run lesson-8-check && npm run lesson-fractions-two-interaction-check && npm run notebook-check && npm run unit-1-check && npm run browser-smoke-test && npm run test-area-check && npm run unit-exercises-check && npm run unit-exercises-ui-check && npm run lesson-unit2-exercises-check && npm run unit-2-exercises-ui-check && npm run lesson-9-coverage-check && npm run lesson-10-coverage-check && npm run lesson-11-coverage-check && npm run lesson-12-coverage-check && npm run lesson-fractions-two-check && npm run lesson-tenths-one-check && npm run lesson-tenths-one-interaction-check && npm run lesson-decimal-parts-two-check && npm run lesson-decimal-parts-two-interaction-check && npm run lesson-decimal-parts-three-check && npm run lesson-decimal-parts-three-interaction-check && npm run lesson-rectangle-check && npm run lesson-rectangle-interaction-check && npm run lesson-square-check && npm run lesson-square-interaction-check && npm run independent-tests-check && npm run independent-tests-ui-check && npm run typecheck"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
