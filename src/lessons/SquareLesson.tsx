@@ -3,6 +3,8 @@ import { Check, ChevronLeft, ChevronRight, CircleCheck, CircleX, ClipboardList, 
 import { MathExpression as SharedMathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { squareNotebook } from '../notebook/entries/u2l10Square'
 import {
   check1Reasons, findSquareElement, lessonTitle, p81Shapes, p82Check1Shapes, p82OralQuestions, p82Properties, p82WhyNotShapes,
   p83Steps, p84Ex1Statements, p84Ex2Grid, p84Ex3Cases, p84Ex4Lengths, whyNotReasons, type SourceElement,
@@ -900,9 +902,10 @@ export function SquareLesson() {
     { id: 'sq-naming', title: 'تدرّب ③: أسماء الأشكال', content: <StepNaming /> },
     { id: 'sq-composite', title: 'تدرّب ④: أطوال مركّبة', content: <StepComposite /> },
     { id: 'sq-summary', title: 'الخلاصة والاختبار', content: <StepSummary /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={squareNotebook()} /> },
   ], [])
   return <LessonShell title={lessonTitle} steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-square" />
 }
 
-export const squareStepCount = 14
-export const squareStepIds = ['sq-intro', 'sq-opening', 'sq-definition', 'sq-example', 'sq-check1', 'sq-check2', 'sq-properties', 'sq-construction', 'sq-draw-practice', 'sq-true-false', 'sq-fourth-vertex', 'sq-naming', 'sq-composite', 'sq-summary'] as const
+export const squareStepCount = 15
+export const squareStepIds = ['sq-intro', 'sq-opening', 'sq-definition', 'sq-example', 'sq-check1', 'sq-check2', 'sq-properties', 'sq-construction', 'sq-draw-practice', 'sq-true-false', 'sq-fourth-vertex', 'sq-naming', 'sq-composite', 'sq-summary', 'notebook'] as const

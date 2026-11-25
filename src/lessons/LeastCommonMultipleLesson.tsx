@@ -5,6 +5,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { lcmNotebook } from '../notebook/entries/u2l3Lcm'
 import {
   leastCommonMultipleBookElements,
   leastCommonMultipleBookTasks,
@@ -603,6 +605,7 @@ export function LeastCommonMultipleLesson() {
     { id: 'drill', title: 'تدرّب: تسعة فروع', content: <DrillStep /> },
     { id: 'labs', title: 'مختبرات المنصة', content: <PlatformLabsStep /> },
     { id: 'recap', title: 'الخلاصة والاستعداد', content: <RecapStep /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={lcmNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title="المضاعف المشترك الأصغر" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-eleven" />

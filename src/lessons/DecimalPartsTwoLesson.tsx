@@ -4,6 +4,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { hundredthsNotebook } from '../notebook/entries/u2l7Hundredths'
 import {
   compareRationalValues, decimalForHundredths, isAcceptedVerbalHundredths, isDecimalEquivalentToHundredths,
   isHundredthsFractionInput, isStrictlyBetweenDecimals, lessonTitle, p66ComparisonItems, p66GridItems,
@@ -486,6 +488,7 @@ const steps: LessonStep[] = [
   { id: 'practice-p70-a', title: 'تدرّب ① و② · ص70', content: <PracticeStepOne /> },
   { id: 'practice-p70-b', title: 'تدرّب ③ و④ و⑤ · ص70–71', content: <PracticeStepTwo /> },
   { id: 'practice-p71', title: 'تدرّب ⑥ و⑦ و⑧ · ص71', content: <PracticeStepThree /> },
+  { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={hundredthsNotebook()} /> },
 ]
 
 export function DecimalPartsTwoLesson() {

@@ -5,6 +5,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { multiplyNotebook } from '../notebook/entries/u2l2Multiply'
 import {
   multiplyNaturalNumbersBookElements,
   multiplyNaturalNumbersBookTasks,
@@ -690,6 +692,7 @@ export function MultiplyNaturalNumbersLesson() {
     { id: 'practice-shapes', title: 'تدرّب: مساحة ومحيط', content: <PracticeShapesStep /> },
     { id: 'platform-lab', title: 'مختبر المنصة', content: <PlatformLabStep /> },
     { id: 'recap', title: 'الخلاصة والاستعداد', content: <LessonRecap /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={multiplyNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title="ضرب الأعداد الطبيعية" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-ten" />

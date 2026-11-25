@@ -6,6 +6,8 @@ import {
 import { MathExpression as SharedMathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { unit2ExercisesNotebook } from '../notebook/entries/u2revExercises'
 import {
   arabicWords, findUnit2ExercisesElement, lcmOf, lessonTitle, q10Data, q10Items, q11Data, q1Data, q2Data, q3Data,
   q4Data, q5Data, q5Sets, q6Data, q6Items, q7Data, q7Groups, q8Data, q8Groups, q9Data, q9Items,
@@ -1195,6 +1197,7 @@ export function Unit2ExercisesLesson() {
     { id: 'u2e-q10', title: 'التمرين ⑩ · كسر عادي إلى مركب', content: <StepQ10 /> },
     { id: 'u2e-q11', title: 'التمرين ⑪ · المستطيل والمربّع', content: <StepQ11 /> },
     { id: 'u2e-summary', title: 'الخلاصة والاختبار', content: <StepSummary /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={unit2ExercisesNotebook()} /> },
   ], [])
   return <LessonShell title={lessonTitle} steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-unit2-exercises" />
 }

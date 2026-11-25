@@ -212,7 +212,7 @@ async function main() {
     const renderedStepIds: string[] = []
     const interactiveControls = new Set<string>()
     let fuelPhrasePresent = false
-    const stepCount = 10
+    const stepCount = 11
     for (let index = 0; index < stepCount; index += 1) {
       const panel = student.container.querySelector('.lesson-step-panel')
       assert.ok(panel, `student step ${index + 1} panel`)

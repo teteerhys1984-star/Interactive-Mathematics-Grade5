@@ -172,7 +172,7 @@ async function main() {
   const renderedVisualIds = new Set<string>()
   const renderedGroupIds = new Set<string>()
   const renderedStepIds: string[] = []
-  const stepCount = 11
+  const stepCount = 12
 
   for (let stepIndex = 0; stepIndex < stepCount; stepIndex += 1) {
     const panel = view.container.querySelector('.lesson-step-panel')

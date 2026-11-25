@@ -5,6 +5,8 @@ import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import { SourceCard } from '../components/lesson/SourceCard'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { fractionsTwoNotebook } from '../notebook/entries/u2l5FractionsTwo'
 import {
   checkClassifyItems, checkToImproperItems, checkToMixedItems, classifyFraction, classifyItems, cakeShare,
   divideWithRemainder, exerciseThreeItems, exerciseTwoItems, formatFraction, isAcceptedFraction,
@@ -532,7 +534,7 @@ function SummaryStep() {
         <li>إذن الكسران متساويان؛ لا يوجد أكبر منهما.</li>
       </ol></details>
     </div>
-    <div className="l25-next-cta"><ArrowLeft size={16} aria-hidden="true" /> انتقل إلى اختبار الدرس لتثبيت المهارات.</div>
+    <a className="l25-independent-test-link" href="#tests/run/lesson-fractions-two-test">انتقل إلى اختبار الدرس المستقل · 20 سؤالاً <ArrowLeft size={17} aria-hidden="true" /></a>
     <p className="l25-undo-line"><RotateCcw size={13} aria-hidden="true" /> يمكنك إعادة أي نشاط بإعادة تحميل الصفحة.</p>
   </div>
 }
@@ -546,6 +548,7 @@ const steps: LessonStep[] = [
   { id: 'practice', title: 'تدريبات الكتاب', content: <PracticeStep /> },
   { id: 'applications', title: 'تطبيقات وتفكير', content: <ApplicationsStep /> },
   { id: 'summary', title: 'الملخص والتحدي', content: <SummaryStep /> },
+  { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={fractionsTwoNotebook()} /> },
 ]
 
 export function FractionsTwoLesson() {

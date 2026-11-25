@@ -33,7 +33,7 @@ const UNIT_TWO_LESSON_IDS = [
 
 const STEP_IDS = [
   'u2e-intro', 'u2e-q1', 'u2e-q2', 'u2e-q3', 'u2e-q4', 'u2e-q5', 'u2e-q6',
-  'u2e-q7', 'u2e-q8', 'u2e-q9', 'u2e-q10', 'u2e-q11', 'u2e-summary',
+  'u2e-q7', 'u2e-q8', 'u2e-q9', 'u2e-q10', 'u2e-q11', 'u2e-summary', 'notebook',
 ] as const
 
 async function main() {
@@ -99,15 +99,15 @@ async function main() {
     })
     assert.ok(screen.getByRole('heading', { name: lessonTitle, level: 1 }), 'the real review lesson component opens')
     assert.equal(container.querySelectorAll('.lesson-shell.lesson-unit2-exercises').length, 1, 'the Unit 2 review lesson theme is active')
-    assert.equal(screen.getByRole('progressbar', { name: 'موقعك في الدرس' }).getAttribute('aria-valuemax'), '13', 'the opened lesson is the 13-step review lesson')
+    assert.equal(screen.getByRole('progressbar', { name: 'موقعك في الدرس' }).getAttribute('aria-valuemax'), '14', 'the opened lesson is the 14-step review lesson')
     const breadcrumbs = container.querySelector('.lesson-breadcrumbs')
     assert.ok(breadcrumbs, 'the lesson renders its breadcrumb')
     assert.ok(within(breadcrumbs as HTMLElement).getByText('الوحدة الثانية'), 'the review lesson keeps its Unit 2 context')
     console.log('PASS Student card: the review lesson appears once in the Unit 2 list and opens from its own tile.')
 
-    /* ---------------------------------------------- walk all thirteen steps through the outline */
+    /* ---------------------------------------------- walk all fourteen steps through the outline */
     const outlineButtons = () => Array.from(container.querySelectorAll<HTMLElement>('.lesson-outline-list.is-desktop button'))
-    assert.equal(outlineButtons().length, 13, 'the outline lists all thirteen steps')
+    assert.equal(outlineButtons().length, 14, 'the outline lists all fourteen steps')
 
     const expectVisible = (text: string, stepId: string) => {
       assert.ok(document.body.textContent?.includes(text), `step ${stepId} shows the printed text «${text}»`)
@@ -167,7 +167,7 @@ async function main() {
     expectVisible('اختبار الوحدة الثانية', 'u2e-summary')
     const testLink = container.querySelector<HTMLAnchorElement>('a.u2e-test-link')
     assert.ok(testLink && testLink.getAttribute('href') === '#tests/run/unit-unit-2-test', 'the summary links to the untouched 60-question unit test')
-    console.log('PASS Step walk: all 13 steps render; book numbers, stacked fractions and the figure are on screen; no internal notes anywhere.')
+    console.log('PASS Step walk: all 14 steps render; book numbers, stacked fractions and the figure are on screen; no internal notes anywhere.')
 
     /* ---------------------------------------------- interaction proof 1: LCM task ⑤ (أ) */
     act(() => { fireEvent.click(outlineButtons()[5]) })

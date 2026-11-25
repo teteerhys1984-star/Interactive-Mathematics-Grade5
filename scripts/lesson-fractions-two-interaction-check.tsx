@@ -42,11 +42,11 @@ async function main() {
   const stepHas = (selector: string) => document.querySelector(selector) !== null
   // Visit every step once; remember the step that hosts each lab.
   const stepOf: Record<string, number> = {}
-  for (let step = 0; step < 8; step++) {
+  for (let step = 0; step < 9; step++) {
     for (const selector of ['.l25-cake-lab', '.l25-classify-lab', '.l25-division-lab', '.l25-build-lab']) {
       if (stepHas(selector)) stepOf[selector] = step
     }
-    if (step < 7) clickNext()
+    if (step < 8) clickNext()
   }
   for (const selector of ['.l25-cake-lab', '.l25-classify-lab', '.l25-division-lab', '.l25-build-lab']) {
     assert(stepOf[selector] !== undefined, `${selector} is reachable in the lesson`)
@@ -55,7 +55,7 @@ async function main() {
 
   const goToStep = (index: number) => {
     // Lesson shell has no direct step buttons in the nav; go back to step 0 and step forward.
-    for (let i = 0; i < 10; i++) fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
+    for (let i = 0; i < 11; i++) fireEvent.click(screen.getByRole('button', { name: /السابق/ }))
     for (let i = 0; i < index; i++) clickNext()
   }
 
@@ -132,7 +132,7 @@ async function main() {
   console.log('✅ ambiguous item «ح»: neutral, never scored correct/incorrect')
 
   // ---- Linear-fraction guard across the whole lesson ----
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 9; i++) {
     goToStep(i)
     const body = document.querySelector('.lesson-step-panel')?.textContent ?? ''
     assert(!/\d\/\d/u.test(body), `step ${i} shows no linear a/b fraction in visible text`)

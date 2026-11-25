@@ -4,6 +4,8 @@ import { MathExpression as SharedMathExpression } from '../components/MathExpres
 import { GeoFigure } from '../components/lesson/GeoFigure'
 import { LessonShell } from '../components/lesson/LessonShell'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { rectangleNotebook } from '../notebook/entries/u2l9Rectangle'
 import {
   check1Reasons, check2Reasons, findRectangleElement, lessonTitle, p77Shapes, p78Check1Shapes, p78Check2Shapes, p79Steps,
   p80Ex1Blanks, p80Ex2Statements, p80Ex3Grid, p80Ex3Properties, p80Ex4Lengths, type Check1Reason, type Check2Reason, type SourceElement,
@@ -1010,9 +1012,10 @@ export function RectangleLesson() {
     { id: 'rect-practice-3', title: 'تدرّب ③: الرأس الرابع', content: <StepPractice3 /> },
     { id: 'rect-practice-4', title: 'تدرّب ④: شكل مركّب', content: <StepPractice4 /> },
     { id: 'rect-summary', title: 'الخلاصة والاختبار', content: <StepSummary /> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={rectangleNotebook()} /> },
   ], [])
   return <LessonShell title={lessonTitle} steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-rectangle" />
 }
 
-export const rectangleStepCount = 13
-export const rectangleStepIds = ['rect-intro', 'rect-opening', 'rect-definition', 'rect-example', 'rect-check1', 'rect-check2', 'rect-properties', 'rect-construction', 'rect-draw-practice', 'rect-practice-1-2', 'rect-practice-3', 'rect-practice-4', 'rect-summary'] as const
+export const rectangleStepCount = 14
+export const rectangleStepIds = ['rect-intro', 'rect-opening', 'rect-definition', 'rect-example', 'rect-check1', 'rect-check2', 'rect-properties', 'rect-construction', 'rect-draw-practice', 'rect-practice-1-2', 'rect-practice-3', 'rect-practice-4', 'rect-summary', 'notebook'] as const

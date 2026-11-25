@@ -3,6 +3,8 @@ import { Check, CircleAlert, Compass, Cuboid, Lightbulb, RotateCcw, Sparkles } f
 import { MathExpression } from '../components/MathExpression'
 import { LessonShell } from '../components/lesson/LessonShell'
 import type { LessonStep } from '../components/lesson/types'
+import { StudentNotebook } from '../notebook/StudentNotebook'
+import { thousandthsNotebook } from '../notebook/entries/u2l8Thousandths'
 import {
   lesson8SourceElements, lessonTitle, p72Comparisons, p72Cubes, p73Examples, p73Fractions, p74Comparisons,
   p75Comparisons, p75Rulers, p76Comparisons, p76Intervals, p76Matches, p76Ruler, p76Table,
@@ -206,6 +208,7 @@ export function DecimalPartsThreeLesson() {
       <TaskGroup element={find('l8-p76-intervals')}>{p76Intervals.map((item) => <IntervalTask key={item.id} {...item} />)}</TaskGroup>
       <div className="l8-summary"><span><Compass size={18} /> خلاصة الرحلة</span><h3>ثلاثة مفاتيح للأجزاء من ألف</h3><ol><li>المقام 1000 يقابله ثلاث خانات بعد الفاصلة.</li><li>وحّد عدد الخانات قبل المقارنة، وأضف صفراً إلى اليمين إذا احتجت.</li><li>في «عدد يقع بين» اختر قيمة داخلية لا تساوي الحدين.</li></ol><a href="#tests/run/lesson-decimal-parts-three-test">انتقل إلى اختبار الدرس المستقل ←</a></div>
     </div> },
+    { id: 'notebook', title: 'دفتر الطالب', content: <StudentNotebook doc={thousandthsNotebook()} /> },
   ]
   const [activeStep, setActiveStep] = useState(0)
   return <LessonShell title={lessonTitle} steps={steps} activeStep={activeStep} onStepChange={setActiveStep} theme="lesson-decimal-three" />

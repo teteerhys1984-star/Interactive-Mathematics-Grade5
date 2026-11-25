@@ -55,7 +55,7 @@ async function main() {
     const platformSeen = new Set<string>()
     let sawIsolatedMath = false
     const stepCount = Number(document.querySelector('.lesson-progress-track')?.getAttribute('aria-valuemax'))
-    assert.equal(stepCount, 13, 'lesson is divided into thirteen short navigable steps')
+    assert.equal(stepCount, 14, 'lesson is divided into fourteen short navigable steps')
     const titles: string[] = []
 
     for (let stepIndex = 0; stepIndex < stepCount; stepIndex += 1) {

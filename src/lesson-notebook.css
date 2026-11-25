@@ -187,6 +187,37 @@
 .nb-note-tip { background: var(--nb-accent-soft); border: 1px solid #ccd8e6; border-inline-start: 5px solid var(--nb-accent); color: var(--nb-ink) }
 .nb-note-tip svg { color: var(--nb-accent) }
 
+/* ---- fractions, comparisons and Unit 2 models ----------------------------
+   Unit 2 writes fractions the way the book prints them (one number above another),
+   so the sheet carries its own stacked-fraction typography instead of the flat «3/4». */
+.student-notebook {
+  /* Unit 1's geometry renderer reads these from `.lesson-seven`; Unit 2 notebooks reuse the same
+     renderer under another theme, so the palette is repeated here rather than re-declared per theme. */
+  --l7-ink: #1d2340;
+  --l7-indigo: #4b45c6;
+  --l7-rose: #d9456f;
+  --l7-emerald: #1a8f6d;
+  --l7-amber: #d98a1f;
+}
+.nb-frac {
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  vertical-align: middle; margin: 0 4px; line-height: 1.25;
+  font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--nb-ink);
+}
+.nb-frac-num { padding: 0 5px; border-bottom: 2px solid currentColor }
+.nb-frac-den { padding: 0 5px }
+.nb-mixed { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle }
+.nb-mixed-whole { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--nb-ink) }
+.nb-cmp { display: inline-flex; align-items: center; gap: 7px; flex-wrap: wrap; direction: ltr }
+.nb-chain-item { display: inline-flex; align-items: center; gap: 7px }
+.nb-cmp-op { font-family: 'DM Mono', monospace; font-weight: 800; color: var(--nb-gold) }
+/* a mathematical run lifted out of an Arabic sentence: numbers, fractions and symbols in one LTR box */
+.nb-math-run {
+  display: inline-block; direction: ltr; unicode-bidi: isolate;
+  font-family: 'DM Mono', monospace; font-weight: 700; color: var(--nb-ink);
+  margin: 0 3px; white-space: normal;
+}
+
 /* ---- reused figure components, sized for copying -------------------------
    The notebook reuses the lessons' own drawings (GeoFigure, CoordinatesGrid, LineChart,
    ColumnOperation, and the Lesson 6/8 figures), so their sizes are adapted here instead of
