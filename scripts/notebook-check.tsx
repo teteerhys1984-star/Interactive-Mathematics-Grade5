@@ -1,8 +1,9 @@
 /**
- * «دفتر الطالب» audit — the notebook step of every shipped Unit 1 and Unit 2 lesson.
+ * «دفتر الطالب» audit — every lesson and review lesson registered in the curriculum.
  *
- * This check does not trust the authored documents. For each of the nineteen notebooks (eight Unit 1
- * lessons, the ten Unit 2 lessons and the Unit 2 review lesson) it
+ * The authored plan is reconciled by (unit id, lesson id) against the live curriculum registry, so
+ * adding a unit, lesson, or review without a notebook plan entry fails before the lesson audit runs.
+ * For each registered notebook this check
  *  • proves the doc agrees with `curriculumRegistry` (lesson id, title, unit, textbook pages, theme);
  *  • proves every section and block id is unique, stable and lesson-prefixed, and that the whole
  *    document actually reached the DOM (`data-notebook-block` per authored block);
@@ -19,17 +20,92 @@
  *    symbol must live inside `BidiText`/`MathExpression`/an LTR-isolated SVG, never in bare RTL prose;
  *  • renders the REAL lesson and walks its outline to the last step, proving the notebook is wired as
  *    the final step, that the step before it still renders the lesson's own recap or assessment, and
- *    that the progress bar reports the new step count. A Unit 1 lesson must still end on an
- *    interactive assessment; a Unit 2 lesson may end on its recap/summary, which only carries the
- *    link to the lesson's standalone test.
+ *    that the progress bar reports the new step count. Registered test hand-offs are resolved by
+ *    lesson/review role and unit id, not by fixed lesson ids; existing interactive assessments remain
+ *    checked when no test hand-off is declared.
  *
  * Run independently with `npm run notebook-check`; it is part of `quality-check` and therefore `build`.
  */
 import { readFileSync } from 'node:fs'
 import { JSDOM } from 'jsdom'
 import { createServer } from 'vite'
+import type { UnitMeta } from '../src/types'
+import type { NotebookBlock, NotebookDoc } from '../src/notebook/types'
 
 const fail = (message: string): never => { throw new Error(`Notebook check failed: ${message}`) }
+
+interface NotebookTarget { id: string; unitId: string }
+
+function targetKey(target: NotebookTarget): string {
+  return `${target.unitId}\u0000${target.id}`
+}
+
+function assertNotebookPlanCoversCurriculum(
+  units: readonly UnitMeta[],
+  entries: readonly NotebookTarget[],
+): void {
+  const registered: NotebookTarget[] = units.flatMap(unit => [
+    ...unit.lessons.map(lesson => ({ id: lesson.id, unitId: unit.id })),
+    ...(unit.reviewLessons ?? []).map(lesson => ({ id: lesson.id, unitId: unit.id })),
+  ])
+  const registeredKeys = new Set(registered.map(targetKey))
+  const plannedKeys = new Set<string>()
+
+  for (const target of registered) {
+    if (!target.id.trim()) fail(`${target.unitId}: the curriculum contains a lesson with an empty id`)
+  }
+  for (const entry of entries) {
+    const key = targetKey(entry)
+    if (plannedKeys.has(key)) fail(`duplicate notebook plan entry for lesson "${entry.id}" in unit "${entry.unitId}"`)
+    plannedKeys.add(key)
+  }
+
+  const missing = registered.filter(target => !plannedKeys.has(targetKey(target)))
+  if (missing.length) {
+    fail(`registered lesson(s) have no notebook plan entry: ${missing.map(target => `${target.id} (${target.unitId})`).join(', ')}`)
+  }
+
+  const orphaned = entries.filter(target => !registeredKeys.has(targetKey(target)))
+  if (orphaned.length) {
+    fail(`notebook plan entry/entries do not match a registered lesson or review: ${orphaned.map(target => `${target.id} (${target.unitId})`).join(', ')}`)
+  }
+}
+
+function assertNotebookDocMatchesLesson(expectedId: string, doc: NotebookDoc): void {
+  if (doc.lessonId !== expectedId) {
+    fail(`notebook for lesson "${expectedId}" is bound to the wrong lesson id "${doc.lessonId}"`)
+  }
+}
+
+function assertNotebookIsLastStep(lessonId: string, stepLabels: readonly string[]): void {
+  if (!stepLabels.at(-1)?.includes('دفتر الطالب')) {
+    fail(`${lessonId}: the last lesson step is not «دفتر الطالب»`)
+  }
+}
+
+function assertRenderedNotebookMatchesLesson(root: ParentNode, expectedId: string): HTMLElement {
+  const notebooks = root.querySelectorAll<HTMLElement>('.student-notebook')
+  if (notebooks.length !== 1) fail(`${expectedId}: expected one rendered student notebook, found ${notebooks.length}`)
+  const actualId = notebooks[0]!.getAttribute('data-notebook')
+  if (actualId !== expectedId) {
+    fail(`${expectedId}: the lesson renders a notebook bound to "${actualId ?? ''}" instead`)
+  }
+  return notebooks[0]!
+}
+
+function expectFailure(label: string, action: () => void, expectedMessage: string): void {
+  try {
+    action()
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    if (!message.includes(expectedMessage)) {
+      fail(`${label}: expected error containing ${JSON.stringify(expectedMessage)}, received ${JSON.stringify(message)}`)
+    }
+    console.log(`Notebook negative-case verified: ${label}`)
+    return
+  }
+  fail(`${label}: invalid fixture was incorrectly accepted`)
+}
 
 /* ------------------------------------------------------- 1. authored data */
 const { curriculumRegistry } = await import('../src/content/registry')
@@ -54,17 +130,15 @@ const { rectangleNotebook } = await import('../src/notebook/entries/u2l9Rectangl
 const { squareNotebook } = await import('../src/notebook/entries/u2l10Square')
 const { unit2ExercisesNotebook } = await import('../src/notebook/entries/u2revExercises')
 
-import type { NotebookBlock, NotebookDoc } from '../src/notebook/types'
-
 /**
- * The standalone test each lesson must link to from the step before the notebook: the ten Unit 2
- * lessons point at their own 20-question lesson test, and the review lesson points at the registered
- * 60-question Unit 2 test. The ids are re-verified against the live `testRegistry` below, so a lesson
- * that links to a test nobody registered fails even if the id here were right.
+ * Optional test hand-off declared by the authored plan. Lesson tests and the unit test for a review
+ * are resolved against the live `testRegistry`; a review without an explicit href uses the registered
+ * unit-test route derived from its actual unit id.
  */
 const plan: Array<{
   id: string
-  unitId: 'unit-1' | 'unit-2'
+  /** Any curriculum unit id is supported; review lessons are resolved from the live registry. */
+  unitId: string
   prefix: string
   file: string
   steps: number
@@ -94,6 +168,40 @@ const plan: Array<{
   { id: 'unit-2-exercises', unitId: 'unit-2', prefix: 'u2rev', file: 'src/lessons/Unit2ExercisesLesson.tsx', steps: 14, theme: 'lesson-unit2-exercises', testHref: '#tests/run/unit-unit-2-test', make: unit2ExercisesNotebook },
 ]
 
+assertNotebookPlanCoversCurriculum(curriculumRegistry, plan)
+
+// Keep regression fixtures for the inventory guard in this same checker: these use the production
+// comparison function and prove that new lessons/reviews in any unit and orphan notebook entries fail.
+const firstUnit = curriculumRegistry[0]!
+const fixtureLesson = { id: 'notebook-fixture-new-lesson', title: 'درس اختبار تغطية الدفتر', availability: 'available' as const }
+const curriculumWithNewLesson = curriculumRegistry.map(unit => unit.id === firstUnit.id
+  ? { ...unit, lessons: [...unit.lessons, fixtureLesson] }
+  : unit)
+expectFailure(
+  'registered lesson without a notebook',
+  () => assertNotebookPlanCoversCurriculum(curriculumWithNewLesson, plan),
+  'registered lesson(s) have no notebook plan entry',
+)
+
+const fixtureReviewUnit: UnitMeta = {
+  id: 'notebook-fixture-new-unit',
+  title: 'وحدة اختبار تغطية الدفتر',
+  accent: 'blue',
+  status: 'in-progress',
+  lessons: [],
+  reviewLessons: [{ id: 'notebook-fixture-new-review', title: 'مراجعة اختبار تغطية الدفتر', availability: 'available' }],
+}
+expectFailure(
+  'review lesson in a new unit without a notebook',
+  () => assertNotebookPlanCoversCurriculum([...curriculumRegistry, fixtureReviewUnit], plan),
+  'registered lesson(s) have no notebook plan entry',
+)
+expectFailure(
+  'notebook plan entry not tied to a registered lesson',
+  () => assertNotebookPlanCoversCurriculum(curriculumRegistry, [...plan, { ...plan[0]!, id: 'notebook-fixture-orphan' }]),
+  'do not match a registered lesson or review',
+)
+
 const unitById = new Map(curriculumRegistry.map(unit => [unit.id, unit]))
 const unitOf = (entry: { unitId: string }) => {
   const unit = unitById.get(entry.unitId)
@@ -104,12 +212,6 @@ const unitOf = (entry: { unitId: string }) => {
 const lessonOf = (entry: { id: string; unitId: string }) => {
   const unit = unitOf(entry)
   return [...unit.lessons, ...(unit.reviewLessons ?? [])].find(candidate => candidate.id === entry.id)
-}
-for (const unit of curriculumRegistry) {
-  const expected = plan.filter(entry => entry.unitId === unit.id).length
-  if (expected === 0) continue
-  const shipped = unit.lessons.length + (unit.reviewLessons?.length ?? 0)
-  if (shipped !== expected) fail(`expected ${expected} ${unit.title} notebooks, the registry ships ${shipped} lessons`)
 }
 
 const docs = plan.map(entry => ({ entry, doc: entry.make() }))
@@ -140,7 +242,7 @@ for (const { entry, doc } of docs) {
   const lesson = lessonOf(entry)
   const unit = unitOf(entry)
   if (!lesson) fail(`no registry lesson for notebook "${entry.id}"`)
-  if (doc.lessonId !== entry.id) fail(`${entry.id}: doc.lessonId is "${doc.lessonId}"`)
+  assertNotebookDocMatchesLesson(entry.id, doc)
   if (doc.lessonTitle !== lesson!.title) fail(`${entry.id}: doc.lessonTitle "${doc.lessonTitle}" ≠ registry title "${lesson!.title}"`)
   if (doc.unit !== unit.title) fail(`${entry.id}: doc.unit "${doc.unit}" ≠ registry unit "${unit.title}"`)
   if (!/^ص \d+–\d+$/u.test(doc.pages)) fail(`${entry.id}: doc.pages "${doc.pages}" is not a «ص N–M» textbook range`)
@@ -207,6 +309,27 @@ Object.defineProperty(globalThis, 'navigator', { value: window.navigator, config
 const React = await import('react')
 const { render, fireEvent, cleanup } = await import('@testing-library/react')
 const { StudentNotebook } = await import('../src/notebook/StudentNotebook')
+
+// Verify the same association and ordering guards used below against deliberately invalid fixtures.
+const fixtureEntry = plan[0]!
+const wrongDoc = { ...fixtureEntry.make(), lessonId: 'notebook-fixture-wrong-lesson' }
+expectFailure(
+  'notebook document bound to the wrong lesson',
+  () => assertNotebookDocMatchesLesson(fixtureEntry.id, wrongDoc),
+  'bound to the wrong lesson id',
+)
+const wrongNotebookRender = render(React.createElement(StudentNotebook, { doc: wrongDoc }))
+expectFailure(
+  'lesson renders a notebook belonging to another lesson',
+  () => assertRenderedNotebookMatchesLesson(wrongNotebookRender.container, fixtureEntry.id),
+  'renders a notebook bound to',
+)
+cleanup()
+expectFailure(
+  'notebook appears before the final lesson step',
+  () => assertNotebookIsLastStep('notebook-fixture-order', ['دفتر الطالب', 'الاختبار الختامي']),
+  'last lesson step is not «دفتر الطالب»',
+)
 
 /** Markup that would turn the static notebook back into an activity, or collide with a lesson ledger. */
 const FORBIDDEN = ['.grid-hit', '.final-test', '.test-question', '.l8-blanks', '[data-source-id]', '.lesson-outline', '.l7-reveal', '.l7-task', 'form'] as const
@@ -375,44 +498,42 @@ for (const { entry } of docs) {
   // The desktop timeline holds exactly one button per step; the mobile trigger is not a step.
   const outline = Array.from(container.querySelectorAll<HTMLButtonElement>('.lesson-outline-list.is-desktop > li > button'))
   if (outline.length !== entry.steps) fail(`${entry.id}: expected ${entry.steps} lesson steps (including «دفتر الطالب»), found ${outline.length}`)
-  if (!outline[outline.length - 1]!.textContent!.includes('دفتر الطالب')) fail(`${entry.id}: the last lesson step is not «دفتر الطالب»`)
-  if (!outline[outline.length - 1]!.textContent!.includes(`الخطوة ${entry.steps}`)) fail(`${entry.id}: the notebook is not numbered as step ${entry.steps} in the outline`)
+  const stepLabels = outline.map(button => button.textContent ?? '')
+  assertNotebookIsLastStep(entry.id, stepLabels)
+  if (!stepLabels.at(-1)?.includes(`الخطوة ${entry.steps}`)) fail(`${entry.id}: the notebook is not numbered as step ${entry.steps} in the outline`)
 
   const progress = container.querySelector('[role="progressbar"]')
   if (progress?.getAttribute('aria-valuemax') !== String(entry.steps)) fail(`${entry.id}: progress bar reports ${progress?.getAttribute('aria-valuemax')} steps, expected ${entry.steps}`)
 
-  // The assessment must survive: it stays the step immediately before the notebook. Unit 1 steps end
-  // on an interactive assessment; a Unit 2 lesson ends on its own recap/summary, whose job is to hand
-  // the learner over to the lesson's standalone test — so it must carry a REAL link to that test.
+  // Preserve the pre-notebook hand-off without hard-coding unit ids: lessons can declare their own
+  // registered lesson test, while a review lesson defaults to its unit's registered unit test.
+  const unit = unitOf(entry)
+  const isReviewLesson = (unit.reviewLessons ?? []).some(lesson => lesson.id === entry.id)
+  const expectedTestHref = entry.testHref ?? (isReviewLesson ? `#tests/run/unit-${unit.id}-test` : undefined)
   fireEvent.click(outline[outline.length - 2]!)
   const assessment = container.querySelector('.lesson-content')
   if (!assessment || (assessment.textContent ?? '').trim().length === 0) {
     fail(`${entry.id}: the step before the notebook renders no lesson content`)
   }
-  if (entry.unitId === 'unit-1' && assessment.querySelectorAll('input, button').length === 0) {
-    fail(`${entry.id}: the step before the notebook no longer looks like the lesson assessment (no controls rendered)`)
-  }
-  if (entry.unitId === 'unit-2') {
-    if (!entry.testHref) fail(`${entry.id}: the plan declares no standalone test for this Unit 2 lesson`)
-    const expected = TEST_RUN_ROUTE.exec(entry.testHref!)
-    if (!expected) fail(`${entry.id}: the planned test route "${entry.testHref}" is not a «#tests/run/<id>» route`)
+
+  if (expectedTestHref) {
+    const expected = TEST_RUN_ROUTE.exec(expectedTestHref)
+    if (!expected) fail(`${entry.id}: the planned test route "${expectedTestHref}" is not a «#tests/run/<id>» route`)
     const testId = decodeURIComponent(expected![1]!)
     const registered = registeredTestIds(testId)
     if (!registered) fail(`${entry.id}: the planned test "${testId}" is not registered in the test area`)
-    const expectedType = entry.id === 'unit-2-exercises' ? 'unit' : 'lesson'
+    const expectedType = isReviewLesson ? 'unit' : 'lesson'
     if (registered!.type !== expectedType) {
       fail(`${entry.id}: "${testId}" is registered as a ${registered!.type} test, expected a ${expectedType} test`)
     }
 
-    // The printed hand-over must be a real anchor, not a decorative label: a <div> saying «انتقل إلى
-    // اختبار الدرس» leaves the learner with nothing to press. A recap may offer more than one test
-    // (the square's summary also points at the Unit 2 test), so the rule is: every test link on the
-    // step must resolve to a registered test, and exactly one of them must be THIS lesson's test.
+    // The hand-off must be a real, labelled anchor. Every test link shown in the recap is checked,
+    // and exactly one must point at this lesson's test (or the unit test for a review lesson).
     const links = Array.from(assessment.querySelectorAll<HTMLAnchorElement>('a[href]'))
       .map(link => ({ link, href: link.getAttribute('href') ?? '' }))
       .filter(candidate => TEST_RUN_ROUTE.test(candidate.href))
     if (links.length === 0) {
-      fail(`${entry.id}: the step before the notebook has no real link to the lesson's standalone test (the «انتقل إلى اختبار الدرس» text must be an <a href="${entry.testHref}">, not a div)`)
+      fail(`${entry.id}: the step before the notebook has no real link to its registered test (expected <a href="${expectedTestHref}">)`)
     }
     for (const { link, href } of links) {
       const id = decodeURIComponent(TEST_RUN_ROUTE.exec(href)![1]!)
@@ -420,17 +541,18 @@ for (const { entry } of docs) {
       if ((link.textContent ?? '').trim().length === 0) fail(`${entry.id}: the test link "${href}" has no readable label`)
       if (link.closest('button, label')) fail(`${entry.id}: the test link "${href}" is nested inside another interactive element`)
     }
-    const own = links.filter(candidate => candidate.href === entry.testHref)
+    const own = links.filter(candidate => candidate.href === expectedTestHref)
     if (own.length === 0) {
-      fail(`${entry.id}: the recap step never links to the lesson's own registered test "${entry.testHref}" (found: ${links.map(candidate => candidate.href).join(', ')})`)
+      fail(`${entry.id}: the recap step never links to its expected registered test "${expectedTestHref}" (found: ${links.map(candidate => candidate.href).join(', ')})`)
     }
-    if (own.length > 1) fail(`${entry.id}: the recap step links to "${entry.testHref}" ${own.length} times`)
+    if (own.length > 1) fail(`${entry.id}: the recap step links to "${expectedTestHref}" ${own.length} times`)
+  } else if (!isReviewLesson && assessment.querySelectorAll('input, button').length === 0) {
+    // Keep the existing interactive-assessment contract for lessons whose plan has no test hand-off.
+    fail(`${entry.id}: the step before the notebook no longer looks like an interactive assessment (no controls rendered)`)
   }
 
   fireEvent.click(outline[outline.length - 1]!)
-  const notebookRoot = container.querySelector<HTMLElement>(`.student-notebook[data-notebook="${entry.id}"]`)
-  if (!notebookRoot) fail(`${entry.id}: clicking the last step did not render the notebook for this lesson`)
-  if (container.querySelectorAll('.student-notebook').length !== 1) fail(`${entry.id}: more than one notebook rendered inside the lesson`)
+  assertRenderedNotebookMatchesLesson(container, entry.id)
   const stepId = container.querySelector('[data-step-id]')?.getAttribute('data-step-id')
   if (stepId !== 'notebook') fail(`${entry.id}: the lesson shell is not on the "notebook" step (found "${stepId}")`)
   stepCounts.push(`${entry.prefix}=${outline.length}`)
@@ -516,12 +638,12 @@ for (const [context, body] of [['base', base], ['phone', mobile], ['tablet', tab
 dom.window.close()
 
 console.log(
-  `Notebook check passed: ${docs.length} lesson notebooks («دفتر الطالب») wired as the final step of every shipped Unit 1 and Unit 2 lesson, ` +
+  `Notebook check passed: ${docs.length} notebooks wired as the final step of every registered lesson and review across ${curriculumRegistry.length} unit(s), ` +
   `${sectionCount} sections and ${blockCount} copyable blocks (${[...kindTotals.entries()].map(([kind, count]) => `${kind} ${count}`).join(', ')}), ` +
   `${figures} accessible figures, ${tables} copyable tables, ${printButtons} print controls and no form control.\n` +
   `Section purposes: ${recordSections} «يُدوَّن في الدفتر» and ${practiceSections} «حلول وتدرّبات», with every definition/rule/procedure in a record section.\n` +
   `Layout: ${notebookClasses.size} notebook classes styled for desktop, tablet (≤900px), phone (≤760px) and print; no screen font below 13px.\n` +
   `Step counts now: ${stepCounts.join('، ')}.\n` +
-  `Unit 2 hand-over: every taught lesson links to its registered 20-question lesson test and the review lesson to the registered Unit 2 test.`,
+  `Hand-offs: registered lesson/unit tests are validated for lessons/reviews with a test route; interactive assessments remain required when no test route is declared.`,
 )
 process.exit(0)
