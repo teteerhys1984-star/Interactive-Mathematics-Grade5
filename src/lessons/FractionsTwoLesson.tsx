@@ -534,7 +534,7 @@ function SummaryStep() {
         <li>إذن الكسران متساويان؛ لا يوجد أكبر منهما.</li>
       </ol></details>
     </div>
-    <div className="l25-next-cta"><ArrowLeft size={16} aria-hidden="true" /> انتقل إلى اختبار الدرس لتثبيت المهارات.</div>
+    <a className="l25-independent-test-link" href="#tests/run/lesson-fractions-two-test">انتقل إلى اختبار الدرس المستقل · 20 سؤالاً <ArrowLeft size={17} aria-hidden="true" /></a>
     <p className="l25-undo-line"><RotateCcw size={13} aria-hidden="true" /> يمكنك إعادة أي نشاط بإعادة تحميل الصفحة.</p>
   </div>
 }

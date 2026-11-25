@@ -130,7 +130,9 @@
 .l25-lesson .l25-summary-board p { margin: 0; line-height: 1.85; }
 .l25-lesson .l25-challenge { display: grid; gap: 10px; padding: 18px; border-radius: 20px; background: var(--l25-pistachio-soft); border: 1px solid #cadbb0; }
 .l25-lesson .l25-challenge p { margin: 0; line-height: 1.95; }
-.l25-lesson .l25-next-cta { display: inline-flex; align-items: center; gap: 8px; color: var(--l25-berry-deep); font-weight: 850; }
+.l25-lesson .l25-independent-test-link { display: inline-flex; width: fit-content; min-height: 48px; align-items: center; gap: 9px; padding: 11px 17px; border-radius: 4px 14px 4px 14px; background: var(--l25-berry-deep); color: #fff; font-weight: 850; text-decoration: none; }
+.l25-lesson .l25-independent-test-link:hover { background: var(--l25-cocoa); }
+.l25-lesson .l25-independent-test-link:focus-visible { outline: 3px solid var(--l25-apricot); outline-offset: 3px; }
 .l25-lesson .l25-undo-line { display: inline-flex; gap: 6px; align-items: center; margin: 0; font-size: .85rem; color: var(--l25-cocoa-soft); }
 
 /* ── Narrow screens: keep the cake hero, labs, and notation from overflowing ── */
